@@ -735,7 +735,13 @@ body{font:14px/1.45 -apple-system,"Noto Sans KR","Malgun Gothic",sans-serif;back
 .sheet.fl .grip .cl{width:30px;height:30px;border:0;border-radius:8px;background:none;color:var(--mut);font-size:18px;line-height:1}
 .sheet.fl .pz>.hint{margin:2px 0 8px}
 .sheet.fl,.sheet.fl .pz{background:var(--card)}.sheet.fl .grip{color:var(--fg)}
-</style></style></head><body>
+
+#measBar{position:absolute;z-index:1002;left:50%;transform:translateX(-50%);bottom:max(14px,env(safe-area-inset-bottom));width:min(360px,calc(100% - 20px));background:var(--card);border-radius:var(--r);box-shadow:0 6px 24px #0004,0 0 0 1px #0000000d;padding:10px 12px}
+#measTxt{font-size:13px;line-height:1.5;margin-bottom:8px}#measTxt b{font-size:17px}#measTxt .m{color:var(--mut);font-size:12px}
+#measBar .mb{display:flex;gap:6px}#measBar .mb .btn{flex:1;padding:8px 6px}
+.mpt{background:#fff;border:3px solid #ff3d00;border-radius:50%;width:12px!important;height:12px!important;margin:-6px 0 0 -6px!important;box-shadow:0 0 0 1px #0006}
+.mlb{background:#fff;color:#c62800;border:1px solid #c62800;border-radius:6px;padding:1px 5px;font-weight:700;font-size:11px;white-space:nowrap;box-shadow:none}.mlb:before{display:none}
+</style></style></style></head><body>
 <div id="map"></div>
 <div class="bar">
  <form class="srch" id="sForm" autocomplete="off"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input id="sQ" type="search" placeholder="주소 검색 (예: 마곡동 747)" enterkeyhint="search"><button class="go" type="submit">검색</button></form>
@@ -744,11 +750,13 @@ body{font:14px/1.45 -apple-system,"Noto Sans KR","Malgun Gothic",sans-serif;back
   <button class="tool" id="bLayers"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l9 5-9 5-9-5 9-5z"/><path d="M3 13l9 5 9-5"/></svg><span>레이어</span></button>
   <button class="tool" id="bLeg"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h13M8 12h13M8 18h13"/><circle cx="4" cy="6" r="1"/><circle cx="4" cy="12" r="1"/><circle cx="4" cy="18" r="1"/></svg><span>범례</span></button>
   <button class="tool" id="bGps"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><circle cx="12" cy="12" r="8"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg><span>내 위치</span></button>
+  <button class="tool" id="bMeas"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17L17 3l4 4L7 21z"/><path d="M7 13l2 2M10 10l2 2M13 7l2 2"/></svg><span>측정</span></button>
   <button class="tool" id="bPrj"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3h11l3 3v15H5z"/><path d="M8 3v6h7V3M8 21v-7h8v7"/></svg><span>프로젝트</span></button>
   <button class="tool" id="bKey"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg><span>설정</span></button>
  </div>
 </div>
 <div id="sRes" hidden></div>
+<div id="measBar" hidden><div id="measTxt"></div><div class="mb"><button class="btn" id="mUndo">되돌리기</button><button class="btn" id="mClr">지우기</button><button class="btn on" id="mDone">끝내기</button></div></div>
 <div class="sheet" id="layers" hidden><button class="btn x" data-close>닫기</button><h3 style="font-size:14px;margin:0 0 4px">레이어 <span style="font-weight:400;color:var(--mut);font-size:12px">≡ 끌어서 순서 변경 · 위쪽이 지도 위</span></h3><div class="chips" id="chips"></div>
 <div class="sl"><button class="btn" id="bShp" style="flex:1;padding:6px 10px;font-size:13px">SHP 올리기 (EPSG:5174)</button><input type="file" id="fShp" multiple hidden></div><div id="shpMsg" class="sub" style="margin:2px 0 0" hidden></div>
 
@@ -1014,7 +1022,7 @@ function render(S,pnu,partial){
   row('용도지역',tags(S.zones))+row('개발제한',tags(S.gbs,1))+row('지구단위',tags(S.dist))+row('용도지구',tags(S.spec))+row('시설',tags(dedupFac(S.fac)))+row('토지이용',tags(S.use))+shpRows(S.shp)+
   (partial?'<p class="sub">세부 정보를 불러오는 중…</p>':'<p class="sub">PNU '+esc(pnu)+' · 켜 둔 레이어만 조회됩니다.</p>');
  document.getElementById('infoBody').innerHTML=h}
-map.on('click',function(e){pick(e.latlng.lat,e.latlng.lng)});
+map.on('click',function(e){if(window.__meas&&window.__meas(e))return;pick(e.latlng.lat,e.latlng.lng)});
 // UI
 function sortable(items,handleSel,onDrop){items.forEach(function(it,from){var hd=it.querySelector(handleSel);if(!hd)return;
  hd.addEventListener('pointerdown',function(e){if(e.button>0)return;e.preventDefault();try{hd.setPointerCapture(e.pointerId)}catch(x){}
@@ -1113,6 +1121,30 @@ document.getElementById('kSave').onclick=function(){KEY=document.getElementById(
 setBase(BASE);applyLayers();if(!KEY)showKey();
 window._t={pick:pick,LAYERS:LAYERS};
 
+
+/* measure */
+(function(){var on=false,pts=[],mk=[],line=null,poly=null,lbs=[],bar=document.getElementById('measBar'),tx=document.getElementById('measTxt'),btn=document.getElementById('bMeas');
+var lay=L.layerGroup().addTo(map);
+function fm(m){return m>=1000?(m/1000).toFixed(2)+' km':(m>=100?m.toFixed(0):m.toFixed(1))+' m'}
+function area(){if(pts.length<3)return 0;var la=pts.reduce(function(a,p){return a+p.lat},0)/pts.length,kx=111320*Math.cos(la*Math.PI/180),ky=110540,a=0;
+ for(var i=0;i<pts.length;i++){var p=pts[i],q=pts[(i+1)%pts.length];a+=(p.lng*kx)*(q.lat*ky)-(q.lng*kx)*(p.lat*ky)}return Math.abs(a)/2}
+function draw(){lay.clearLayers();lbs=[];
+ if(pts.length>=3)L.polygon(pts,{color:'#ff3d00',weight:2,fillColor:'#ff3d00',fillOpacity:.15,interactive:false}).addTo(lay);
+ else if(pts.length==2)L.polyline(pts,{color:'#ff3d00',weight:3,interactive:false}).addTo(lay);
+ if(pts.length>=3)L.polyline(pts.concat([pts[0]]),{color:'#ff3d00',weight:3,dashArray:'6 6',interactive:false}).addTo(lay);
+ var tot=0;pts.forEach(function(p,i){L.marker(p,{interactive:false,icon:L.divIcon({className:'mpt',iconSize:[12,12]})}).addTo(lay);
+  if(i>0){var d=map.distance(pts[i-1],p);tot+=d;var c=L.latLng((pts[i-1].lat+p.lat)/2,(pts[i-1].lng+p.lng)/2);L.marker(c,{interactive:false,icon:L.divIcon({className:'mlb',html:fm(d),iconSize:null})}).addTo(lay)}});
+ var a=area(),cl=pts.length>=3?map.distance(pts[pts.length-1],pts[0]):0;
+ if(!pts.length)tx.innerHTML='지도를 눌러 점을 찍으세요.<div class="m">2점: 거리 · 3점 이상: 둘레와 면적 (대략값, 측량 아님)</div>';
+ else{var h='거리 <b>'+fm(tot)+'</b>';if(pts.length>=3)h+=' · 둘레 '+fm(tot+cl)+'<br>면적 <b>'+a.toLocaleString('ko-KR',{maximumFractionDigits:1})+' ㎡</b> ('+(a/3.3058).toLocaleString('ko-KR',{maximumFractionDigits:1})+' 평)';
+  tx.innerHTML=h+'<div class="m">점 '+pts.length+'개 · 대략값 (측량 아님)</div>'}}
+function set(v){on=v;bar.hidden=!v;btn.classList.toggle('on',v);document.getElementById('map').style.cursor=v?'crosshair':'';if(!v){pts=[];lay.clearLayers()}else draw()}
+window.__meas=function(e){if(!on)return false;pts.push(e.latlng);draw();return true};
+btn.onclick=function(){set(!on)};
+document.getElementById('mUndo').onclick=function(){pts.pop();draw()};
+document.getElementById('mClr').onclick=function(){pts=[];draw()};
+document.getElementById('mDone').onclick=function(){set(false)};
+})();
 /* projects */
 (function(){var M=document.getElementById('prjModal'),LST=document.getElementById('pList'),MSG=document.getElementById('pMsg');
 function msg(t){MSG.textContent=t}
