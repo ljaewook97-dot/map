@@ -710,11 +710,18 @@ body{font:14px/1.45 -apple-system,"Noto Sans KR","Malgun Gothic",sans-serif;back
 .jbi span{position:absolute;left:0;top:0;white-space:nowrap;color:var(--jbfc,#fff);font-weight:700;font-size:var(--jbfs,11px);line-height:13px;text-shadow:0 0 3px #000,0 0 3px #000,0 0 2px #000;transform-origin:center;pointer-events:none}
 .jb{background:none;border:0;box-shadow:none;color:#fff;font-weight:700;font-size:11px;padding:0;text-shadow:0 0 3px #000,0 0 3px #000,0 0 2px #000;white-space:nowrap}.jb:before{display:none}
 .fl{background:#fffd;color:#7a4300;border:0;box-shadow:none;font-size:11px;padding:1px 4px}.fl:before{display:none}
+
+.sheet.fl{left:0;right:auto;bottom:auto;top:0;border-radius:14px;max-height:none;padding:0!important;overflow:hidden;display:flex;flex-direction:column;border:1px solid var(--line)}
+.sheet.fl[hidden]{display:none!important}
+.sheet.fl .grip{flex:0 0 22px;cursor:move;touch-action:none;user-select:none;-webkit-user-select:none;display:flex;align-items:center;justify-content:center;background:var(--acc2)}
+.sheet.fl .grip:before{content:"";width:44px;height:5px;border-radius:3px;background:var(--mut);opacity:.6}
+.sheet.fl .pz{flex:1;min-height:0;overflow:auto;padding:4px 12px 12px;overscroll-behavior:contain}
+.sheet.fl .rz{position:absolute;right:0;bottom:0;width:30px;height:30px;touch-action:none;cursor:nwse-resize;background:linear-gradient(135deg,transparent 55%,var(--mut) 55%,var(--mut) 62%,transparent 62%,transparent 72%,var(--mut) 72%,var(--mut) 79%,transparent 79%);opacity:.7}
 </style></head><body>
 <div id="map"></div>
 <div class="bar">
  <form class="srch" id="sForm" autocomplete="off"><input id="sQ" type="search" placeholder="주소 검색 (예: 마곡동 747, 강서로 100)" enterkeyhint="search"><button class="btn on" type="submit">검색</button></form>
- <div class="seg"><button class="btn" data-b="Base">일반</button><button class="btn" data-b="Satellite">위성</button><button class="btn" data-b="SatLabel">위성+지명</button><button class="btn" data-b="gray">회색</button><button class="btn" data-b="white">백지도</button><button class="btn" data-b="midnight">야간</button></div>
+ <div class="seg"><button class="btn" data-b="Base">일반</button><button class="btn" data-b="Satellite">위성</button><button class="btn" data-b="SatLabel">위성+지명</button><button class="btn" data-b="white">백지도</button></div>
  <button class="btn" id="bLayers" style="margin-left:auto">레이어</button>
  <button class="btn" id="bLeg">범례</button>
  <button class="btn" id="bGps">내 위치</button>
@@ -773,7 +780,7 @@ https://github.com/nodeca/pako/blob/master/LICENSE
 (function(){
 var LS=window.localStorage;function g(k,d){try{var v=LS.getItem(k);return v==null?d:JSON.parse(v)}catch(e){return d}}function s(k,v){try{LS.setItem(k,JSON.stringify(v))}catch(e){}}
 var KEY=g('key',''),DOM=g('dom',location.hostname||'localhost');
-var BASE=g('base','Base');
+var BASE=g('base','Base');if(['Base','Satellite','SatLabel','white'].indexOf(BASE)<0)BASE='Base';
 // 레이어: id, 이름, 표시 WMS 이름, 조회용 data 코드
 var LAYERS=[
  {id:'cad',n:'지적선·지번',vec:true,on:true},
@@ -1062,9 +1069,9 @@ function renderLayerUI(){var box=document.getElementById('chips');box.innerHTML=
  sortable(rows,'.dh',function(a,b){moveTo(ORDER,a,b);s('ord',ORDER);applyZ();renderLayerUI()})}
 renderLayerUI();applyZ();upInit();
 document.querySelectorAll('[data-b]').forEach(function(e){e.onclick=function(){setBase(e.dataset.b)}});
-document.querySelectorAll('[data-close]').forEach(function(e){e.onclick=function(){if(e.parentNode.id==='legend'){HL='';hlG.clearLayers()}e.parentNode.hidden=true;if(hf){map.removeLayer(hf);hf=null}if(hi){map.removeLayer(hi);hi=null}if(pin){map.removeLayer(pin);pin=null}}});
-document.getElementById('bLayers').onclick=function(){var el=document.getElementById('layers');el.hidden=!el.hidden;document.getElementById('info').hidden=true;document.getElementById('legend').hidden=true};
-document.getElementById('bLeg').onclick=function(){var el=document.getElementById('legend');el.hidden=!el.hidden;document.getElementById('info').hidden=true;document.getElementById('layers').hidden=true;renderLeg()};
+document.querySelectorAll('[data-close]').forEach(function(e){e.onclick=function(){if(e.closest('.sheet').id==='legend'){HL='';hlG.clearLayers()}e.closest('.sheet').hidden=true;if(hf){map.removeLayer(hf);hf=null}if(hi){map.removeLayer(hi);hi=null}if(pin){map.removeLayer(pin);pin=null}}});
+document.getElementById('bLayers').onclick=function(){var el=document.getElementById('layers');el.hidden=!el.hidden;document.getElementById('info').hidden=true};
+document.getElementById('bLeg').onclick=function(){var el=document.getElementById('legend');el.hidden=!el.hidden;document.getElementById('info').hidden=true;renderLeg()};
 document.getElementById('bGps').onclick=function(){if(!navigator.geolocation)return;navigator.geolocation.getCurrentPosition(function(p){map.setView([p.coords.latitude,p.coords.longitude],18)},function(){},{enableHighAccuracy:true,timeout:10000})};
 function showKey(){document.getElementById('kKey').value=KEY;document.getElementById('kDom').value=DOM;document.getElementById('keyModal').hidden=false;document.getElementById('dbg').textContent=LOG.join('\n')||'(아직 응답 없음)'}
 document.getElementById('bKey').onclick=showKey;
@@ -1072,5 +1079,29 @@ document.getElementById('kCancel').onclick=function(){document.getElementById('k
 document.getElementById('kSave').onclick=function(){KEY=document.getElementById('kKey').value.trim();DOM=document.getElementById('kDom').value.trim()||location.hostname;s('key',KEY);s('dom',DOM);document.getElementById('keyModal').hidden=true;setBase(BASE);applyLayers()};
 setBase(BASE);applyLayers();if(!KEY)showKey();
 window._t={pick:pick,LAYERS:LAYERS};
+/* floating, movable, resizable panels */
+(function(){var BW=340,W=g('win',{});
+function vw(){return window.innerWidth}function vh(){return window.innerHeight}
+function clamp(v,a,b){return Math.max(a,Math.min(b,v))}
+['layers','legend'].forEach(function(id,k){var el=document.getElementById(id);el.classList.add('fl');
+ var pz=document.createElement('div');pz.className='pz';while(el.firstChild)pz.appendChild(el.firstChild);
+ var gr=document.createElement('div');gr.className='grip';var rz=document.createElement('div');rz.className='rz';
+ el.appendChild(gr);el.appendChild(pz);el.appendChild(rz);
+ function apply(){var r=W[id]||{};var w=r.w||Math.min(BW,vw()-16),h=r.h||Math.round(vh()*0.45);
+  w=clamp(w,180,vw());h=clamp(h,120,vh());
+  var x=r.x!=null?r.x:8,y=r.y!=null?r.y:(k?vh()-h-12:70);
+  x=clamp(x,0,vw()-w);y=clamp(y,0,vh()-h);
+  el.style.width=w+'px';el.style.height=h+'px';el.style.left=x+'px';el.style.top=y+'px';
+  pz.style.zoom=clamp(w/BW,0.7,1.8);}
+ function save(){var b=el.getBoundingClientRect();W[id]={x:Math.round(b.left),y:Math.round(b.top),w:Math.round(b.width),h:Math.round(b.height)};s('win',W)}
+ function drag(h,fn){h.addEventListener('pointerdown',function(e){e.preventDefault();h.setPointerCapture(e.pointerId);var b=el.getBoundingClientRect(),sx=e.clientX,sy=e.clientY;
+  function mv(ev){fn(b,ev.clientX-sx,ev.clientY-sy)}function up(){h.removeEventListener('pointermove',mv);h.removeEventListener('pointerup',up);h.removeEventListener('pointercancel',up);save()}
+  h.addEventListener('pointermove',mv);h.addEventListener('pointerup',up);h.addEventListener('pointercancel',up)})}
+ drag(gr,function(b,dx,dy){W[id]=W[id]||{};el.style.left=clamp(b.left+dx,0,vw()-b.width)+'px';el.style.top=clamp(b.top+dy,0,vh()-b.height)+'px'});
+ drag(rz,function(b,dx,dy){var w=clamp(b.width+dx,180,vw()-b.left),h=clamp(b.height+dy,120,vh()-b.top);el.style.width=w+'px';el.style.height=h+'px';pz.style.zoom=clamp(w/BW,0.7,1.8)});
+ new MutationObserver(function(){if(!el.hidden)apply()}).observe(el,{attributes:true,attributeFilter:['hidden']});
+ window.addEventListener('resize',function(){if(!el.hidden)apply()});apply();});
 })();
+})();
+
 </script></body></html>
