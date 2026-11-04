@@ -758,6 +758,8 @@ body{font:14px/1.45 -apple-system,"Noto Sans KR","Malgun Gothic",sans-serif;back
 <div id="sRes" hidden></div>
 <div id="measBar" hidden><div id="measTxt"></div><div class="mb"><button class="btn" id="mUndo">되돌리기</button><button class="btn" id="mClr">지우기</button><button class="btn on" id="mDone">끝내기</button></div></div>
 <div class="sheet" id="layers" hidden><button class="btn x" data-close>닫기</button><h3 style="font-size:14px;margin:0 0 4px">레이어 <span style="font-weight:400;color:var(--mut);font-size:12px">≡ 끌어서 순서 변경 · 위쪽이 지도 위</span></h3><div class="chips" id="chips"></div>
+<div id="muniBox" style="border:1px solid var(--line);border-radius:10px;padding:8px;margin:6px 0"><div style="font-weight:700;font-size:13px">지자체 항공영상 (고해상도)</div><div class="sub" style="margin:2px 0 6px">켜면 해당 지자체 구역에서 V-World 위성 위에 겹쳐 보입니다. 그 밖은 V-World 위성이 그대로 보입니다.</div><div id="muniChips" style="display:flex;flex-wrap:wrap;gap:6px"></div><div id="muniMsg" class="sub"></div>
+<details style="margin-top:6px"><summary class="sub" style="cursor:pointer;margin:0">지자체 주소 직접 추가</summary><div style="margin-top:6px"><input id="muName" placeholder="이름 (예: 파주시)" style="width:100%;font:inherit;padding:7px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--fg);margin-bottom:6px"><input id="muUrl" placeholder="서비스 주소 (…/MapServer/tile/{z}/{y}/{x} 또는 …/export?… 또는 WMS GetMap)" style="width:100%;font:inherit;padding:7px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--fg);margin-bottom:6px"><button class="btn" id="muAdd" style="padding:6px 10px">추가</button></div></details></div>
 <div class="sl"><button class="btn" id="bShp" style="flex:1;padding:6px 10px;font-size:13px">SHP 올리기 (EPSG:5174)</button><input type="file" id="fShp" multiple hidden></div><div id="shpMsg" class="sub" style="margin:2px 0 0" hidden></div>
 
 <p class="sub" style="margin:4px 0 0">파랑 국유지 · 보라 공유지 · 사유지 색 없음 (17단계 이상)</p></div>
@@ -1163,13 +1165,13 @@ document.getElementById('mDone').onclick=function(){set(false)};
 /* projects */
 (function(){var M=document.getElementById('prjModal'),LST=document.getElementById('pList'),MSG=document.getElementById('pMsg');
 function msg(t){MSG.textContent=t}
-function snap(name){var c=g('c',null),z=g('z',null);return {name:name,saved:Date.now(),base:g('base','Base'),c:c,z:z,layers:g('layers',{}),ord:g('ord',[]),sty:g('sty',{}),
+function snap(name){var c=g('c',null),z=g('z',null);return {name:name,saved:Date.now(),base:g('base','Base'),c:c,z:z,layers:g('layers',{}),ord:g('ord',[]),sty:g('sty',{}),muniOn:g('muniOn',{}),muni:g('muni',[]),
  shp:UP.map(function(u){return {id:u.id,name:u.name,color:u.color,on:u.on,gj:u.gj,bbox:u.bbox,st:u.st}})}}
 function put(p,cb){idb(function(db){if(!db){msg('저장소를 쓸 수 없습니다');return}try{var tx=db.transaction('prj','readwrite');tx.objectStore('prj').put(p);tx.oncomplete=function(){cb&&cb()};tx.onerror=function(){msg('저장 실패 (용량 부족일 수 있음)')}}catch(e){msg('저장 실패')}})}
 function all(cb){idb(function(db){if(!db)return cb([]);try{var r=db.transaction('prj').objectStore('prj').getAll();r.onsuccess=function(){cb((r.result||[]).sort(function(a,b){return b.saved-a.saved}))};r.onerror=function(){cb([])}}catch(e){cb([])}})}
 function del(n,cb){idb(function(db){var tx=db.transaction('prj','readwrite');tx.objectStore('prj').delete(n);tx.oncomplete=cb})}
 function load(p){msg('불러오는 중…');idb(function(db){var tx=db.transaction('shp','readwrite'),st=tx.objectStore('shp');st.clear();(p.shp||[]).forEach(function(u){st.put(u)});
- tx.oncomplete=function(){s('base',p.base||'Base');if(p.c)s('c',p.c);if(p.z)s('z',p.z);s('layers',p.layers||{});s('ord',p.ord||[]);s('sty',p.sty||{});location.reload()};tx.onerror=function(){msg('불러오기 실패')}})}
+ tx.oncomplete=function(){s('base',p.base||'Base');if(p.c)s('c',p.c);if(p.z)s('z',p.z);s('layers',p.layers||{});s('ord',p.ord||[]);s('sty',p.sty||{});s('muniOn',p.muniOn||{});s('muni',p.muni||[]);location.reload()};tx.onerror=function(){msg('불러오기 실패')}})}
 function exp(p){var b=new Blob([JSON.stringify(p)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=(p.name||'project').replace(/[\\\/:*?"<>|]/g,'_')+'.ddmap.json';document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove()},2000)}
 function fmt(t){var d=new Date(t);return (d.getMonth()+1)+'/'+d.getDate()+' '+('0'+d.getHours()).slice(-2)+':'+('0'+d.getMinutes()).slice(-2)}
 function render(){all(function(a){LST.innerHTML='';if(!a.length){LST.innerHTML='<p class="sub">저장된 프로젝트가 없습니다.</p>';return}
@@ -1199,7 +1201,7 @@ function $(i){return document.getElementById(i)}
 function pm(t){$('p2Msg').textContent=t}
 function stop(){try{if(peer)peer.destroy()}catch(e){}peer=null;clearTimeout(tmr);$('p2Code').style.display='none';$('p2In').style.display='none'}
 function mk(id){var h=g('peerHost',null);var o=h?{host:h.host,port:h.port,path:h.path||'/',secure:!!h.secure}:{};o.config={iceServers:[{urls:'stun:stun.l.google.com:19302'},{urls:'stun:stun.cloudflare.com:3478'}]};o.debug=0;return new Peer(id,o)}
-function snapNow(name){var c=g('c',null),z=g('z',null);return {name:name,saved:Date.now(),base:g('base','Base'),c:c,z:z,layers:g('layers',{}),ord:g('ord',[]),sty:g('sty',{}),
+function snapNow(name){var c=g('c',null),z=g('z',null);return {name:name,saved:Date.now(),base:g('base','Base'),c:c,z:z,layers:g('layers',{}),ord:g('ord',[]),sty:g('sty',{}),muniOn:g('muniOn',{}),muni:g('muni',[]),
  shp:UP.map(function(u){return {id:u.id,name:u.name,color:u.color,on:u.on,gj:u.gj,bbox:u.bbox,st:u.st}})}}
 function sendAll(conn){var d=new Date(),nm='보낸 지도 '+(d.getMonth()+1)+'/'+d.getDate()+' '+('0'+d.getHours()).slice(-2)+':'+('0'+d.getMinutes()).slice(-2);
  var txt=JSON.stringify(snapNow(nm)),n=Math.ceil(txt.length/CH),i=0;pm('보내는 중… 0%');conn.send({t:'meta',n:n,len:txt.length});
@@ -1227,6 +1229,40 @@ $('p2Go').onclick=function(){var code=$('p2Num').value.replace(/\D/g,'');if(code
   c.on('error',function(e){pm('연결 오류: '+(e&&e.message||e))})});
  peer.on('error',function(e){clearTimeout(to);pm('연결 오류: '+(e&&e.type||e)+(e&&e.type==='peer-unavailable'?' — 코드가 틀렸거나 보내는 쪽이 아직 준비되지 않았습니다':' (회사 네트워크가 막았을 수 있습니다)'))})};
 $('pClose').addEventListener('click',stop);
+})();
+
+/* municipal ortho */
+(function(){
+var DEF=[
+ {id:'goyang',name:'고양시',t:'export',u:'https://gomap.goyang.go.kr/server/rest/services/Hosted/goyang_ortho_Bigtiff_25cm_2/MapServer/export',b:[126.66,37.54,127.0,37.82]},
+ {id:'gwangju',name:'광주시(경기)',t:'export',u:'https://gis.gjcity.go.kr/arcgis/rest/services/GJUIS/LifeAphoto202510/MapServer/export',b:[127.15,37.28,127.46,37.56]},
+ {id:'seoul',name:'서울시',t:'export',u:'https://urban.seoul.go.kr/proxy/proxy.jsp?http://98.33.2.225:6080/arcgis/rest/services/UPIS/20200526_WMS/MapServer/export',b:[126.76,37.41,127.19,37.72],x:'dynamicLayers='+encodeURIComponent('[{"id":249,"source":{"mapLayerId":249,"type":"mapLayer"},"drawingInfo":{"transparency":0}}]')},
+ {id:'seongnam',name:'성남시',t:'wms',u:'https://map.seongnam.go.kr/gs-gate/airmap?SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&FORMAT=image%2Fjpeg&TRANSPARENT=true&LAYERS=seongnam_2023&STYLES=&mi=0',b:[127.05,37.34,127.21,37.51]}];
+var ON=g('muniOn',{}),CUS=g('muni',[]),LY={},stat={};
+if(!map.getPane('p_muni')){map.createPane('p_muni');map.getPane('p_muni').style.zIndex=250;map.getPane('p_muni').style.pointerEvents='none'}
+function all(){return DEF.concat(CUS)}
+function detect(u){var up=u.toUpperCase();if(/SERVICE=WMS|REQUEST=GETMAP/.test(up))return {t:'wms',u:u.replace(/&?(BBOX|WIDTH|HEIGHT|SRS|CRS)=[^&]*/ig,'')};
+ if(u.indexOf('/tile/')>0)return {t:'export',u:u.split('/tile/')[0].replace(/\/$/,'')+'/export'};
+ if(/\/export(\?|$)/i.test(u)||/BBOX=/i.test(up)){var i=u.indexOf('?');var base=i>0?u.slice(0,i):u;var x=[];if(i>0)u.slice(i+1).split('&').forEach(function(p){var k=p.split('=')[0].toLowerCase();if(['bbox','bboxsr','imagesr','size','f','format','transparent','dpi'].indexOf(k)<0&&p)x.push(p)});return {t:'export',u:base,x:x.join('&')}}
+ return null}
+var P=6378137,HALF=Math.PI*P;
+function tb(c,tile){var n=Math.pow(2,c.z),w=2*HALF/n;return [-HALF+c.x*w,HALF-(c.y+1)*w,-HALF+(c.x+1)*w,HALF-c.y*w]}
+var ML=L.GridLayer.extend({initialize:function(s){this.s=s;L.GridLayer.prototype.initialize.call(this,{pane:'p_muni',maxZoom:22,tileSize:256,bounds:L.latLngBounds([s.b[1],s.b[0]],[s.b[3],s.b[2]]),keepBuffer:2,updateWhenIdle:false,updateInterval:150})},
+ createTile:function(c,done){var s=this.s,img=document.createElement('img'),b=tb(c),px=(window.devicePixelRatio>1?512:256),self=this,url;img.alt='';img.style.opacity=0;
+  if(s.t==='wms'){var sep=s.u.indexOf('?')>0?'&':'?';url=s.u+sep+'SRS=EPSG%3A3857&BBOX='+b.join('%2C')+'&WIDTH='+px+'&HEIGHT='+px}
+  else{url=s.u+'?bbox='+b.join('%2C')+'&bboxSR=3857&imageSR=3857&size='+px+'%2C'+px+'&dpi=96&format=png32&transparent=true&f=image'+(s.x?'&'+s.x:'');if(s.u.indexOf('proxy')>0&&false)url=url}
+  img.onload=function(){img.style.opacity=1;stat[s.id].ok++;chk(s);done(null,img)};
+  img.onerror=function(){stat[s.id].err++;chk(s);done(null,img)};img.src=url;return img}});
+function chk(s){var t=stat[s.id];if(t.ok===0&&t.err>=6)msg(s.name+' 영상을 불러오지 못했습니다. 서버가 이 방식(export)을 막았거나 주소가 다를 수 있습니다.');else if(t.ok>0)msg('')}
+function msg(t){document.getElementById('muniMsg').textContent=t}
+function sync(){all().forEach(function(s){var on=!!ON[s.id];if(on&&!LY[s.id]){stat[s.id]={ok:0,err:0};LY[s.id]=new ML(s).addTo(map)}else if(!on&&LY[s.id]){map.removeLayer(LY[s.id]);delete LY[s.id]}})}
+function chips(){var el=document.getElementById('muniChips');el.innerHTML='';all().forEach(function(s){var b=document.createElement('button');b.className='chip'+(ON[s.id]?' on':'');b.textContent=s.name;b.onclick=function(){ON[s.id]=!ON[s.id];s2('muniOn',ON);msg('');sync();chips();if(ON[s.id]){var bb=s.b,c=map.getCenter();if(c.lng<bb[0]||c.lng>bb[2]||c.lat<bb[1]||c.lat>bb[3])msg(s.name+' 구역 밖을 보고 있습니다. 해당 지역으로 이동하면 보입니다.')}};
+  if(s.cus){var x=document.createElement('span');x.textContent=' ✕';x.style.opacity=.7;x.onclick=function(e){e.stopPropagation();CUS=CUS.filter(function(c){return c.id!==s.id});delete ON[s.id];s2('muni',CUS);s2('muniOn',ON);sync();chips()};b.appendChild(x)}el.appendChild(b)})}
+function s2(k,v){s(k,v)}
+document.getElementById('muAdd').onclick=function(){var n=document.getElementById('muName').value.trim(),u=document.getElementById('muUrl').value.trim();if(!n||!u){msg('이름과 주소를 입력하세요');return}
+ var d=detect(u);if(!d){msg('주소 형식을 알 수 없습니다 (타일 {z}/{y}/{x}, export, WMS 중 하나)');return}
+ var c=map.getCenter();CUS.push({id:'c'+Date.now(),cus:true,name:n,t:d.t,u:d.u,x:d.x||'',b:[c.lng-.6,c.lat-.4,c.lng+.6,c.lat+.4]});s2('muni',CUS);document.getElementById('muName').value='';document.getElementById('muUrl').value='';msg('"'+n+'" 추가됨. 눌러서 켜세요 (현재 지도 중심 주변에서만 불러옵니다)');chips()};
+chips();sync();
 })();
 /* floating, movable, resizable panels */
 (function(){var BW=340,MINW=240,MAXW=400,MINH=150,W=g('win',{});function MAXH(){return Math.round(vh()*0.65)}function zm(w){return Math.max(0.9,Math.min(1.2,w/BW))}
