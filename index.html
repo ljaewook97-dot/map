@@ -684,7 +684,7 @@ body{font:14px/1.45 -apple-system,"Noto Sans KR","Malgun Gothic",sans-serif;back
 .chip.on{background:var(--acc);border-color:var(--acc);color:#fff}
 .row{display:flex;gap:10px;padding:5px 0;border-bottom:1px solid var(--line)}.row b{flex:0 0 74px;color:var(--mut);font-weight:500}.row span{min-width:0;word-break:break-all}
 .tag{display:inline-block;background:var(--acc2);color:var(--acc);border-radius:6px;padding:2px 7px;margin:2px 3px 2px 0;font-size:13px}
-.tag.own-국유지{background:#e3edff;color:#1f5fd0}.tag.own-공유지{background:#e7f6e3;color:#2a7d1f}.tag.own-사유지{background:#fdf0dc;color:#9a5b00}
+.tag.own-국유지{background:#e3edff;color:#1f5fd0}.tag.own-공유지{background:#f3e3fa;color:#8a1cae}.tag.own-사유지{background:#fdf0dc;color:#9a5b00}
 .tag.gb{background:#fde8e5;color:var(--warn)}
 .sub{color:var(--mut);font-size:12px;margin:6px 0 0}
 .modal{position:absolute;inset:0;z-index:2000;background:#0008;display:flex;align-items:center;justify-content:center;padding:16px}
@@ -762,9 +762,9 @@ function ned(op,pnu,cb){var u='https://api.vworld.kr/ned/data/'+op+'?pnu='+pnu+'
  jsonp(u,function(d){if(d)return cb(d);try{fetch(u).then(function(r){return r.json()}).then(cb,function(){cb(null)})}catch(e){cb(null)}})}
 function boxQ(code,cb,size){var b=map.getBounds();var g='BOX('+b.getWest()+','+b.getSouth()+','+b.getEast()+','+b.getNorth()+')';
  jsonp('https://api.vworld.kr/req/data?service=data&request=GetFeature&version=2.0&data='+code+'&format=json&size='+(size||100)+'&page=1&attribute=true&geometry=true&crs=EPSG:4326&geomFilter='+encodeURIComponent(g)+'&'+q(),function(d){var f=null;try{f=d.response.status==='OK'?d.response.result.featureCollection.features:[]}catch(e){f=null}cb(f)})}
-var OWN_MAX=300,HC={'국유지':'#2f7bff','공유지':'#2f9e2f'};var rend=L.svg({padding:.5}).addTo(map);
+var OWN_MAX=300,HC={'국유지':'#0b57ff','공유지':'#a020c8'};var rend=L.svg({padding:.5}).addTo(map);
 (function(){var sv=rend._container,ns='http://www.w3.org/2000/svg',d=document.createElementNS(ns,'defs');
- [['hN','#2f7bff'],['hG','#2f9e2f']].forEach(function(p){var pt=document.createElementNS(ns,'pattern');pt.setAttribute('id',p[0]);pt.setAttribute('width','8');pt.setAttribute('height','8');pt.setAttribute('patternUnits','userSpaceOnUse');pt.setAttribute('patternTransform','rotate(45)');var ln=document.createElementNS(ns,'line');ln.setAttribute('x1','0');ln.setAttribute('y1','0');ln.setAttribute('x2','0');ln.setAttribute('y2','8');ln.setAttribute('stroke',p[1]);ln.setAttribute('stroke-width','2');ln.setAttribute('stroke-opacity','.4');pt.appendChild(ln);d.appendChild(pt)});sv.insertBefore(d,sv.firstChild)})();
+ [['hN','#0b57ff'],['hG','#a020c8']].forEach(function(p){var pt=document.createElementNS(ns,'pattern');pt.setAttribute('id',p[0]);pt.setAttribute('width','7');pt.setAttribute('height','7');pt.setAttribute('patternUnits','userSpaceOnUse');pt.setAttribute('patternTransform','rotate(-45)');var ln=document.createElementNS(ns,'line');ln.setAttribute('x1','0');ln.setAttribute('y1','0');ln.setAttribute('x2','0');ln.setAttribute('y2','7');ln.setAttribute('stroke',p[1]);ln.setAttribute('stroke-width','2.6');ln.setAttribute('stroke-opacity','.8');pt.appendChild(ln);d.appendChild(pt)});sv.insertBefore(d,sv.firstChild)})();
 var vecG=L.layerGroup(),ownG=L.layerGroup(),vecTimer=null,vecSeq=0,OWN={},stEl=null;
 function status(t){if(!stEl){stEl=document.createElement('div');stEl.style.cssText='position:absolute;z-index:999;left:50%;transform:translateX(-50%);top:calc(max(8px,env(safe-area-inset-top)) + 96px);background:#000a;color:#fff;border-radius:999px;padding:4px 12px;font-size:12px;pointer-events:none';document.body.appendChild(stEl)}
  stEl.textContent=t||'';stEl.style.display=t?'block':'none'}
@@ -777,7 +777,7 @@ function doVec(){var seq=++vecSeq;vecG.clearLayers();ownG.clearLayers();status('
  if(lay('own').on){if(z<17){status('소유구분은 지도를 더 확대(17 이상)하면 표시됩니다')}else{ownG.addTo(map);boxQ('LP_PA_CBND_BUBUN',function(fs){if(seq!==vecSeq)return;if(!fs){status('소유구분 조회 실패 (필지 목록을 받지 못함)');return}if(!fs.length){status('이 화면에는 필지 정보가 없습니다');return}
   var c=map.getCenter();fs.forEach(function(x){var b=x.geometry&&L.geoJSON(x.geometry).getBounds();x._d=b?b.getCenter().distanceTo(c):1e12});fs.sort(function(a,b){return a._d-b._d});fs=fs.slice(0,OWN_MAX);
   var queue=[],doneN=0,fail=0,todo=0;
-  function draw(x,cls){if(seq!==vecSeq)return;if(cls==='국유지'||cls==='공유지')L.geoJSON(x.geometry,{interactive:false,renderer:rend,style:{color:HC[cls],weight:1,opacity:.55,fillColor:'url(#h'+(cls==='국유지'?'N':'G')+')',fillOpacity:1}}).addTo(ownG);
+  function draw(x,cls){if(seq!==vecSeq)return;if(cls==='국유지'||cls==='공유지')L.geoJSON(x.geometry,{interactive:false,renderer:rend,style:{color:HC[cls],weight:2,opacity:.95,fillColor:'url(#h'+(cls==='국유지'?'N':'G')+')',fillOpacity:1}}).addTo(ownG);
    else if(cls==='?')L.geoJSON(x.geometry,{interactive:false,renderer:rend,style:{color:'#888',weight:1,dashArray:'3 4',opacity:.8,fill:false}}).addTo(ownG)}
   fs.forEach(function(x){var pnu=(x.properties||{}).pnu;if(!pnu||!x.geometry)return;if(OWN[pnu])draw(x,OWN[pnu]);else queue.push(x)});
   todo=queue.length;if(todo)status('소유구분 조회 0/'+todo);
