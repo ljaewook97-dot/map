@@ -684,9 +684,9 @@ body{font:14px/1.45 -apple-system,"Noto Sans KR","Malgun Gothic",sans-serif;back
 .btn{white-space:nowrap;background:var(--card);color:var(--fg);border:1px solid var(--line);border-radius:10px;padding:8px 10px;font:inherit;font-weight:600;box-shadow:0 1px 4px #0003}
 .btn.on{background:var(--acc);color:#fff;border-color:var(--acc)}
 .seg{display:flex}.seg .btn{border-radius:0}.seg .btn:first-child{border-radius:10px 0 0 10px}.seg .btn:last-child{border-radius:0 10px 10px 0}
-.sheet{padding-top:48px!important;position:absolute;z-index:1000;left:0;right:0;bottom:0;background:var(--card);border-radius:16px 16px 0 0;box-shadow:0 -2px 12px #0004;padding:12px 14px max(14px,env(safe-area-inset-bottom));max-height:62%;overflow:auto}
-.sheet h3{margin:-34px 0 6px;max-width:75%;font-size:16px}.sheet .x{position:absolute;right:10px;top:8px}
-.chips{display:flex;flex-wrap:wrap;gap:6px}
+.sheet{padding-top:14px!important;position:absolute;z-index:1000;left:0;right:0;bottom:0;background:var(--card);border-radius:16px 16px 0 0;box-shadow:0 -2px 12px #0004;padding:12px 14px max(14px,env(safe-area-inset-bottom));max-height:62%;overflow:auto}
+.sheet h3{margin:0 0 8px;padding-top:6px;font-size:16px}.sheet .x{position:sticky;top:0;float:right;margin-left:8px;z-index:3}
+.chips{display:block}.grp{border:1px solid var(--line);border-radius:10px;margin-bottom:8px;overflow:hidden}.gh{display:flex;align-items:center;gap:6px;padding:6px 8px;background:var(--acc2)}.gt{flex:1;text-align:left;background:none;border:0;font:inherit;font-weight:700;color:var(--fg);padding:6px 0}.lr{display:flex;align-items:center;gap:6px;padding:5px 8px;border-top:1px solid var(--line)}.lr .chip{flex:1;text-align:left}.ab{border:1px solid var(--line);background:var(--card);color:var(--fg);border-radius:8px;min-width:34px;height:32px;font:inherit}.ab.wide{padding:0 10px;font-size:12px}.ab:disabled{opacity:.3}
 .chip{border:1px solid var(--line);border-radius:999px;padding:7px 12px;background:var(--card);color:var(--fg);font:inherit}
 .chip.on{background:var(--acc);border-color:var(--acc);color:#fff}
 .row{display:flex;gap:10px;padding:5px 0;border-bottom:1px solid var(--line)}.row b{flex:0 0 74px;color:var(--mut);font-weight:500}.row span{min-width:0;word-break:break-all}
@@ -719,9 +719,9 @@ body{font:14px/1.45 -apple-system,"Noto Sans KR","Malgun Gothic",sans-serif;back
  <button class="btn" id="bKey">설정</button>
 </div>
 <div id="sRes" hidden></div>
-<div class="sheet" id="layers" hidden><button class="btn x" data-close>닫기</button><h3>표시 항목</h3><div class="chips" id="chips"></div>
+<div class="sheet" id="layers" hidden><button class="btn x" data-close>닫기</button><h3>표시 항목 · 쌓이는 순서</h3><div class="chips" id="chips"></div>
 <div class="sl"><label for="sOwn">소유구분 투명도</label><input type="range" id="sOwn" min="5" max="100" step="5"><b id="vOwn"></b></div><div class="sl"><label for="sFac">시설 투명도</label><input type="range" id="sFac" min="5" max="100" step="5"><b id="vFac"></b></div>
-<p class="sub">소유구분: <span class="tag own-국유지">국유지</span><span class="tag own-공유지">공유지</span> 면색, 사유지는 색 없음, 조회 실패는 회색 점선 (확대 17 이상, 화면 중심부터 최대 300필지)</p><p class="sub">끈 항목은 지도와 조회 결과 양쪽에서 빠집니다. 지도에서 필지를 누르면 정보가 나옵니다.</p></div>
+<p class="sub">소유구분: <span class="tag own-국유지">국유지</span><span class="tag own-공유지">공유지</span> 면색, 사유지는 색 없음, 조회 실패는 회색 점선 (확대 17 이상, 화면 중심부터 최대 300필지)</p><p class="sub">▲▼로 순서를 바꿉니다. 목록 위쪽일수록 지도에서도 위에 그려집니다. 그룹째로도 옮길 수 있습니다.</p><p class="sub">끈 항목은 지도와 조회 결과 양쪽에서 빠집니다. 지도에서 필지를 누르면 정보가 나옵니다.</p></div>
 <div class="sheet" id="legend" hidden><button class="btn x" data-close>닫기</button><h3>이 화면의 시설 범례</h3><div id="legBody" class="lgs"></div>
 <p class="sub">항목을 누르면 지도에서 노란색으로 깜빡이며 강조됩니다. 다시 누르면 해제됩니다.</p><p class="sub">소유구분: <span class="tag own-국유지">국유지</span><span class="tag own-공유지">공유지</span> 사유지는 색 없음</p></div>
 <div class="sheet" id="info" hidden><button class="btn x" data-close>닫기</button><div id="infoBody"></div></div>
@@ -753,6 +753,7 @@ var LAYERS=[
  {id:'gb',n:'개발제한구역',wms:'lt_c_ud801',data:['LT_C_UD801'],gb:true},
  {id:'use',n:'토지이용계획',wms:'lt_c_lhblpn',data:['LT_C_LHBLPN']}
 ];
+LAYERS.forEach(function(l){if(l.vec)return});
 var st=g('layers',{});LAYERS.forEach(function(l){if(st[l.id]!=null)l.on=!!st[l.id]});
 var map=L.map('map',{zoomControl:false,center:g('c',[37.5665,126.9780]),zoom:g('z',17),maxZoom:19,tap:true});
 map.on('moveend',function(){var c=map.getCenter();s('c',[c.lat,c.lng]);s('z',map.getZoom())});
@@ -763,7 +764,7 @@ function setBase(b){BASE=b;s('base',b);if(baseL)map.removeLayer(baseL);if(hyb){m
  var sat=(b==='Satellite'||b==='SatLabel');baseL=L.tileLayer(tileUrl(sat?'Satellite':b,sat?'jpeg':'png'),{maxZoom:19,maxNativeZoom:19,zIndex:1}).addTo(map);
  if(b==='SatLabel')hyb=L.tileLayer(tileUrl('Hybrid','png'),{maxZoom:19,zIndex:2}).addTo(map);
  document.querySelectorAll('[data-b]').forEach(function(e){e.classList.toggle('on',e.dataset.b===b)})}
-function wmsOne(l,nmx){return L.tileLayer.wms('https://api.vworld.kr/req/wms',{layers:nmx,styles:nmx,format:'image/png',transparent:true,version:'1.3.0',key:KEY,domain:DOM,zIndex:5,maxZoom:19,opacity:l.id==='cad'?1:.55})}
+function wmsOne(l,nmx){return L.tileLayer.wms('https://api.vworld.kr/req/wms',{pane:'p_'+l.id,layers:nmx,styles:nmx,format:'image/png',transparent:true,version:'1.3.0',key:KEY,domain:DOM,maxZoom:19,opacity:l.id==='cad'?1:.55})}
 function wmsFor(l){var a=l.wms.split(',').map(function(n){return wmsOne(l,n)});return L.layerGroup(a)}
 function applyLayers(){LAYERS.forEach(function(l){if(wmsL[l.id]){map.removeLayer(wmsL[l.id]);delete wmsL[l.id]}
  if(l.on&&KEY&&!l.vec){wmsL[l.id]=wmsFor(l).addTo(map)}});refreshVec()}
@@ -789,13 +790,14 @@ function renderLeg(){var el=document.getElementById('legBody');if(!el)return;var
  el.innerHTML=h;applyHL()}
 var HL='',hlG=L.layerGroup().addTo(map);
 function applyHL(){hlG.clearLayers();if(!HL)return;vecG.eachLayer(function(l){if(l._key!==HL)return;var gj=l.toGeoJSON();
- L.geoJSON(gj,{interactive:false,renderer:rend,style:{color:'#ffe600',weight:7,opacity:.95,fill:true,fillColor:'#ffe600',fillOpacity:.35,className:'hlp'}}).addTo(hlG);
- L.geoJSON(gj,{interactive:false,renderer:rend,style:{color:'#ff0066',weight:2,opacity:1,fill:false}}).addTo(hlG)})}
+ L.geoJSON(gj,{interactive:false,renderer:RN.hl,style:{color:'#ffe600',weight:7,opacity:.95,fill:true,fillColor:'#ffe600',fillOpacity:.35,className:'hlp'}}).addTo(hlG);
+ L.geoJSON(gj,{interactive:false,renderer:RN.hl,style:{color:'#ff0066',weight:2,opacity:1,fill:false}}).addTo(hlG)})}
 document.getElementById('legBody').addEventListener('click',function(e){var row=e.target.closest('.lg');if(!row)return;var k=row.getAttribute('data-k');HL=(HL===k)?'':k;renderLeg()});
-var OWN_A=g('ownA',.45),FAC_A=g('facA',.35),OWN_MAX=300,QML={"LT_C_UPISUQ151": {"노외주차장": ["#898989", "#FF0000"], "주차장": ["#898989", "#FF0000"], "기타주차장시설": ["#898989", "#FF0000"], "공영차고지": ["#898989", "#FF0000"], "__default__": ["none", "#FF0000"]}, "LT_C_UPISUQ152": {"노외주차장": ["#898989", "#FF0000"], "주차장": ["#898989", "#FF0000"], "기타주차장시설": ["#898989", "#FF0000"], "공영차고지": ["#898989", "#FF0000"], "__default__": ["none", "#FF0000"]}, "LT_C_UPISUQ153": {"경관광장": ["#009F00", "#FF0000"], "공원": ["#009F00", "#FF0000"], "광장": ["#009F00", "#FF0000"], "교차점광장": ["#009F00", "#FF0000"], "교통광장": ["#009F00", "#FF0000"], "근린공원": ["#009F00", "#FF0000"], "근린광장": ["#009F00", "#FF0000"], "기타공원시설": ["#009F00", "#FF0000"], "기타광장시설": ["#009F00", "#FF0000"], "기타도시공간시설": ["#009F00", "#FF0000"], "도시자연공원구역": ["#009F00", "#FF0000"], "도시자연공원": ["#009F00", "#FF0000"], "묘지공원": ["#009F00", "#FF0000"], "소공원": ["#009F00", "#FF0000"], "어린이공원": ["#009F00", "#FF0000"], "역전광장": ["#009F00", "#FF0000"], "일반광장": ["#009F00", "#FF0000"], "중심대광장": ["#009F00", "#FF0000"], "체육공원": ["#009F00", "#FF0000"], "문화공원": ["#009F00", "#FF0000"], "경관녹지": ["#C0FF7F", "#FF0000"], "기타녹지시설": ["#C0FF7F", "#FF0000"], "녹지": ["#C0FF7F", "#FF0000"], "연결녹지": ["#C0FF7F", "#FF0000"], "완충녹지": ["#C0FF7F", "#FF0000"], "유원지": ["#C0FF7F", "#FF0000"], "__default__": ["none", "#FF0000"]}, "LT_C_UPISUQ154": {"__default__": ["none", "#FF0000"]}, "LT_C_UPISUQ155": {"__default__": ["none", "#FF0000"]}, "LT_C_UPISUQ156": {"__default__": ["none", "#FF0000"]}, "LT_C_UPISUQ157": {"__default__": ["none", "#FF0000"]}, "LT_C_UPISUQ158": {"__default__": ["none", "#FF0000"]}, "LT_C_UPISUQ159": {"__default__": ["none", "#FF0000"]}},HC={'국유지':'#0b57ff','공유지':'#a020c8'};var rend=L.svg({padding:.5}).addTo(map);
-(function(){var sv=rend._container,ns='http://www.w3.org/2000/svg',d=document.createElementNS(ns,'defs');
+var OWN_A=g('ownA',.45),FAC_A=g('facA',.35),OWN_MAX=300,QML={"LT_C_UPISUQ151": {"노외주차장": ["#898989", "#FF0000"], "주차장": ["#898989", "#FF0000"], "기타주차장시설": ["#898989", "#FF0000"], "공영차고지": ["#898989", "#FF0000"], "__default__": ["none", "#FF0000"]}, "LT_C_UPISUQ152": {"노외주차장": ["#898989", "#FF0000"], "주차장": ["#898989", "#FF0000"], "기타주차장시설": ["#898989", "#FF0000"], "공영차고지": ["#898989", "#FF0000"], "__default__": ["none", "#FF0000"]}, "LT_C_UPISUQ153": {"경관광장": ["#009F00", "#FF0000"], "공원": ["#009F00", "#FF0000"], "광장": ["#009F00", "#FF0000"], "교차점광장": ["#009F00", "#FF0000"], "교통광장": ["#009F00", "#FF0000"], "근린공원": ["#009F00", "#FF0000"], "근린광장": ["#009F00", "#FF0000"], "기타공원시설": ["#009F00", "#FF0000"], "기타광장시설": ["#009F00", "#FF0000"], "기타도시공간시설": ["#009F00", "#FF0000"], "도시자연공원구역": ["#009F00", "#FF0000"], "도시자연공원": ["#009F00", "#FF0000"], "묘지공원": ["#009F00", "#FF0000"], "소공원": ["#009F00", "#FF0000"], "어린이공원": ["#009F00", "#FF0000"], "역전광장": ["#009F00", "#FF0000"], "일반광장": ["#009F00", "#FF0000"], "중심대광장": ["#009F00", "#FF0000"], "체육공원": ["#009F00", "#FF0000"], "문화공원": ["#009F00", "#FF0000"], "경관녹지": ["#C0FF7F", "#FF0000"], "기타녹지시설": ["#C0FF7F", "#FF0000"], "녹지": ["#C0FF7F", "#FF0000"], "연결녹지": ["#C0FF7F", "#FF0000"], "완충녹지": ["#C0FF7F", "#FF0000"], "유원지": ["#C0FF7F", "#FF0000"], "__default__": ["none", "#FF0000"]}, "LT_C_UPISUQ154": {"__default__": ["none", "#FF0000"]}, "LT_C_UPISUQ155": {"__default__": ["none", "#FF0000"]}, "LT_C_UPISUQ156": {"__default__": ["none", "#FF0000"]}, "LT_C_UPISUQ157": {"__default__": ["none", "#FF0000"]}, "LT_C_UPISUQ158": {"__default__": ["none", "#FF0000"]}, "LT_C_UPISUQ159": {"__default__": ["none", "#FF0000"]}},HC={'국유지':'#0b57ff','공유지':'#a020c8'};LAYERS.forEach(function(l){if(!map.getPane('p_'+l.id)){map.createPane('p_'+l.id);map.getPane('p_'+l.id).style.pointerEvents='none'}});
+var RN={};['cad','own','fac','hl'].forEach(function(id){if(!map.getPane('p_'+id)){map.createPane('p_'+id);map.getPane('p_'+id).style.pointerEvents='none'}RN[id]=L.svg({pane:'p_'+id,padding:.5}).addTo(map)});var rend=RN.fac;
+(function(){var sv=RN.own._container,ns='http://www.w3.org/2000/svg',d=document.createElementNS(ns,'defs');
  [['hN','#0b57ff'],['hG','#a020c8']].forEach(function(p){var pt=document.createElementNS(ns,'pattern');pt.setAttribute('id',p[0]);pt.setAttribute('width','7');pt.setAttribute('height','7');pt.setAttribute('patternUnits','userSpaceOnUse');pt.setAttribute('patternTransform','rotate(-45)');var ln=document.createElementNS(ns,'line');ln.setAttribute('x1','0');ln.setAttribute('y1','0');ln.setAttribute('x2','0');ln.setAttribute('y2','7');ln.setAttribute('stroke',p[1]);ln.setAttribute('stroke-width','2.6');ln.setAttribute('stroke-opacity','.8');pt.appendChild(ln);d.appendChild(pt)});sv.insertBefore(d,sv.firstChild)})();
-(function(){var sv=rend._container,ns='http://www.w3.org/2000/svg',d=sv.querySelector('defs');
+(function(){var sv=RN.fac._container,ns='http://www.w3.org/2000/svg',d=document.createElementNS(ns,'defs');sv.insertBefore(d,sv.firstChild);
  var pt=document.createElementNS(ns,'pattern');pt.setAttribute('id','hLG');pt.setAttribute('width','7');pt.setAttribute('height','7');pt.setAttribute('patternUnits','userSpaceOnUse');pt.setAttribute('patternTransform','rotate(45)');
  var rc=document.createElementNS(ns,'rect');rc.setAttribute('width','7');rc.setAttribute('height','7');rc.setAttribute('fill','#C0FF7F');pt.appendChild(rc);
  var ln=document.createElementNS(ns,'line');ln.setAttribute('x1','0');ln.setAttribute('y1','0');ln.setAttribute('x2','0');ln.setAttribute('y2','7');ln.setAttribute('stroke','#1a1a1a');ln.setAttribute('stroke-width','1');ln.setAttribute('stroke-opacity','.75');pt.appendChild(ln);d.appendChild(pt)})();
@@ -822,7 +824,7 @@ function obbHit(A,B){function ax(P){var out=[];for(var i=0;i<4;i++){var j=(i+1)%
 function txtW(t){var w=4;for(var i=0;i<t.length;i++){var ch=t[i];w+=/[0-9]/.test(ch)?6.8:ch==='-'?4.5:11.5}return w}
 function doCad(seq){cadG.clearLayers();var z=map.getZoom();if(!lay('cad').on||!KEY)return;if(z<16){status('지적은 지도를 더 확대하면 표시됩니다');return}cadG.addTo(map);
  boxQ('LP_PA_CBND_BUBUN',function(fs){if(seq!==vecSeq||!fs)return;var items=[];
-  fs.forEach(function(x){if(!x.geometry)return;var g=L.geoJSON(x.geometry,{interactive:false,renderer:rend,style:{color:'#ffb020',weight:1,opacity:.9,fill:false}});g.addTo(cadG);
+  fs.forEach(function(x){if(!x.geometry)return;var g=L.geoJSON(x.geometry,{interactive:false,renderer:RN.cad,style:{color:'#ffb020',weight:1,opacity:.9,fill:false}});g.addTo(cadG);
    if(z<18)return;var rg=ringPx(x.geometry),xs=rg.map(function(p){return p[0]}),ys=rg.map(function(p){return p[1]});items.push({rg:rg,w:Math.max.apply(0,xs)-Math.min.apply(0,xs),h:Math.max.apply(0,ys)-Math.min.apply(0,ys),p:x.properties||{}})});
   items.sort(function(a,b){return b.w*b.h-a.w*a.h});var placed=[];
   items.forEach(function(it){var t=jb(it.p),txt=t.n+(z>=19&&t.j?t.j:'');if(!t.n)return;var lw=txtW(txt),lh=13,ang=axisAng(it.rg);
@@ -841,8 +843,8 @@ function doVec(){var seq=++vecSeq;doCad(seq);vecG.clearLayers();ownG.clearLayers
  if(lay('own').on){if(z<17){status('소유구분은 지도를 더 확대(17 이상)하면 표시됩니다')}else{ownG.addTo(map);boxQ('LP_PA_CBND_BUBUN',function(fs){if(seq!==vecSeq)return;if(!fs){status('소유구분 조회 실패 (필지 목록을 받지 못함)');return}if(!fs.length){status('이 화면에는 필지 정보가 없습니다');return}
   var c=map.getCenter();fs.forEach(function(x){var b=x.geometry&&L.geoJSON(x.geometry).getBounds();x._d=b?b.getCenter().distanceTo(c):1e12});fs.sort(function(a,b){return a._d-b._d});fs=fs.slice(0,OWN_MAX);
   var queue=[],doneN=0,fail=0,todo=0;
-  function draw(x,cls){if(seq!==vecSeq)return;if(cls==='국유지'||cls==='공유지'){var g2=L.geoJSON(x.geometry,{interactive:false,renderer:rend,style:{color:HC[cls],weight:1,opacity:.85,fillColor:HC[cls],fillOpacity:OWN_A}});g2._solid=true;g2.addTo(ownG)}
-   else if(cls==='?')L.geoJSON(x.geometry,{interactive:false,renderer:rend,style:{color:'#888',weight:1,dashArray:'3 4',opacity:.8,fill:false}}).addTo(ownG)}
+  function draw(x,cls){if(seq!==vecSeq)return;if(cls==='국유지'||cls==='공유지'){var g2=L.geoJSON(x.geometry,{interactive:false,renderer:RN.own,style:{color:HC[cls],weight:1,opacity:.85,fillColor:HC[cls],fillOpacity:OWN_A}});g2._solid=true;g2.addTo(ownG)}
+   else if(cls==='?')L.geoJSON(x.geometry,{interactive:false,renderer:RN.own,style:{color:'#888',weight:1,dashArray:'3 4',opacity:.8,fill:false}}).addTo(ownG)}
   fs.forEach(function(x){var pnu=(x.properties||{}).pnu;if(!pnu||!x.geometry)return;if(OWN[pnu])draw(x,OWN[pnu]);else queue.push(x)});
   todo=queue.length;if(todo)status('소유구분 조회 0/'+todo);
   function fin(){if(seq!==vecSeq)return;status(fail?('소유 조회 실패 '+fail+'필지 (회색 점선). 나머지 투명은 사유지'):'')}
@@ -905,8 +907,29 @@ function render(S,pnu,partial){
  document.getElementById('infoBody').innerHTML=h}
 map.on('click',function(e){pick(e.latlng.lat,e.latlng.lng)});
 // UI
-var chips=document.getElementById('chips');
-LAYERS.forEach(function(l){var b=document.createElement('button');b.className='chip'+(l.on?' on':'');b.textContent=l.n;b.onclick=function(){l.on=!l.on;b.classList.toggle('on',l.on);var o={};LAYERS.forEach(function(x){o[x.id]=x.on});s('layers',o);applyLayers()};chips.appendChild(b)});
+// 그룹 / 쌓이는 순서 (목록 위가 지도에서도 위)
+var GROUPS=[{id:'g1',n:'지적·소유',ids:['cad','own'],open:true},{id:'g2',n:'용도·구역',ids:['zone','spec','dist','gb','use'],open:true},{id:'g3',n:'시설',ids:['fac'],open:true}];
+(function(){var sv=g('grp',null);if(!sv)return;try{var byId={};GROUPS.forEach(function(x){byId[x.id]=x});var out=[];sv.forEach(function(o){var gg=byId[o.id];if(!gg)return;var ids=o.ids.filter(function(i){return gg.ids.indexOf(i)>=0});gg.ids.forEach(function(i){if(ids.indexOf(i)<0)ids.push(i)});gg.ids=ids;gg.open=o.open!==false;out.push(gg);delete byId[o.id]});Object.keys(byId).forEach(function(k){out.push(byId[k])});GROUPS=out}catch(e){}})();
+function saveGrp(){s('grp',GROUPS.map(function(x){return {id:x.id,ids:x.ids,open:x.open}}))}
+function applyZ(){var flat=[];GROUPS.forEach(function(x){x.ids.forEach(function(i){flat.push(i)})});var n=flat.length;flat.forEach(function(id,i){var p=map.getPane('p_'+id);if(p)p.style.zIndex=300+(n-i)*10});var hp=map.getPane('p_hl');if(hp)hp.style.zIndex=900}
+function mv(arr,i,d){var j=i+d;if(j<0||j>=arr.length)return;var t=arr[i];arr[i]=arr[j];arr[j]=t}
+function saveLayers(){var o={};LAYERS.forEach(function(x){o[x.id]=x.on});s('layers',o)}
+function renderLayerUI(){var box=document.getElementById('chips');box.innerHTML='';
+ GROUPS.forEach(function(gr,gi){var wrap=document.createElement('div');wrap.className='grp';
+  var anyOn=gr.ids.some(function(i){return lay(i).on});
+  var h=document.createElement('div');h.className='gh';
+  function ab(t,fn,dis,cls){var b=document.createElement('button');b.className='ab'+(cls?' '+cls:'');b.textContent=t;b.disabled=!!dis;b.onclick=fn;return b}
+  var tt=document.createElement('button');tt.className='gt';tt.textContent=(gr.open?'▾ ':'▸ ')+gr.n;tt.onclick=function(){gr.open=!gr.open;saveGrp();renderLayerUI()};
+  h.appendChild(tt);
+  h.appendChild(ab(anyOn?'전체 끄기':'전체 켜기',function(){gr.ids.forEach(function(i){lay(i).on=!anyOn});saveLayers();applyLayers();renderLayerUI()},0,'wide'));
+  h.appendChild(ab('▲',function(){mv(GROUPS,gi,-1);saveGrp();applyZ();renderLayerUI()},gi===0));
+  h.appendChild(ab('▼',function(){mv(GROUPS,gi,1);saveGrp();applyZ();renderLayerUI()},gi===GROUPS.length-1));
+  wrap.appendChild(h);
+  if(gr.open)gr.ids.forEach(function(id,li){var l=lay(id),row=document.createElement('div');row.className='lr';
+   var c=document.createElement('button');c.className='chip'+(l.on?' on':'');c.textContent=l.n;c.onclick=function(){l.on=!l.on;c.classList.toggle('on',l.on);saveLayers();applyLayers();renderLayerUI()};
+   row.appendChild(c);row.appendChild(ab('▲',function(){mv(gr.ids,li,-1);saveGrp();applyZ();renderLayerUI()},li===0));row.appendChild(ab('▼',function(){mv(gr.ids,li,1);saveGrp();applyZ();renderLayerUI()},li===gr.ids.length-1));wrap.appendChild(row)});
+  box.appendChild(wrap)})}
+renderLayerUI();applyZ();
 document.querySelectorAll('[data-b]').forEach(function(e){e.onclick=function(){setBase(e.dataset.b)}});
 document.querySelectorAll('[data-close]').forEach(function(e){e.onclick=function(){if(e.parentNode.id==='legend'){HL='';hlG.clearLayers()}e.parentNode.hidden=true;if(hf){map.removeLayer(hf);hf=null}if(hi){map.removeLayer(hi);hi=null}if(pin){map.removeLayer(pin);pin=null}}});
 document.getElementById('bLayers').onclick=function(){var el=document.getElementById('layers');el.hidden=!el.hidden;document.getElementById('info').hidden=true;document.getElementById('legend').hidden=true};
