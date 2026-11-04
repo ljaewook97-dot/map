@@ -741,11 +741,39 @@ body{font:14px/1.45 -apple-system,"Noto Sans KR","Malgun Gothic",sans-serif;back
 #measBar .mb{display:flex;gap:6px}#measBar .mb .btn{flex:1;padding:8px 6px}
 .mpt{background:#fff;border:3px solid #ff3d00;border-radius:50%;width:12px!important;height:12px!important;margin:-6px 0 0 -6px!important;box-shadow:0 0 0 1px #0006}
 .mlb{background:#fff;color:#c62800;border:1px solid #c62800;border-radius:6px;padding:1px 5px;font-weight:700;font-size:11px;white-space:nowrap;box-shadow:none}.mlb:before{display:none}
-</style></style></style></head><body>
+
+/* ---- design v2 ---- */
+:root{--r:14px;--sh:0 4px 16px #0000002e,0 0 0 1px #00000010;--acc-ink:#fff}
+body{letter-spacing:-.01em}
+#map{background:var(--bg)}
+.srch{height:46px;box-shadow:var(--sh)}.srch input::placeholder{color:var(--mut);opacity:.85}
+.seg{padding:0}.seg button#bMap{display:flex;align-items:center;gap:7px;height:40px;padding:0 12px;border-radius:var(--r);font-size:13.5px;font-weight:700;color:var(--fg);background:var(--card);box-shadow:var(--sh)}
+.seg button#bMap b{font-weight:700}.seg button#bMap .car{font-style:normal;font-size:11px;color:var(--mut);transition:transform .15s}.seg button#bMap[aria-expanded=true] .car{transform:rotate(180deg)}
+.seg button#bMap svg{color:var(--acc)}
+.rail{padding:5px;gap:2px}.tool{width:48px;height:48px;border-radius:11px;color:var(--mut);transition:background .12s,color .12s}.tool:hover{background:var(--acc2);color:var(--acc)}.tool.on{background:var(--acc);color:#fff}.tool span{font-size:10px;font-weight:700}
+#mapPop{position:absolute;z-index:1001;left:max(10px,env(safe-area-inset-left));top:calc(max(10px,env(safe-area-inset-top)) + 46px + 6px + 40px + 8px);width:min(360px,calc(100vw - 20px - 62px));max-height:calc(100vh - 190px);max-height:calc(100dvh - 190px);overflow:auto;background:var(--card);border-radius:var(--r);box-shadow:0 10px 32px #0005,0 0 0 1px #00000012;padding:14px;overscroll-behavior:contain}
+#mapPop .ph{font-size:11.5px;font-weight:800;letter-spacing:.04em;color:var(--mut);margin:0 0 8px;text-transform:uppercase}
+#mapPop .opts{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+#mapPop .opts button{height:40px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--fg);font:inherit;font-size:13px;font-weight:600}
+#mapPop .opts button.on{background:var(--acc);border-color:var(--acc);color:#fff}
+#muniChips{display:grid;grid-template-columns:repeat(2,1fr);gap:6px}
+#muniChips .chip{border-radius:10px;padding:0 10px;height:40px;text-align:left;display:flex;align-items:center;justify-content:space-between;font-weight:600;font-size:13px;background:var(--bg)}
+#muniChips .chip:after{content:"";width:9px;height:9px;border-radius:50%;border:2px solid var(--mut);flex:0 0 auto}
+#muniChips .chip.on{background:var(--acc2);color:var(--fg);border-color:var(--acc)}#muniChips .chip.on:after{background:var(--acc);border-color:var(--acc)}
+#muniMsg{color:var(--warn);margin:8px 0 0;font-size:12.5px}#muniMsg:empty{display:none}
+#mapPop details summary{cursor:pointer;color:var(--mut);margin:10px 0 0;font-size:12.5px}
+/* layer panel polish */
+.grp{border-radius:12px;border-color:var(--line);background:var(--bg)}.gh{background:none;padding:7px 8px}
+.sheet.fl .grip{font-size:15px;font-weight:800}
+.sheet.fl .pz>.hint{font-size:11.5px}
+.sheet.fl .pz{padding:6px 12px 14px}
+#bShp{height:42px;border-style:dashed;border-color:var(--acc);color:var(--acc);background:none;box-shadow:none;font-weight:700}
+.btn{box-shadow:none}
+</style></head><body>
 <div id="map"></div>
 <div class="bar">
  <form class="srch" id="sForm" autocomplete="off"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input id="sQ" type="search" placeholder="주소 검색 (예: 마곡동 747)" enterkeyhint="search"><button class="go" type="submit">검색</button></form>
- <div class="seg"><button data-b="Base">일반</button><button data-b="Satellite">위성</button><button data-b="SatLabel">위성+지명</button><button data-b="white">백지도</button></div>
+ <div class="seg"><button id="bMap" aria-haspopup="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4L3 6v14l6-2 6 2 6-2V4l-6 2z"/><path d="M9 4v14M15 6v14"/></svg><b id="mapLbl">일반</b><i class="car">▾</i></button></div>
  <div class="rail">
   <button class="tool" id="bLayers"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l9 5-9 5-9-5 9-5z"/><path d="M3 13l9 5 9-5"/></svg><span>레이어</span></button>
   <button class="tool" id="bLeg"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h13M8 12h13M8 18h13"/><circle cx="4" cy="6" r="1"/><circle cx="4" cy="12" r="1"/><circle cx="4" cy="18" r="1"/></svg><span>범례</span></button>
@@ -755,11 +783,17 @@ body{font:14px/1.45 -apple-system,"Noto Sans KR","Malgun Gothic",sans-serif;back
   <button class="tool" id="bKey"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg><span>설정</span></button>
  </div>
 </div>
+<div id="mapPop" hidden>
+ <div class="ph">배경 지도</div>
+ <div class="opts"><button data-b="Base">일반</button><button data-b="Satellite">위성</button><button data-b="SatLabel">위성+지명</button><button data-b="white">백지도</button><button data-b="none">지도 없음</button></div>
+ <div class="sub" style="margin:6px 0 0">‘지도 없음’은 배경 없이 SHP·레이어만 보입니다.</div>
+ <div class="ph" style="margin-top:14px">지자체 고해상도 영상</div>
+<div id="muniBox"><div class="sub" style="margin:0 0 8px">켜면 해당 구역에서만 지자체 영상이 나옵니다. 구역 밖은 위에서 고른 배경 지도가 그대로 보입니다.</div><div id="muniChips"></div><div id="muniMsg" class="sub"></div>
+<details style="margin-top:6px"><summary class="sub" style="cursor:pointer;margin:0">지자체 주소 직접 추가</summary><div style="margin-top:6px"><input id="muName" placeholder="이름 (예: 파주시)" style="width:100%;font:inherit;padding:7px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--fg);margin-bottom:6px"><input id="muUrl" placeholder="서비스 주소 (…/MapServer/tile/{z}/{y}/{x} 또는 …/export?… 또는 WMS GetMap)" style="width:100%;font:inherit;padding:7px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--fg);margin-bottom:6px"><button class="btn" id="muAdd" style="padding:6px 10px">추가</button></div></details></div>
+</div>
 <div id="sRes" hidden></div>
 <div id="measBar" hidden><div id="measTxt"></div><div class="mb"><button class="btn" id="mUndo">되돌리기</button><button class="btn" id="mClr">지우기</button><button class="btn on" id="mDone">끝내기</button></div></div>
 <div class="sheet" id="layers" hidden><button class="btn x" data-close>닫기</button><h3 style="font-size:14px;margin:0 0 4px">레이어 <span style="font-weight:400;color:var(--mut);font-size:12px">≡ 끌어서 순서 변경 · 위쪽이 지도 위</span></h3><div class="chips" id="chips"></div>
-<div id="muniBox" style="border:1px solid var(--line);border-radius:10px;padding:8px;margin:6px 0"><div style="font-weight:700;font-size:13px">지자체 항공영상 (고해상도)</div><div class="sub" style="margin:2px 0 6px">켜면 해당 지자체 구역에서 V-World 위성 위에 겹쳐 보입니다. 그 밖은 V-World 위성이 그대로 보입니다.</div><div id="muniChips" style="display:flex;flex-wrap:wrap;gap:6px"></div><div id="muniMsg" class="sub"></div>
-<details style="margin-top:6px"><summary class="sub" style="cursor:pointer;margin:0">지자체 주소 직접 추가</summary><div style="margin-top:6px"><input id="muName" placeholder="이름 (예: 파주시)" style="width:100%;font:inherit;padding:7px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--fg);margin-bottom:6px"><input id="muUrl" placeholder="서비스 주소 (…/MapServer/tile/{z}/{y}/{x} 또는 …/export?… 또는 WMS GetMap)" style="width:100%;font:inherit;padding:7px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--fg);margin-bottom:6px"><button class="btn" id="muAdd" style="padding:6px 10px">추가</button></div></details></div>
 <div class="sl"><button class="btn" id="bShp" style="flex:1;padding:6px 10px;font-size:13px">SHP 올리기 (EPSG:5174)</button><input type="file" id="fShp" multiple hidden></div><div id="shpMsg" class="sub" style="margin:2px 0 0" hidden></div>
 
 <p class="sub" style="margin:4px 0 0">파랑 국유지 · 보라 공유지 · 사유지 색 없음 (17단계 이상)</p></div>
@@ -833,7 +867,7 @@ https://github.com/nodeca/pako/blob/master/LICENSE
 (function(){
 var LS=window.localStorage;function g(k,d){try{var v=LS.getItem(k);return v==null?d:JSON.parse(v)}catch(e){return d}}function s(k,v){try{LS.setItem(k,JSON.stringify(v))}catch(e){}}
 var KEY=g('key',''),DOM=g('dom',location.hostname||'localhost');
-var BASE=g('base','Base');if(['Base','Satellite','SatLabel','white'].indexOf(BASE)<0)BASE='Base';
+var BASE=g('base','Base');if(['Base','Satellite','SatLabel','white','none'].indexOf(BASE)<0)BASE='Base';
 // 레이어: id, 이름, 표시 WMS 이름, 조회용 data 코드
 var LAYERS=[
  {id:'cad',n:'지적선·지번',vec:true,on:true},
@@ -852,7 +886,9 @@ map.on('moveend',function(){var c=map.getCenter();s('c',[c.lat,c.lng]);s('z',map
 var baseL=null,hyb=null,wmsL={},hi=null,pin=null,hf=null;
 function tileUrl(t,ext){return 'https://api.vworld.kr/req/wmts/1.0.0/'+KEY+'/'+t+'/{z}/{y}/{x}.'+ext}
 function setBase(b){BASE=b;s('base',b);if(baseL)map.removeLayer(baseL);if(hyb){map.removeLayer(hyb);hyb=null}
- if(!KEY)return;
+ var LB={Base:'일반',Satellite:'위성',SatLabel:'위성+지명',white:'백지도',none:'지도 없음'};var ml=document.getElementById('mapLbl');if(ml)ml.textContent=LB[b]||b;
+ document.querySelectorAll('[data-b]').forEach(function(e){e.classList.toggle('on',e.dataset.b===b)});
+ if(b==='none'||!KEY)return;
  var sat=(b==='Satellite'||b==='SatLabel');baseL=L.tileLayer(tileUrl(sat?'Satellite':b,sat?'jpeg':'png'),{maxZoom:22,maxNativeZoom:19,zIndex:1,keepBuffer:4,updateWhenIdle:false,updateInterval:120}).addTo(map);
  if(b==='SatLabel')hyb=L.tileLayer(tileUrl('Hybrid','png'),{maxZoom:22,maxNativeZoom:19,zIndex:2}).addTo(map);
  document.querySelectorAll('[data-b]').forEach(function(e){e.classList.toggle('on',e.dataset.b===b)})}
@@ -1236,19 +1272,20 @@ $('pClose').addEventListener('click',stop);
 var DEF=[
  {id:'goyang',name:'고양시',t:'tile',u:'https://gomap.goyang.go.kr/server/rest/services/Hosted/goyang_ortho_Bigtiff_25cm_2/MapServer',b:[126.66,37.54,127.0,37.82]},
  {id:'gwangju',name:'광주시(경기)',t:'tile',u:'https://gis.gjcity.go.kr/arcgis/rest/services/GJUIS/LifeAphoto202510/MapServer',b:[127.15,37.28,127.46,37.56]},
- {id:'seoul',name:'서울시',t:'export',u:'https://urban.seoul.go.kr/proxy/proxy.jsp?http://98.33.2.225:6080/arcgis/rest/services/UPIS/20200526_WMS/MapServer/export',b:[126.76,37.41,127.19,37.72],x:'dynamicLayers='+encodeURIComponent('[{"id":249,"source":{"mapLayerId":249,"type":"mapLayer"},"drawingInfo":{"transparency":0}}]')},
- {id:'seongnam',name:'성남시',t:'wms',u:'https://map.seongnam.go.kr/gs-gate/airmap?SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&FORMAT=image%2Fjpeg&TRANSPARENT=true&LAYERS=seongnam_2023&STYLES=&mi=0',b:[127.05,37.34,127.21,37.51]}];
+ {id:'seoul',name:'서울시',t:'export',wk:5174,u:'https://urban.seoul.go.kr/proxy/proxy.jsp?http://98.33.2.225:6080/arcgis/rest/services/UPIS/20200526_WMS/MapServer/export',b:[126.76,37.41,127.19,37.72],x:'dynamicLayers='+encodeURIComponent('[{"id":249,"source":{"mapLayerId":249,"type":"mapLayer"},"drawingInfo":{"transparency":0}}]')},
+ {id:'seongnam',name:'성남시',t:'wms',wk:5186,u:'https://map.seongnam.go.kr/gs-gate/airmap?SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&FORMAT=image%2Fjpeg&TRANSPARENT=true&LAYERS=seongnam_2023&STYLES=&mi=0',b:[127.05,37.34,127.21,37.51]}];
 var ON=g('muniOn',{}),CUS=g('muni',[]),LY={},stat={};
 if(!map.getPane('p_muni')){map.createPane('p_muni');map.getPane('p_muni').style.zIndex=250;map.getPane('p_muni').style.pointerEvents='none'}
 function all(){return DEF.concat(CUS)}
-function detect(u){var up=u.toUpperCase();if(/SERVICE=WMS|REQUEST=GETMAP/.test(up))return {t:'wms',u:u.replace(/&?(BBOX|WIDTH|HEIGHT|SRS|CRS)=[^&]*/ig,'')};
+function detect(u){var up=u.toUpperCase();if(/SERVICE=WMS|REQUEST=GETMAP/.test(up))return {t:'wms',wk:wkOf(u),u:u.replace(/&?(BBOX|WIDTH|HEIGHT|SRS|CRS)=[^&]*/ig,'')};
  if(u.indexOf('/tile/')>0)return {t:'tile',u:u.split('/tile/')[0].replace(/\/$/,'')};
- if(/\/export(\?|$)/i.test(u)||/BBOX=/i.test(up)){var i=u.indexOf('?');var base=i>0?u.slice(0,i):u;var x=[];if(i>0)u.slice(i+1).split('&').forEach(function(p){var k=p.split('=')[0].toLowerCase();if(['bbox','bboxsr','imagesr','size','f','format','transparent','dpi'].indexOf(k)<0&&p)x.push(p)});return {t:'export',u:base,x:x.join('&')}}
+ if(/\/export(\?|$)/i.test(u)||/BBOX=/i.test(up)){var i=u.indexOf('?');var base=i>0?u.slice(0,i):u;var x=[];if(i>0)u.slice(i+1).split('&').forEach(function(p){var k=p.split('=')[0].toLowerCase();if(['bbox','bboxsr','imagesr','size','f','format','transparent','dpi'].indexOf(k)<0&&p)x.push(p)});return {t:'export',wk:wkOf(u),u:base,x:x.join('&')}}
  return null}
+function wkOf(u){var m=/(?:bboxSR|imageSR|SRS|CRS)=(?:EPSG(?:%3A|:))?(\d+)/i.exec(u);var w=m?+m[1]:0;return (w&&w!==3857&&w!==102100&&w!==102113)?w:0}
 var P=6378137,HALF=Math.PI*P;
 function tb(c,tile){var n=Math.pow(2,c.z),w=2*HALF/n;return [-HALF+c.x*w,HALF-(c.y+1)*w,-HALF+(c.x+1)*w,HALF-c.y*w]}
 var ML=L.GridLayer.extend({initialize:function(s){this.s=s;L.GridLayer.prototype.initialize.call(this,{pane:'p_muni',maxZoom:22,tileSize:256,bounds:L.latLngBounds([s.b[1],s.b[0]],[s.b[3],s.b[2]]),keepBuffer:2,updateWhenIdle:false,updateInterval:150})},
- createTile:function(c,done){var s=this.s,img=document.createElement('img'),b=tb(c),px=(window.devicePixelRatio>1?512:256),self=this,url;img.alt='';img.style.opacity=0;
+ createTile:function(c,done){var s=this.s,img=document.createElement('img'),b=tb(c),px=(window.devicePixelRatio>1?512:256),self=this,url;img.alt='';img.referrerPolicy='no-referrer';img.style.opacity=0;
   if(s.t==='wms'){var sep=s.u.indexOf('?')>0?'&':'?';url=s.u+sep+'SRS=EPSG%3A3857&BBOX='+b.join('%2C')+'&WIDTH='+px+'&HEIGHT='+px}
   else{url=s.u+'?bbox='+b.join('%2C')+'&bboxSR=3857&imageSR=3857&size='+px+'%2C'+px+'&dpi=96&format=png32&transparent=true&f=image'+(s.x?'&'+s.x:'');if(s.u.indexOf('proxy')>0&&false)url=url}
   img.onload=function(){img.style.opacity=1;stat[s.id].ok++;chk(s);done(null,img)};
@@ -1272,7 +1309,7 @@ var INFO={},TC={},TCn=0;
 function getInfo(s,cb){var k=s.u;if(INFO[k]){if(INFO[k].pend){INFO[k].pend.push(cb)}else cb(INFO[k].v);return}INFO[k]={pend:[cb]};
  jsonp(s.u+'?f=json',function(d){var v=null;try{if(d&&d.tileInfo){var ti=d.tileInfo,sr=ti.spatialReference||d.spatialReference||{},w=sr.latestWkid||sr.wkid,fw=fwdFn(w);if(fw){var lods=ti.lods.map(function(l){return {l:l.level,r:l.resolution}});if(d.minLOD!=null&&d.maxLOD!=null)lods=lods.filter(function(l){return l.l>=d.minLOD&&l.l<=d.maxLOD});v={fw:fw,wkid:w,rows:ti.rows,cols:ti.cols,ox:ti.origin.x,oy:ti.origin.y,lods:lods,fe:d.fullExtent||d.initialExtent||null}}else v={err:'좌표계('+w+')를 지원하지 않습니다'}}else v={err:'타일 서비스 정보(tileInfo)가 없습니다'}}catch(e){v={err:'서비스 정보 해석 실패'}}
   if(!d)v={err:'서비스 정보를 읽지 못했습니다 (주소·접속 차단 확인)'};var p=INFO[k].pend;INFO[k]={v:v};p.forEach(function(f){f(v)})})}
-function loadImg(u){if(TC[u])return TC[u];if(++TCn>600){TC={};TCn=1}return TC[u]=new Promise(function(res){var im=new Image();im.onload=function(){res(im)};im.onerror=function(){res(null)};im.src=u})}
+function loadImg(u){if(TC[u])return TC[u];if(++TCn>600){TC={};TCn=1}return TC[u]=new Promise(function(res){var im=new Image();im.referrerPolicy='no-referrer';im.onload=function(){res(im)};im.onerror=function(){res(null)};im.src=u})}
 var TLY=L.GridLayer.extend({initialize:function(s){this.s=s;L.GridLayer.prototype.initialize.call(this,{pane:'p_muni',maxZoom:22,tileSize:256,bounds:L.latLngBounds([s.b[1],s.b[0]],[s.b[3],s.b[2]]),keepBuffer:2,updateWhenIdle:false,updateInterval:150})},
  createTile:function(c,done){var s=this.s,S=window.devicePixelRatio>1?512:256,cv=document.createElement('canvas');cv.width=cv.height=S;
   getInfo(s,function(v){if(!v||v.err){stat[s.id].err=99;msg(s.name+': '+(v&&v.err||'서비스 정보 오류'));done(null,cv);return}
@@ -1292,17 +1329,39 @@ var TLY=L.GridLayer.extend({initialize:function(s){this.s=s;L.GridLayer.prototyp
     if(det&&ok.length){var ia=d1/det,ib=-b1/det,ic=-c1_/det,id=a1/det,ie=-(ia*t1[0]+ic*t1[1]),iff=-(ib*t1[0]+id*t1[1]),g=cv.getContext('2d');g.imageSmoothingQuality='high';g.setTransform(ia,ib,ic,id,ie,iff);
      ok.forEach(function(x){g.drawImage(x.im,x.c*v.cols,x.r*v.rows,v.cols,v.rows)})}
     chk(s);done(null,cv)})});return cv}});
+/* 지자체 export/WMS가 자체 좌표계(5174·5186 등)로만 응답할 때: 그 좌표계로 요청 후 웹 메르카토르 타일에 맞춰 그리기 */
+var NLY=L.GridLayer.extend({initialize:function(s){this.s=s;L.GridLayer.prototype.initialize.call(this,{pane:'p_muni',maxZoom:22,tileSize:256,bounds:L.latLngBounds([s.b[1],s.b[0]],[s.b[3],s.b[2]]),keepBuffer:2,updateWhenIdle:false,updateInterval:150})},
+ createTile:function(c,done){var s=this.s,S=window.devicePixelRatio>1?512:256,cv=document.createElement('canvas');cv.width=cv.height=S;var fw=fwdFn(s.wk);
+  if(!fw){stat[s.id].err=99;msg(s.name+': 좌표계('+s.wk+')를 지원하지 않습니다');done(null,cv);return cv}
+  var b=tb(c),P1=m2ll(b[0],b[3]),P2=m2ll(b[2],b[3]),P3=m2ll(b[0],b[1]),P4=m2ll(b[2],b[1]),A=fw(P1[0],P1[1]),B=fw(P2[0],P2[1]),C=fw(P3[0],P3[1]),D=fw(P4[0],P4[1]),
+   minx=Math.min(A[0],B[0],C[0],D[0]),maxx=Math.max(A[0],B[0],C[0],D[0]),miny=Math.min(A[1],B[1],C[1],D[1]),maxy=Math.max(A[1],B[1],C[1],D[1]),
+   ground=(b[2]-b[0])/S*Math.cos((P1[1]+P3[1])/2*Math.PI/180),W=Math.min(1024,Math.max(16,Math.ceil((maxx-minx)/ground))),H=Math.min(1024,Math.max(16,Math.ceil((maxy-miny)/ground))),
+   bb=[minx,miny,maxx,maxy].join('%2C'),url;
+  if(s.t==='wms'){var sep=s.u.indexOf('?')>0?'&':'?';url=s.u+sep+'SRS=EPSG%3A'+s.wk+'&BBOX='+bb+'&WIDTH='+W+'&HEIGHT='+H}
+  else url=s.u+'?bbox='+bb+'&bboxSR='+s.wk+'&imageSR='+s.wk+'&size='+W+'%2C'+H+'&dpi=96&format=png32&transparent=true&f=image'+(s.x?'&'+s.x:'');
+  var im=new Image();im.referrerPolicy='no-referrer';
+  im.onload=function(){var px=function(p){return [(p[0]-minx)/(maxx-minx)*W,(maxy-p[1])/(maxy-miny)*H]},t1=px(A),t2=px(B),t3=px(C),
+    a1=(t2[0]-t1[0])/S,b1=(t2[1]-t1[1])/S,c1=(t3[0]-t1[0])/S,d1=(t3[1]-t1[1])/S,det=a1*d1-b1*c1;
+    if(det){var ia=d1/det,ib=-b1/det,ic=-c1/det,id=a1/det,g=cv.getContext('2d');g.imageSmoothingQuality='high';g.setTransform(ia,ib,ic,id,-(ia*t1[0]+ic*t1[1]),-(ib*t1[0]+id*t1[1]));g.drawImage(im,0,0,W,H)}
+    stat[s.id].ok++;chk(s);done(null,cv)};
+  im.onerror=function(){stat[s.id].err++;chk(s);done(null,cv)};im.src=url;return cv}});
 function chk(s){var t=stat[s.id];if(t.err===99)return;if(t.ok===0&&t.err>=6)msg(s.name+' 영상을 불러오지 못했습니다. 서버가 막았거나 주소가 다를 수 있습니다.');else if(t.ok>0)msg('')}
 function msg(t){document.getElementById('muniMsg').textContent=t}
-function sync(){all().forEach(function(s){var on=!!ON[s.id];if(on&&!LY[s.id]){stat[s.id]={ok:0,err:0};LY[s.id]=new (s.t==='tile'?TLY:ML)(s).addTo(map)}else if(!on&&LY[s.id]){map.removeLayer(LY[s.id]);delete LY[s.id]}})}
+function sync(){all().forEach(function(s){var on=!!ON[s.id];if(on&&!LY[s.id]){stat[s.id]={ok:0,err:0};LY[s.id]=new (s.t==='tile'?TLY:(s.wk&&s.wk!==3857?NLY:ML))(s).addTo(map)}else if(!on&&LY[s.id]){map.removeLayer(LY[s.id]);delete LY[s.id]}})}
 function chips(){var el=document.getElementById('muniChips');el.innerHTML='';all().forEach(function(s){var b=document.createElement('button');b.className='chip'+(ON[s.id]?' on':'');b.textContent=s.name;b.onclick=function(){ON[s.id]=!ON[s.id];s2('muniOn',ON);msg('');sync();chips();if(ON[s.id]){var bb=s.b,c=map.getCenter();if(c.lng<bb[0]||c.lng>bb[2]||c.lat<bb[1]||c.lat>bb[3])msg(s.name+' 구역 밖을 보고 있습니다. 해당 지역으로 이동하면 보입니다.')}};
   if(s.cus){var x=document.createElement('span');x.textContent=' ✕';x.style.opacity=.7;x.onclick=function(e){e.stopPropagation();CUS=CUS.filter(function(c){return c.id!==s.id});delete ON[s.id];s2('muni',CUS);s2('muniOn',ON);sync();chips()};b.appendChild(x)}el.appendChild(b)})}
 function s2(k,v){s(k,v)}
 document.getElementById('muAdd').onclick=function(){var n=document.getElementById('muName').value.trim(),u=document.getElementById('muUrl').value.trim();if(!n||!u){msg('이름과 주소를 입력하세요');return}
  var d=detect(u);if(!d){msg('주소 형식을 알 수 없습니다 (타일 {z}/{y}/{x}, export, WMS 중 하나)');return}
- var c=map.getCenter();CUS.push({id:'c'+Date.now(),cus:true,name:n,t:d.t,u:d.u,x:d.x||'',b:[c.lng-.6,c.lat-.4,c.lng+.6,c.lat+.4]});s2('muni',CUS);document.getElementById('muName').value='';document.getElementById('muUrl').value='';msg('"'+n+'" 추가됨. 눌러서 켜세요 (현재 지도 중심 주변에서만 불러옵니다)');chips()};
+ var c=map.getCenter();CUS.push({id:'c'+Date.now(),cus:true,name:n,t:d.t,wk:d.wk||0,u:d.u,x:d.x||'',b:[c.lng-.6,c.lat-.4,c.lng+.6,c.lat+.4]});s2('muni',CUS);document.getElementById('muName').value='';document.getElementById('muUrl').value='';msg('"'+n+'" 추가됨. 눌러서 켜세요 (현재 지도 중심 주변에서만 불러옵니다)');chips()};
 chips();sync();
 })();
+
+/* map menu popover */
+(function(){var b=document.getElementById('bMap'),pp=document.getElementById('mapPop');function open(v){pp.hidden=!v;b.setAttribute('aria-expanded',v?'true':'false')}
+ b.onclick=function(e){e.stopPropagation();open(pp.hidden)};
+ document.addEventListener('pointerdown',function(e){if(!pp.hidden&&!pp.contains(e.target)&&!b.contains(e.target))open(false)},true);
+ document.addEventListener('keydown',function(e){if(e.key==='Escape')open(false)})})();
 /* floating, movable, resizable panels */
 (function(){var BW=340,MINW=240,MAXW=400,MINH=150,W=g('win',{});function MAXH(){return Math.round(vh()*0.65)}function zm(w){return Math.max(0.9,Math.min(1.2,w/BW))}
 function vw(){return window.innerWidth}function vh(){return window.innerHeight}
