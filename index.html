@@ -964,8 +964,8 @@ function fbb(f){if(f._bb)return f._bb;var b=[1e9,1e9,-1e9,-1e9];(function w(c){i
 function viewBB(){var b=map.getBounds();return [b.getWest(),b.getSouth(),b.getEast(),b.getNorth()]}
 var PEND={};function getFeats(code,size,cb,maxPg){var vb=viewBB(),c=FC[code];if(c&&!c.trunc&&vb[0]>=c.bb[0]&&vb[1]>=c.bb[1]&&vb[2]<=c.bb[2]&&vb[3]<=c.bb[3]){cb(c.feats);return}
  var pk=code+vb.join(','),pe=PEND[pk];if(pe){pe.push(cb);return}PEND[pk]=[cb];var cb0=cb;cb=function(r){var l=PEND[pk]||[];delete PEND[pk];l.forEach(function(f){f(r)})};
- var w=vb[2]-vb[0],h=vb[3]-vb[1],pb=[vb[0]-w*.3,vb[1]-h*.3,vb[2]+w*.3,vb[3]+h*.3];
- boxAll(code,size,pb,maxPg||6,function(fs,tr){if(!fs){cb(null);return}var ok=fs.filter(function(f){return f.geometry});FC[code]={bb:pb,feats:ok,trunc:tr};if(tr)status('필지가 너무 많아 일부만 표시됩니다 — 조금 더 확대해 주세요');cb(ok)})}
+ var w=vb[2]-vb[0],h=vb[3]-vb[1],pb=[vb[0]-w*.3,vb[1]-h*.3,vb[2]+w*.3,vb[3]+h*.3],MINB=.003,cx=(pb[0]+pb[2])/2,cy=(pb[1]+pb[3])/2;if(pb[2]-pb[0]<MINB){pb[0]=cx-MINB/2;pb[2]=cx+MINB/2}if(pb[3]-pb[1]<MINB){pb[1]=cy-MINB/2;pb[3]=cy+MINB/2}
+ boxAll(code,size,pb,maxPg||6,function(fs,tr){if(fs&&!fs.length&&!pb._r){var q2=[pb[0]-.004,pb[1]-.004,pb[2]+.004,pb[3]+.004];q2._r=1;pb=q2;boxAll(code,size,pb,maxPg||6,function(fs2,tr2){if(!fs2){cb(null);return}var ok2=fs2.filter(function(f){return f.geometry});FC[code]={bb:pb,feats:ok2,trunc:tr2};cb(ok2)});return}if(!fs){cb(null);return}var ok=fs.filter(function(f){return f.geometry});FC[code]={bb:pb,feats:ok,trunc:tr};if(tr)status('필지가 너무 많아 일부만 표시됩니다 — 조금 더 확대해 주세요');cb(ok)})}
 function visF(fs){var vb=viewBB(),mx=(vb[2]-vb[0])*.05,my=(vb[3]-vb[1])*.05;return fs.filter(function(f){var b=fbb(f);return !(b[2]<vb[0]-mx||b[0]>vb[2]+mx||b[3]<vb[1]-my||b[1]>vb[3]+my)})}
 function doCad(seq){var z=map.getZoom(),cs=S_('cad');
  if(!lay('cad').on||!KEY||z<16){swapG('cad',L.layerGroup());swapG('txt',L.layerGroup());if(lay('cad').on&&KEY)status('지적은 지도를 더 확대하면 표시됩니다');return}
