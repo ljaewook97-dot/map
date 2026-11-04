@@ -709,7 +709,7 @@ body{font:14px/1.45 -apple-system,"Noto Sans KR","Malgun Gothic",sans-serif;back
  <label>인증키</label><input id="kKey" autocomplete="off" autocapitalize="off" spellcheck="false">
  <label>도메인 (키 발급 때 등록한 서비스 URL의 주소부분, 예: example.github.io)</label><input id="kDom" autocomplete="off" autocapitalize="off">
  <div style="display:flex;gap:8px;justify-content:flex-end"><button class="btn" id="kCancel">취소</button><button class="btn on" id="kSave">저장</button></div>
- <p class="sub">키는 이 폰의 브라우저에만 저장되고 다른 곳으로 보내지지 않습니다.</p></div></div>
+ <label>최근 V-World 응답 (문제가 있으면 이 내용을 알려주세요)</label><pre id="dbg" style="font-size:11px;white-space:pre-wrap;word-break:break-all;margin:4px 0 8px;max-height:140px;overflow:auto;background:var(--bg);padding:6px;border-radius:6px"></pre><p class="sub">키는 이 폰의 브라우저에만 저장되고 다른 곳으로 보내지지 않습니다.</p></div></div>
 <script>/* @preserve
  * Leaflet 1.9.4, a JS library for interactive maps. https://leafletjs.com
  * (c) 2010-2023 Vladimir Agafonkin, (c) 2010-2011 CloudMade
@@ -746,11 +746,14 @@ function wmsOne(l,nmx){return L.tileLayer.wms('https://api.vworld.kr/req/wms',{l
 function wmsFor(l){var a=l.wms.split(',').map(function(n){return wmsOne(l,n)});return L.layerGroup(a)}
 function applyLayers(){LAYERS.forEach(function(l){if(wmsL[l.id]){map.removeLayer(wmsL[l.id]);delete wmsL[l.id]}
  if(l.on&&KEY&&!l.vec){wmsL[l.id]=wmsFor(l).addTo(map)}});refreshVec()}
+var LOG=[];function lg(url,d,why){var m=url.match(/[?&]data=([^&]+)/)||url.match(/data\/(\w+)/),k=m?m[1]:'?',t;
+ if(!d)t='응답 없음('+(why||'차단/시간초과')+')';else if(d.response){t=d.response.status+(d.response.error?' '+(d.response.error.text||d.response.error.code||''):'')+(d.response.result&&d.response.result.featureCollection?' '+d.response.result.featureCollection.features.length+'건':'')}else t=JSON.stringify(d).slice(0,80);
+ LOG.unshift(k+' → '+t);LOG.length=Math.min(LOG.length,12);var e=document.getElementById('dbg');if(e)e.textContent=LOG.join('\n')}
 function jsonp(url,cb){var n='_j'+Math.random().toString(36).slice(2),sc=document.createElement('script'),done=false;
- var t=setTimeout(function(){fin();cb(null)},9000);
+ var t=setTimeout(function(){fin();lg(url,null,'시간초과');cb(null)},9000);
  function fin(){done=true;clearTimeout(t);try{delete window[n]}catch(e){window[n]=undefined}sc.remove()}
- window[n]=function(d){if(!done){fin();cb(d)}};
- sc.onerror=function(){if(!done){fin();cb(null)}};
+ window[n]=function(d){if(!done){fin();lg(url,d);cb(d)}};
+ sc.onerror=function(){if(!done){fin();lg(url,null,'로드 실패');cb(null)}};
  sc.src=url+(url.indexOf('?')<0?'?':'&')+'callback='+n;document.head.appendChild(sc)}
 function q(){return 'key='+encodeURIComponent(KEY)+'&domain='+encodeURIComponent(DOM)}
 function dataQ(code,lng,lat,geom,cb){jsonp('https://api.vworld.kr/req/data?service=data&request=GetFeature&data='+code+'&format=json&size=10&attribute=true&geometry='+(geom?'true':'false')+'&crs=EPSG:4326&geomFilter='+encodeURIComponent('POINT('+lng+' '+lat+')')+'&'+q(),function(d){
@@ -822,7 +825,7 @@ document.querySelectorAll('[data-b]').forEach(function(e){e.onclick=function(){s
 document.querySelectorAll('[data-close]').forEach(function(e){e.onclick=function(){e.parentNode.hidden=true;if(hf){map.removeLayer(hf);hf=null}if(hi){map.removeLayer(hi);hi=null}if(pin){map.removeLayer(pin);pin=null}}});
 document.getElementById('bLayers').onclick=function(){var el=document.getElementById('layers');el.hidden=!el.hidden;document.getElementById('info').hidden=true};
 document.getElementById('bGps').onclick=function(){if(!navigator.geolocation)return;navigator.geolocation.getCurrentPosition(function(p){map.setView([p.coords.latitude,p.coords.longitude],18)},function(){},{enableHighAccuracy:true,timeout:10000})};
-function showKey(){document.getElementById('kKey').value=KEY;document.getElementById('kDom').value=DOM;document.getElementById('keyModal').hidden=false}
+function showKey(){document.getElementById('kKey').value=KEY;document.getElementById('kDom').value=DOM;document.getElementById('keyModal').hidden=false;document.getElementById('dbg').textContent=LOG.join('\n')||'(아직 응답 없음)'}
 document.getElementById('bKey').onclick=showKey;
 document.getElementById('kCancel').onclick=function(){document.getElementById('keyModal').hidden=true};
 document.getElementById('kSave').onclick=function(){KEY=document.getElementById('kKey').value.trim();DOM=document.getElementById('kDom').value.trim()||location.hostname;s('key',KEY);s('dom',DOM);document.getElementById('keyModal').hidden=true;setBase(BASE);applyLayers()};
