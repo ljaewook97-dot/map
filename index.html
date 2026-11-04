@@ -672,9 +672,9 @@ svg.leaflet-image-layer.leaflet-interactive path {
 *{box-sizing:border-box}html,body{height:100%;margin:0}
 body{font:14px/1.45 -apple-system,"Noto Sans KR","Malgun Gothic",sans-serif;background:var(--bg);color:var(--fg);overscroll-behavior:none}
 #map{position:absolute;inset:0}
-.bar{position:absolute;z-index:1000;left:0;right:0;top:0;padding:max(8px,env(safe-area-inset-top)) 10px 0;display:flex;gap:6px;pointer-events:none}
+.bar{flex-wrap:wrap;position:absolute;z-index:1000;left:0;right:0;top:0;padding:max(8px,env(safe-area-inset-top)) 10px 0;display:flex;gap:6px;pointer-events:none}
 .bar>*{pointer-events:auto}
-.btn{background:var(--card);color:var(--fg);border:1px solid var(--line);border-radius:10px;padding:9px 12px;font:inherit;font-weight:600;box-shadow:0 1px 4px #0003}
+.btn{white-space:nowrap;background:var(--card);color:var(--fg);border:1px solid var(--line);border-radius:10px;padding:8px 10px;font:inherit;font-weight:600;box-shadow:0 1px 4px #0003}
 .btn.on{background:var(--acc);color:#fff;border-color:var(--acc)}
 .seg{display:flex}.seg .btn{border-radius:0}.seg .btn:first-child{border-radius:10px 0 0 10px}.seg .btn:last-child{border-radius:0 10px 10px 0}
 .sheet{padding-top:48px!important;position:absolute;z-index:1000;left:0;right:0;bottom:0;background:var(--card);border-radius:16px 16px 0 0;box-shadow:0 -2px 12px #0004;padding:12px 14px max(14px,env(safe-area-inset-bottom));max-height:62%;overflow:auto}
@@ -694,7 +694,7 @@ body{font:14px/1.45 -apple-system,"Noto Sans KR","Malgun Gothic",sans-serif;back
 </style></head><body>
 <div id="map"></div>
 <div class="bar">
- <div class="seg"><button class="btn" data-b="Base">일반</button><button class="btn" data-b="Satellite">위성</button><button class="btn" data-b="gray">회색</button></div>
+ <div class="seg"><button class="btn" data-b="Base">일반</button><button class="btn" data-b="Satellite">위성</button><button class="btn" data-b="SatLabel">위성+지명</button><button class="btn" data-b="gray">회색</button></div>
  <button class="btn" id="bLayers" style="margin-left:auto">레이어</button>
  <button class="btn" id="bGps">내 위치</button>
  <button class="btn" id="bKey">설정</button>
@@ -736,10 +736,11 @@ var baseL=null,hyb=null,wmsL={},hi=null,pin=null;
 function tileUrl(t,ext){return 'https://api.vworld.kr/req/wmts/1.0.0/'+KEY+'/'+t+'/{z}/{y}/{x}.'+ext}
 function setBase(b){BASE=b;s('base',b);if(baseL)map.removeLayer(baseL);if(hyb){map.removeLayer(hyb);hyb=null}
  if(!KEY)return;
- baseL=L.tileLayer(tileUrl(b,b==='Satellite'?'jpeg':'png'),{maxZoom:19,maxNativeZoom:19,zIndex:1}).addTo(map);
- if(b==='Satellite')hyb=L.tileLayer(tileUrl('Hybrid','png'),{maxZoom:19,zIndex:2}).addTo(map);
+ var sat=(b==='Satellite'||b==='SatLabel');baseL=L.tileLayer(tileUrl(sat?'Satellite':b,sat?'jpeg':'png'),{maxZoom:19,maxNativeZoom:19,zIndex:1}).addTo(map);
+ if(b==='SatLabel')hyb=L.tileLayer(tileUrl('Hybrid','png'),{maxZoom:19,zIndex:2}).addTo(map);
  document.querySelectorAll('[data-b]').forEach(function(e){e.classList.toggle('on',e.dataset.b===b)})}
-function wmsFor(l){return L.tileLayer.wms('https://api.vworld.kr/req/wms',{layers:l.wms,styles:l.wms,format:'image/png',transparent:true,version:'1.3.0',key:KEY,domain:DOM,zIndex:5,maxZoom:19,opacity:l.id==='cad'?1:.55})}
+function wmsOne(l,nmx){return L.tileLayer.wms('https://api.vworld.kr/req/wms',{layers:nmx,styles:nmx,format:'image/png',transparent:true,version:'1.3.0',key:KEY,domain:DOM,zIndex:5,maxZoom:19,opacity:l.id==='cad'?1:.55})}
+function wmsFor(l){var a=l.wms.split(',').map(function(n){return wmsOne(l,n)});return L.layerGroup(a)}
 function applyLayers(){LAYERS.forEach(function(l){if(wmsL[l.id]){map.removeLayer(wmsL[l.id]);delete wmsL[l.id]}
  if(l.on&&KEY){wmsL[l.id]=wmsFor(l).addTo(map)}})}
 function jsonp(url,cb){var n='_j'+Math.random().toString(36).slice(2),sc=document.createElement('script'),done=false;
@@ -753,7 +754,8 @@ function dataQ(code,lng,lat,geom,cb){jsonp('https://api.vworld.kr/req/data?servi
  var f=null;try{f=d.response.status==='OK'?d.response.result.featureCollection.features:[]}catch(e){f=null}cb(f)})}
 function ned(op,pnu,cb){jsonp('https://api.vworld.kr/ned/data/'+op+'?pnu='+pnu+'&format=json&numOfRows=5&'+q(),cb)}
 function esc(x){return String(x==null?'':x).replace(/[&<>]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;'}[c]})}
-function nm(p){return p.uname||p.dgm_nm||p.dgmNm||p.name||p.lndcgr_nm||p.prpos_area_dstrc_nm||''}
+function bad(v){return !v||v==='미분류'}
+function nm(p){var m=bad(p.mls_nam)?'':p.mls_nam,l=bad(p.lcl_nam)?'':p.lcl_nam;if(/지구단위계획구역|계획구역|기타구역/.test(l)&&!m)return '';return p.uname||m||l||p.dgm_nm||p.dgmNm||p.name||p.prpos_area_dstrc_nm||''}
 function row(k,v){return v?'<div class="row"><b>'+k+'</b><span>'+v+'</span></div>':''}
 function tags(a,gb){return a.length?a.map(function(x){return '<span class="tag'+(gb?' gb':'')+'">'+esc(x)+'</span>'}).join(''):''}
 function openInfo(h){document.getElementById('infoBody').innerHTML=h;document.getElementById('info').hidden=false;document.getElementById('layers').hidden=true}
@@ -770,6 +772,8 @@ function pick(lat,lng){
   var pend=1;function done(){if(--pend>0)return;render(S,pnu)}
   render(S,pnu,true);
   pend++;ned('ladfrlList',pnu,function(d){try{var v=d.ladfrlVOList.ladfrlVOList[0];S.jimok=v.lndcgrCodeNm||'';S.area=v.lndpclAr||'';S.own=v.posesnSeCodeNm||''}catch(e){}done()});
+  pend++;ned('getLandUseAttr',pnu,function(d){try{var a=d.landUses.field;if(!Array.isArray(a))a=[a];a.forEach(function(it){var n=it.prposAreaDstrcCodeNm,c=String(it.prposAreaDstrcCode||'');if(!n)return;var cn=(it.cnflcAtNm||'').trim();
+   if(/^UQ[ABCD]/.test(c)){if(S.zones.indexOf(n)<0)S.zones.push(n)}else if(/^UQ[STUVWXY]/.test(c)){var t=cn?n+'('+cn+')':n;if(S.fac.indexOf(t)<0)S.fac.push(t)}else{if(S.spec.indexOf(n)<0)S.spec.push(n)}})}catch(e){}done()});
   pend++;ned('getIndvdLandPriceAttr',pnu,function(d){try{var a=d.indvdLandPrices.field;a=a.sort(function(x,y){return (y.stdrYear||0)-(x.stdrYear||0)})[0];if(a){S.jiga=a.pblntfPclnd;S.gy=a.stdrYear}}catch(e){}done()});
   LAYERS.forEach(function(l){if(!l.data||!l.on)return;l.data.forEach(function(code){pend++;dataQ(code,lng,lat,false,function(r){
    (r||[]).forEach(function(x){var n=nm(x.properties||{});if(!n)return;
