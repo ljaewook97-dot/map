@@ -787,7 +787,7 @@ function pick(lat,lng){
 function render(S,pnu,partial){
  var won=function(n){return n?Number(n).toLocaleString('ko-KR')+'원/㎡':''};
  var h='<h3>'+esc(S.addr||S.jibun)+'</h3>'+
-  row('지번',esc(S.jibun))+row('지목·면적',esc(S.jimok)+(S.area?' · '+Number(S.area).toLocaleString('ko-KR')+'㎡':''))+row('소유',(S.own?'<span class="tag own-'+owner(S.own)+'">'+owner(S.own)+'</span> ':'')+esc(S.own))+
+  row('지번',esc(S.jibun))+row('지목·면적',esc(S.jimok)+(S.area?' · '+Number(S.area).toLocaleString('ko-KR')+'㎡':''))+row('소유',(S.own?'<span class="tag own-'+owner(S.own)+'">'+owner(S.own)+'</span> ':'')+(S.own&&S.own!==owner(S.own)?esc(S.own):''))+
   row('공시지가',S.jiga?won(S.jiga)+(S.gy?' ('+esc(S.gy)+')':''):'')+
   row('용도지역',tags(S.zones))+row('개발제한',tags(S.gbs,1))+row('지구단위',tags(S.dist))+row('용도지구',tags(S.spec))+row('시설',tags(dedupFac(S.fac)))+row('토지이용',tags(S.use))+
   (partial?'<p class="sub">세부 정보를 불러오는 중…</p>':'<p class="sub">PNU '+esc(pnu)+' · 켜 둔 레이어만 조회됩니다.</p>');
