@@ -684,9 +684,9 @@ body{font:14px/1.45 -apple-system,"Noto Sans KR","Malgun Gothic",sans-serif;back
 .btn{white-space:nowrap;background:var(--card);color:var(--fg);border:1px solid var(--line);border-radius:10px;padding:8px 10px;font:inherit;font-weight:600;box-shadow:0 1px 4px #0003}
 .btn.on{background:var(--acc);color:#fff;border-color:var(--acc)}
 .seg{display:flex}.seg .btn{border-radius:0}.seg .btn:first-child{border-radius:10px 0 0 10px}.seg .btn:last-child{border-radius:0 10px 10px 0}
-.sheet{padding-top:14px!important;position:absolute;z-index:1000;left:0;right:0;bottom:0;background:var(--card);border-radius:16px 16px 0 0;box-shadow:0 -2px 12px #0004;padding:12px 14px max(14px,env(safe-area-inset-bottom));max-height:62%;overflow:auto}
+.sheet{padding-top:8px!important;position:absolute;z-index:1000;left:0;right:0;bottom:0;background:var(--card);border-radius:16px 16px 0 0;box-shadow:0 -2px 12px #0004;padding:12px 14px max(14px,env(safe-area-inset-bottom));max-height:42%;overflow:auto}
 .sheet h3{margin:0 0 8px;padding-top:6px;font-size:16px}.sheet .x{position:sticky;top:0;float:right;margin-left:8px;z-index:3}
-.chips{display:block}.grp{border:1px solid var(--line);border-radius:10px;margin-bottom:8px;overflow:hidden}.gh{display:flex;align-items:center;gap:6px;padding:6px 8px;background:var(--acc2)}.gt{flex:1;text-align:left;background:none;border:0;font:inherit;font-weight:700;color:var(--fg);padding:6px 0}.lr{display:flex;align-items:center;gap:6px;padding:5px 8px;border-top:1px solid var(--line)}.lr .chip{flex:1;text-align:left}.dh{flex:0 0 28px;text-align:center;font-size:20px;line-height:32px;color:var(--mut);cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none}.grp.drag,.lr.drag{position:relative;z-index:5;background:var(--card);box-shadow:0 4px 14px #0006;transition:none!important}.gh .dh{margin-left:-4px}
+.chips{display:grid;grid-template-columns:1fr 1fr;column-gap:8px}.grp{border:1px solid var(--line);border-radius:10px;margin-bottom:8px;overflow:hidden}.gh{display:flex;align-items:center;gap:6px;padding:6px 8px;background:var(--acc2)}.gt{flex:1;text-align:left;background:none;border:0;font:inherit;font-weight:700;color:var(--fg);padding:6px 0}.lr{display:flex;align-items:center;gap:2px;padding:2px 0}.lr .chip{flex:1;min-width:0;text-align:left;padding:4px 10px;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.dh{flex:0 0 24px;text-align:center;font-size:18px;line-height:28px;color:var(--mut);cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none}.lr.drag{position:relative;z-index:5;background:var(--card);box-shadow:0 4px 14px #0006;transition:none!important}.gh .dh{margin-left:-4px}
 .ab{border:1px solid var(--line);background:var(--card);color:var(--fg);border-radius:8px;min-width:34px;height:32px;font:inherit}.ab.wide{padding:0 10px;font-size:12px}.ab:disabled{opacity:.3}
 .chip{border:1px solid var(--line);border-radius:999px;padding:7px 12px;background:var(--card);color:var(--fg);font:inherit}
 .chip.on{background:var(--acc);border-color:var(--acc);color:#fff}
@@ -700,12 +700,12 @@ body{font:14px/1.45 -apple-system,"Noto Sans KR","Malgun Gothic",sans-serif;back
 .modal input{width:100%;font:inherit;padding:10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--fg);margin:4px 0 10px}
 .modal label{font-size:12px;color:var(--mut)}
 .leaflet-control-zoom{display:none}
-.lgs{columns:2;column-gap:14px}.lg{cursor:pointer;border-radius:6px;padding-left:4px;padding-right:4px}.lg.on{background:var(--acc2);outline:2px solid var(--acc)}
+.lgs{columns:2;column-gap:10px}.lg{cursor:pointer;border-radius:6px;padding-left:4px;padding-right:4px}.lg.on{background:var(--acc2);outline:2px solid var(--acc)}
 @keyframes hlp{50%{stroke-opacity:.35}}path.hlp{animation:hlp 1s ease-in-out infinite}@media (prefers-reduced-motion:reduce){path.hlp{animation:none}}
-.lg{display:flex;align-items:center;gap:8px;padding:4px 0;break-inside:avoid}.lg i{flex:0 0 22px;height:14px;border:2px solid;border-radius:2px}.lg span{flex:1;min-width:0}.lg b{color:var(--mut);font-weight:500}
+.lg{display:flex;align-items:center;gap:6px;padding:1px 4px;font-size:12.5px;break-inside:avoid}.lg i{flex:0 0 22px;height:14px;border:2px solid;border-radius:2px}.lg span{flex:1;min-width:0}.lg b{color:var(--mut);font-weight:500}
 .srch{display:flex;gap:6px;flex:1 0 100%}.srch input{flex:1;min-width:0;font:inherit;padding:8px 12px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--fg);box-shadow:0 1px 4px #0003}
 #sRes{position:absolute;z-index:1001;left:10px;right:10px;top:calc(max(8px,env(safe-area-inset-top)) + 50px);background:var(--card);border:1px solid var(--line);border-radius:10px;max-height:45%;overflow:auto;box-shadow:0 2px 10px #0005}#sRes div{padding:10px 12px;border-bottom:1px solid var(--line)}#sRes div small{color:var(--mut);margin-left:6px}
-.sl{display:flex;align-items:center;gap:8px;margin:10px 0 2px}.sl label{flex:0 0 96px;font-size:13px}.sl input{flex:1;min-width:0}.sl b{flex:0 0 38px;text-align:right;font-weight:500;font-size:13px}
+.sl{display:flex;align-items:center;gap:8px;margin:4px 0 0}.sl label{flex:0 0 74px;font-size:13px}.sl input{flex:1;min-width:0}.sl b{flex:0 0 38px;text-align:right;font-weight:500;font-size:13px}
 .jbi span{position:absolute;left:0;top:0;white-space:nowrap;color:#fff;font-weight:700;font-size:11px;line-height:13px;text-shadow:0 0 3px #000,0 0 3px #000,0 0 2px #000;transform-origin:center;pointer-events:none}
 .jb{background:none;border:0;box-shadow:none;color:#fff;font-weight:700;font-size:11px;padding:0;text-shadow:0 0 3px #000,0 0 3px #000,0 0 2px #000;white-space:nowrap}.jb:before{display:none}
 .fl{background:#fffd;color:#7a4300;border:0;box-shadow:none;font-size:11px;padding:1px 4px}.fl:before{display:none}
@@ -720,11 +720,11 @@ body{font:14px/1.45 -apple-system,"Noto Sans KR","Malgun Gothic",sans-serif;back
  <button class="btn" id="bKey">설정</button>
 </div>
 <div id="sRes" hidden></div>
-<div class="sheet" id="layers" hidden><button class="btn x" data-close>닫기</button><h3>표시 항목 · 쌓이는 순서</h3><div class="chips" id="chips"></div>
-<div class="sl"><label for="sOwn">소유구분 투명도</label><input type="range" id="sOwn" min="5" max="100" step="5"><b id="vOwn"></b></div><div class="sl"><label for="sFac">시설 투명도</label><input type="range" id="sFac" min="5" max="100" step="5"><b id="vFac"></b></div>
-<p class="sub">소유구분: <span class="tag own-국유지">국유지</span><span class="tag own-공유지">공유지</span> 면색, 사유지는 색 없음, 조회 실패는 회색 점선 (확대 17 이상, 화면 중심부터 최대 300필지)</p><p class="sub">≡ 를 잡고 끌어서(또는 ▲▼로) 순서를 바꿉니다. 목록 위쪽일수록 지도에서도 위에 그려집니다. 그룹째로도 옮길 수 있습니다.</p><p class="sub">끈 항목은 지도와 조회 결과 양쪽에서 빠집니다. 지도에서 필지를 누르면 정보가 나옵니다.</p></div>
-<div class="sheet" id="legend" hidden><button class="btn x" data-close>닫기</button><h3>이 화면의 시설 범례</h3><div id="legBody" class="lgs"></div>
-<p class="sub">항목을 누르면 지도에서 노란색으로 깜빡이며 강조됩니다. 다시 누르면 해제됩니다.</p><p class="sub">소유구분: <span class="tag own-국유지">국유지</span><span class="tag own-공유지">공유지</span> 사유지는 색 없음</p></div>
+<div class="sheet" id="layers" hidden><button class="btn x" data-close>닫기</button><h3 style="font-size:14px;margin:0 0 4px">레이어 <span style="font-weight:400;color:var(--mut);font-size:12px">≡ 끌어서 순서 변경 · 위쪽이 지도 위</span></h3><div class="chips" id="chips"></div>
+<div class="sl"><label for="sOwn">소유 투명도</label><input type="range" id="sOwn" min="5" max="100" step="5"><b id="vOwn"></b></div><div class="sl"><label for="sFac">시설 투명도</label><input type="range" id="sFac" min="5" max="100" step="5"><b id="vFac"></b></div>
+<p class="sub" style="margin:4px 0 0">파랑 국유지 · 보라 공유지 · 사유지 색 없음 (17단계 이상)</p></div>
+<div class="sheet" id="legend" hidden><button class="btn x" data-close>닫기</button><h3 style="font-size:14px;margin:0 0 4px">이 화면의 시설 <span style="font-weight:400;color:var(--mut);font-size:12px">누르면 지도에서 강조</span></h3><div id="legBody" class="lgs"></div>
+</div>
 <div class="sheet" id="info" hidden><button class="btn x" data-close>닫기</button><div id="infoBody"></div></div>
 <div class="modal" id="keyModal" hidden><div class="box">
  <h3 style="margin:0 0 8px">V-World 인증키</h3>
@@ -908,13 +908,6 @@ function render(S,pnu,partial){
  document.getElementById('infoBody').innerHTML=h}
 map.on('click',function(e){pick(e.latlng.lat,e.latlng.lng)});
 // UI
-// 그룹 / 쌓이는 순서 (목록 위가 지도에서도 위)
-var GROUPS=[{id:'g1',n:'지적·소유',ids:['cad','own'],open:true},{id:'g2',n:'용도·구역',ids:['zone','spec','dist','gb','use'],open:true},{id:'g3',n:'시설',ids:['fac'],open:true}];
-(function(){var sv=g('grp',null);if(!sv)return;try{var byId={};GROUPS.forEach(function(x){byId[x.id]=x});var out=[];sv.forEach(function(o){var gg=byId[o.id];if(!gg)return;var ids=o.ids.filter(function(i){return gg.ids.indexOf(i)>=0});gg.ids.forEach(function(i){if(ids.indexOf(i)<0)ids.push(i)});gg.ids=ids;gg.open=o.open!==false;out.push(gg);delete byId[o.id]});Object.keys(byId).forEach(function(k){out.push(byId[k])});GROUPS=out}catch(e){}})();
-function saveGrp(){s('grp',GROUPS.map(function(x){return {id:x.id,ids:x.ids,open:x.open}}))}
-function applyZ(){var flat=[];GROUPS.forEach(function(x){x.ids.forEach(function(i){flat.push(i)})});var n=flat.length;flat.forEach(function(id,i){var p=map.getPane('p_'+id);if(p)p.style.zIndex=300+(n-i)*10});var hp=map.getPane('p_hl');if(hp)hp.style.zIndex=900}
-function mv(arr,i,d){var j=i+d;if(j<0||j>=arr.length)return;var t=arr[i];arr[i]=arr[j];arr[j]=t}
-function saveLayers(){var o={};LAYERS.forEach(function(x){o[x.id]=x.on});s('layers',o)}
 function sortable(items,handleSel,onDrop){items.forEach(function(it,from){var hd=it.querySelector(handleSel);if(!hd)return;
  hd.addEventListener('pointerdown',function(e){if(e.button>0)return;e.preventDefault();try{hd.setPointerCapture(e.pointerId)}catch(x){}
   var rects=items.map(function(x){return x.getBoundingClientRect()}),y0=e.clientY,h=rects[from].height,to=from,oc=rects[from].top+h/2;
@@ -925,24 +918,16 @@ function sortable(items,handleSel,onDrop){items.forEach(function(it,from){var hd
    items.forEach(function(x){x.style.transform='';x.style.transition='';x.classList.remove('drag')});if(to!==from)onDrop(from,to)}
   hd.addEventListener('pointermove',mvf);hd.addEventListener('pointerup',up);hd.addEventListener('pointercancel',up)})})}
 function moveTo(arr,from,to){var t=arr.splice(from,1)[0];arr.splice(to,0,t)}
-function renderLayerUI(){var box=document.getElementById('chips');box.innerHTML='';
- GROUPS.forEach(function(gr,gi){var wrap=document.createElement('div');wrap.className='grp';
-  var anyOn=gr.ids.some(function(i){return lay(i).on});
-  var h=document.createElement('div');h.className='gh';
-  function ab(t,fn,dis,cls){var b=document.createElement('button');b.className='ab'+(cls?' '+cls:'');b.textContent=t;b.disabled=!!dis;b.onclick=fn;return b}
-  var tt=document.createElement('button');tt.className='gt';tt.textContent=(gr.open?'▾ ':'▸ ')+gr.n;tt.onclick=function(){gr.open=!gr.open;saveGrp();renderLayerUI()};
-  var hdl=document.createElement('span');hdl.className='dh';hdl.textContent='≡';hdl.title='끌어서 순서 변경';h.insertBefore(hdl,null);h.appendChild(tt);
-  h.appendChild(ab(anyOn?'전체 끄기':'전체 켜기',function(){gr.ids.forEach(function(i){lay(i).on=!anyOn});saveLayers();applyLayers();renderLayerUI()},0,'wide'));
-  h.appendChild(ab('▲',function(){mv(GROUPS,gi,-1);saveGrp();applyZ();renderLayerUI()},gi===0));
-  h.appendChild(ab('▼',function(){mv(GROUPS,gi,1);saveGrp();applyZ();renderLayerUI()},gi===GROUPS.length-1));
-  wrap.appendChild(h);
-  if(gr.open)gr.ids.forEach(function(id,li){var l=lay(id),row=document.createElement('div');row.className='lr';
-   var rh=document.createElement('span');rh.className='dh';rh.textContent='≡';row.appendChild(rh);
-   var c=document.createElement('button');c.className='chip'+(l.on?' on':'');c.textContent=l.n;c.onclick=function(){l.on=!l.on;c.classList.toggle('on',l.on);saveLayers();applyLayers();renderLayerUI()};
-   row.appendChild(c);row.appendChild(ab('▲',function(){mv(gr.ids,li,-1);saveGrp();applyZ();renderLayerUI()},li===0));row.appendChild(ab('▼',function(){mv(gr.ids,li,1);saveGrp();applyZ();renderLayerUI()},li===gr.ids.length-1));wrap.appendChild(row)});
-  box.appendChild(wrap);
-  if(gr.open){var rows=[].slice.call(wrap.querySelectorAll(':scope > .lr'));sortable(rows,'.dh',function(a,b){moveTo(gr.ids,a,b);saveGrp();applyZ();renderLayerUI()})}});
- var gws=[].slice.call(box.querySelectorAll(':scope > .grp'));sortable(gws,'.gh > .dh',function(a,b){moveTo(GROUPS,a,b);saveGrp();applyZ();renderLayerUI()})}
+// 쌓이는 순서 (목록 위가 지도에서도 위)
+var ORDER=g('ord',null);(function(){var d=['cad','own','fac','zone','spec','dist','gb','use'];if(!Array.isArray(ORDER))ORDER=d.slice();ORDER=ORDER.filter(function(i){return d.indexOf(i)>=0});d.forEach(function(i){if(ORDER.indexOf(i)<0)ORDER.push(i)})})();
+function applyZ(){var n=ORDER.length;ORDER.forEach(function(id,i){var p=map.getPane('p_'+id);if(p)p.style.zIndex=300+(n-i)*10});var hp=map.getPane('p_hl');if(hp)hp.style.zIndex=900}
+function saveLayers(){var o={};LAYERS.forEach(function(x){o[x.id]=x.on});s('layers',o)}
+function renderLayerUI(){var box=document.getElementById('chips');box.innerHTML='';var rows=[];
+ ORDER.forEach(function(id){var l=lay(id),row=document.createElement('div');row.className='lr';
+  var rh=document.createElement('span');rh.className='dh';rh.textContent='≡';row.appendChild(rh);
+  var c=document.createElement('button');c.className='chip'+(l.on?' on':'');c.textContent=l.n;c.onclick=function(){l.on=!l.on;saveLayers();applyLayers();renderLayerUI()};row.appendChild(c);
+  box.appendChild(row);rows.push(row)});
+ sortable(rows,'.dh',function(a,b){moveTo(ORDER,a,b);s('ord',ORDER);applyZ();renderLayerUI()})}
 renderLayerUI();applyZ();
 document.querySelectorAll('[data-b]').forEach(function(e){e.onclick=function(){setBase(e.dataset.b)}});
 document.querySelectorAll('[data-close]').forEach(function(e){e.onclick=function(){if(e.parentNode.id==='legend'){HL='';hlG.clearLayers()}e.parentNode.hidden=true;if(hf){map.removeLayer(hf);hf=null}if(hi){map.removeLayer(hi);hi=null}if(pin){map.removeLayer(pin);pin=null}}});
