@@ -684,6 +684,7 @@ body{font:14px/1.45 -apple-system,"Noto Sans KR","Malgun Gothic",sans-serif;back
 .chip.on{background:var(--acc);border-color:var(--acc);color:#fff}
 .row{display:flex;gap:10px;padding:5px 0;border-bottom:1px solid var(--line)}.row b{flex:0 0 74px;color:var(--mut);font-weight:500}.row span{min-width:0;word-break:break-all}
 .tag{display:inline-block;background:var(--acc2);color:var(--acc);border-radius:6px;padding:2px 7px;margin:2px 3px 2px 0;font-size:13px}
+.tag.own-국유지{background:#e3edff;color:#1f5fd0}.tag.own-공유지{background:#e7f6e3;color:#2a7d1f}.tag.own-사유지{background:#fdf0dc;color:#9a5b00}
 .tag.gb{background:#fde8e5;color:var(--warn)}
 .sub{color:var(--mut);font-size:12px;margin:6px 0 0}
 .modal{position:absolute;inset:0;z-index:2000;background:#0008;display:flex;align-items:center;justify-content:center;padding:16px}
@@ -732,7 +733,7 @@ var LAYERS=[
 var st=g('layers',{});LAYERS.forEach(function(l){if(st[l.id]!=null)l.on=!!st[l.id]});
 var map=L.map('map',{zoomControl:false,center:g('c',[37.5665,126.9780]),zoom:g('z',17),maxZoom:19,tap:true});
 map.on('moveend',function(){var c=map.getCenter();s('c',[c.lat,c.lng]);s('z',map.getZoom())});
-var baseL=null,hyb=null,wmsL={},hi=null,pin=null;
+var baseL=null,hyb=null,wmsL={},hi=null,pin=null,hf=null;
 function tileUrl(t,ext){return 'https://api.vworld.kr/req/wmts/1.0.0/'+KEY+'/'+t+'/{z}/{y}/{x}.'+ext}
 function setBase(b){BASE=b;s('base',b);if(baseL)map.removeLayer(baseL);if(hyb){map.removeLayer(hyb);hyb=null}
  if(!KEY)return;
@@ -753,15 +754,18 @@ function q(){return 'key='+encodeURIComponent(KEY)+'&domain='+encodeURIComponent
 function dataQ(code,lng,lat,geom,cb){jsonp('https://api.vworld.kr/req/data?service=data&request=GetFeature&version=2.0&data='+code+'&format=json&size=10&geometry='+(geom?'true':'false')+'&crs=EPSG:4326&geomFilter='+encodeURIComponent('POINT('+lng+' '+lat+')')+'&'+q(),function(d){
  var f=null;try{f=d.response.status==='OK'?d.response.result.featureCollection.features:[]}catch(e){f=null}cb(f)})}
 function ned(op,pnu,cb){jsonp('https://api.vworld.kr/ned/data/'+op+'?pnu='+pnu+'&format=json&numOfRows=5&'+q(),cb)}
+function owner(n){n=(n||'').trim();if(!n)return '';if(n.indexOf('외국')>=0)return '사유지';if(n==='국'||n.indexOf('국유')>=0||n.indexOf('국가')>=0)return '국유지';if(n.indexOf('공유')>=0||/시유|군유|도유|구유|지자체|지방자치/.test(n))return '공유지';return '사유지'}
 function esc(x){return String(x==null?'':x).replace(/[&<>]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;'}[c]})}
 function bad(v){return !v||v==='미분류'}
+function fnm(p){var m=bad(p.mls_nam)?'':p.mls_nam,l=bad(p.lcl_nam)?'':p.lcl_nam;if(/지구단위계획구역|계획구역|기타구역/.test(l)&&!m)return '';return m||l||''}
 function nm(p){var m=bad(p.mls_nam)?'':p.mls_nam,l=bad(p.lcl_nam)?'':p.lcl_nam;if(/지구단위계획구역|계획구역|기타구역/.test(l)&&!m)return '';return p.uname||m||l||p.dgm_nm||p.dgmNm||p.name||p.prpos_area_dstrc_nm||''}
 function row(k,v){return v?'<div class="row"><b>'+k+'</b><span>'+v+'</span></div>':''}
+function dedupFac(a){var out=[];a.forEach(function(x){var b=x.replace(/\(.*$/,'');var i=out.findIndex(function(y){return y.replace(/\(.*$/,'')===b});if(i<0)out.push(x);else if(x.indexOf('(')>=0&&out[i].indexOf('(')<0)out[i]=x});return out}
 function tags(a,gb){return a.length?a.map(function(x){return '<span class="tag'+(gb?' gb':'')+'">'+esc(x)+'</span>'}).join(''):''}
 function openInfo(h){document.getElementById('infoBody').innerHTML=h;document.getElementById('info').hidden=false;document.getElementById('layers').hidden=true}
 function pick(lat,lng){
  if(!KEY){showKey();return}
- if(pin)map.removeLayer(pin);pin=L.circleMarker([lat,lng],{radius:5,color:'#fff',weight:2,fillColor:'#e74c3c',fillOpacity:1}).addTo(map);
+ if(hf){map.removeLayer(hf);hf=null}hf=L.layerGroup().addTo(map);if(pin)map.removeLayer(pin);pin=L.circleMarker([lat,lng],{radius:5,color:'#fff',weight:2,fillColor:'#e74c3c',fillOpacity:1}).addTo(map);
  openInfo('<h3>조회 중…</h3>');
  dataQ('LP_PA_CBND_BUBUN',lng,lat,true,function(fs){
   if(fs===null){openInfo('<h3>조회 실패</h3><p>V-World 응답이 없습니다. 인증키와 도메인 등록을 확인하세요.</p><p class="sub">도메인: '+esc(DOM)+'</p>');return}
@@ -770,21 +774,22 @@ function pick(lat,lng){
   if(hi)map.removeLayer(hi);hi=L.geoJSON(f.geometry,{style:{color:'#00e676',weight:3,fillColor:'#00e676',fillOpacity:.25}}).addTo(map);
   var S={addr:p.addr||'',jibun:p.jibun||'',jiga:p.jiga,gy:p.gosi_year,jimok:'',area:'',own:'',zones:[],fac:[],spec:[],gbs:[],use:[],dist:[]};
   var pend=1;function done(){if(--pend>0)return;render(S,pnu)}
-  render(S,pnu,true);
-  pend++;ned('ladfrlList',pnu,function(d){try{var v=d.ladfrlVOList.ladfrlVOList[0];S.jimok=v.lndcgrCodeNm||'';S.area=v.lndpclAr||'';S.own=v.posesnSeCodeNm||''}catch(e){}done()});
+  render(S,pnu,true);var ow0=0;
+  pend++;ned('ladfrlList',pnu,function(d){try{var v=d.ladfrlVOList.ladfrlVOList[0];S.jimok=v.lndcgrCodeNm||'';S.area=v.lndpclAr||'';S.own=v.posesnSeCodeNm||'';var c={'국유지':'#2f7bff','공유지':'#3fb53f','사유지':'#ff9f1a'}[owner(S.own)];if(c&&hi)hi.setStyle({color:c,fillColor:c})}catch(e){}done()});
   pend++;ned('getLandUseAttr',pnu,function(d){try{var a=d.landUses.field;if(!Array.isArray(a))a=[a];a.forEach(function(it){var n=it.prposAreaDstrcCodeNm,c=String(it.prposAreaDstrcCode||'');if(!n)return;var cn=(it.cnflcAtNm||'').trim();
    if(/^UQ[ABCD]/.test(c)){if(S.zones.indexOf(n)<0)S.zones.push(n)}else if(/^UQ[STUVWXY]/.test(c)){var t=cn?n+'('+cn+')':n;if(S.fac.indexOf(t)<0)S.fac.push(t)}else{if(S.spec.indexOf(n)<0)S.spec.push(n)}})}catch(e){}done()});
   pend++;ned('getIndvdLandPriceAttr',pnu,function(d){try{var a=d.indvdLandPrices.field;a=a.sort(function(x,y){return (y.stdrYear||0)-(x.stdrYear||0)})[0];if(a){S.jiga=a.pblntfPclnd;S.gy=a.stdrYear}}catch(e){}done()});
-  LAYERS.forEach(function(l){if(!l.data||!l.on)return;l.data.forEach(function(code){pend++;dataQ(code,lng,lat,false,function(r){
-   (r||[]).forEach(function(x){var n=nm(x.properties||{});if(!n)return;
+  LAYERS.forEach(function(l){if(!l.data||!l.on)return;l.data.forEach(function(code){pend++;dataQ(code,lng,lat,l.id==='fac',function(r){
+   (r||[]).forEach(function(x){var n=l.id==='fac'?fnm(x.properties||{}):nm(x.properties||{});if(!n)return;
+    if(l.id==='fac'&&x.geometry){try{L.geoJSON(x.geometry,{style:{color:'#ff9800',weight:3,dashArray:'6 4',fillColor:'#ff9800',fillOpacity:.18}}).addTo(hf)}catch(e){}}
     var arr=l.id==='zone'?S.zones:l.id==='fac'?S.fac:l.id==='gb'?S.gbs:l.id==='dist'?S.dist:l.id==='spec'?S.spec:S.use;if(arr.indexOf(n)<0)arr.push(n)});done()})})});
   done()})}
 function render(S,pnu,partial){
  var won=function(n){return n?Number(n).toLocaleString('ko-KR')+'원/㎡':''};
  var h='<h3>'+esc(S.addr||S.jibun)+'</h3>'+
-  row('지번',esc(S.jibun))+row('지목·면적',esc(S.jimok)+(S.area?' · '+Number(S.area).toLocaleString('ko-KR')+'㎡':''))+row('소유',esc(S.own))+
+  row('지번',esc(S.jibun))+row('지목·면적',esc(S.jimok)+(S.area?' · '+Number(S.area).toLocaleString('ko-KR')+'㎡':''))+row('소유',(S.own?'<span class="tag own-'+owner(S.own)+'">'+owner(S.own)+'</span> ':'')+esc(S.own))+
   row('공시지가',S.jiga?won(S.jiga)+(S.gy?' ('+esc(S.gy)+')':''):'')+
-  row('용도지역',tags(S.zones))+row('개발제한',tags(S.gbs,1))+row('지구단위',tags(S.dist))+row('용도지구',tags(S.spec))+row('시설',tags(S.fac))+row('토지이용',tags(S.use))+
+  row('용도지역',tags(S.zones))+row('개발제한',tags(S.gbs,1))+row('지구단위',tags(S.dist))+row('용도지구',tags(S.spec))+row('시설',tags(dedupFac(S.fac)))+row('토지이용',tags(S.use))+
   (partial?'<p class="sub">세부 정보를 불러오는 중…</p>':'<p class="sub">PNU '+esc(pnu)+' · 켜 둔 레이어만 조회됩니다.</p>');
  document.getElementById('infoBody').innerHTML=h}
 map.on('click',function(e){pick(e.latlng.lat,e.latlng.lng)});
@@ -792,7 +797,7 @@ map.on('click',function(e){pick(e.latlng.lat,e.latlng.lng)});
 var chips=document.getElementById('chips');
 LAYERS.forEach(function(l){var b=document.createElement('button');b.className='chip'+(l.on?' on':'');b.textContent=l.n;b.onclick=function(){l.on=!l.on;b.classList.toggle('on',l.on);var o={};LAYERS.forEach(function(x){o[x.id]=x.on});s('layers',o);applyLayers()};chips.appendChild(b)});
 document.querySelectorAll('[data-b]').forEach(function(e){e.onclick=function(){setBase(e.dataset.b)}});
-document.querySelectorAll('[data-close]').forEach(function(e){e.onclick=function(){e.parentNode.hidden=true;if(hi){map.removeLayer(hi);hi=null}if(pin){map.removeLayer(pin);pin=null}}});
+document.querySelectorAll('[data-close]').forEach(function(e){e.onclick=function(){e.parentNode.hidden=true;if(hf){map.removeLayer(hf);hf=null}if(hi){map.removeLayer(hi);hi=null}if(pin){map.removeLayer(pin);pin=null}}});
 document.getElementById('bLayers').onclick=function(){var el=document.getElementById('layers');el.hidden=!el.hidden;document.getElementById('info').hidden=true};
 document.getElementById('bGps').onclick=function(){if(!navigator.geolocation)return;navigator.geolocation.getCurrentPosition(function(p){map.setView([p.coords.latitude,p.coords.longitude],18)},function(){},{enableHighAccuracy:true,timeout:10000})};
 function showKey(){document.getElementById('kKey').value=KEY;document.getElementById('kDom').value=DOM;document.getElementById('keyModal').hidden=false}
