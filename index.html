@@ -797,13 +797,23 @@ function status(t){if(!stEl){stEl=document.createElement('div');stEl.style.cssTe
 function lay(id){return LAYERS.find(function(l){return l.id===id})}
 function refreshVec(){clearTimeout(vecTimer);vecTimer=setTimeout(doVec,350)}
 function jb(p){var m=String(p.jibun||'').trim().match(/^(산?\s*\d+(?:-\d+)?)\s*(\S*)$/);return m?{n:m[1].replace(/\s/g,''),j:m[2]}:{n:String(p.jibun||'').trim(),j:''}}
+function ringPx(geom){var polys=geom.type==='MultiPolygon'?geom.coordinates:[geom.coordinates],best=null,ba=-1;polys.forEach(function(pl){var rg=pl[0],xs=rg.map(function(c){return c[0]}),ys=rg.map(function(c){return c[1]}),a=(Math.max.apply(0,xs)-Math.min.apply(0,xs))*(Math.max.apply(0,ys)-Math.min.apply(0,ys));if(a>ba){ba=a;best=rg}});
+ return best.map(function(c){var p=map.latLngToContainerPoint([c[1],c[0]]);return [p.x,p.y]})}
+function pip(pt,r){var x=pt[0],y=pt[1],ins=false;for(var i=0,j=r.length-1;i<r.length;j=i++){var xi=r[i][0],yi=r[i][1],xj=r[j][0],yj=r[j][1];if((yi>y)!==(yj>y)&&x<(xj-xi)*(y-yi)/(yj-yi)+xi)ins=!ins}return ins}
+function dEdge(pt,r){var m=1e9;for(var i=0,j=r.length-1;i<r.length;j=i++){var ax=r[j][0],ay=r[j][1],bx=r[i][0],by=r[i][1],dx=bx-ax,dy=by-ay,l=dx*dx+dy*dy,t=l?Math.max(0,Math.min(1,((pt[0]-ax)*dx+(pt[1]-ay)*dy)/l)):0,px=ax+t*dx,py=ay+t*dy,d=Math.hypot(pt[0]-px,pt[1]-py);if(d<m)m=d}return m}
+function labelSpot(r,lw,lh){var xs=r.map(function(p){return p[0]}),ys=r.map(function(p){return p[1]}),x0=Math.min.apply(0,xs),x1=Math.max.apply(0,xs),y0=Math.min.apply(0,ys),y1=Math.max.apply(0,ys),st=Math.max(2,Math.min(x1-x0,y1-y0)/14),c=[];
+ for(var x=x0+st/2;x<x1;x+=st)for(var y=y0+st/2;y<y1;y+=st){var p=[x,y];if(pip(p,r)){c.push({p:p,d:dEdge(p,r)})}}
+ c.sort(function(a,b){return b.d-a.d});
+ for(var i=0;i<c.length&&i<80;i++){var q=c[i].p,hw=lw/2,hh=lh/2;if(c[i].d<hh*.9)break;
+  if(pip([q[0]-hw,q[1]-hh],r)&&pip([q[0]+hw,q[1]-hh],r)&&pip([q[0]-hw,q[1]+hh],r)&&pip([q[0]+hw,q[1]+hh],r)&&pip([q[0],q[1]-hh],r)&&pip([q[0],q[1]+hh],r))return q}
+ return null}
 function doCad(seq){cadG.clearLayers();var z=map.getZoom();if(!lay('cad').on||!KEY)return;if(z<16){status('지적은 지도를 더 확대하면 표시됩니다');return}cadG.addTo(map);
  boxQ('LP_PA_CBND_BUBUN',function(fs){if(seq!==vecSeq||!fs)return;var items=[];
   fs.forEach(function(x){if(!x.geometry)return;var g=L.geoJSON(x.geometry,{interactive:false,renderer:rend,style:{color:'#ffb020',weight:1,opacity:.9,fill:false}});g.addTo(cadG);
-   if(z<18)return;var b=g.getBounds(),c=b.getCenter(),a=map.latLngToContainerPoint(b.getNorthEast()),d=map.latLngToContainerPoint(b.getSouthWest()),w=Math.abs(a.x-d.x),h=Math.abs(a.y-d.y);items.push({c:c,w:w,h:h,p:x.properties||{}})});
+   if(z<18)return;var rg=ringPx(x.geometry),xs=rg.map(function(p){return p[0]}),ys=rg.map(function(p){return p[1]});items.push({rg:rg,w:Math.max.apply(0,xs)-Math.min.apply(0,xs),h:Math.max.apply(0,ys)-Math.min.apply(0,ys),p:x.properties||{}})});
   items.sort(function(a,b){return b.w*b.h-a.w*a.h});var placed=[];
-  items.forEach(function(it){var t=jb(it.p),txt=t.n+(z>=19&&t.j?t.j:'');if(!t.n)return;var lw=txt.length*7+6,lh=14;if(it.w<lw*.8||it.h<lh*1.2)return;
-   var pt=map.latLngToContainerPoint(it.c),box=[pt.x-lw/2,pt.y-lh/2,pt.x+lw/2,pt.y+lh/2];
+  items.forEach(function(it){var t=jb(it.p),txt=t.n+(z>=19&&t.j?t.j:'');if(!t.n)return;var lw=txt.length*7+4,lh=13;if(it.w<lw||it.h<lh)return;
+   var sp=labelSpot(it.rg,lw,lh);if(!sp)return;var pt=L.point(sp[0],sp[1]);it.c=map.containerPointToLatLng(pt);var box=[pt.x-lw/2,pt.y-lh/2,pt.x+lw/2,pt.y+lh/2];
    for(var i=0;i<placed.length;i++){var o=placed[i];if(box[0]<o[2]&&box[2]>o[0]&&box[1]<o[3]&&box[3]>o[1])return}
    placed.push(box);L.tooltip({permanent:true,direction:'center',className:'jb',interactive:false}).setLatLng(it.c).setContent(esc(txt)).addTo(cadG)})},300)}
 function doVec(){var seq=++vecSeq;doCad(seq);vecG.clearLayers();ownG.clearLayers();status('');if(!KEY)return;var z=map.getZoom();
