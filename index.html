@@ -948,7 +948,7 @@ a.xl{height:30px;padding:0 10px;font-size:12px;font-weight:500;border-radius:8px
 #trkPill{position:absolute;z-index:1200;left:12px;top:100px;display:flex;align-items:center;gap:8px;background:#1d2220f2;color:#fff;border-radius:22px;padding:6px 6px 6px 12px;font-size:13px;box-shadow:0 4px 14px #0005}
 #trkPill[hidden]{display:none}@media (min-width:1000px){#trkPill{top:114px}}
 #trkPill .dot{width:9px;height:9px;border-radius:50%;background:#ff4d3d;animation:tk 1.2s infinite}@keyframes tk{50%{opacity:.25}}
-#trkPill button{border:0;border-radius:16px;background:#ff4d3d;color:#fff;font:inherit;font-weight:700;padding:6px 12px}
+#trkPill #trkCam{background:#1a73e8}#trkPill button{border:0;border-radius:16px;background:#ff4d3d;color:#fff;font:inherit;font-weight:700;padding:6px 12px}
 </style></head><body>
 <div id="map"></div>
 <div class="bar">
@@ -997,7 +997,7 @@ a.xl{height:30px;padding:0 10px;font-size:12px;font-weight:500;border-radius:8px
 </div>
 <div class="sheet" id="info" hidden><button class="btn x" data-close>닫기</button><div id="infoBody"></div></div>
 <div class="mbar" id="memBar" hidden><div id="memTxt">지도를 눌러 메모 위치를 지정하세요</div><div class="mb"><button class="btn" id="memHere">내 위치에 메모</button><button class="btn" id="memList">현장 기록</button><button class="btn on" id="memDone">끝내기</button></div></div>
-<div id="trkPill" hidden><span class="dot"></span><b id="trkTxt">기록 중</b><button id="trkStop">정지·저장</button></div>
+<div id="trkPill" hidden><span class="dot"></span><b id="trkTxt">기록 중</b><button id="trkCam">사진</button><button id="trkStop">정지·저장</button></div><input type="file" id="trkFile" accept="image/*" capture="environment" hidden><input type="file" id="trkGal" accept="image/*" multiple hidden>
 <div class="sheet" id="fieldSheet" hidden><button class="btn x" data-close>닫기</button>
  <div class="ftabs" id="fTabs"><button data-t="memo" class="on">메모</button><button data-t="trk">경로</button><button data-t="fav">즐겨찾기</button><button data-t="rec">최근</button></div>
  <div id="fBody"></div>
@@ -1088,7 +1088,7 @@ var LS=window.localStorage;function g(k,d){try{var v=LS.getItem(k);return v==nul
  if(o.m!=null){var mm={};o.m.split(',').forEach(function(i){if(i)mm[i]=true});s('muniOn',mm)}
  history.replaceState(null,'',location.pathname+location.search)}catch(e){}})();
 var KEY=g('key',''),DOM=g('dom',location.hostname||'localhost');
-var BUILD="2611052215";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
+var BUILD="2611052227";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
 applyTheme(THEME);
 var BASE=g('base','Base');if(['Base','Satellite','SatLabel','white','none'].indexOf(BASE)<0)BASE='Base';
 // 레이어: id, 이름, 표시 WMS 이름, 조회용 data 코드
@@ -1800,6 +1800,26 @@ function stopTrk(){if(!rec)return;try{navigator.geolocation.clearWatch(wid)}catc
 $('tTrk').onclick=function(){if(rec)stopTrk();else startTrk();$('toolPop').hidden=true;$('bTool').setAttribute('aria-expanded','false')};
 $('trkStop').onclick=stopTrk;
 window.addEventListener('pagehide',saveCur);
+
+/* 경로 위 사진: 기록 중 바로 찍기 / 갤러리 사진을 시각으로 맞춰 붙이기 */
+function saveShot(d,ll,t,trk){var o={id:'m'+t+Math.floor(Math.random()*999),t:t,lat:+ll[0].toFixed(7),lng:+ll[1].toFixed(7),text:'',photos:[d],trk:trk||null,u:Date.now()};dbPut('memo',o,function(ok){if(ok){loadMem(refresh);status('사진을 경로 위치에 붙였습니다')}else status('저장 실패 (저장 공간 확인)')})}
+$('trkCam').onclick=function(){$('trkFile').click()};
+$('trkFile').onchange=function(){var f=this.files&&this.files[0],self=this;if(!f)return;
+ function put(ll){shrink(f,function(d){self.value='';if(!d){status('사진을 읽지 못했습니다');return}saveShot(d,ll,Date.now(),rec&&rec.t0)})}
+ var l=rec&&rec.pts[rec.pts.length-1];if(l)return put([l[0],l[1]]);
+ if(!navigator.geolocation){status('위치를 알 수 없어 붙이지 못했습니다');self.value='';return}
+ navigator.geolocation.getCurrentPosition(function(p){put([p.coords.latitude,p.coords.longitude])},function(){self.value='';status('위치를 가져오지 못했습니다')},{enableHighAccuracy:true,timeout:15000})};
+function exifTime(buf){try{var v=new DataView(buf);if(v.getUint16(0)!==0xFFD8)return null;var o=2;
+ while(o<v.byteLength-4){var m=v.getUint16(o),len=v.getUint16(o+2);if(m===0xFFE1&&v.getUint32(o+4)===0x45786966){var b=o+10,le=v.getUint16(b)===0x4949,u16=function(p){return v.getUint16(p,le)},u32=function(p){return v.getUint32(p,le)};
+  var ifd=b+u32(b+4),n=u16(ifd),ex=0;for(var i=0;i<n;i++){if(u16(ifd+2+i*12)===0x8769)ex=u32(ifd+2+i*12+8)}
+  if(!ex)return null;var e=b+ex,n2=u16(e);for(var j=0;j<n2;j++){var q=e+2+j*12;if(u16(q)===0x9003||u16(q)===0x9004){var cnt=u32(q+4),off=b+u32(q+8),s2='';for(var k=0;k<cnt-1;k++)s2+=String.fromCharCode(v.getUint8(off+k));var mm=s2.match(/(\d{4}):(\d\d):(\d\d) (\d\d):(\d\d):(\d\d)/);if(mm)return new Date(+mm[1],mm[2]-1,+mm[3],+mm[4],+mm[5],+mm[6]).getTime()}}return null}
+  if((m&0xFF00)!==0xFF00)break;o+=2+len}}catch(e){}return null}
+function posAt(t){var best=null,bd=1e15;TRK.forEach(function(tr){var a=tr.t0,z=tr.t1||tr.pts[tr.pts.length-1][2];if(t<a-300000||t>z+300000)return;tr.pts.forEach(function(p){var d=Math.abs(p[2]-t);if(d<bd){bd=d;best={ll:[p[0],p[1]],trk:tr.t0,gap:d}}})});return best}
+$('trkGal').onchange=function(){var fs=[].slice.call(this.files||[]),self=this,n=0,ok=0,miss=0;if(!fs.length)return;status('사진을 경로에 맞추는 중…');
+ fs.forEach(function(f){var r=new FileReader();r.onload=function(){var t=exifTime(r.result)||f.lastModified,pa=posAt(t);
+  if(!pa){miss++;if(++n===fs.length)fin();return}
+  shrink(f,function(d){if(d){ok++;saveShot(d,pa.ll,t,pa.trk)}else miss++;if(++n===fs.length)fin()})};r.readAsArrayBuffer(f)});
+ function fin(){self.value='';setTimeout(function(){status(ok+'장을 경로에 붙였습니다'+(miss?' · '+miss+'장은 찍은 시각이 경로 시간과 맞지 않아 건너뜀':''))},400)}};
 function showTrk(t){if(showL)map.removeLayer(showL);showL=L.polyline(t.pts.map(function(p){return [p[0],p[1]]}),{color:'#ff9f1a',weight:5,opacity:.95}).addTo(map);map.fitBounds(showL.getBounds(),{padding:[40,40],maxZoom:19});$('fieldSheet').hidden=true}
 /* ===== 현장 기록 시트 ===== */
 var tab='memo';
@@ -1810,7 +1830,7 @@ function refresh(){if($('fieldSheet').hidden)return;[].forEach.call($('fTabs').c
   h+='<div class="frow"><button class="btn on" id="exAll">내보내기 (zip: 메모·사진·경로)</button></div>'}
  else if(tab==='trk'){if(!TRK.length)h='<div class="fempty">저장된 경로가 없습니다. 도구 → 경로 기록으로 답사 동선을 남기세요.</div>';
   TRK.forEach(function(t,i){h+='<div class="fi" data-i="'+i+'"><div class="th">⟿</div><div class="tx"><b>'+esc(t.name)+'</b><small>'+fmtD(trkDist(t.pts))+' · '+fmtDur((t.t1||t.pts[t.pts.length-1][2])-t.t0)+'</small></div><button class="ic" data-x="'+i+'">✕</button></div>'});
-  h+='<div class="frow"><button class="btn on" id="exAll">내보내기 (zip: 메모·사진·경로)</button></div>'}
+  h+='<div class="frow"><button class="btn" id="galAdd">갤러리 사진을 경로에 붙이기</button></div><div class="frow"><button class="btn on" id="exAll">내보내기 (zip: 메모·사진·경로)</button></div>'}
  else if(tab==='fav'){h='<div class="frow" style="margin:0 0 4px"><input id="favN" placeholder="이름 (예: 마곡 현장)"><button class="btn on" id="favAdd">현재 화면 저장</button></div>';
   if(!FAV.length)h+='<div class="fempty">자주 가는 곳을 저장해 두면 한 번에 이동합니다. 최근 탭의 ☆로도 추가됩니다.</div>';
   FAV.forEach(function(f,i){h+='<div class="fi" data-i="'+i+'"><div class="th">★</div><div class="tx"><b>'+esc(f.n)+'</b><small>'+f.lat.toFixed(5)+', '+f.lng.toFixed(5)+'</small></div><button class="ic" data-x="'+i+'">✕</button></div>'})}
@@ -1819,7 +1839,7 @@ function refresh(){if($('fieldSheet').hidden)return;[].forEach.call($('fTabs').c
  B.innerHTML=h}
 $('fTabs').onclick=function(e){var b=e.target.closest('button');if(!b)return;tab=b.dataset.t;refresh()};
 $('fBody').onclick=function(e){var t=e.target,i;
- if(t.id==='exAll'){exportAll(t);return}
+ if(t.id==='exAll'){exportAll(t);return}if(t.id==='galAdd'){$('trkGal').click();return}
  if(t.id==='favAdd'){var c=map.getCenter(),n=$('favN').value.trim()||('저장 '+fmtT(Date.now()));FAV.unshift({n:n,lat:+c.lat.toFixed(6),lng:+c.lng.toFixed(6),z:map.getZoom()});s('fav',FAV);refresh();return}
  if(t.dataset.x!==undefined){i=+t.dataset.x;if(tab==='fav'){FAV.splice(i,1);s('fav',FAV);refresh()}else if(tab==='trk'){if(!t.dataset.sure){t.dataset.sure=1;t.textContent='삭제?';return}dbDel('trk',TRK[i].id,function(){loadTrk(refresh)})}return}
  if(t.dataset.s!==undefined){var r=REC[+t.dataset.s];if(!FAV.some(function(f){return f.n===r.n})){FAV.unshift({n:r.n,lat:r.lat,lng:r.lng,z:19});s('fav',FAV)}refresh();return}
