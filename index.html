@@ -1127,6 +1127,12 @@ details.vg[open]>summary:after{transform:rotate(-135deg)}
 #recStrip button:before{content:"↺ ";color:var(--acc)}
 body:has(.sheet:not([hidden])) #recStrip,body:has(.modal:not([hidden])) #recStrip,body.hasbar #recStrip,body.cmp #recStrip{display:none}
 html[data-oh="1"] #recStrip{bottom:calc(max(14px,env(safe-area-inset-bottom)) + 74px)}
+/* ---- v16: 실패 원인 ---- */
+#failBox{position:fixed;z-index:3100;left:50%;top:50%;transform:translate(-50%,-50%);width:min(420px,calc(100vw - 24px));max-height:calc(100dvh - 40px);overflow:auto;background:var(--card);color:var(--fg);border-radius:16px;box-shadow:0 12px 40px #000a;padding:16px}
+#failBox[hidden]{display:none}#failBox h3{margin:0 0 4px;font-size:16px}#failBox .fc{display:inline-block;background:#c0392b;color:#fff;border-radius:8px;padding:2px 9px;font-size:12.5px;font-weight:800;margin:6px 0}
+#failBox p{margin:6px 0;font-size:13.5px;line-height:1.5}#failBox ul{margin:6px 0 10px;padding-left:20px;font-size:13.5px;line-height:1.55}
+#failBox pre{font-size:11px;white-space:pre-wrap;word-break:break-all;margin:6px 0 10px;background:var(--bg);padding:8px;border-radius:8px;max-height:110px;overflow:auto}
+#failBox .fb{display:flex;gap:8px;flex-wrap:wrap}#failBox .fb button{flex:1;min-width:90px;height:38px;border:1px solid var(--line);border-radius:10px;background:none;color:var(--fg);font:inherit;font-size:13px;font-weight:700}#failBox .fb button.on{background:var(--acc);color:var(--acc-ink,#fff);border-color:var(--acc)}
 </style></head><body>
 <div id="map"></div>
 <div class="bar">
@@ -1296,7 +1302,7 @@ var LS=window.localStorage;function g(k,d){try{var v=LS.getItem(k);return v==nul
  if(o.m!=null){var mm={};o.m.split(',').forEach(function(i){if(i)mm[i]=true});s('muniOn',mm)}
  history.replaceState(null,'',location.pathname+location.search)}catch(e){}})();
 var KEY=g('key',''),DOM=g('dom',location.hostname||'localhost');
-var BUILD="2611060505";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
+var BUILD="2611060521";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
 applyTheme(THEME);
 var BASE=g('base','Base');if(['Base','Satellite','SatLabel','white','none'].indexOf(BASE)<0)BASE='Base';
 // 레이어: id, 이름, 표시 WMS 이름, 조회용 data 코드
@@ -1327,9 +1333,9 @@ function wmsOne(l,nmx){return L.tileLayer.wms('https://api.vworld.kr/req/wms',{p
 function wmsFor(l){var a=l.wms.split(',').map(function(n){return wmsOne(l,n)});return L.layerGroup(a)}
 function applyLayers(){LAYERS.forEach(function(l){if(wmsL[l.id]){map.removeLayer(wmsL[l.id]);delete wmsL[l.id]}
  if(l.on&&KEY&&!l.vec){wmsL[l.id]=wmsFor(l).addTo(map)}});clearTimeout(vecTimer);doVec()}
-var LOG=[];function lg(url,d,why){var m=url.match(/[?&]data=([^&]+)/)||url.match(/data\/(\w+)/),k=m?m[1]:'?',t;
+var LOG=[],LOGK=[];function lg(url,d,why){var m=url.match(/[?&]data=([^&]+)/)||url.match(/data\/(\w+)/),k=m?m[1]:'?',t;
  if(!d)t='응답 없음('+(why||'차단/시간초과')+')';else if(d.response){t=d.response.status+(d.response.error?' '+(d.response.error.text||d.response.error.code||''):'')+(d.response.result&&d.response.result.featureCollection?' '+d.response.result.featureCollection.features.length+'건':'')}else t=JSON.stringify(d).slice(0,80);
- LOG.unshift(k+' → '+t);LOG.length=Math.min(LOG.length,12);var e=document.getElementById('dbg');if(e)e.textContent=LOG.join('\n')}
+ LOG.unshift(k+' → '+t);LOG.length=Math.min(LOG.length,12);LOGK.unshift({k:k,kind:!d?(why==='시간초과'?'timeout':'load'):(d.response&&d.response.status==='ERROR'?'err':'ok'),err:(d&&d.response&&d.response.error)?String(d.response.error.text||d.response.error.code||''):'',t:Date.now()});LOGK.length=Math.min(LOGK.length,20);var e=document.getElementById('dbg');if(e)e.textContent=LOG.join('\n')}
 function jsonp(url,cb){var n='_j'+Math.random().toString(36).slice(2),sc=document.createElement('script'),done=false;
  var t=setTimeout(function(){fin();lg(url,null,'시간초과');cb(null)},14000);
  function fin(){done=true;clearTimeout(t);try{delete window[n]}catch(e){window[n]=undefined}sc.remove()}
@@ -1342,7 +1348,7 @@ function dataQ(code,lng,lat,geom,cb){jsonp('https://api.vworld.kr/req/data?servi
 function ned(op,pnu,cb,ex){var u='https://api.vworld.kr/ned/data/'+op+'?pnu='+pnu+'&format=json&numOfRows='+(op==='getLandUseAttr'?1000:5)+(ex||'')+'&'+q();
  jsonp(u,function(d){if(d)return cb(d);try{fetch(u).then(function(r){return r.json()}).then(cb,function(){cb(null)})}catch(e){cb(null)}})}
 function boxQ(code,cb,size,pb,page){var b=map.getBounds();var g=pb?'BOX('+pb[0]+','+pb[1]+','+pb[2]+','+pb[3]+')':'BOX('+b.getWest()+','+b.getSouth()+','+b.getEast()+','+b.getNorth()+')';
- jsonp('https://api.vworld.kr/req/data?service=data&request=GetFeature&version=2.0&data='+code+'&format=json&size='+(size||100)+'&page='+(page||1)+'&attribute=true&geometry=true&crs=EPSG:4326&geomFilter='+encodeURIComponent(g)+'&'+q(),function(d){var f=null,tot=0;try{f=d.response.status==='OK'?d.response.result.featureCollection.features:[];var rc=+(d.response.record&&d.response.record.total)||0,pg=+(d.response.page&&d.response.page.total)||0;tot=rc||pg*(size||100)}catch(e){f=null}cb(f,tot)})}
+ jsonp('https://api.vworld.kr/req/data?service=data&request=GetFeature&version=2.0&data='+code+'&format=json&size='+(size||100)+'&page='+(page||1)+'&attribute=true&geometry=true&crs=EPSG:4326&geomFilter='+encodeURIComponent(g)+'&'+q(),function(d){var f=null,tot=0;try{f=d.response.status==='OK'?d.response.result.featureCollection.features:(d.response.status==='ERROR'?null:[]);if(f===null){cb(null,0);return}var rc=+(d.response.record&&d.response.record.total)||0,pg=+(d.response.page&&d.response.page.total)||0;tot=rc||pg*(size||100)}catch(e){f=null}cb(f,tot)})}
 var ALIVEF=null,VLIM=1000;function pgMax(){return 5}
 function viewW(){var b=map.getBounds(),c=b.getCenter();return map.distance([c.lat,b.getWest()],[c.lat,b.getEast()])*(window.__rotK?window.__rotK():1)}
 function tooWide(){return viewW()>VLIM}
@@ -1415,10 +1421,12 @@ function doCad(seq){var z=map.getZoom(),cs=S_('cad');
   swapG('cad',ng);if(z<18){swapG('txt',L.layerGroup());return}
   vis.forEach(function(x){var rg=ringPx(x.geometry),xs=rg.map(function(p){return p[0]}),ys=rg.map(function(p){return p[1]});items.push({rg:rg,w:Math.max.apply(0,xs)-Math.min.apply(0,xs),h:Math.max.apply(0,ys)-Math.min.apply(0,ys),p:x.properties||{}})});
   items.sort(function(a,b){return b.w*b.h-a.w*a.h});var tg=L.layerGroup(),placed=[],i=0,k=cs.fs/11;
+  var minMn=z>=20.5?0:Math.max(0,16-(z-18)*6.5),minA=z>=20.3?0:Math.max(0,1600-(z-18)*700);
   function place(it){var t=jb(it.p),txt=t.n+(z>=19&&t.j?t.j:'');if(!t.n)return;var ang0=axisAng(it.rg),mn=Math.min(it.w,it.h),tw=txtW(txt),SC=[1.6,1.3,1.1,1],hit=null;
+   if(mn<minMn||it.w*it.h<minA)return;
    for(var q=0;q<SC.length&&!hit;q++){var kk=k*SC[q],lw=tw*kk,lh=13*kk;if(q<SC.length-1&&mn<lh*2.2)continue;
     var ang=ang0,sp=labelSpot(it.rg,lw,lh,ang);if(!sp&&ang!==0){ang=0;sp=labelSpot(it.rg,lw,lh,0)}if(!sp)continue;
-    var box=rectPts(sp,lw,lh,ang).slice(0,4),ov=false;for(var j=0;j<placed.length;j++){if(obbHit(box,placed[j])){ov=true;break}}if(ov)continue;hit={sp:sp,ang:ang,box:box,kk:kk}}
+    var box=rectPts(sp,lw+5,lh+3,ang).slice(0,4),ov=false;for(var j=0;j<placed.length;j++){if(obbHit(box,placed[j])){ov=true;break}}if(ov)continue;hit={sp:sp,ang:ang,box:box,kk:kk}}
    if(!hit)return;placed.push(hit.box);var ll=map.containerPointToLatLng(L.point(hit.sp[0],hit.sp[1]));
    L.marker(ll,{interactive:false,keyboard:false,icon:L.divIcon({className:'jbi',html:'<span data-a="'+(hit.ang*180/Math.PI).toFixed(1)+'" style="font-size:'+(11*hit.kk).toFixed(1)+'px;line-height:1.2;transform:translate(-50%,-50%) rotate('+(hit.ang*180/Math.PI).toFixed(1)+'deg)">'+esc(txt)+'</span>',iconSize:[0,0]})}).addTo(tg)}
   (function step(){if(seq!==vecSeq)return;var t0=Date.now();while(i<items.length&&Date.now()-t0<10)place(items[i++]);if(i<items.length)setTimeout(step,0);else{swapG('txt',tg);try{window.__lblRot&&window.__lblRot()}catch(e){}}})()})}
@@ -2243,23 +2251,23 @@ window.__fld={parseLL:parseLL};
  var NMAP={cad:'지적',own:'소유구분',fac:'시설',dist:'지구단위계획',zone:'용도지역',spec:'용도지구',gb:'개발제한',use:'토지이용'};
  function nmOf(id){try{var l=LAYERS.filter(function(x){return x.id===id})[0];return (l&&l.n)||NMAP[id]||id}catch(e){return id}}
  window.__ld=function(){var busy=[],fail=[];for(var k in LST){var t=LST[k]||'';if(/조회 중|재시도/.test(t))busy.push(nmOf(k));else if(/실패/.test(t))fail.push(nmOf(k))}
-  bar.hidden=!busy.length;
-  if(fail.length&&!busy.length){lp.hidden=false;lp.className='f';lp.innerHTML=fail[0]+' 불러오기 실패 · 눌러서 다시 시도'}
+  bar.hidden=!busy.length;window.__failList=fail.slice();
+  if(fail.length&&!busy.length){lp.hidden=false;lp.className='f';lp.innerHTML=fail[0]+' 불러오기 실패 · 눌러서 원인 보기'}
   else if(busy.length){lp.hidden=false;lp.className='';lp.innerHTML='<span class="sp"></span>'+busy[0]+(busy.length>1?' 외 '+(busy.length-1):'')+' 불러오는 중'}
   else lp.hidden=true};
- lp.onclick=function(){if(lp.classList.contains('f'))$('bRef').click()};
+ lp.onclick=function(){if(lp.classList.contains('f')){if(window.__failInfo)window.__failInfo(window.__failList||[]);else $('bRef').click()}};
  /* ---- 지도 비교 · 과거 항공사진 ---- */
  var WBU='https://s3-us-west-2.amazonaws.com/config.maptiles.arcgis.com/waybackconfig.json',WB=null,WBi=-1,cmpOn=false,rm='past',spx=null,spl=50,rL=null;
  var P=$('cmpPanel'),BR=$('cmpBar'),msg=$('cmpMsg');
  function wbLoad(cb){if(WB)return cb(WB);
-  try{var c=JSON.parse(localStorage.getItem('wbcfg')||'null');if(c&&c.a&&c.a.length&&Date.now()-c.t<2592e6){WB=c.a;return cb(WB)}}catch(e){}
-  try{fetch(WBU).then(function(r){return r.json()}).then(function(j){var a=[];Object.keys(j).forEach(function(k){var it=j[k]||{},m=String(it.itemTitle||'').match(/(\d{4}-\d{2}-\d{2})/);if(m)a.push({n:+k,d:m[1]})});
-   a.sort(function(x,y){return x.d<y.d?-1:x.d>y.d?1:0});if(!a.length)throw 0;WB=a;try{localStorage.setItem('wbcfg',JSON.stringify({t:Date.now(),a:a}))}catch(e){}cb(a)}).catch(function(){cb(null)})}catch(e){cb(null)}}
- function wbUrl(n){return 'https://wayback.maptiles.arcgis.com/arcgis/rest/services/world_imagery/mapserver/tile/'+n+'/{z}/{y}/{x}'}
+  try{var c=JSON.parse(localStorage.getItem('wbcfg2')||'null');if(c&&c.a&&c.a.length&&Date.now()-c.t<2592e6){WB=c.a;return cb(WB)}}catch(e){}
+  try{fetch(WBU).then(function(r){return r.json()}).then(function(j){var a=[];Object.keys(j).forEach(function(k){var it=j[k]||{},m=String(it.itemTitle||'').match(/(\d{4}-\d{2}-\d{2})/);if(m)a.push({n:+k,d:m[1],u:String(it.itemURL||'')})});
+   a.sort(function(x,y){return x.d<y.d?-1:x.d>y.d?1:0});if(!a.length)throw 0;WB=a;try{localStorage.setItem('wbcfg2',JSON.stringify({t:Date.now(),a:a}))}catch(e){}cb(a)}).catch(function(){cb(null)})}catch(e){cb(null)}}
+ function wbUrl(e){var u=e.u&&e.u.indexOf('{level}')>0?e.u:('https://wayback.maptiles.arcgis.com/arcgis/rest/services/world_imagery/mapserver/tile/'+e.n+'/{level}/{row}/{col}');return u.replace('{level}','{z}').replace('{row}','{y}').replace('{col}','{x}')}
  function mkR(){if(rL){try{map.removeLayer(rL)}catch(e){}rL=null}
   if(!map.getPane('p_cmp')){map.createPane('p_cmp');map.getPane('p_cmp').style.zIndex=205;map.getPane('p_cmp').style.pointerEvents='none'}
   var url,opt={pane:'p_cmp',maxZoom:22,maxNativeZoom:19,keepBuffer:3,updateWhenIdle:false};
-  if(rm==='past'){if(!WB||WBi<0)return;url=wbUrl(WB[WBi].n);opt.maxNativeZoom=19}
+  if(rm==='past'){if(!WB||WBi<0)return;url=wbUrl(WB[WBi]);opt.maxNativeZoom=19}
   else if(rm==='Satellite')url=tileUrl('Satellite','jpeg');else url=tileUrl('Base','png');
   var ok=0,er=0;rL=L.tileLayer(url,opt);rL.on('tileload',function(){ok++});
   rL.on('tileerror',function(){er++;if(rm==='past'&&er>=6&&!ok){msg.className='cm w';msg.textContent='이 날짜의 영상을 불러오지 못했습니다 (이 지역에 영상이 없거나 서버에 연결되지 않음). 다른 날짜를 골라 보세요.'}});
@@ -2436,12 +2444,28 @@ window.__fld={parseLL:parseLL};
    var t3=Date.now();ned('ladfrlList','1168010100100010001',function(d){done('ned',d?true:false,d?'응답 있음':'응답 없음 (차단·시간초과)',Date.now()-t3)})}
   function reach(id,url,okMsg){var t=Date.now();tmo(fetch(url,{mode:'no-cors',cache:'no-store',referrerPolicy:'no-referrer'}),9000).then(function(){done(id,true,okMsg||'서버 응답 있음',Date.now()-t)},function(e){done(id,false,e&&e.message==='시간초과'?'응답 없음 (시간초과)':'접속 실패 · 이 망에서 차단되었거나 서버 점검 중일 수 있습니다',Date.now()-t)})}
   ml.forEach(function(m){var u;try{u=m.t==='wms'?new URL(m.u).origin+'/':m.u+'?f=json'}catch(e){u=m.u}reach('m_'+m.id,u)});
-  var t4=Date.now();tmo(fetch('https://s3-us-west-2.amazonaws.com/config.maptiles.arcgis.com/waybackconfig.json',{cache:'no-store'}).then(function(r){return r.json()}),9000).then(function(j){done('wb',true,'영상 '+Object.keys(j).length+'개 목록 수신',Date.now()-t4)},function(){done('wb',false,'목록 못 받음 · 이 망에서 차단되었을 수 있습니다',Date.now()-t4)});
-  reach('wbt','https://wayback.maptiles.arcgis.com/arcgis/rest/services/world_imagery/mapserver/tile/1/0/0/0')}
+  var t4=Date.now();tmo(fetch('https://s3-us-west-2.amazonaws.com/config.maptiles.arcgis.com/waybackconfig.json',{cache:'no-store'}).then(function(r){return r.json()}),9000).then(function(j){done('wb',true,'영상 '+Object.keys(j).length+'개 목록 수신',Date.now()-t4);try{var ks=Object.keys(j),e=j[ks[ks.length-1]],u=String(e.itemURL||'').replace('{level}','0').replace('{row}','0').replace('{col}','0');if(u)reach('wbt',u);else done('wbt',null,'타일 주소를 알 수 없어 확인하지 못했습니다')}catch(x){done('wbt',null,'타일 주소를 알 수 없어 확인하지 못했습니다')}},function(){done('wb',false,'목록 못 받음 · 이 망에서 차단되었을 수 있습니다',Date.now()-t4);done('wbt',null,'목록을 못 받아 확인하지 못했습니다')});
+  }
  $('chkNet').onclick=net;
  $('chkOpen').onclick=function(){$('viewPop').hidden=true;try{$('bView').classList.remove('on')}catch(e){}showKey();$('keyModal').hidden=false;net()};
  window.__net=net;
 })();
+/* v16: 불러오기 실패 원인 설명 */
+(function(){var $=function(i){return document.getElementById(i)};
+ var bx=document.createElement('div');bx.id='failBox';bx.hidden=true;document.body.appendChild(bx);
+ function diag(){var rec=LOGK.slice(0,8),n={timeout:0,load:0,err:0,ok:0},errs=[];rec.forEach(function(r){n[r.kind]++;if(r.err&&errs.indexOf(r.err)<0)errs.push(r.err)});var et=errs.join(' ');
+  if(navigator.onLine===false)return {c:'인터넷 연결 없음',d:'기기가 오프라인 상태입니다.',s:['와이파이나 데이터 연결을 켜 주세요.','연결 후 "다시 시도"를 누르세요.']};
+  if(n.err&&/KEY|키|인증|DOMAIN|도메인|UNAUTH|INVALID|INCORRECT|UNAVAIL|DENIED|허용/i.test(et))return {c:'인증키 또는 도메인',d:'V-World가 응답했지만 키·도메인을 받아 주지 않았습니다. (응답: '+et.slice(0,80)+')',s:['설정(톱니바퀴)에서 인증키를 다시 붙여넣어 보세요.','키 발급 때 등록한 서비스 URL이 이 앱 주소('+(DOM||location.hostname)+')와 같은지 확인하세요.','키 유효기간이 지났는지 vworld.kr에서 확인하세요.']};
+  if(n.err&&/초과|OVER|LIMIT|사용량|QUOTA/i.test(et))return {c:'사용량 한도 초과',d:'하루 사용 가능 횟수를 넘은 것으로 보입니다. (응답: '+et.slice(0,80)+')',s:['잠시 쉬었다가 내일 다시 시도하세요.','급하면 다른 키로 바꿔 넣을 수 있습니다.','불필요한 새로고침을 줄이세요.']};
+  if(n.load>=n.timeout&&n.load>0&&!n.ok)return {c:'차단됨',d:'요청이 도중에 막혔습니다. 회사·공공 와이파이 방화벽, 광고 차단·보안 앱, VPN이 원인인 경우가 많습니다.',s:['와이파이를 끄고 데이터(LTE·5G)로 바꿔 보세요 (반대도 시도).','VPN·광고 차단·보안 앱을 잠시 끄세요.','"연결 상태 확인"으로 어느 서버가 막혔는지 확인하세요.']};
+  if(n.timeout>0&&!n.ok)return {c:'시간초과',d:'V-World 응답이 14초 안에 오지 않았습니다. 신호가 약하거나 서버가 느린 상태입니다.',s:['신호가 좋은 곳으로 옮긴 뒤 "다시 시도"를 누르세요.','지도를 조금 더 확대해서 범위를 줄이면 더 빨리 불러옵니다.','잠시 뒤에도 같으면 V-World 서버 점검일 수 있습니다.']};
+  if(n.ok&&!n.timeout&&!n.load&&!n.err)return {c:'일시적 오류',d:'서버는 응답했지만 지적 데이터를 받지 못했습니다.',s:['"다시 시도"를 눌러 보세요.','지도를 조금 움직이거나 확대·축소해 보세요.']};
+  return {c:'원인 불명',d:'뚜렷한 원인을 찾지 못했습니다.',s:['"연결 상태 확인"을 눌러 서버별 상태를 보세요.','"다시 시도"를 눌러 보세요.']}}
+ window.__failInfo=function(names){var d=diag(),h='<h3>'+esc((names&&names[0])||'지도 데이터')+' 불러오기 실패</h3><span class="fc">'+esc(d.c)+'</span><p>'+esc(d.d)+'</p><ul>'+d.s.map(function(x){return '<li>'+esc(x)+'</li>'}).join('')+'</ul>';
+  h+='<div class="sub" style="margin:0 0 2px">최근 응답</div><pre>'+esc(LOG.slice(0,5).join('\n')||'(응답 기록 없음)')+'</pre><div class="fb"><button class="on" id="fbRetry" type="button">다시 시도</button><button id="fbNet" type="button">연결 상태 확인</button><button id="fbX" type="button">닫기</button></div>';
+  bx.innerHTML=h;bx.hidden=false;
+  $('fbRetry').onclick=function(){bx.hidden=true;$('bRef').click()};$('fbNet').onclick=function(){bx.hidden=true;$('chkOpen').click()};$('fbX').onclick=function(){bx.hidden=true}};
+ window.__diag=diag})();
 })();
 
 </script></body></html>
