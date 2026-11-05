@@ -1082,6 +1082,20 @@ html[data-oh="1"] #oh1{display:none}
 #cmpBar .l{right:30px}#cmpBar .r{left:30px}
 body.cmp #quick,body.cmp .rail #bGps,body.cmp .rail #bRef{display:none}
 body.cmp .toast{bottom:190px}
+/* ---- v13: 지도 회전 · 방위 ---- */
+html,body{overflow:hidden}
+#mapClip{position:fixed;inset:0;overflow:hidden}
+#rose{position:fixed;z-index:1180;left:max(12px,env(safe-area-inset-left));top:calc(max(10px,env(safe-area-inset-top)) + 98px);width:46px;height:46px;border-radius:50%;background:var(--card);box-shadow:var(--sh);border:0;padding:0;display:flex;align-items:center;justify-content:center;color:var(--fg)}
+#rose svg{width:40px;height:40px;overflow:visible}#rose .dial{transform-box:view-box;transform-origin:50% 50%;transform:rotate(var(--r,0deg))}
+#rose .ring{fill:none;stroke:var(--line);stroke-width:1.5}#rose .tn{fill:#e5392b}#rose .ts{fill:#8a949c}#rose text{font:800 9px system-ui,sans-serif;fill:var(--fg)}
+#rose.hd{background:var(--acc);color:#fff}#rose.hd .ring{stroke:#ffffff88}#rose.hd text{fill:#fff}#rose.hd .ts{fill:#ffffffaa}
+#rose:active{transform:scale(.94)}
+@media (min-width:1000px){#rose{top:112px}}
+#gpsPill,#trkPill{left:66px}#gpsPill{max-width:calc(100vw - 150px)}
+html[data-oh="1"] #rose{top:calc(max(10px,env(safe-area-inset-top)) + 8px)}
+body.cmp #rose{display:none}
+#ctlWrap{position:fixed;inset:0;z-index:700;pointer-events:none}
+#ctlWrap .leaflet-control-container{position:absolute;inset:0}
 </style></head><body>
 <div id="map"></div>
 <div class="bar">
@@ -1240,7 +1254,7 @@ var LS=window.localStorage;function g(k,d){try{var v=LS.getItem(k);return v==nul
  if(o.m!=null){var mm={};o.m.split(',').forEach(function(i){if(i)mm[i]=true});s('muniOn',mm)}
  history.replaceState(null,'',location.pathname+location.search)}catch(e){}})();
 var KEY=g('key',''),DOM=g('dom',location.hostname||'localhost');
-var BUILD="2611060426";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
+var BUILD="2611060441";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
 applyTheme(THEME);
 var BASE=g('base','Base');if(['Base','Satellite','SatLabel','white','none'].indexOf(BASE)<0)BASE='Base';
 // 레이어: id, 이름, 표시 WMS 이름, 조회용 data 코드
@@ -1288,7 +1302,7 @@ function ned(op,pnu,cb,ex){var u='https://api.vworld.kr/ned/data/'+op+'?pnu='+pn
 function boxQ(code,cb,size,pb,page){var b=map.getBounds();var g=pb?'BOX('+pb[0]+','+pb[1]+','+pb[2]+','+pb[3]+')':'BOX('+b.getWest()+','+b.getSouth()+','+b.getEast()+','+b.getNorth()+')';
  jsonp('https://api.vworld.kr/req/data?service=data&request=GetFeature&version=2.0&data='+code+'&format=json&size='+(size||100)+'&page='+(page||1)+'&attribute=true&geometry=true&crs=EPSG:4326&geomFilter='+encodeURIComponent(g)+'&'+q(),function(d){var f=null,tot=0;try{f=d.response.status==='OK'?d.response.result.featureCollection.features:[];var rc=+(d.response.record&&d.response.record.total)||0,pg=+(d.response.page&&d.response.page.total)||0;tot=rc||pg*(size||100)}catch(e){f=null}cb(f,tot)})}
 var ALIVEF=null,VLIM=1000;function pgMax(){return 5}
-function viewW(){var b=map.getBounds(),c=b.getCenter();return map.distance([c.lat,b.getWest()],[c.lat,b.getEast()])}
+function viewW(){var b=map.getBounds(),c=b.getCenter();return map.distance([c.lat,b.getWest()],[c.lat,b.getEast()])*(window.__rotK?window.__rotK():1)}
 function tooWide(){return viewW()>VLIM}
 function wideMsg(w){return '지적·소유구분은 화면 가로 약 '+VLIM+'m 이내로 확대하면 표시됩니다 (지금 약 '+(Math.round(w/10)*10).toLocaleString('ko-KR')+'m)'}
 function boxAll(code,size,pb,maxPages,cb,depth){depth=depth||0;var al=ALIVEF;boxQ(code,function(f1,tot){if(!f1){cb(null,false);return}if(f1.length<size){cb(f1,false);return}var np=Math.ceil((tot||0)/size);
@@ -2107,7 +2121,7 @@ window.__fld={parseLL:parseLL};
  window.__dirHTML=function(){return '<div class="sec" id="dirSec"><small>내 위치에서 이 필지까지</small><div id="dirIn">'+dirInner()+'</div></div>'};
  function bindDir(){var b=$('dirGo');if(b)b.onclick=function(){if(!on)start()}}
  function upd(){
-  if(gw){gw.style.setProperty('--h',(hdg||0)+'deg');gw.classList.toggle('hh',hdg!=null)}
+  if(gw){gw.style.setProperty('--h',((hdg||0)-(window.__bear?window.__bear():0))+'deg');gw.classList.toggle('hh',hdg!=null)}
   var p=$('gpsPill');if(!on||!last){p.hidden=true;document.body.classList.remove('gpson')}else{p.hidden=false;document.body.classList.add('gpson');
    p.innerHTML='<div class="cp"><i style="--n:'+(hdg==null?0:(360-hdg).toFixed(0))+'deg"></i></div><div><span class="ac '+accCls(acc)+'"></span>오차 <b>±'+Math.round(acc)+'m</b>'+(acc>30?' · 위치를 믿기 어렵습니다':'')+'<small>'+(hdg==null?'북쪽 위 · 방위 센서 없음':'폰 방향 '+nm(hdg)+' '+Math.round(hdg)+'°')+'</small></div>'}
   var di=$('dirIn');if(di){di.innerHTML=dirInner();bindDir()}
@@ -2115,32 +2129,32 @@ window.__fld={parseLL:parseLL};
   $('bGps').classList.toggle('on',on)}
  var _r=render;render=function(S,pnu,partial){_r(S,pnu,partial);var di=$('dirIn');if(di)bindDir()};
  function onPos(p){var c=p.coords;last=[c.latitude,c.longitude];acc=c.accuracy||0;spd=c.speed||0;
-  if(c.heading!=null&&!isNaN(c.heading)&&spd>0.7&&!oriOn)hdg=c.heading;
+  if(c.heading!=null&&!isNaN(c.heading)&&spd>0.7&&!oriOn){hdg=c.heading;if(window.__onHeading)window.__onHeading(hdg,last)}
   if(!mk){gw=document.createElement('div');gw.className='gw';gw.innerHTML='<i class="gcone"></i><b class="gdot"></b>';
    mk=L.marker(last,{interactive:false,keyboard:false,zIndexOffset:900,icon:L.divIcon({className:'gpsm',html:gw.outerHTML,iconSize:[0,0]})}).addTo(map);gw=mk.getElement().firstChild;
    ac=L.circle(last,{radius:Math.max(acc,1),color:'#1a73e8',weight:1,fillColor:'#1a73e8',fillOpacity:.12,interactive:false}).addTo(map);
    ln=L.polyline([],{color:'#1a73e8',weight:2,dashArray:'6 6',opacity:.85,interactive:false}).addTo(map)}
   else{mk.setLatLng(last);ac.setLatLng(last);ac.setRadius(Math.max(acc,1))}
-  if(first){first=false;map.setView(last,Math.max(map.getZoom(),18))}
+  if(first){first=false;map.setView(last,Math.max(map.getZoom(),18))}else if(window.__onFix)window.__onFix(last);
   upd()}
  function onErr(e){status(e&&e.code===1?'위치 권한이 꺼져 있습니다 — 브라우저 설정에서 허용해 주세요':'위치를 가져오지 못했습니다');stop()}
  function onOri(e){var now=Date.now();if(now-oriT<90)return;var h=null;
   if(e.webkitCompassHeading!=null)h=e.webkitCompassHeading;
   else if(e.alpha!=null&&(e.absolute||e.type==='deviceorientationabsolute'))h=360-e.alpha;
-  if(h==null||isNaN(h))return;oriT=now;oriOn=true;var sa=(screen.orientation&&screen.orientation.angle)||0;hdg=((h+sa)%360+360)%360;upd()}
+  if(h==null||isNaN(h))return;oriT=now;oriOn=true;var sa=(screen.orientation&&screen.orientation.angle)||0;hdg=((h+sa)%360+360)%360;upd();if(window.__onHeading)window.__onHeading(hdg,last)}
  function oriStart(){
   function add(){var ev='ondeviceorientationabsolute' in window?'deviceorientationabsolute':'deviceorientation';window.addEventListener(ev,onOri,true)}
-  try{if(typeof DeviceOrientationEvent!=='undefined'&&typeof DeviceOrientationEvent.requestPermission==='function'){DeviceOrientationEvent.requestPermission().then(function(r){if(r==='granted')add()}).catch(function(){})}else add()}catch(e){}}
+  add();try{if(typeof DeviceOrientationEvent!=='undefined'&&typeof DeviceOrientationEvent.requestPermission==='function'){var pr=DeviceOrientationEvent.requestPermission();if(pr&&pr.catch)pr.catch(function(){})}}catch(e){}}
  function oriStop(){try{window.removeEventListener('deviceorientationabsolute',onOri,true);window.removeEventListener('deviceorientation',onOri,true)}catch(e){}oriOn=false;hdg=null}
  function start(){if(!navigator.geolocation){status('이 기기에서는 위치를 쓸 수 없습니다');return}
   on=true;first=true;oriStart();status('내 위치를 찾는 중…');
   wid=navigator.geolocation.watchPosition(onPos,onErr,{enableHighAccuracy:true,maximumAge:2000,timeout:25000});upd()}
  function stop(){on=false;try{if(wid!=null)navigator.geolocation.clearWatch(wid)}catch(e){}wid=null;oriStop();
-  [mk,ac,ln].forEach(function(x){if(x)try{map.removeLayer(x)}catch(e){}});mk=ac=ln=gw=null;last=null;upd()}
+  [mk,ac,ln].forEach(function(x){if(x)try{map.removeLayer(x)}catch(e){}});mk=ac=ln=gw=null;last=null;upd();if(window.__noRot)window.__noRot()}
  $('bGps').onclick=function(){if(!on){start();return}
   if(last){var a=map.latLngToContainerPoint(last),c=map.getSize().divideBy(2);if(a.distanceTo(c)<28){stop();status('내 위치 표시를 껐습니다');return}map.setView(last,Math.max(map.getZoom(),18))}};
  var gp=document.createElement('div');gp.id='gpsPill';gp.hidden=true;document.body.appendChild(gp);
- window.__gps=function(){return {on:on,last:last,acc:acc,hdg:hdg}};
+ window.__gpsUpd=upd;window.__gps=function(){return {on:on,last:last,acc:acc,hdg:hdg}};
  /* ---- 야간 타일 ---- */
  var TD=g('td','auto');
  function darkNow(){return TD==='on'||(TD==='auto'&&isDk())}
@@ -2194,7 +2208,7 @@ window.__fld={parseLL:parseLL};
  function showMode(){[].forEach.call($('cmpSeg').children,function(b){b.classList.toggle('on',b.dataset.m===rm)});$('cmpPastRow').hidden=rm!=='past'}
  function setMode(m){rm=m;showMode();if(m==='past'){if(WB){setDate(WBi<0?WB.length-1:WBi)}else{msg.className='cm';msg.textContent='과거 영상 목록을 가져오는 중…';wbLoad(function(a){if(!a){msg.className='cm w';msg.textContent='과거 영상 서버에 연결하지 못했습니다. 인터넷 연결을 확인하거나 잠시 뒤 다시 시도해 주세요.';return}
    $('cmpRng').max=a.length-1;setDate(a.length-1)})}}else{mkR();labels()}}
- function open(){cmpOn=true;P.hidden=false;document.body.classList.add('cmp');$('viewPop').hidden=true;try{$('bView').classList.remove('on')}catch(e){}spl=50;place();showSplit();setMode(rm)}
+ function open(){if(window.__noRot)window.__noRot();cmpOn=true;P.hidden=false;document.body.classList.add('cmp');$('viewPop').hidden=true;try{$('bView').classList.remove('on')}catch(e){}spl=50;place();showSplit();setMode(rm)}
  function close(){cmpOn=false;P.hidden=true;BR.hidden=true;document.body.classList.remove('cmp');if(rL){try{map.removeLayer(rL)}catch(e){}rL=null}}
  function showSplit(){[].forEach.call($('cmpSplit').children,function(b){b.classList.toggle('on',(+b.dataset.s>0)===(spl>0))})}
  $('cmpOpen').onclick=open;$('cmpX').onclick=close;
@@ -2207,6 +2221,64 @@ window.__fld={parseLL:parseLL};
   BR.addEventListener('pointermove',mv);BR.addEventListener('pointerup',function(){dr=false});BR.addEventListener('pointercancel',function(){dr=false})})();
  var _sb2=setBase;setBase=function(b){_sb2(b);if(cmpOn)labels()};
  window.__cmp={open:open,close:close};
+})();
+/* v13: 지도 돌리기(진행 방향 위) · 방위 표시 */
+(function(){var $=function(i){return document.getElementById(i)};
+ var M=$('map'),acc=0,mode='north',follow=true,K=1;
+ var CL=document.createElement('div');CL.id='mapClip';M.parentNode.insertBefore(CL,M);CL.appendChild(M);function SW(){return CL.clientWidth||window.innerWidth}function SH(){return CL.clientHeight||window.innerHeight}
+ /* 컨트롤(축척·범위)은 지도 밖으로 빼서 같이 돌지 않게 */
+ var cc=map._controlContainer;if(cc&&!$('ctlWrap')){var w=document.createElement('div');w.id='ctlWrap';document.body.appendChild(w);w.appendChild(cc)}
+ function norm(a){return ((a%360)+360)%360}
+ function D(){var W=SW(),H=SH();return Math.ceil(Math.sqrt(W*W+H*H))}
+ window.__bear=function(){return norm(acc)};
+ window.__rotK=function(){return big?SW()/M.clientWidth:1};
+ var big=false;
+ function layout(){var W=SW(),H=SH(),nb=!(Math.abs(acc)<.01&&mode==='north'),ch=nb!==big;big=nb;
+  if(!big){M.style.cssText='';acc=0}
+  else{var d=D();M.style.inset='auto';M.style.left=(W-d)/2+'px';M.style.top=(H-d)/2+'px';M.style.width=d+'px';M.style.height=d+'px';M.style.transform='rotate('+(-acc).toFixed(2)+'deg)';M.style.transformOrigin='50% 50%'}
+  var r=$('rose');if(r)r.style.setProperty('--r',(-acc).toFixed(1)+'deg');return ch}
+ function after(){try{window.__updVW&&window.__updVW()}catch(e){}if(window.__gpsUpd)window.__gpsUpd()}
+ function resizeMap(){layout();try{map.invalidateSize({animate:false})}catch(e){}after()}
+ function setBear(a){acc=a;if(layout()){try{map.invalidateSize({animate:false})}catch(e){}}after()}
+ /* 클릭·끌기 좌표 보정 */
+ var _m=map.mouseEventToContainerPoint;
+ map.mouseEventToContainerPoint=function(e){if(!acc)return _m.call(this,e);var r=this._container.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2,t=acc*Math.PI/180,sx=e.clientX-cx,sy=e.clientY-cy,h=this._container.clientWidth/2,v=this._container.clientHeight/2;
+  return L.point(h+sx*Math.cos(t)-sy*Math.sin(t),v+sx*Math.sin(t)+sy*Math.cos(t))};
+ var _om=L.Draggable.prototype._onMove;
+ L.Draggable.prototype._onMove=function(e){if(!acc||!this._element||this._element!==map.getPane('mapPane')||!this._startPoint)return _om.call(this,e);
+  var f=(e.touches&&e.touches.length===1)?e.touches[0]:e;if(e.touches&&e.touches.length>1)return _om.call(this,e);
+  var sp=this._startPoint,t=acc*Math.PI/180,dx=f.clientX-sp.x,dy=f.clientY-sp.y,fx=sp.x+dx*Math.cos(t)-dy*Math.sin(t),fy=sp.y+dx*Math.sin(t)+dy*Math.cos(t);
+  var fake={clientX:fx,clientY:fy,target:e.target,srcElement:e.srcElement,type:e.type,touches:null,preventDefault:function(){if(e.preventDefault)e.preventDefault()}};
+  return _om.call(this,fake)};
+ /* 두 손가락 비틀기 */
+ var tw=null;
+ function ang(t){return Math.atan2(t[1].clientY-t[0].clientY,t[1].clientX-t[0].clientX)*180/Math.PI}
+ document.addEventListener('touchstart',function(e){if(e.touches.length===2&&!(window.__cmp&&document.body.classList.contains('cmp'))&&e.target.closest&&e.target.closest('#map')){tw={a:ang(e.touches),acc0:acc,on:false}}else if(e.touches.length!==2)tw=null},{passive:true,capture:true});
+ document.addEventListener('touchmove',function(e){if(!tw||e.touches.length!==2)return;var d=ang(e.touches)-tw.a;while(d>180)d-=360;while(d<-180)d+=360;
+  if(!tw.on){if(Math.abs(d)<12)return;tw.on=true;mode='manual';follow=false;tw.a+=d>0?12:-12;d=ang(e.touches)-tw.a;while(d>180)d-=360;while(d<-180)d+=360;markRose()}
+  var na=tw.acc0-d;setBear(na)},{passive:true,capture:true});
+ document.addEventListener('touchend',function(e){if(e.touches.length<2)tw=null},{passive:true,capture:true});
+ /* 방위 버튼 */
+ var rose=document.createElement('button');rose.id='rose';rose.type='button';rose.setAttribute('aria-label','방위 (누르면 진행 방향 위로 돌리기)');
+ rose.innerHTML='<svg viewBox="0 0 46 46"><circle class="ring" cx="23" cy="23" r="17"/><g class="dial"><polygon class="tn" points="23,9 28,23 18,23"/><polygon class="ts" points="23,37 28,23 18,23"/><text x="23" y="6" text-anchor="middle">N</text></g></svg>';
+ document.body.appendChild(rose);
+ function markRose(){rose.classList.toggle('hd',mode==='head');rose.title=mode==='head'?'진행 방향이 위 (누르면 북쪽 위로)':acc?'눌러서 북쪽을 위로':'눌러서 진행 방향 위로';
+}
+ function toNorth(){mode='north';follow=true;acc=0;markRose();resizeMap()}
+ function headUp(){mode='head';follow=true;markRose();var G=window.__gps&&window.__gps();
+  if(!G||!G.on){$('bGps').click();status('내 위치를 켜고 진행 방향을 위로 맞춥니다. 폰을 들고 걸으면 지도가 돕니다')}
+  else{status('진행 방향이 위로 향합니다');if(G.last)map.setView(G.last,Math.max(map.getZoom(),18));if(G.hdg!=null)setBear(unwrap(G.hdg))}
+  resizeMap()}
+ function unwrap(h){var d=norm(h)-norm(acc);while(d>180)d-=360;while(d<-180)d+=360;return acc+d}
+ rose.onclick=function(){if(mode==='head'||(acc!==0&&mode==='manual'))toNorth();else if(mode==='north')headUp();else toNorth()};
+ map.on('dragstart',function(){if(mode==='head')follow=false});
+ /* GPS에서 방향 받기 */
+ window.__onHeading=function(h,last){if(mode!=='head'||h==null)return;var t=unwrap(h),d=t-acc;if(Math.abs(d)<2)return;setBear(acc+d*.4)};
+ window.__onFix=function(last){if(mode==='head'&&follow&&last)map.panTo(last,{animate:true,duration:.4})};
+ window.addEventListener('resize',function(){if(acc||mode!=='north')resizeMap()});
+ window.__noRot=function(){if(acc||mode!=='north')toNorth()};
+ markRose();layout();
+ window.__rot={set:function(a){mode='manual';setBear(a);markRose()},mode:function(){return mode},acc:function(){return acc}};
 })();
 })();
 
