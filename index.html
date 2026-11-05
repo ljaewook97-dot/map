@@ -1133,6 +1133,9 @@ html[data-oh="1"] #recStrip{bottom:calc(max(14px,env(safe-area-inset-bottom)) + 
 #failBox p{margin:6px 0;font-size:13.5px;line-height:1.5}#failBox ul{margin:6px 0 10px;padding-left:20px;font-size:13.5px;line-height:1.55}
 #failBox pre{font-size:11px;white-space:pre-wrap;word-break:break-all;margin:6px 0 10px;background:var(--bg);padding:8px;border-radius:8px;max-height:110px;overflow:auto}
 #failBox .fb{display:flex;gap:8px;flex-wrap:wrap}#failBox .fb button{flex:1;min-width:90px;height:38px;border:1px solid var(--line);border-radius:10px;background:none;color:var(--fg);font:inherit;font-size:13px;font-weight:700}#failBox .fb button.on{background:var(--acc);color:var(--acc-ink,#fff);border-color:var(--acc)}
+/* ---- v17: 업데이트 내용 ---- */
+#logBody{max-height:60dvh;overflow:auto;font-size:13.5px;line-height:1.5}#logBody h4{margin:12px 0 4px;font-size:13px;color:var(--acc)}#logBody h4:first-child{margin-top:2px}
+#logBody ul{margin:0;padding-left:18px}#logBody li{margin:2px 0}
 </style></head><body>
 <div id="map"></div>
 <div class="bar">
@@ -1172,7 +1175,9 @@ html[data-oh="1"] #recStrip{bottom:calc(max(14px,env(safe-area-inset-bottom)) + 
  </details>
  <details class="vg" data-g="help"><summary>도움말</summary>
  <div class="ph"></div><button class="btn" id="tourOpen" style="width:100%">사용 안내 다시 보기</button>
+ <div class="ph"></div><button class="btn" id="logOpen" type="button" style="width:100%">업데이트 내용</button>
  <div class="ph"></div><button class="btn" id="chkOpen" type="button" style="width:100%">연결 상태 확인</button>
+ <div class="ph">저장 공간</div><div class="sub" id="stTx" style="margin:0 0 6px;font-size:12px">확인 중…</div><button class="btn" id="stClr" type="button" style="width:100%">지도 그림 저장분 비우기</button><div class="sub" style="margin:4px 0 0;font-size:11px">메모·경로·그림·즐겨찾기는 지워지지 않습니다.</div>
  </details>
 </div>
 <div id="toolPop" hidden>
@@ -1221,6 +1226,7 @@ html[data-oh="1"] #recStrip{bottom:calc(max(14px,env(safe-area-inset-bottom)) + 
  <div class="cm" id="cmpMsg"></div>
  <div><small>화면 나누기 (가운데 선을 끌어 조절)</small><div id="cmpSplit"><button data-s="50" type="button">반반 비교</button><button data-s="0" type="button">오른쪽만 전체</button></div></div></div>
 <div id="quick"><button data-q="tMeas" aria-label="측정"></button><button data-q="tSel" aria-label="필지 선택"></button><button data-q="tDrw" aria-label="그리기"></button></div>
+<div class="modal" id="logModal" hidden><div class="box"><h3 style="margin:0 0 6px">업데이트 내용</h3><div id="logBody"></div><div style="display:flex;justify-content:flex-end;margin-top:10px"><button class="btn on" id="logX" type="button">닫기</button></div></div></div>
 <div class="modal" id="tourModal" hidden><div class="box tour"><div class="tk" id="tkIc"></div><h3 id="tkT"></h3><p id="tkP"></p><div class="tdots" id="tkD"></div><div style="display:flex;gap:8px"><button class="btn" id="tkPrev">이전</button><span style="flex:1"></span><button class="btn" id="tkSkip">건너뛰기</button><button class="btn on" id="tkNext">다음</button></div></div></div>
 <div class="modal" id="prjModal" hidden><div class="box" style="max-height:88%;overflow:auto">
  <h3 style="margin:0 0 4px">프로젝트</h3><p class="sub" style="margin:0 0 8px">지도 위치·배경·레이어 켜기/순서·스타일·올린 SHP를 이름 붙여 저장하고, 나중에 불러옵니다. 이 기기·브라우저에 저장됩니다.</p>
@@ -1302,7 +1308,7 @@ var LS=window.localStorage;function g(k,d){try{var v=LS.getItem(k);return v==nul
  if(o.m!=null){var mm={};o.m.split(',').forEach(function(i){if(i)mm[i]=true});s('muniOn',mm)}
  history.replaceState(null,'',location.pathname+location.search)}catch(e){}})();
 var KEY=g('key',''),DOM=g('dom',location.hostname||'localhost');
-var BUILD="2611060521";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
+var BUILD="2611060527";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
 applyTheme(THEME);
 var BASE=g('base','Base');if(['Base','Satellite','SatLabel','white','none'].indexOf(BASE)<0)BASE='Base';
 // 레이어: id, 이름, 표시 WMS 이름, 조회용 data 코드
@@ -2167,11 +2173,16 @@ window.__fld={parseLL:parseLL};
   c:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17L17 3l4 4L7 21z"/><path d="M7 13l2 2M10 10l2 2M13 7l2 2"/></svg>',
   d:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="18" r="2"/><circle cx="18" cy="6" r="2"/><path d="M8 18h6a3 3 0 0 0 0-6h-4a3 3 0 0 1 0-6h6"/></svg>',
   e:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/></svg>'};
+ IC.f='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/></svg>';IC.g='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>';IC.h='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M12 4v16"/><path d="M7 9h2M15 12h2"/></svg>';IC.i='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5L19 19M5 19l1.5-1.5M17.5 6.5L19 5"/></svg>';IC.j='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/><circle cx="12" cy="12" r="10"/></svg>';
  var SL=[['a','필지를 눌러 보세요','지도에서 필지를 누르면 주소, 지목·면적, 소유, 공시지가가 나옵니다. 레이어를 켜 두면 용도지역·시설이 필지 안에서 차지하는 면적 비율도 함께 보여 줍니다.'],
-  ['b','레이어와 범례','오른쪽 \'레이어\'에서 지적, 용도지역, 시설 등을 켜고 끕니다. 켜 둔 레이어만 조회됩니다. 지적은 화면 가로 약 1km 이내로 확대하면 나옵니다.'],
-  ['c','측정 · 필지 선택 · 그리기','왼쪽 아래 둥근 버튼 세 개로 바로 쓸 수 있습니다. 여러 필지를 골라 면적 합계를 보고, 선과 면, 글을 그려 넣을 수 있습니다.'],
+  ['g','검색','위쪽 검색창에 동 이름만 써도 후보가 뜹니다. 검색창을 누르면 최근 검색과 최근 본 필지가 나오고, 앱을 켤 때는 아래에 최근 본 필지가 작게 나옵니다.'],
+  ['b','레이어와 범례','오른쪽 \'레이어\'에서 지적, 용도지역, 시설 등을 켜고 끕니다. 켜 둔 레이어만 조회됩니다. 지적은 화면 가로 약 1km 이내로 확대하면 나옵니다. 지번은 확대할수록 작은 필지까지 보입니다.'],
+  ['c','측정 · 필지 선택 · 그리기','왼쪽 아래 둥근 버튼 세 개로 바로 쓸 수 있습니다. 여러 필지를 골라 면적 합계를 보고, 선과 면, 글을 그려 넣을 수 있습니다. 창이 열려 있어도 버튼은 창 위에 떠 있습니다.'],
+  ['f','내 위치와 방위','\'내 위치\' 버튼을 누르면 파란 점과 오차 원이 나오고, 필지를 누르면 내 위치에서 그 필지까지의 방향과 거리가 나옵니다. 왼쪽 위 방위 버튼을 누르면 폰이 향한 방향이 위가 되도록 지도가 돌고, 두 손가락으로 비틀어 직접 돌릴 수도 있습니다.'],
   ['d','현장 기록','도구에서 메모 핀을 켜고 지도를 눌러 글과 사진을 남기세요. 경로 기록을 켜면 이동 선이 그려지고, \'사진\' 버튼으로 찍은 사진이 그 자리에 붙습니다. 모은 기록은 zip으로 내보냅니다.'],
-  ['e','내 폰에 맞게','\'화면\' 메뉴에서 색상과 글자 크기를 바꿀 수 있습니다. 브라우저 메뉴의 \'홈 화면에 추가\'로 앱처럼 설치하면 신호가 약한 곳에서도 열립니다.']];
+  ['h','지도 비교 · 과거 사진','\'화면\' 메뉴의 \'조작\'에서 지도 비교를 열면 화면이 둘로 나뉩니다. 왼쪽은 지금 지도, 오른쪽은 과거 항공사진·위성·일반 중에서 고르고, 가운데 선을 끌어 비교합니다. 과거 사진은 Esri 보관본입니다.'],
+  ['i','내 폰에 맞게','\'화면\' 메뉴에서 색상, 글자 크기, 지도 위 지번 크기를 바꿉니다. 밝기 자동 조절은 낮에는 진하게, 밤에는 어둡게 바꿔 주고, 한 손 조작을 켜면 버튼이 아래로 모입니다. \'홈 화면에 추가\'로 앱처럼 설치하면 신호가 약한 곳에서도 열립니다.'],
+  ['j','안 불러와질 때','위에 빨간 \'불러오기 실패\'가 뜨면 눌러서 원인(인증키·차단·시간초과 등)과 해결 방법을 보세요. \'화면\' 메뉴의 도움말에서 \'연결 상태 확인\'을 누르면 서버별 연결 상태를 한눈에 볼 수 있습니다.']];
  var ti=0,M=$('tourModal');function tShow(){var d=SL[ti];$('tkIc').innerHTML=IC[d[0]];$('tkT').textContent=d[1];$('tkP').textContent=d[2];$('tkD').innerHTML=SL.map(function(_,i){return '<i'+(i===ti?' class="on"':'')+'></i>'}).join('');$('tkPrev').style.visibility=ti?'visible':'hidden';$('tkNext').textContent=ti===SL.length-1?'시작하기':'다음';$('tkSkip').style.display=ti===SL.length-1?'none':''}
  function tClose(){M.hidden=true;s('tour',1)}function tOpen(){ti=0;tShow();M.hidden=false}
  $('tkPrev').onclick=function(){if(ti>0){ti--;tShow()}};$('tkNext').onclick=function(){if(ti<SL.length-1){ti++;tShow()}else tClose()};$('tkSkip').onclick=tClose;
@@ -2466,6 +2477,31 @@ window.__fld={parseLL:parseLL};
   bx.innerHTML=h;bx.hidden=false;
   $('fbRetry').onclick=function(){bx.hidden=true;$('bRef').click()};$('fbNet').onclick=function(){bx.hidden=true;$('chkOpen').click()};$('fbX').onclick=function(){bx.hidden=true}};
  window.__diag=diag})();
+/* v17: 업데이트 내용 · 저장 공간 */
+(function(){var $=function(i){return document.getElementById(i)};
+ var LOGV='2026-11-05c',CH=[
+  ['2026.11.05 (오후)',['내 위치: 오차 원, 방위, 선택 필지까지 방향·거리, 진행 방향 위로 돌리기(왼쪽 위 방위 버튼, 두 손가락 비틀기)','지도 비교(좌우 분할)와 과거 항공사진(Esri 보관본)','검색: 최근 검색·최근 본 필지, 동 이름 후보','야간 지도 어둡게, 밝기 자동 조절(햇빛·밤), 한 손 조작','불러오는 중 표시, 실패 원인 보기, 연결 상태 확인','지번 글자 바로 세우기·겹침 줄이기, 지도 글자 크기 3단계','시작할 때 내 위치로 이동, 시작 화면 최근 본 필지','화면 메뉴를 보기·조작·도움말로 정리, 처음 안내 갱신','저장 공간 확인·비우기, 오래된 지도 그림 자동 정리']],
+  ['2026.11.05 (낮)',['필지를 누르면 용도지역·시설 면적 비율 표시','왼쪽 아래 빠른 도구 버튼(측정·필지 선택·그리기)','글자 크기 선택, 처음 쓰는 사람용 안내']],
+  ['이전',['메모 핀(사진 포함), 경로 기록, 즐겨찾기·최근, 좌표 붙여넣기 이동','오프라인 저장, 홈 화면 설치, 새로고침 버튼, 색상 테마, 지구단위계획구역 표시','지적 불완전 로딩 수정, 지적 범위 1km']]];
+ $('logBody').innerHTML=CH.map(function(c){return '<h4>'+esc(c[0])+'</h4><ul>'+c[1].map(function(x){return '<li>'+esc(x)+'</li>'}).join('')+'</ul>'}).join('');
+ function openLog(){$('viewPop').hidden=true;try{$('bView').classList.remove('on')}catch(e){}$('logModal').hidden=false;s('logSeen',LOGV)}
+ $('logOpen').onclick=openLog;$('logX').onclick=function(){$('logModal').hidden=true};
+ if(g('tour',0)&&g('logSeen','')!==LOGV&&KEY)setTimeout(function(){if($('keyModal').hidden&&$('tourModal').hidden){status('새 기능이 있어요 · 화면 → 도움말 → 업데이트 내용');s('logSeen',LOGV)}},3500);
+ /* 저장 공간 */
+ var TC='ddm-tiles-v1';
+ function mb(b){return (b/1048576).toFixed(b>1e8?0:1)+'MB'}
+ function info(){var t=$('stTx');if(!window.caches){t.textContent='이 브라우저는 저장 공간 확인을 지원하지 않습니다';return}
+  caches.open(TC).then(function(c){return c.keys()}).then(function(ks){var n=ks.length;return (navigator.storage&&navigator.storage.estimate?navigator.storage.estimate():Promise.resolve({})).then(function(e){
+   t.textContent='지도 그림 '+n.toLocaleString('ko-KR')+'장 저장됨'+(e&&e.usage?' · 앱 전체 약 '+mb(e.usage):'')+(e&&e.quota?' (사용 가능 약 '+mb(e.quota)+')':'')+' · 가득 차면 오래된 것부터 자동 정리'})}).catch(function(){t.textContent='저장 공간을 확인하지 못했습니다'})}
+ $('stClr').onclick=function(){if(!window.caches)return;caches.delete(TC).then(function(){status('저장된 지도 그림을 비웠습니다');info()})};
+ /* 앱을 켤 때 너무 많이 쌓였으면 오래된 것부터 정리 (서비스 워커가 못 한 경우 대비) */
+ function trim(){if(!window.caches)return;caches.open(TC).then(function(c){return c.keys().then(function(ks){return (navigator.storage&&navigator.storage.estimate?navigator.storage.estimate():Promise.resolve({})).then(function(e){
+  var lim=1500;if(e&&e.quota&&e.usage/e.quota>.6)lim=500;else if(e&&e.usage>3e8)lim=700;
+  if(ks.length>lim){var cut=ks.length-lim+Math.min(100,lim/5|0);ks.slice(0,cut).forEach(function(k){c.delete(k)})}})})}).catch(function(){})}
+ setTimeout(trim,4000);
+ var vp=$('viewPop'),bv=$('bView');bv.addEventListener('click',function(){setTimeout(function(){if(!vp.hidden)info()},50)});
+ $('tourOpen').addEventListener('click',function(){});
+ window.__stInfo=info})();
 })();
 
 </script></body></html>
