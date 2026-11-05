@@ -805,8 +805,8 @@ body{letter-spacing:-.01em}
 #muniChips .mc .mv:active{background:var(--acc2)}
 
 /* ---- v4: tools ---- */
-#toolPop{position:absolute;z-index:1001;right:calc(max(10px,env(safe-area-inset-right)) + 62px);top:calc(max(10px,env(safe-area-inset-top)) + 46px + 6px + 40px + 8px);width:min(330px,calc(100vw - 90px));max-height:calc(100dvh - 170px);overflow:auto;background:var(--card);border-radius:var(--r);box-shadow:0 10px 32px #0005,0 0 0 1px #00000012;padding:14px;overscroll-behavior:contain}
-#toolPop .ph{font-size:11.5px;font-weight:800;letter-spacing:.04em;color:var(--mut);margin:0 0 8px}
+#toolPop,#viewPop{position:absolute;z-index:1001;right:calc(max(10px,env(safe-area-inset-right)) + 62px);top:calc(max(10px,env(safe-area-inset-top)) + 46px + 6px + 40px + 8px);width:min(330px,calc(100vw - 90px));max-height:calc(100dvh - 170px);overflow:auto;background:var(--card);border-radius:var(--r);box-shadow:0 10px 32px #0005,0 0 0 1px #00000012;padding:14px;overscroll-behavior:contain}
+#toolPop .ph,#viewPop .ph{font-size:11.5px;font-weight:800;letter-spacing:.04em;color:var(--mut);margin:0 0 8px}
 .opts3{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
 .opts3 button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;height:62px;border:1px solid var(--line);border-radius:12px;background:var(--bg);color:var(--fg);font:inherit;font-size:20px;line-height:1}
 .opts3 button b{font-size:12px;font-weight:700}.opts3 button.on{background:var(--acc);border-color:var(--acc);color:#fff}
@@ -845,10 +845,10 @@ body{font-size:13px;letter-spacing:0}
 .tool{width:44px;height:42px;border-radius:9px;gap:1px}.tool svg{width:19px;height:19px}.tool span{font-size:9.5px;font-weight:600}
 .tool.on{background:var(--acc2);color:var(--acc)}
 /* 팝업 공통 */
-#mapPop,#toolPop{border-radius:12px;box-shadow:var(--pop);padding:12px;top:calc(max(8px,env(safe-area-inset-top)) + 42px + 6px + 34px + 6px);max-height:min(62dvh,calc(100dvh - 150px))}
+#mapPop,#toolPop,#viewPop{border-radius:12px;box-shadow:var(--pop);padding:12px;top:calc(max(8px,env(safe-area-inset-top)) + 42px + 6px + 34px + 6px);max-height:min(62dvh,calc(100dvh - 150px))}
 #mapPop{left:max(8px,env(safe-area-inset-left));width:min(340px,calc(100vw - 16px - 58px))}
-#toolPop{right:calc(max(8px,env(safe-area-inset-right)) + 54px);width:min(300px,calc(100vw - 16px - 58px))}
-#mapPop .ph,#toolPop .ph{font-size:11.5px;font-weight:600;letter-spacing:0;text-transform:none;color:var(--mut);margin:0 0 6px}
+#toolPop,#viewPop{right:calc(max(8px,env(safe-area-inset-right)) + 54px);width:min(300px,calc(100vw - 16px - 58px))}
+#mapPop .ph,#toolPop .ph,#viewPop .ph{font-size:11.5px;font-weight:600;letter-spacing:0;text-transform:none;color:var(--mut);margin:0 0 6px}
 /* 세그먼트 */
 #mapPop .opts,#themeSeg{display:flex;grid-template-columns:none;gap:0;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--bg)}
 #mapPop .opts button,#themeSeg button{flex:1 1 auto;height:34px;border:0;border-left:1px solid var(--line);border-radius:0;background:none;color:var(--fg);font:inherit;font-size:12.5px;font-weight:500;padding:0 6px;white-space:nowrap}
@@ -921,8 +921,8 @@ a.xl{height:30px;padding:0 10px;font-size:12px;font-weight:500;border-radius:8px
  .srch{max-width:560px;height:46px}.srch input{font-size:15px}.srch .go{height:34px;font-size:13.5px}
  .seg button#bMap{height:38px;font-size:14px;padding:0 13px}
  .rail{padding:4px}.tool{width:54px;height:52px}.tool svg{width:21px;height:21px}.tool span{font-size:10.5px}
- #mapPop,#toolPop{top:calc(12px + 46px + 6px + 38px + 6px);font-size:14px}
- #mapPop{width:380px}#toolPop{width:340px;right:calc(14px + 64px)}
+ #mapPop,#toolPop,#viewPop{top:calc(12px + 46px + 6px + 38px + 6px);font-size:14px}
+ #mapPop{width:380px}#toolPop,#viewPop{width:340px;right:calc(14px + 64px)}
  #mapPop .opts button,#themeSeg button{height:38px;font-size:13.5px}
  #muniChips .mc .chip{height:42px;font-size:14px}
  .lr .chip,.lr .chip.on{height:40px;font-size:14px}
@@ -971,12 +971,21 @@ body.hasbar .rail #bGps{bottom:calc(max(14px,env(safe-area-inset-bottom)) + 226p
 :root[data-pal=graphite]{--bg:#f3f3f5;--fg:#1c1c20;--mut:#6b6b78;--card:#ffffff;--line:#d9d9e0;--acc:#2f3e55;--acc2:#e6e9ef;--acc-ink:#ffffff}
 @media (prefers-color-scheme:dark){:root[data-pal=graphite]:not([data-theme=light]){--bg:#121214;--fg:#ececf1;--mut:#9a9aa8;--card:#26262c;--line:#3a3a44;--acc:#5eb1ff;--acc2:#34343c;--acc-ink:#06213a;color-scheme:dark}}
 :root[data-pal=graphite][data-theme=dark]{--bg:#121214;--fg:#ececf1;--mut:#9a9aa8;--card:#26262c;--line:#3a3a44;--acc:#5eb1ff;--acc2:#34343c;--acc-ink:#06213a;color-scheme:dark}
-html .btn.on,html .srch .go,html .opts3 button.on,html .tool.on,html .ftabs button.on{color:var(--acc-ink,#fff)}
+html .btn.on,html .srch .go,html .opts3 button.on,html .ftabs button.on{color:var(--acc-ink,#fff)}
+html .tool.on{background:var(--acc2);color:var(--acc)}
 html .mmp i{color:var(--acc-ink,#fff)}
-#palSeg{display:flex;flex-wrap:wrap;gap:6px}
-#palSeg button{display:flex;align-items:center;gap:6px;height:34px;padding:0 11px 0 8px;border:1px solid var(--line);border-radius:999px;background:var(--bg);color:var(--fg);font:inherit;font-size:12.5px;font-weight:600}
-#palSeg button i{width:14px;height:14px;border-radius:50%;box-shadow:inset 0 0 0 1px #0003}
-#palSeg button.on{border-color:var(--acc);box-shadow:0 0 0 1px var(--acc)}
+#palSeg{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+#palSeg button{display:flex;flex-direction:column;align-items:stretch;gap:6px;padding:6px 6px 7px;border:1px solid var(--line);border-radius:12px;background:var(--bg);color:var(--fg);font:inherit;font-size:12px;font-weight:700;text-align:center}
+#palSeg button i{display:block;height:34px;border-radius:8px;box-shadow:inset 0 0 0 1px #0002}
+#palSeg button.on{border-color:var(--acc);box-shadow:0 0 0 1.5px var(--acc)}
+#viewPop .ph:not(:first-child){margin-top:16px}
+
+/* ---- v10: 다듬기 ---- */
+.srch,.seg button#bMap{background:color-mix(in srgb,var(--card) 94%,transparent);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+.tool.on{box-shadow:0 2px 8px color-mix(in srgb,var(--acc) 40%,transparent)}
+#viewPop .ph,#toolPop .ph,#mapPop .ph{display:flex;align-items:center;gap:7px;font-weight:700;color:var(--fg)}
+#viewPop .ph:before,#toolPop .ph:before,#mapPop .ph:before{content:"";width:3px;height:12px;border-radius:2px;background:var(--acc)}
+.sheet,#viewPop,#toolPop,#mapPop{border:1px solid color-mix(in srgb,var(--line) 70%,transparent)}
 /* ---- v7: 현장 기록(메모 핀·경로·즐겨찾기) ---- */
 #toolPop .opts3.o2{margin-top:6px}
 .mmp{width:0!important;height:0!important;margin:0!important;background:none!important;border:0!important}
@@ -1007,6 +1016,7 @@ html .mmp i{color:var(--acc-ink,#fff)}
   <button class="tool" id="bLayers"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l9 5-9 5-9-5 9-5z"/><path d="M3 13l9 5 9-5"/></svg><span>레이어</span></button>
   <button class="tool" id="bLeg"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h13M8 12h13M8 18h13"/><circle cx="4" cy="6" r="1"/><circle cx="4" cy="12" r="1"/><circle cx="4" cy="18" r="1"/></svg><span>범례</span></button>
   <button class="tool" id="bGps"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><circle cx="12" cy="12" r="8"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg><span>내 위치</span></button><button class="tool" id="bRef"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 4v7h-7"/></svg><span>새로고침</span></button>
+  <button class="tool" id="bView" aria-haspopup="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a9 9 0 1 0 0 18c1.2 0 2-.8 2-1.8 0-1-.6-1.4-.6-2.3 0-.9.7-1.6 1.6-1.6H17a4 4 0 0 0 4-4C21 6.7 17 3 12 3z"/><circle cx="7.5" cy="11" r="1"/><circle cx="10" cy="7.5" r="1"/><circle cx="14.5" cy="7.5" r="1"/></svg><span>화면</span></button>
   <button class="tool" id="bTool" aria-haspopup="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-2.5-.5-.5-2.5z"/></svg><span>도구</span></button>
   <button class="tool" id="bPrj"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3h11l3 3v15H5z"/><path d="M8 3v6h7V3M8 21v-7h8v7"/></svg><span>프로젝트</span></button>
   <button class="tool" id="bKey"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg><span>설정</span></button>
@@ -1018,7 +1028,10 @@ html .mmp i{color:var(--acc-ink,#fff)}
   <div class="ph" style="margin-top:12px">지자체 고해상도 영상</div>
 <div id="muniBox"><div class="sub" style="margin:0 0 6px">해당 구역에서만 지자체 영상이 나옵니다.</div><div id="muniChips"></div><div id="muniMsg" class="sub"></div>
 <details style="margin-top:6px"><summary class="sub" style="cursor:pointer;margin:0">지자체 주소 직접 추가</summary><div style="margin-top:6px"><input id="muName" placeholder="이름 (예: 파주시)" style="width:100%;font:inherit;padding:7px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--fg);margin-bottom:6px"><input id="muUrl" placeholder="서비스 주소 (…/MapServer/tile/{z}/{y}/{x} 또는 …/export?… 또는 WMS GetMap)" style="width:100%;font:inherit;padding:7px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--fg);margin-bottom:6px"><button class="btn" id="muAdd" style="padding:6px 10px">추가</button></div></details></div>
- <div class="ph" style="margin-top:12px">화면 테마</div><div id="themeSeg"><button data-th="auto">자동</button><button data-th="light">밝게</button><button data-th="dark">어둡게</button></div>
+ 
+</div>
+<div id="viewPop" hidden>
+ <div class="ph">화면 테마</div><div id="themeSeg"><button data-th="auto">자동</button><button data-th="light">밝게</button><button data-th="dark">어둡게</button></div>
  <div class="ph" style="margin-top:12px">색상</div><div id="palSeg"></div>
 </div>
 <div id="toolPop" hidden>
@@ -1138,7 +1151,7 @@ var LS=window.localStorage;function g(k,d){try{var v=LS.getItem(k);return v==nul
  if(o.m!=null){var mm={};o.m.split(',').forEach(function(i){if(i)mm[i]=true});s('muniOn',mm)}
  history.replaceState(null,'',location.pathname+location.search)}catch(e){}})();
 var KEY=g('key',''),DOM=g('dom',location.hostname||'localhost');
-var BUILD="2611060328";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
+var BUILD="2611060337";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
 applyTheme(THEME);
 var BASE=g('base','Base');if(['Base','Satellite','SatLabel','white','none'].indexOf(BASE)<0)BASE='Base';
 // 레이어: id, 이름, 표시 WMS 이름, 조회용 data 코드
@@ -1234,7 +1247,7 @@ function axisAng(r){var best=0,ba=1e18,al=0;for(var a=0;a<180;a+=5){var t=a*Math
 function obbHit(A,B){function ax(P){var out=[];for(var i=0;i<4;i++){var j=(i+1)%4,dx=P[j][0]-P[i][0],dy=P[j][1]-P[i][1];out.push([-dy,dx])}return out}
  var axes=ax(A).concat(ax(B));for(var k=0;k<axes.length;k++){var u=axes[k],a0=1e18,a1=-1e18,b0=1e18,b1=-1e18;A.slice(0,4).forEach(function(p){var d=p[0]*u[0]+p[1]*u[1];if(d<a0)a0=d;if(d>a1)a1=d});B.slice(0,4).forEach(function(p){var d=p[0]*u[0]+p[1]*u[1];if(d<b0)b0=d;if(d>b1)b1=d});if(a1<b0||b1<a0)return false}return true}
 function txtW(t){var w=4;for(var i=0;i<t.length;i++){var ch=t[i];w+=/[0-9]/.test(ch)?6.8:ch==='-'?4.5:11.5}return w}
-var STY=g('sty',{}),DEF={dist:{color:'#e60000',weight:2.5,opacity:1,dash:'16 4 3 4 3 4'},cad:{color:'#ffb020',weight:1,opacity:.9,dash:'',fs:11,fc:'#ffffff'},own:{kuk:'#0b57ff',gong:'#a020c8',fillOpacity:.2,weight:1.6},fac:{line:'',weight:1.5,opacity:.9,fillOpacity:.35},wms:{opacity:.55}};
+var STY=g('sty',{}),DEF={dist:{color:'#e60000',weight:2.5,opacity:1,dash:'16 4 3 4 3 4',fillOpacity:.12},cad:{color:'#ffb020',weight:1,opacity:.9,dash:'',fs:11,fc:'#ffffff'},own:{kuk:'#0b57ff',gong:'#a020c8',fillOpacity:.2,weight:1.6},fac:{line:'',weight:1.5,opacity:.9,fillOpacity:.35},wms:{opacity:.55}};
 function isDk(){return THEME==='dark'||(THEME==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches)}
 function autoCad(){return (BASE==='Satellite'||BASE==='SatLabel'||(BASE==='none'&&isDk()))?'#ffe14d':'#c2185b'}
 function S_(id){var d=DEF[id]||DEF.wms,o={},k;for(k in d)o[k]=d[k];var u=STY[id]||{};for(k in u)o[k]=u[k];if(id==='cad'&&!u.color)o.color=autoCad();return o}
@@ -1290,8 +1303,8 @@ function doOwn(seq){var z=map.getZoom();
   for(var i=0;i<8;i++)next()})}
 function doDist(seq){var z=map.getZoom();if(!lay('dist').on||!KEY||z<13){lst('dist',lay('dist').on&&KEY?'확대 필요':'');swapG('dist',L.layerGroup());return}
  lst('dist','조회 중…');getFeats('LT_C_UPISUQ161',1000,function(fs){if(seq!==vecSeq)return;if(fs===null){lst('dist','조회 실패');return}lst('dist','');var o=S_('dist'),ng=L.layerGroup();
-  visF(fs).forEach(function(x){L.geoJSON(x.geometry,{interactive:false,renderer:RN.dist,style:{color:o.color,weight:o.weight,opacity:o.opacity,dashArray:o.dash||null,fill:false,lineCap:'butt',lineJoin:'round'}}).addTo(ng)});swapG('dist',ng)})}
-function reDist(){var c=S_('dist');GG.dist.eachLayer(function(l){l.setStyle({color:c.color,weight:c.weight,opacity:c.opacity,dashArray:c.dash||null})})}
+  visF(fs).forEach(function(x){L.geoJSON(x.geometry,{interactive:false,renderer:RN.dist,style:{color:o.color,weight:o.weight,opacity:o.opacity,dashArray:o.dash||null,fill:true,fillColor:o.color,fillOpacity:o.fillOpacity,lineCap:'butt',lineJoin:'round'}}).addTo(ng)});swapG('dist',ng)})}
+function reDist(){var c=S_('dist');GG.dist.eachLayer(function(l){l.setStyle({color:c.color,fillColor:c.color,fillOpacity:c.fillOpacity,weight:c.weight,opacity:c.opacity,dashArray:c.dash||null})})}
 function doVec(){var seq=++vecSeq;status('');rootVars();if(!KEY)return;doCad(seq);doFac(seq);doOwn(seq);doDist(seq)}
 function reOwn(){var o=S_('own');GG.own.eachLayer(function(l){if(l._cls){var c=l._cls==='국유지'?o.kuk:o.gong;l.setStyle({color:c,fillColor:c,fillOpacity:o.fillOpacity,weight:o.weight})}})}
 function reCad(){var c=S_('cad');GG.cad.eachLayer(function(l){l.setStyle({color:c.color,weight:c.weight,opacity:c.opacity,dashArray:c.dash||null})})}
@@ -1309,7 +1322,7 @@ function builtinPanel(id){var p=document.createElement('div');p.className='sty';
   line('번호 크기',rng('fs',9,16,1,px,refreshVec));line('번호 색',colr('fc'))}
  else if(id==='own'){line('국유지 색',colr('kuk'));line('공유지 색',colr('gong'));line('면 투명도',rng('fillOpacity',5,100,5,pct));line('외곽선 두께',rng('weight',0,3,0.5,px))}
  else if(id==='fac'){var lc=colr('line');line('선 색',lc);var rb=document.createElement('button');rb.className='ab';rb.textContent='범례색';rb.style.cssText='min-width:50px;height:26px;font-size:12px';rb.onclick=function(){setSty('fac','line','');reFac();renderLayerUI()};p.lastChild.appendChild(rb);line('선 두께',rng('weight',0.5,5,0.5,px));line('선 투명도',rng('opacity',10,100,5,pct));line('면 투명도',rng('fillOpacity',5,100,5,pct))}
- else if(id==='dist'){line('색',colr('color'));line('선 두께',rng('weight',1,6,0.5,px));var sd=document.createElement('select');Object.keys(DASH).forEach(function(k){var o=document.createElement('option');o.textContent=k;o.value=DASH[k];if(DASH[k]===(st.dash||''))o.selected=true;sd.appendChild(o)});sd.onchange=function(){setSty('dist','dash',sd.value);reDist()};line('선 종류',sd)}
+ else if(id==='dist'){line('색',colr('color'));line('면 투명도',rng('fillOpacity',0,40,2,pct));line('선 두께',rng('weight',1,6,0.5,px));var sd=document.createElement('select');Object.keys(DASH).forEach(function(k){var o=document.createElement('option');o.textContent=k;o.value=DASH[k];if(DASH[k]===(st.dash||''))o.selected=true;sd.appendChild(o)});sd.onchange=function(){setSty('dist','dash',sd.value);reDist()};line('선 종류',sd)}
  else{line('투명도',rng('opacity',10,100,5,pct))}
  var rs=document.createElement('button');rs.className='ab';rs.textContent='기본값으로';rs.style.cssText='margin-top:4px;height:26px;font-size:12px;padding:0 10px';rs.onclick=function(){delete STY[id];s('sty',STY);reAny(id);rootVars();if(id==='cad')refreshVec();renderLayerUI()};p.appendChild(rs);return p}
 map.on('moveend',refreshVec);
@@ -1936,10 +1949,15 @@ window.__fld={parseLL:parseLL};
 })();
 
 /* 색상 선택 */
-(function(){var PS={"navy": "딸깍 블루", "green": "초록", "plum": "자두", "sand": "모래", "rose": "로즈", "graphite": "차콜"},SW={"navy": "#4cc3ff", "green": "#2fae86", "plum": "#c08bff", "sand": "#ffb066", "rose": "#ff7aa8", "graphite": "#5eb1ff"},box=document.getElementById('palSeg');
+(function(){var SB={navy:'#182a44',green:'#1b2622',plum:'#2e2144',sand:'#33281f',rose:'#38222c',graphite:'#26262c'},PS={"navy": "딸깍 블루", "green": "초록", "plum": "자두", "sand": "모래", "rose": "로즈", "graphite": "차콜"},SW={"navy": "#4cc3ff", "green": "#2fae86", "plum": "#c08bff", "sand": "#ffb066", "rose": "#ff7aa8", "graphite": "#5eb1ff"},box=document.getElementById('palSeg');
  function cur(){return document.documentElement.getAttribute('data-pal')||'navy'}
  function mark(){var c=cur();[].forEach.call(box.children,function(b){b.classList.toggle('on',b.dataset.p===c)})}
- Object.keys(PS).forEach(function(k){var b=document.createElement('button');b.dataset.p=k;b.innerHTML='<i style="background:'+SW[k]+'"></i>'+PS[k];b.onclick=function(){document.documentElement.setAttribute('data-pal',k);s('pal',k);mark();try{refreshVec()}catch(e){}};box.appendChild(b)});mark()})();
+ Object.keys(PS).forEach(function(k){var b=document.createElement('button');b.dataset.p=k;b.innerHTML='<i style="background:linear-gradient(135deg,'+SB[k]+' 52%,'+SW[k]+' 52%)"></i>'+PS[k];b.onclick=function(){document.documentElement.setAttribute('data-pal',k);s('pal',k);mark();try{refreshVec()}catch(e){}};box.appendChild(b)});mark()})();
+/* 화면 설정 팝업 */
+(function(){var $=function(i){return document.getElementById(i)},b=$('bView'),pp=$('viewPop');function open(v){pp.hidden=!v;b.setAttribute('aria-expanded',v?'true':'false');b.classList.toggle('on',v);if(v){$('mapPop').hidden=true;$('toolPop').hidden=true;$('bMap').setAttribute('aria-expanded','false');$('bTool').setAttribute('aria-expanded','false')}}
+ b.onclick=function(e){e.stopPropagation();open(pp.hidden)};
+ document.addEventListener('pointerdown',function(e){if(!pp.hidden&&!pp.contains(e.target)&&!b.contains(e.target))open(false)},true);
+ $('bMap').addEventListener('click',function(){open(false)});$('bTool').addEventListener('click',function(){open(false)})})();
 })();
 
 </script></body></html>
