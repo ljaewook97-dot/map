@@ -1076,6 +1076,8 @@ html[data-oh="1"] #oh1{display:none}
 #cmpPanel .cs{display:flex;align-items:center;gap:6px}#cmpPanel .cs button{flex:0 0 36px;height:34px;border:1px solid var(--line);border-radius:9px;background:none;color:var(--fg);font:inherit}
 #cmpPanel input[type=range]{flex:1;min-width:0}#cmpPanel .cm{font-size:12px;color:var(--mut);min-height:16px}#cmpPanel .cm.w{color:#c0392b}
 #cmpDate{font-weight:800;font-size:15px;color:var(--fg)}
+#cmpAl{display:flex;gap:6px;margin-top:4px}#cmpAl button{flex:1;padding:9px 6px;border-radius:10px;border:1px solid var(--line,#8884);background:transparent;color:inherit;font:inherit;font-size:13px}#cmpAl button.on{background:var(--acc);color:#fff;border-color:var(--acc)}
+#alPad{position:fixed;inset:0;z-index:1200;touch-action:none;cursor:move;background:rgba(80,160,255,.08);outline:3px dashed var(--acc);outline-offset:-3px}
 #cmpBar{position:absolute;z-index:1100;top:0;bottom:0;left:50%;width:44px;margin-left:-22px;touch-action:none;cursor:ew-resize}
 #cmpBar[hidden]{display:none}#cmpBar:before{content:"";position:absolute;left:21px;top:0;bottom:0;width:2px;background:#fff;box-shadow:0 0 0 1px #0005}
 #cmpBar i{position:absolute;left:4px;top:50%;margin-top:-18px;width:36px;height:36px;border-radius:50%;background:#fff;box-shadow:0 2px 8px #0006;display:flex;align-items:center;justify-content:center;font-style:normal;color:#334;font-size:14px}
@@ -1224,7 +1226,8 @@ html[data-oh="1"] #recStrip{bottom:calc(max(14px,env(safe-area-inset-bottom)) + 
  <div><small>오른쪽 화면</small><div id="cmpSeg"><button data-m="past" type="button">과거 항공사진</button><button data-m="Satellite" type="button">위성</button><button data-m="Base" type="button">일반</button></div></div>
  <div id="cmpPastRow"><small>촬영(보관) 시점</small><div id="cmpDate">—</div><div class="cs"><button id="cmpPrev" type="button">◀</button><input type="range" id="cmpRng" min="0" max="0" value="0"><button id="cmpNext" type="button">▶</button></div></div>
  <div class="cm" id="cmpMsg"></div>
- <div><small>화면 나누기 (가운데 선을 끌어 조절)</small><div id="cmpSplit"><button data-s="50" type="button">반반 비교</button><button data-s="0" type="button">오른쪽만 전체</button></div></div></div>
+ <div><small>화면 나누기 (가운데 선을 끌어 조절)</small><div id="cmpSplit"><button data-s="50" type="button">반반 비교</button><button data-s="0" type="button">오른쪽만 전체</button></div></div>
+ <div><small>위치 어긋남 (과거·위성 사진은 서로 수십 m 어긋나 있기도 합니다)</small><div id="cmpAl"><button id="alOn" type="button">오른쪽 사진 끌어서 맞추기</button><button id="alRs" type="button">원래대로</button></div><div class="cm" id="alTx"></div></div></div>
 <div id="quick"><button data-q="tMeas" aria-label="측정"></button><button data-q="tSel" aria-label="필지 선택"></button><button data-q="tDrw" aria-label="그리기"></button></div>
 <div class="modal" id="logModal" hidden><div class="box"><h3 style="margin:0 0 6px">업데이트 내용</h3><div id="logBody"></div><div style="display:flex;justify-content:flex-end;margin-top:10px"><button class="btn on" id="logX" type="button">닫기</button></div></div></div>
 <div class="modal" id="tourModal" hidden><div class="box tour"><div class="tk" id="tkIc"></div><h3 id="tkT"></h3><p id="tkP"></p><div class="tdots" id="tkD"></div><div style="display:flex;gap:8px"><button class="btn" id="tkPrev">이전</button><span style="flex:1"></span><button class="btn" id="tkSkip">건너뛰기</button><button class="btn on" id="tkNext">다음</button></div></div></div>
@@ -1308,7 +1311,7 @@ var LS=window.localStorage;function g(k,d){try{var v=LS.getItem(k);return v==nul
  if(o.m!=null){var mm={};o.m.split(',').forEach(function(i){if(i)mm[i]=true});s('muniOn',mm)}
  history.replaceState(null,'',location.pathname+location.search)}catch(e){}})();
 var KEY=g('key',''),DOM=g('dom',location.hostname||'localhost');
-var BUILD="2611060527";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
+var BUILD="2611060531";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
 applyTheme(THEME);
 var BASE=g('base','Base');if(['Base','Satellite','SatLabel','white','none'].indexOf(BASE)<0)BASE='Base';
 // 레이어: id, 이름, 표시 WMS 이름, 조회용 data 코드
@@ -2284,25 +2287,36 @@ window.__fld={parseLL:parseLL};
   rL.on('tileerror',function(){er++;if(rm==='past'&&er>=6&&!ok){msg.className='cm w';msg.textContent='이 날짜의 영상을 불러오지 못했습니다 (이 지역에 영상이 없거나 서버에 연결되지 않음). 다른 날짜를 골라 보세요.'}});
   rL.on('load',function(){if(ok){msg.className='cm';msg.textContent=rm==='past'?'영상은 Esri 보관본이라 실제 촬영일과 다를 수 있고, 같은 영상이 여러 날짜에 반복될 수 있습니다.':''}});
   rL.addTo(map);clip()}
+ var OFS=g('cmpOfs',[0,0]),alOn=false;/* 오른쪽 사진 보정(m): [동, 북] */
+ function mpp(){var z=map.getZoom(),la=map.getCenter().lat;return 156543.03392*Math.cos(la*Math.PI/180)/Math.pow(2,z)}
+ function ofPx(){var k=mpp();return [OFS[0]/k,-OFS[1]/k]}
+ function alTxt(){var t=$('alTx');if(!t)return;var d=Math.round(Math.hypot(OFS[0],OFS[1]));t.className='cm';t.textContent=alOn?'지도 위를 끌어 오른쪽 사진을 왼쪽에 맞추세요. 다 맞추면 버튼을 다시 누르세요.':(d?'오른쪽 사진을 약 '+d+'m 옮겨 보고 있습니다 (저장됨)':'')}
  function clip(){var pn=map.getPane('p_cmp');if(!pn||!cmpOn)return;var sz=map.getSize(),x=spx==null?sz.x*spl/100:spx;
-  var a=map.containerPointToLayerPoint([x,-20]),b=map.containerPointToLayerPoint([sz.x+20,sz.y+20]);
+  var o=(rm==='past'||rm==='Satellite')?ofPx():[0,0];pn.style.translate=o[0]+'px '+o[1]+'px';
+  var a=map.containerPointToLayerPoint([x-o[0],-20-o[1]]),b=map.containerPointToLayerPoint([sz.x+20-o[0],sz.y+20-o[1]]);
   pn.style.clipPath='polygon('+a.x+'px '+a.y+'px,'+b.x+'px '+a.y+'px,'+b.x+'px '+b.y+'px,'+a.x+'px '+b.y+'px)'}
  function place(){var sz=map.getSize();spx=sz.x*spl/100;BR.style.left=spx+'px';BR.hidden=!(cmpOn&&spl>0);clip()}
  function labels(){var L1={Base:'일반',Satellite:'위성',SatLabel:'위성',white:'백지도',none:'지도 없음'}[BASE]||BASE;
   BR.querySelector('.l').textContent='왼쪽 · '+L1;BR.querySelector('.r').textContent='오른쪽 · '+(rm==='past'?(WB&&WBi>=0?WB[WBi].d:'과거'):rm==='Satellite'?'위성':'일반');
   $('cmpL').textContent='왼쪽: 지금 고른 배경지도 ('+L1+')'}
  function setDate(i){if(!WB)return;WBi=Math.max(0,Math.min(WB.length-1,i));$('cmpRng').value=WBi;$('cmpDate').textContent=WB[WBi].d.replace(/-/g,'.');msg.className='cm';msg.textContent='불러오는 중…';mkR();labels()}
- function showMode(){[].forEach.call($('cmpSeg').children,function(b){b.classList.toggle('on',b.dataset.m===rm)});$('cmpPastRow').hidden=rm!=='past'}
+ function showMode(){alTxt();[].forEach.call($('cmpSeg').children,function(b){b.classList.toggle('on',b.dataset.m===rm)});$('cmpPastRow').hidden=rm!=='past'}
  function setMode(m){rm=m;showMode();if(m==='past'){if(WB){setDate(WBi<0?WB.length-1:WBi)}else{msg.className='cm';msg.textContent='과거 영상 목록을 가져오는 중…';wbLoad(function(a){if(!a){msg.className='cm w';msg.textContent='과거 영상 서버에 연결하지 못했습니다. 인터넷 연결을 확인하거나 잠시 뒤 다시 시도해 주세요.';return}
    $('cmpRng').max=a.length-1;setDate(a.length-1)})}}else{mkR();labels()}}
  function open(){if(window.__noRot)window.__noRot();cmpOn=true;P.hidden=false;document.body.classList.add('cmp');$('viewPop').hidden=true;try{$('bView').classList.remove('on')}catch(e){}spl=50;place();showSplit();setMode(rm)}
- function close(){cmpOn=false;P.hidden=true;BR.hidden=true;document.body.classList.remove('cmp');if(rL){try{map.removeLayer(rL)}catch(e){}rL=null}}
+ function close(){cmpOn=false;setAl(false);var pn0=map.getPane('p_cmp');if(pn0)pn0.style.translate='';P.hidden=true;BR.hidden=true;document.body.classList.remove('cmp');if(rL){try{map.removeLayer(rL)}catch(e){}rL=null}}
  function showSplit(){[].forEach.call($('cmpSplit').children,function(b){b.classList.toggle('on',(+b.dataset.s>0)===(spl>0))})}
+ var pad=document.createElement('div');pad.id='alPad';pad.hidden=true;document.body.appendChild(pad);
+ function setAl(v){alOn=v;pad.hidden=!v;$('alOn').classList.toggle('on',v);$('alOn').textContent=v?'맞추기 끝내기':'오른쪽 사진 끌어서 맞추기';alTxt()}
+ (function(){var d=null;pad.addEventListener('pointerdown',function(e){d=[e.clientX,e.clientY];try{pad.setPointerCapture(e.pointerId)}catch(x){}e.preventDefault()});
+  pad.addEventListener('pointermove',function(e){if(!d)return;var k=mpp();OFS[0]+=(e.clientX-d[0])*k;OFS[1]-=(e.clientY-d[1])*k;d=[e.clientX,e.clientY];clip();alTxt();e.preventDefault()});
+  function up(){if(d){d=null;s('cmpOfs',OFS)}}pad.addEventListener('pointerup',up);pad.addEventListener('pointercancel',up)})();
+ $('alOn').onclick=function(){if(!cmpOn)return;setAl(!alOn)};$('alRs').onclick=function(){OFS=[0,0];s('cmpOfs',OFS);clip();alTxt()};
  $('cmpOpen').onclick=open;$('cmpX').onclick=close;
  [].forEach.call($('cmpSeg').children,function(b){b.onclick=function(){setMode(b.dataset.m)}});
  [].forEach.call($('cmpSplit').children,function(b){b.onclick=function(){spl=+b.dataset.s||0;place();showSplit()}});
  $('cmpRng').oninput=function(){setDate(+this.value)};$('cmpPrev').onclick=function(){setDate(WBi-1)};$('cmpNext').onclick=function(){setDate(WBi+1)};
- map.on('move zoom viewreset resize',clip);window.addEventListener('resize',function(){if(cmpOn)place()});
+ map.on('move zoom viewreset resize zoomend',clip);window.addEventListener('resize',function(){if(cmpOn)place()});
  (function(){var dr=false;function mv(e){if(!dr)return;var r=$('map').getBoundingClientRect(),x=Math.max(30,Math.min(r.width-30,e.clientX-r.left));spl=x/r.width*100;place();e.preventDefault()}
   BR.addEventListener('pointerdown',function(e){dr=true;try{BR.setPointerCapture(e.pointerId)}catch(x){}e.preventDefault();e.stopPropagation()});
   BR.addEventListener('pointermove',mv);BR.addEventListener('pointerup',function(){dr=false});BR.addEventListener('pointercancel',function(){dr=false})})();
