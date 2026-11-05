@@ -10,6 +10,7 @@
 <meta name="apple-mobile-web-app-title" content="딸깍 지도">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>딸깍 지도</title>
+<script>try{var __p=JSON.parse(localStorage.getItem("pal"));document.documentElement.setAttribute("data-pal",__p||"navy")}catch(e){document.documentElement.setAttribute("data-pal","navy")}</script>
 <style>
 /* required styles */
 
@@ -954,6 +955,28 @@ body.hasbar .rail #bGps{bottom:calc(max(14px,env(safe-area-inset-bottom)) + 226p
 .sec .xls a,.sec .xls button{border-radius:999px}
 .sec{padding:6px 0 2px}
 @media (min-width:1000px){#info{left:14px!important;right:auto!important;bottom:14px!important;width:440px;max-height:72vh!important;border-radius:16px!important;box-shadow:0 8px 30px #0003,0 0 0 1px #0000000d!important}}
+/* ---- v9: 색상 ---- */
+:root[data-pal=navy]{--bg:#eef2f8;--fg:#14202f;--mut:#5c6f8a;--card:#ffffff;--line:#cfd8e6;--acc:#0b6fc0;--acc2:#e2eefa;--acc-ink:#ffffff}
+@media (prefers-color-scheme:dark){:root[data-pal=navy]:not([data-theme=light]){--bg:#0d1726;--fg:#e8f0fa;--mut:#8ea6c4;--card:#182a44;--line:#27405f;--acc:#4cc3ff;--acc2:#12304f;--acc-ink:#06213a;color-scheme:dark}}
+:root[data-pal=navy][data-theme=dark]{--bg:#0d1726;--fg:#e8f0fa;--mut:#8ea6c4;--card:#182a44;--line:#27405f;--acc:#4cc3ff;--acc2:#12304f;--acc-ink:#06213a;color-scheme:dark}
+:root[data-pal=plum]{--bg:#f6f2fb;--fg:#231a33;--mut:#75658f;--card:#ffffff;--line:#ddd2ec;--acc:#7a3fd0;--acc2:#efe6fb;--acc-ink:#ffffff}
+@media (prefers-color-scheme:dark){:root[data-pal=plum]:not([data-theme=light]){--bg:#1a1226;--fg:#f0eafa;--mut:#aa9cc8;--card:#2e2144;--line:#4a3870;--acc:#c08bff;--acc2:#3d2d5a;--acc-ink:#24093f;color-scheme:dark}}
+:root[data-pal=plum][data-theme=dark]{--bg:#1a1226;--fg:#f0eafa;--mut:#aa9cc8;--card:#2e2144;--line:#4a3870;--acc:#c08bff;--acc2:#3d2d5a;--acc-ink:#24093f;color-scheme:dark}
+:root[data-pal=sand]{--bg:#f8f3ec;--fg:#2a2118;--mut:#85735e;--card:#ffffff;--line:#e5d9c8;--acc:#b8620f;--acc2:#fbecd9;--acc-ink:#ffffff}
+@media (prefers-color-scheme:dark){:root[data-pal=sand]:not([data-theme=light]){--bg:#1c1713;--fg:#f4ebe0;--mut:#b9a48c;--card:#33281f;--line:#55432f;--acc:#ffb066;--acc2:#45362a;--acc-ink:#3a1d03;color-scheme:dark}}
+:root[data-pal=sand][data-theme=dark]{--bg:#1c1713;--fg:#f4ebe0;--mut:#b9a48c;--card:#33281f;--line:#55432f;--acc:#ffb066;--acc2:#45362a;--acc-ink:#3a1d03;color-scheme:dark}
+:root[data-pal=rose]{--bg:#fbf1f4;--fg:#2d1a22;--mut:#8a6674;--card:#ffffff;--line:#ecd3dc;--acc:#cf2f66;--acc2:#fde4ec;--acc-ink:#ffffff}
+@media (prefers-color-scheme:dark){:root[data-pal=rose]:not([data-theme=light]){--bg:#1f1218;--fg:#fbeaf0;--mut:#c4a0b0;--card:#38222c;--line:#5e3a49;--acc:#ff7aa8;--acc2:#4d2f3c;--acc-ink:#3d0820;color-scheme:dark}}
+:root[data-pal=rose][data-theme=dark]{--bg:#1f1218;--fg:#fbeaf0;--mut:#c4a0b0;--card:#38222c;--line:#5e3a49;--acc:#ff7aa8;--acc2:#4d2f3c;--acc-ink:#3d0820;color-scheme:dark}
+:root[data-pal=graphite]{--bg:#f3f3f5;--fg:#1c1c20;--mut:#6b6b78;--card:#ffffff;--line:#d9d9e0;--acc:#2f3e55;--acc2:#e6e9ef;--acc-ink:#ffffff}
+@media (prefers-color-scheme:dark){:root[data-pal=graphite]:not([data-theme=light]){--bg:#121214;--fg:#ececf1;--mut:#9a9aa8;--card:#26262c;--line:#3a3a44;--acc:#5eb1ff;--acc2:#34343c;--acc-ink:#06213a;color-scheme:dark}}
+:root[data-pal=graphite][data-theme=dark]{--bg:#121214;--fg:#ececf1;--mut:#9a9aa8;--card:#26262c;--line:#3a3a44;--acc:#5eb1ff;--acc2:#34343c;--acc-ink:#06213a;color-scheme:dark}
+html .btn.on,html .srch .go,html .opts3 button.on,html .tool.on,html .ftabs button.on{color:var(--acc-ink,#fff)}
+html .mmp i{color:var(--acc-ink,#fff)}
+#palSeg{display:flex;flex-wrap:wrap;gap:6px}
+#palSeg button{display:flex;align-items:center;gap:6px;height:34px;padding:0 11px 0 8px;border:1px solid var(--line);border-radius:999px;background:var(--bg);color:var(--fg);font:inherit;font-size:12.5px;font-weight:600}
+#palSeg button i{width:14px;height:14px;border-radius:50%;box-shadow:inset 0 0 0 1px #0003}
+#palSeg button.on{border-color:var(--acc);box-shadow:0 0 0 1px var(--acc)}
 /* ---- v7: 현장 기록(메모 핀·경로·즐겨찾기) ---- */
 #toolPop .opts3.o2{margin-top:6px}
 .mmp{width:0!important;height:0!important;margin:0!important;background:none!important;border:0!important}
@@ -996,6 +1019,7 @@ body.hasbar .rail #bGps{bottom:calc(max(14px,env(safe-area-inset-bottom)) + 226p
 <div id="muniBox"><div class="sub" style="margin:0 0 6px">해당 구역에서만 지자체 영상이 나옵니다.</div><div id="muniChips"></div><div id="muniMsg" class="sub"></div>
 <details style="margin-top:6px"><summary class="sub" style="cursor:pointer;margin:0">지자체 주소 직접 추가</summary><div style="margin-top:6px"><input id="muName" placeholder="이름 (예: 파주시)" style="width:100%;font:inherit;padding:7px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--fg);margin-bottom:6px"><input id="muUrl" placeholder="서비스 주소 (…/MapServer/tile/{z}/{y}/{x} 또는 …/export?… 또는 WMS GetMap)" style="width:100%;font:inherit;padding:7px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--fg);margin-bottom:6px"><button class="btn" id="muAdd" style="padding:6px 10px">추가</button></div></details></div>
  <div class="ph" style="margin-top:12px">화면 테마</div><div id="themeSeg"><button data-th="auto">자동</button><button data-th="light">밝게</button><button data-th="dark">어둡게</button></div>
+ <div class="ph" style="margin-top:12px">색상</div><div id="palSeg"></div>
 </div>
 <div id="toolPop" hidden>
  <div class="ph">도구</div>
@@ -1114,7 +1138,7 @@ var LS=window.localStorage;function g(k,d){try{var v=LS.getItem(k);return v==nul
  if(o.m!=null){var mm={};o.m.split(',').forEach(function(i){if(i)mm[i]=true});s('muniOn',mm)}
  history.replaceState(null,'',location.pathname+location.search)}catch(e){}})();
 var KEY=g('key',''),DOM=g('dom',location.hostname||'localhost');
-var BUILD="2611060310";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
+var BUILD="2611060322";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
 applyTheme(THEME);
 var BASE=g('base','Base');if(['Base','Satellite','SatLabel','white','none'].indexOf(BASE)<0)BASE='Base';
 // 레이어: id, 이름, 표시 WMS 이름, 조회용 data 코드
@@ -1906,6 +1930,11 @@ try{if('serviceWorker' in navigator&&/^https?:/.test(location.protocol))navigato
 window.__fld={parseLL:parseLL};
 })();
 
+/* 색상 선택 */
+(function(){var PS={"navy": "딸깍 블루", "green": "초록", "plum": "자두", "sand": "모래", "rose": "로즈", "graphite": "차콜"},SW={"navy": "#4cc3ff", "green": "#2fae86", "plum": "#c08bff", "sand": "#ffb066", "rose": "#ff7aa8", "graphite": "#5eb1ff"},box=document.getElementById('palSeg');
+ function cur(){return document.documentElement.getAttribute('data-pal')||'navy'}
+ function mark(){var c=cur();[].forEach.call(box.children,function(b){b.classList.toggle('on',b.dataset.p===c)})}
+ Object.keys(PS).forEach(function(k){var b=document.createElement('button');b.dataset.p=k;b.innerHTML='<i style="background:'+SW[k]+'"></i>'+PS[k];b.onclick=function(){document.documentElement.setAttribute('data-pal',k);s('pal',k);mark();try{refreshVec()}catch(e){}};box.appendChild(b)});mark()})();
 })();
 
 </script></body></html>
