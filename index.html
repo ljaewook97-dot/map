@@ -1053,7 +1053,7 @@ var LS=window.localStorage;function g(k,d){try{var v=LS.getItem(k);return v==nul
  if(o.m!=null){var mm={};o.m.split(',').forEach(function(i){if(i)mm[i]=true});s('muniOn',mm)}
  history.replaceState(null,'',location.pathname+location.search)}catch(e){}})();
 var KEY=g('key',''),DOM=g('dom',location.hostname||'localhost');
-var BUILD="2611052007";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
+var BUILD="2611052140";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
 applyTheme(THEME);
 var BASE=g('base','Base');if(['Base','Satellite','SatLabel','white','none'].indexOf(BASE)<0)BASE='Base';
 // 레이어: id, 이름, 표시 WMS 이름, 조회용 data 코드
@@ -1169,11 +1169,12 @@ function doCad(seq){var z=map.getZoom(),cs=S_('cad');
   swapG('cad',ng);if(z<18){swapG('txt',L.layerGroup());return}
   vis.forEach(function(x){var rg=ringPx(x.geometry),xs=rg.map(function(p){return p[0]}),ys=rg.map(function(p){return p[1]});items.push({rg:rg,w:Math.max.apply(0,xs)-Math.min.apply(0,xs),h:Math.max.apply(0,ys)-Math.min.apply(0,ys),p:x.properties||{}})});
   items.sort(function(a,b){return b.w*b.h-a.w*a.h});var tg=L.layerGroup(),placed=[],i=0,k=cs.fs/11;
-  function place(it){var t=jb(it.p),txt=t.n+(z>=19&&t.j?t.j:'');if(!t.n)return;var lw=txtW(txt)*k,lh=13*k,ang=axisAng(it.rg);
-   var sp=labelSpot(it.rg,lw,lh,ang);if(!sp&&ang!==0){ang=0;sp=labelSpot(it.rg,lw,lh,0)}if(!sp)return;
-   var box=rectPts(sp,lw,lh,ang).slice(0,4);for(var j=0;j<placed.length;j++){if(obbHit(box,placed[j]))return}placed.push(box);
-   var ll=map.containerPointToLatLng(L.point(sp[0],sp[1]));
-   L.marker(ll,{interactive:false,keyboard:false,icon:L.divIcon({className:'jbi',html:'<span style="transform:translate(-50%,-50%) rotate('+(ang*180/Math.PI).toFixed(1)+'deg)">'+esc(txt)+'</span>',iconSize:[0,0]})}).addTo(tg)}
+  function place(it){var t=jb(it.p),txt=t.n+(z>=19&&t.j?t.j:'');if(!t.n)return;var ang0=axisAng(it.rg),mn=Math.min(it.w,it.h),tw=txtW(txt),SC=[1.6,1.3,1.1,1],hit=null;
+   for(var q=0;q<SC.length&&!hit;q++){var kk=k*SC[q],lw=tw*kk,lh=13*kk;if(q<SC.length-1&&mn<lh*2.2)continue;
+    var ang=ang0,sp=labelSpot(it.rg,lw,lh,ang);if(!sp&&ang!==0){ang=0;sp=labelSpot(it.rg,lw,lh,0)}if(!sp)continue;
+    var box=rectPts(sp,lw,lh,ang).slice(0,4),ov=false;for(var j=0;j<placed.length;j++){if(obbHit(box,placed[j])){ov=true;break}}if(ov)continue;hit={sp:sp,ang:ang,box:box,kk:kk}}
+   if(!hit)return;placed.push(hit.box);var ll=map.containerPointToLatLng(L.point(hit.sp[0],hit.sp[1]));
+   L.marker(ll,{interactive:false,keyboard:false,icon:L.divIcon({className:'jbi',html:'<span style="font-size:'+(11*hit.kk).toFixed(1)+'px;line-height:1.2;transform:translate(-50%,-50%) rotate('+(hit.ang*180/Math.PI).toFixed(1)+'deg)">'+esc(txt)+'</span>',iconSize:[0,0]})}).addTo(tg)}
   (function step(){if(seq!==vecSeq)return;var t0=Date.now();while(i<items.length&&Date.now()-t0<10)place(items[i++]);if(i<items.length)setTimeout(step,0);else swapG('txt',tg)})()})}
 function doFac(seq){var z=map.getZoom();
  if(!lay('fac').on||!KEY||z<15){lst('fac',lay('fac').on&&KEY?'확대 필요':'');swapG('fac',L.layerGroup());LEG={};renderLeg();if(lay('fac').on&&KEY)status('시설은 지도를 더 확대하면 표시됩니다');return}
