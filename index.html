@@ -1021,7 +1021,7 @@ var LS=window.localStorage;function g(k,d){try{var v=LS.getItem(k);return v==nul
  if(o.m!=null){var mm={};o.m.split(',').forEach(function(i){if(i)mm[i]=true});s('muniOn',mm)}
  history.replaceState(null,'',location.pathname+location.search)}catch(e){}})();
 var KEY=g('key',''),DOM=g('dom',location.hostname||'localhost');
-var BUILD="2611051933";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
+var BUILD="2611051939";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
 applyTheme(THEME);
 var BASE=g('base','Base');if(['Base','Satellite','SatLabel','white','none'].indexOf(BASE)<0)BASE='Base';
 // 레이어: id, 이름, 표시 WMS 이름, 조회용 data 코드
@@ -1056,7 +1056,7 @@ var LOG=[];function lg(url,d,why){var m=url.match(/[?&]data=([^&]+)/)||url.match
  if(!d)t='응답 없음('+(why||'차단/시간초과')+')';else if(d.response){t=d.response.status+(d.response.error?' '+(d.response.error.text||d.response.error.code||''):'')+(d.response.result&&d.response.result.featureCollection?' '+d.response.result.featureCollection.features.length+'건':'')}else t=JSON.stringify(d).slice(0,80);
  LOG.unshift(k+' → '+t);LOG.length=Math.min(LOG.length,12);var e=document.getElementById('dbg');if(e)e.textContent=LOG.join('\n')}
 function jsonp(url,cb){var n='_j'+Math.random().toString(36).slice(2),sc=document.createElement('script'),done=false;
- var t=setTimeout(function(){fin();lg(url,null,'시간초과');cb(null)},9000);
+ var t=setTimeout(function(){fin();lg(url,null,'시간초과');cb(null)},14000);
  function fin(){done=true;clearTimeout(t);try{delete window[n]}catch(e){window[n]=undefined}sc.remove()}
  window[n]=function(d){if(!done){fin();lg(url,d);cb(d)}};
  sc.onerror=function(){if(!done){fin();lg(url,null,'로드 실패');cb(null)}};
@@ -1068,7 +1068,8 @@ function ned(op,pnu,cb,ex){var u='https://api.vworld.kr/ned/data/'+op+'?pnu='+pn
  jsonp(u,function(d){if(d)return cb(d);try{fetch(u).then(function(r){return r.json()}).then(cb,function(){cb(null)})}catch(e){cb(null)}})}
 function boxQ(code,cb,size,pb,page){var b=map.getBounds();var g=pb?'BOX('+pb[0]+','+pb[1]+','+pb[2]+','+pb[3]+')':'BOX('+b.getWest()+','+b.getSouth()+','+b.getEast()+','+b.getNorth()+')';
  jsonp('https://api.vworld.kr/req/data?service=data&request=GetFeature&version=2.0&data='+code+'&format=json&size='+(size||100)+'&page='+(page||1)+'&attribute=true&geometry=true&crs=EPSG:4326&geomFilter='+encodeURIComponent(g)+'&'+q(),function(d){var f=null,tot=0;try{f=d.response.status==='OK'?d.response.result.featureCollection.features:[];tot=+(d.response.page&&d.response.page.total)||0}catch(e){f=null}cb(f,tot)})}
-function boxAll(code,size,pb,maxPages,cb){boxQ(code,function(f1,tot){if(!f1){cb(null,false);return}var np=Math.min(Math.ceil((tot||0)/size),maxPages);
+var ALIVEF=null;function pgMax(){var z=map.getZoom();return z>=18?6:z>=17?4:2}
+function boxAll(code,size,pb,maxPages,cb){var al=ALIVEF;boxQ(code,function(f1,tot){if(!f1){cb(null,false);return}var np=Math.min(Math.ceil((tot||0)/size),maxPages);if(np>1&&al&&!al()){cb(f1,true);return}
  if(np<=1){cb(f1,f1.length>=size&&!tot);return}var all=f1.slice(),left=np-1,bad=false;
  for(var p=2;p<=np;p++)(function(p){boxQ(code,function(f){if(f)all=all.concat(f);else bad=true;if(--left===0)cb(all,bad||tot>size*maxPages)},size,pb,p)})(p)},size,pb,1)}
 var LEG={};function natKey(a){return a.replace(/\d+/g,function(m){return ('000'+m).slice(-3)})}
@@ -1121,7 +1122,7 @@ function viewBB(){var b=map.getBounds();return [b.getWest(),b.getSouth(),b.getEa
 var PEND={};function getFeats(code,size,cb,maxPg){var vb=viewBB(),c=FC[code];if(c&&!c.trunc&&Date.now()-(c.t||0)<180000&&c.feats.length&&vb[0]>=c.bb[0]&&vb[1]>=c.bb[1]&&vb[2]<=c.bb[2]&&vb[3]<=c.bb[3]){cb(c.feats);return}
  var pk=code+vb.join(','),pe=PEND[pk];if(pe){pe.push(cb);return}PEND[pk]=[cb];var cb0=cb;cb=function(r){var l=PEND[pk]||[];delete PEND[pk];l.forEach(function(f){f(r)})};
  var w=vb[2]-vb[0],h=vb[3]-vb[1],pb=[vb[0]-w*.3,vb[1]-h*.3,vb[2]+w*.3,vb[3]+h*.3],MINB=.003,cx=(pb[0]+pb[2])/2,cy=(pb[1]+pb[3])/2;if(pb[2]-pb[0]<MINB){pb[0]=cx-MINB/2;pb[2]=cx+MINB/2}if(pb[3]-pb[1]<MINB){pb[1]=cy-MINB/2;pb[3]=cy+MINB/2}
- boxAll(code,size,pb,maxPg||6,function(fs,tr){if(fs&&!fs.length&&!pb._r){var q2=[pb[0]-.004,pb[1]-.004,pb[2]+.004,pb[3]+.004];q2._r=1;pb=q2;boxAll(code,size,pb,maxPg||6,function(fs2,tr2){if(!fs2){cb(null);return}var ok2=fs2.filter(function(f){return f.geometry});if(ok2.length)FC[code]={bb:pb,feats:ok2,trunc:tr2,t:Date.now()};cb(ok2)});return}if(!fs){cb(null);return}var ok=fs.filter(function(f){return f.geometry});if(ok.length)FC[code]={bb:pb,feats:ok,trunc:tr,t:Date.now()};if(tr)status('필지가 너무 많아 일부만 표시됩니다 — 조금 더 확대해 주세요');cb(ok)})}
+ var s0=vecSeq;ALIVEF=function(){return s0===vecSeq};boxAll(code,size,pb,maxPg||pgMax(),function(fs,tr){if(fs&&!fs.length&&!pb._r){var q2=[pb[0]-.004,pb[1]-.004,pb[2]+.004,pb[3]+.004];q2._r=1;pb=q2;ALIVEF=function(){return s0===vecSeq};boxAll(code,size,pb,maxPg||pgMax(),function(fs2,tr2){if(!fs2){cb(null);return}var ok2=fs2.filter(function(f){return f.geometry});if(ok2.length)FC[code]={bb:pb,feats:ok2,trunc:tr2,t:Date.now()};cb(ok2)});return}if(!fs){cb(null);return}var ok=fs.filter(function(f){return f.geometry});if(ok.length)FC[code]={bb:pb,feats:ok,trunc:tr,t:Date.now()};if(tr)status('필지가 너무 많아 일부만 표시됩니다 — 조금 더 확대해 주세요');cb(ok)})}
 function visF(fs){var vb=viewBB(),mx=(vb[2]-vb[0])*.05,my=(vb[3]-vb[1])*.05;return fs.filter(function(f){var b=fbb(f);return !(b[2]<vb[0]-mx||b[0]>vb[2]+mx||b[3]<vb[1]-my||b[1]>vb[3]+my)})}
 function doCad(seq){var z=map.getZoom(),cs=S_('cad');
  if(!lay('cad').on||!KEY||z<16){swapG('cad',L.layerGroup());swapG('txt',L.layerGroup());if(lay('cad').on&&KEY)status('지적은 지도를 더 확대하면 표시됩니다');return}
