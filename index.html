@@ -1140,6 +1140,10 @@ html[data-oh="1"] #recStrip{bottom:calc(max(14px,env(safe-area-inset-bottom)) + 
 #hdModal .hdt{display:flex;gap:8px;align-items:center;margin:10px 0 4px;font-size:13.5px}
 #hdAim:disabled{opacity:.45}
 /* ---- 반경 분석 ---- */
+#radBar .radIn{display:flex;align-items:center;gap:6px;margin:0 0 8px}#radBar .radIn input{width:96px;font:inherit;font-size:14px;padding:7px 9px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--fg)}#radBar .radIn small{flex:1;font-size:11.5px;color:var(--mut);line-height:1.3}
+.rhd{width:26px;height:26px;border-radius:50%;background:#ff2d87;border:3px solid #fff;box-shadow:0 2px 8px #0007;display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;font-weight:800;touch-action:none;cursor:ew-resize}
+.rcd{width:16px;height:16px;border-radius:50%;background:#ff2d87;border:3px solid #fff;box-shadow:0 1px 5px #0007;touch-action:none}
+.rlb{background:#ff2d87;color:#fff;border:0;font-weight:800;font-size:13px;padding:3px 8px;box-shadow:0 2px 6px #0006}.rlb:before{display:none}
 #radBar .rchips{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}#radBar .rchips button,#infoBody .rchips button{padding:7px 11px;border-radius:999px;border:1px solid var(--line);background:transparent;color:inherit;font:inherit;font-size:13px}
 #radBar .rchips button.on,#infoBody .rchips button.on{background:var(--acc);color:#fff;border-color:var(--acc)}#infoBody .rchips{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 10px}
 #infoBody .rg{margin:10px 0 2px;font-size:12px;font-weight:800;color:var(--acc)}#infoBody .rr{display:flex;justify-content:space-between;gap:10px;padding:5px 0;border-bottom:1px solid color-mix(in srgb,var(--line) 60%,transparent);font-size:13.5px}#infoBody .rr b{font-weight:600}#infoBody .rr span{white-space:nowrap;color:var(--mut)}#infoBody .rr span.in{color:#e5392b;font-weight:700}
@@ -1201,7 +1205,7 @@ html[data-oh="1"] #recStrip{bottom:calc(max(14px,env(safe-area-inset-bottom)) + 
  <div class="ph" style="margin-top:14px">지도 중심에서 다른 지도로</div><div id="ctrLinks" class="xls"></div>
 </div>
 <div id="sRes" hidden></div>
-<div class="mbar" id="radBar" hidden><div id="radTx">지도를 눌러 분석할 중심을 정하세요</div><div class="rchips" id="radChips"></div><div class="mb"><button class="btn" id="radMe">내 위치 기준</button><button class="btn" id="radClr">지우기</button><button class="btn on" id="radDone">끝내기</button></div></div>
+<div class="mbar" id="radBar" hidden><div id="radTx">지도를 눌러 분석할 중심을 정하세요</div><div class="rchips" id="radChips"></div><div class="radIn"><input id="radNum" type="number" inputmode="numeric" min="1" step="1" placeholder="직접 입력"><span>m</span><small>동그라미 끝의 손잡이를 끌어 늘리고 줄여요</small></div><div class="mb"><button class="btn" id="radMe">내 위치 기준</button><button class="btn" id="radClr">지우기</button><button class="btn on" id="radDone">끝내기</button></div></div>
 <div id="measBar" hidden><div id="measTxt"></div><div class="mb"><button class="btn" id="mUndo">되돌리기</button><button class="btn" id="mClr">지우기</button><button class="btn on" id="mDone">끝내기</button></div></div>
 <div class="mbar" id="selBar" hidden><div id="selTxt"></div><div class="mb"><button class="btn" id="sUndo">되돌리기</button><button class="btn" id="sClr">지우기</button><button class="btn" id="sCopy">복사</button><button class="btn on" id="sDone">끝내기</button></div></div>
 <div class="mbar" id="drwBar" hidden>
@@ -1238,7 +1242,7 @@ html[data-oh="1"] #recStrip{bottom:calc(max(14px,env(safe-area-inset-bottom)) + 
  <div class="cm" id="cmpMsg"></div>
  <div><small>화면 나누기 (가운데 선을 끌어 조절)</small><div id="cmpSplit"><button data-s="50" type="button">반반 비교</button><button data-s="0" type="button">오른쪽만 전체</button></div></div>
  <div><small>위치 맞추기 (사진마다 수십 m 어긋나 있어 자동으로 보정합니다)</small><div id="cmpAl"><button id="alAuto" type="button">자동 맞추기</button><button id="alOn" type="button">직접 끌어 맞추기</button><button id="alRs" type="button">원래대로</button></div><div class="cm" id="alTx"></div></div></div>
-<div id="quick"><button data-q="tMeas" aria-label="측정"></button><button data-q="tSel" aria-label="필지 선택"></button><button data-q="tDrw" aria-label="그리기"></button></div>
+<div id="quick"><button data-q="tMeas" aria-label="측정"></button><button data-q="tSel" aria-label="필지 선택"></button><button data-q="tDrw" aria-label="그리기"></button><button data-q="tRad" aria-label="반경 분석"></button></div>
 <div class="modal" id="logModal" hidden><div class="box"><h3 style="margin:0 0 6px">업데이트 내용</h3><div id="logBody"></div><div style="display:flex;justify-content:flex-end;margin-top:10px"><button class="btn on" id="logX" type="button">닫기</button></div></div></div>
 <div class="modal" id="tourModal" hidden><div class="box tour"><div class="tk" id="tkIc"></div><h3 id="tkT"></h3><p id="tkP"></p><div class="tdots" id="tkD"></div><div style="display:flex;gap:8px"><button class="btn" id="tkPrev">이전</button><span style="flex:1"></span><button class="btn" id="tkSkip">건너뛰기</button><button class="btn on" id="tkNext">다음</button></div></div></div>
 <div class="modal" id="prjModal" hidden><div class="box" style="max-height:88%;overflow:auto">
@@ -1321,7 +1325,7 @@ var LS=window.localStorage;function g(k,d){try{var v=LS.getItem(k);return v==nul
  if(o.m!=null){var mm={};o.m.split(',').forEach(function(i){if(i)mm[i]=true});s('muniOn',mm)}
  history.replaceState(null,'',location.pathname+location.search)}catch(e){}})();
 var KEY=g('key',''),DOM=g('dom',location.hostname||'localhost');
-var BUILD="2611061725";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
+var BUILD="2611061735";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
 applyTheme(THEME);
 var BASE=g('base','Base');if(['Base','Satellite','SatLabel','white','none'].indexOf(BASE)<0)BASE='Base';
 // 레이어: id, 이름, 표시 WMS 이름, 조회용 data 코드
@@ -2608,16 +2612,16 @@ window.__fld={parseLL:parseLL};
  var on=false,R=g('radR',100),C=null,gC=L.layerGroup().addTo(map),gH=L.layerGroup().addTo(map),seq=0,lastTxt='';
  var RS=[50,100,200,300,500,1000];
  function chips(el,cls){el.innerHTML=RS.map(function(r){return '<button type="button" data-rr="'+r+'"'+(r===R?' class="on"':'')+'>'+(r>=1000?(r/1000)+'km':r+'m')+'</button>'}).join('')}
- function setR(r){R=r;s('radR',R);chips($('radChips'));if(C)run(C)}
+ function setR(r){R=r;s('radR',R);chips($('radChips'));if(C)run(C,true)}
  function set(v){on=!!v;$('radBar').hidden=!on;$('tRad').classList.toggle('on',on);if(on){chips($('radChips'));$('radTx').textContent=C?'반경 '+R+'m · 다른 곳을 눌러 중심을 옮길 수 있어요':'지도를 눌러 분석할 중심을 정하세요'}
   try{window.__tp&&window.__tp()}catch(e){}if(on)document.body.classList.add('hasbar')}
- function clr(){seq++;C=null;gC.clearLayers();gH.clearLayers();var i=$('info');if(i)i.hidden=true;$('radTx').textContent='지도를 눌러 분석할 중심을 정하세요'}
+ function clr(){seq++;C=null;gC.clearLayers();cir=cm=hm=null;gH.clearLayers();var i=$('info');if(i)i.hidden=true;$('radTx').textContent='지도를 눌러 분석할 중심을 정하세요'}
  window.__M=window.__M||{};window.__M.rad=function(v){if(!v){if(on)set(false)}else set(true)};
- window.__rad=function(e){if(!on)return false;run([e.latlng.lat,e.latlng.lng]);return true};
+ window.__rad=function(e){if(!on)return false;run([e.latlng.lat,e.latlng.lng],true);return true};
  $('tRad').onclick=function(){var M=window.__M,was=on;Object.keys(M).forEach(function(k){M[k](false)});if(!was){if(!KEY){showKey();return}set(true)}$('toolPop').hidden=true;$('bTool').setAttribute('aria-expanded','false')};
  $('radDone').onclick=function(){set(false)};$('radClr').onclick=clr;
  $('radChips').onclick=function(e){var r=+(e.target.dataset||{}).rr;if(r)setR(r)};
- $('radMe').onclick=function(){var G=window.__gps&&window.__gps();if(G&&G.last)run(G.last);else status('먼저 오른쪽 아래 “내 위치” 버튼으로 위치를 켜 주세요')};
+ $('radMe').onclick=function(){var G=window.__gps&&window.__gps();if(G&&G.last)run(G.last,true);else status('먼저 오른쪽 아래 “내 위치” 버튼으로 위치를 켜 주세요')};
  /* 거리 계산 (평면 근사, m) */
  function dSeg(px,py,ax,ay,bx,by){var dx=bx-ax,dy=by-ay,t=dx||dy?((px-ax)*dx+(py-ay)*dy)/(dx*dx+dy*dy):0;t=t<0?0:t>1?1:t;var x=ax+t*dx-px,y=ay+t*dy-py;return Math.sqrt(x*x+y*y)}
  function distG(g,lng0,lat0,kx,ky,best){var d=1e12;function P(c){return [(c[0]-lng0)*kx,(c[1]-lat0)*ky]}
@@ -2629,11 +2633,27 @@ window.__fld={parseLL:parseLL};
   else if(t==='Point')d=line([c]);else if(t==='MultiPoint')c.forEach(function(q){var v=line([q]);if(v<d)d=v});return d}
  function bbD(b,lng0,lat0,kx,ky){var dx=lng0<b[0]?(b[0]-lng0)*kx:lng0>b[2]?(lng0-b[2])*kx:0,dy=lat0<b[1]?(b[1]-lat0)*ky:lat0>b[3]?(lat0-b[3])*ky:0;return Math.sqrt(dx*dx+dy*dy)}
  var GR=[['fac','시설(도시계획시설)'],['dist','지구단위계획구역'],['gb','개발제한구역'],['zone','용도지역'],['spec','용도지구']];
- function run(ll){C=ll;var my=++seq,lat0=ll[0],lng0=ll[1],kx=111320*Math.cos(lat0*Math.PI/180),ky=110574,r=R;
-  gC.clearLayers();gH.clearLayers();
-  L.circle(ll,{radius:r,color:'#ff2d87',weight:2,fillColor:'#ff2d87',fillOpacity:.07,dashArray:'6 5',interactive:false}).addTo(gC);
-  L.circleMarker(ll,{radius:5,color:'#fff',weight:2,fillColor:'#ff2d87',fillOpacity:1,interactive:false}).addTo(gC);
-  try{map.fitBounds(L.circle(ll,{radius:r}).getBounds().pad(.35),{maxZoom:19})}catch(e){}
+
+ /* 동그라미 + 끌 수 있는 손잡이 */
+ var cir=null,cm=null,hm=null,brg=90;
+ function dest(ll,m,b){var a=b*Math.PI/180,la=ll[0]*Math.PI/180,d=m/6371008.8,la2=Math.asin(Math.sin(la)*Math.cos(d)+Math.cos(la)*Math.sin(d)*Math.cos(a)),lo2=ll[1]*Math.PI/180+Math.atan2(Math.sin(a)*Math.sin(d)*Math.cos(la),Math.cos(d)-Math.sin(la)*Math.sin(la2));return [la2*180/Math.PI,lo2*180/Math.PI]}
+ function fmD(m){return m>=1000?(m/1000).toFixed(m>=10000?1:2)+'km':Math.round(m)+'m'}
+ function tip(m){if(hm)hm.setTooltipContent(fmD(m)+(m>1000?' · 분석은 1km까지':''))}
+ function draw(ll,r){var drag=false;
+  if(!cir){cir=L.circle(ll,{radius:r,color:'#ff2d87',weight:2,fillColor:'#ff2d87',fillOpacity:.07,dashArray:'6 5',interactive:false}).addTo(gC);
+   cm=L.marker(ll,{draggable:true,icon:L.divIcon({className:'',html:'<div class="rcd"></div>',iconSize:[22,22],iconAnchor:[11,11]}),zIndexOffset:1000}).addTo(gC);
+   hm=L.marker(dest(ll,r,brg),{draggable:true,icon:L.divIcon({className:'',html:'<div class="rhd">↔</div>',iconSize:[32,32],iconAnchor:[16,16]}),zIndexOffset:1001}).addTo(gC);
+   hm.bindTooltip('',{permanent:true,direction:'top',offset:[0,-16],className:'rlb'});
+   hm.on('drag',function(e){var ll2=e.target.getLatLng(),d=map.distance(C,ll2);brg=bearOf(C,[ll2.lat,ll2.lng]);cir.setRadius(Math.max(d,1));tip(d);$('radTx').textContent='기준점에서 '+fmD(d)+(d>1000?' (분석은 1km까지)':'');$('radNum').value=Math.round(d)});
+   hm.on('dragend',function(e){var d=Math.max(1,Math.round(map.distance(C,e.target.getLatLng())));R=d;s('radR',R);chips($('radChips'));if(d>1000){hm.setLatLng(dest(C,d,brg));$('radTx').textContent='기준점에서 '+fmD(d)+' 떨어져 있습니다 (필지·시설 분석은 1km까지)';var i=$('info');if(i)i.hidden=true;gH.clearLayers();return}run(C,false)});
+   cm.on('drag',function(e){var l=e.target.getLatLng();cir.setLatLng(l);hm.setLatLng(dest([l.lat,l.lng],R,brg));C=[l.lat,l.lng]});
+   cm.on('dragend',function(){run(C,false)})}
+  else{cir.setLatLng(ll);cir.setRadius(r);cm.setLatLng(ll);hm.setLatLng(dest(ll,r,brg))}
+  tip(r);$('radNum').value=Math.round(r)}
+ function bearOf(a,b){var f1=a[0]*Math.PI/180,f2=b[0]*Math.PI/180,dl=(b[1]-a[1])*Math.PI/180;return ((Math.atan2(Math.sin(dl)*Math.cos(f2),Math.cos(f1)*Math.sin(f2)-Math.sin(f1)*Math.cos(f2)*Math.cos(dl))*180/Math.PI)+360)%360}
+ $('radNum').onchange=function(){var v=Math.round(+this.value);if(!(v>0))return;R=v;s('radR',R);chips($('radChips'));if(C){if(v>1000){draw(C,v);gH.clearLayers();$('radTx').textContent='기준점에서 '+fmD(v)+' (필지·시설 분석은 1km까지)'}else run(C,true)}};
+ function run(ll,fit){C=ll;var my=++seq,lat0=ll[0],lng0=ll[1],kx=111320*Math.cos(lat0*Math.PI/180),ky=110574,r=R;
+  gH.clearLayers();draw(ll,r);if(r>1000){$('radTx').textContent='기준점에서 '+fmD(r)+' (필지·시설 분석은 1km까지)';return}if(fit!==false){try{map.fitBounds(L.circle(ll,{radius:r}).getBounds().pad(.35),{maxZoom:19})}catch(e){}}
   $('radTx').textContent='반경 '+r+'m 분석 중…';
   var dLat=r/ky*1.03,dLng=r/kx*1.03,pb=[lng0-dLng,lat0-dLat,lng0+dLng,lat0+dLat];
   var jobs=[['cad','필지',['LP_PA_CBND_BUBUN'],1000,5]].concat(GR.map(function(x){var l=lay(x[0]);return [x[0],x[1],(l&&l.data)||[],300,3]}));
