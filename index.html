@@ -1304,6 +1304,9 @@ html *{-webkit-tap-highlight-color:transparent}
  <div class="opts3 o4"><button id="tMeas"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17L17 3l4 4L7 21z"/><path d="M7 13l2 2M10 10l2 2M13 7l2 2"/></svg><b>측정</b></button><button id="tRad"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2"/><path d="M12 12l6.4-6.4"/></svg><b>반경</b></button><button id="tSel"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4z"/><path d="M14 17l2 2 4-4"/></svg><b>필지선택</b></button><button id="tDrw"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg><b>그리기</b></button></div>
  <div class="ph" style="margin-top:12px">기록</div>
  <div class="opts3"><button id="tMem"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg><b>메모 핀</b></button><button id="tTrk"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="18" r="2"/><circle cx="18" cy="6" r="2"/><path d="M8 18h6a3 3 0 0 0 0-6h-4a3 3 0 0 1 0-6h6"/></svg><b>경로 기록</b></button><button id="tRec"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/></svg><b>현장 기록</b></button></div>
+ <div class="ph" style="margin-top:14px">지도 그림으로 저장</div>
+ <div class="sub" style="margin:0 0 6px">지금 보는 범위를 정북이 위인 그림(PNG)으로 저장합니다. 배경지도·지적선·지번·번호 핀·시야가 합쳐져 보고서 현황도에 바로 쓸 수 있습니다.</div>
+ <button class="btn on" id="tCap" type="button" style="width:100%">지도 그림 저장</button>
  <div class="ph" style="margin-top:14px">현재 화면 공유</div>
  <div class="sub" style="margin:0 0 6px">위치·레이어·지도 종류가 담깁니다. 인증키와 내 SHP는 포함되지 않습니다.</div>
  <div style="display:flex;gap:6px"><input id="shareUrl" readonly style="flex:1;min-width:0;font:inherit;font-size:12px;padding:8px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--fg)"><button class="btn on" id="shareGo" style="padding:0 14px">공유</button></div><div id="shareMsg" class="sub"></div>
@@ -1434,7 +1437,7 @@ var LS=window.localStorage;function g(k,d){try{var v=LS.getItem(k);return v==nul
  if(o.m!=null){var mm={};o.m.split(',').forEach(function(i){if(i)mm[i]=true});s('muniOn',mm)}
  history.replaceState(null,'',location.pathname+location.search)}catch(e){}})();
 var KEY=g('key',''),DOM=g('dom',location.hostname||'localhost');
-var BUILD="2611062251";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
+var BUILD="2611062305";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
 applyTheme(THEME);
 var BASE=g('base','Base');if(['Base','Satellite','SatLabel','white','none'].indexOf(BASE)<0)BASE='Base';
 // 레이어: id, 이름, 표시 WMS 이름, 조회용 data 코드
@@ -2262,6 +2265,50 @@ function togClick(k){if(k==='pin'){PIN=!PIN;s('memPin',PIN)}else{FAN=!FAN;s('mem
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-tg]');if(b&&!b.disabled){e.stopPropagation();togClick(b.dataset.tg)}},true);
 (function(){var c=$('chips');if(c){var d=document.createElement('div');d.id='tgLay';d.innerHTML=togHTML();c.parentNode.insertBefore(d,c.nextSibling)}})();
 function gapTx(as){var u={},mx=0,gp=[];as.forEach(function(m){u[m.no]=1;if(m.no>mx)mx=m.no});for(var k=1;k<mx;k++)if(!u[k])gp.push(k);return '번호는 고정이라 지운 메모의 번호'+(gp.length?'('+gp.slice(0,8).join(', ')+(gp.length>8?' 외':'')+')':'')+'는 비어 있어요 · '}
+
+/* ---- 지도 그림(PNG)으로 저장: 정북 기준으로 배경·지적·지번·번호 핀·시야를 합쳐 그림 ---- */
+function capImg(u){return new Promise(function(r){var im=new Image();im.crossOrigin='anonymous';im.onload=function(){r(im)};im.onerror=function(){r(null)};im.src=u})}
+function capMap(btn){var el=document.getElementById('map'),W=el.clientWidth,H=el.clientHeight;if(!W||!H)return;
+ var zc=map.getZoom(),Z=Math.max(8,Math.min(19,Math.round(zc))),f=Math.pow(2,zc-Z),S=Math.min(2,3200/Math.max(W,H)),k=S/f,ct=map.project(map.getCenter(),Z),ox=ct.x-W*f/2,oy=ct.y-H*f/2;
+ var cv=document.createElement('canvas');cv.width=Math.round(W*S);cv.height=Math.round(H*S);var cx=cv.getContext('2d');
+ function P(la,ln){var p=map.project([la,ln],Z);return [(p.x-ox)*k,(p.y-oy)*k]}
+ var b=BASE,tpls=[];if(KEY&&b!=='none'&&b!=='white'){var sat=/^Sat/.test(b);tpls.push(tileUrl(sat?'Satellite':b,sat?'jpeg':'png'));if(b==='SatLabel')tpls.push(tileUrl('Hybrid','png'))}
+ var x0=Math.floor(ox/256),x1=Math.floor((ox+W*f)/256),y0=Math.floor(oy/256),y1=Math.floor((oy+H*f)/256),nn=Math.pow(2,Z),jobs=[];
+ if((x1-x0+1)*(y1-y0+1)*Math.max(1,tpls.length)>160){status('범위가 너무 넓습니다. 조금 확대한 뒤 저장해 주세요');return}
+ var old=btn.textContent;btn.textContent='만드는 중…';btn.disabled=true;
+ tpls.forEach(function(tpl,li){for(var y=y0;y<=y1;y++)for(var x=x0;x<=x1;x++){if(y<0||y>=nn)continue;(function(x,y,li,tpl){var xx=((x%nn)+nn)%nn;jobs.push(capImg(tpl.replace('{z}',Z).replace('{y}',y).replace('{x}',xx)).then(function(im){return {im:im,x:x,y:y,li:li}}))})(x,y,li,tpl)}});
+ Promise.all(jobs).then(function(rs){
+  cx.fillStyle=(b==='Base'||b==='white'||b==='none')?'#ffffff':'#e9e9e6';cx.fillRect(0,0,cv.width,cv.height);
+  var got=0;rs.sort(function(a,c){return a.li-c.li}).forEach(function(t){if(!t.im)return;got++;cx.drawImage(t.im,(t.x*256-ox)*k,(t.y*256-oy)*k,256*k+.6,256*k+.6)});
+  var miss=tpls.length&&got===0;
+  /* 지적선·지번 */
+  var fc=FC['LP_PA_CBND_BUBUN'],fs=(fc&&fc.feats)||[],cs=S_('cad'),clOn=lay('cad').on;
+  function rings(g){var o=[];if(!g)return o;if(g.type==='Polygon')o.push(g.coordinates);else if(g.type==='MultiPolygon')g.coordinates.forEach(function(pg){o.push(pg)});return o}
+  if(clOn&&fs.length){cx.save();cx.strokeStyle=cs.color;cx.globalAlpha=cs.opacity==null?1:cs.opacity;cx.lineWidth=Math.max(1,(cs.weight||1)*S*.8);cx.lineJoin='round';if(cs.dash)cx.setLineDash(String(cs.dash).split(/[ ,]+/).map(function(x){return +x*S}));
+   fs.forEach(function(ft){rings(ft.geometry).forEach(function(pg){pg.forEach(function(rg){cx.beginPath();rg.forEach(function(c,i){var q=P(c[1],c[0]);if(i)cx.lineTo(q[0],q[1]);else cx.moveTo(q[0],q[1])});cx.stroke()})})});cx.restore()}
+  if(JB&&Z>=18&&fs.length){cx.save();cx.textAlign='center';cx.textBaseline='middle';cx.font='700 '+(11*S)+'px "Malgun Gothic",system-ui,sans-serif';cx.lineJoin='round';
+   fs.forEach(function(ft){var t=jb(ft.properties||{}),txt=t.n+(Z>=19&&t.j?t.j:'');if(!t.n)return;var pg=rings(ft.geometry)[0];if(!pg)return;var rg=pg[0],mnx=1e9,mxx=-1e9,mny=1e9,mxy=-1e9;rg.forEach(function(c){var q=P(c[1],c[0]);if(q[0]<mnx)mnx=q[0];if(q[0]>mxx)mxx=q[0];if(q[1]<mny)mny=q[1];if(q[1]>mxy)mxy=q[1]});
+    if(mxx<0||mnx>cv.width||mxy<0||mny>cv.height)return;var tw=cx.measureText(txt).width;if(mxx-mnx<tw*1.05||mxy-mny<13*S)return;var mx=(mnx+mxx)/2,my=(mny+mxy)/2;
+    cx.strokeStyle='rgba(255,255,255,.9)';cx.lineWidth=3*S;cx.strokeText(txt,mx,my);cx.fillStyle='#1b1d1c';cx.fillText(txt,mx,my)});cx.restore()}
+  /* 메모: 시야 부채꼴 → 핀(겹치면 개수 배지) */
+  if(PIN){var vis=MEM.filter(function(m){return HID.indexOf(m.id)<0}).sort(function(a,c){return (a.no||0)-(c.no||0)});
+   vis.forEach(function(m){if(m.az==null||!isFinite(m.az))return;var pts=fan(m).getLatLngs()[0],cc=pcv(m);cx.beginPath();pts.forEach(function(ll,i){var q=P(ll.lat,ll.lng);if(i)cx.lineTo(q[0],q[1]);else cx.moveTo(q[0],q[1])});cx.closePath();cx.globalAlpha=.3;cx.fillStyle=cc;cx.fill();cx.globalAlpha=1;cx.strokeStyle=cc;cx.lineWidth=1.5*S;cx.stroke()});
+   var gs=[];vis.forEach(function(m){var q=P(m.lat,m.lng),g0=null;for(var i=0;i<gs.length;i++){if(Math.abs(gs[i].q[0]-q[0])<22*S&&Math.abs(gs[i].q[1]-q[1])<26*S){g0=gs[i];break}}if(g0)g0.l.push(m);else gs.push({q:q,l:[m]})});
+   gs.forEach(function(g1){var m=g1.l[0],q=g1.q,r=11*S,cc=pcv(m),cy=q[1]-r-5*S;if(q[0]<-r||q[0]>cv.width+r||q[1]<0||q[1]-2*r>cv.height)return;
+    cx.save();cx.shadowColor='rgba(0,0,0,.45)';cx.shadowBlur=4*S;cx.shadowOffsetY=1.5*S;cx.fillStyle=cc;cx.beginPath();cx.arc(q[0],cy,r,0,Math.PI*2);cx.fill();cx.beginPath();cx.moveTo(q[0]-r*.62,cy+r*.78);cx.lineTo(q[0]+r*.62,cy+r*.78);cx.lineTo(q[0],q[1]);cx.closePath();cx.fill();cx.restore();
+    cx.strokeStyle='#fff';cx.lineWidth=2*S;cx.beginPath();cx.arc(q[0],cy,r,0,Math.PI*2);cx.stroke();
+    var tx=String(NO[m.id]||'M');cx.fillStyle='#fff';cx.textAlign='center';cx.textBaseline='middle';cx.font='800 '+((tx.length>2?9:11.5)*S)+'px system-ui,sans-serif';cx.fillText(tx,q[0],cy+.5*S);
+    if(g1.l.length>1){var bx=q[0]+r*.9,by=cy-r*.9,br=7.5*S;cx.fillStyle='#fff';cx.beginPath();cx.arc(bx,by,br,0,Math.PI*2);cx.fill();cx.strokeStyle=cc;cx.lineWidth=1.8*S;cx.stroke();cx.fillStyle=cc;cx.font='800 '+(9.5*S)+'px system-ui,sans-serif';cx.fillText(String(g1.l.length),bx,by+.5*S)}})}
+  /* 축척 · 북쪽 · 설명 */
+  var lat=map.getCenter().lat*Math.PI/180,mpp=156543.03392*Math.cos(lat)/Math.pow(2,Z)/k,tg=cv.width*.2*mpp,NI=[1,2,5,10,20,50,100,200,500,1000,2000,5000,10000,20000,50000],nv=NI[0];NI.forEach(function(v){if(v<=tg)nv=v});var bl=nv/mpp,pad=10*S,bh=26*S;
+  cx.font='700 '+(11*S)+'px system-ui,sans-serif';var lab=nv>=1000?(nv/1000)+' km':nv+' m';
+  cx.fillStyle='rgba(255,255,255,.88)';cx.fillRect(pad,cv.height-pad-bh,bl+16*S+cx.measureText(lab).width,bh);cx.fillStyle='#111';cx.fillRect(pad+8*S,cv.height-pad-bh+15*S,bl,2.2*S);cx.fillRect(pad+8*S,cv.height-pad-bh+10*S,1.6*S,7*S);cx.fillRect(pad+8*S+bl-1.6*S,cv.height-pad-bh+10*S,1.6*S,7*S);cx.textAlign='left';cx.textBaseline='middle';cx.fillText(lab,pad+14*S+bl,cv.height-pad-bh+bh/2);
+  var nx=cv.width-pad-16*S,ny=pad+4*S;cx.fillStyle='rgba(255,255,255,.88)';cx.fillRect(nx-6*S,ny-2*S,28*S,38*S);cx.fillStyle='#111';cx.beginPath();cx.moveTo(nx+8*S,ny+2*S);cx.lineTo(nx+1*S,ny+22*S);cx.lineTo(nx+15*S,ny+22*S);cx.closePath();cx.fill();cx.textAlign='center';cx.font='800 '+(11*S)+'px system-ui,sans-serif';cx.fillText('N',nx+8*S,ny+30*S);
+  var cap=fmtT(Date.now())+' · 딸깍 지도'+(miss?' · 배경지도 없음(서버 제한)':'');cx.font='600 '+(10*S)+'px system-ui,sans-serif';cx.textAlign='right';var cw=cx.measureText(cap).width;cx.fillStyle='rgba(255,255,255,.88)';cx.fillRect(cv.width-pad-cw-10*S,cv.height-pad-18*S,cw+10*S,18*S);cx.fillStyle='#333';cx.fillText(cap,cv.width-pad-5*S,cv.height-pad-9*S);
+  btn.textContent=old;btn.disabled=false;
+  try{cv.toBlob(function(bb){if(!bb){status('그림을 만들지 못했습니다');return}var nm='지도_'+fmtT(Date.now()).replace(/[: ]/g,'').replace(/-/g,'')+'.png';window.__dl(bb,nm,'image/png','지도 그림을 저장했습니다');if(miss)status('배경지도는 서버 제한으로 빠졌습니다 (지적·핀만 저장)')},'image/png')}catch(e){status('그림을 만들지 못했습니다 (배경지도 제한)')}
+ })}
+var _cb=$('tCap');if(_cb)_cb.onclick=function(){capMap(this)};
 function nextNo(){var mx=0;MEM.forEach(function(m){if(m.no>mx)mx=m.no});return mx+1}
 function pickList(arr){var d=document.createElement('div');d.id='memPick';var h='<div class="box"><div style="font-weight:700;margin-bottom:6px">여기에 겹친 메모 '+arr.length+'개</div>';arr.forEach(function(m,k){h+='<div class="fi" data-k="'+k+'"><div class="th" style="box-shadow:0 0 0 3px '+pcv(m)+'">'+(m.photos&&m.photos[0]?'<img src="'+m.photos[0]+'">':'M')+'</div><div class="tx"><b><i class="dot" style="background:'+pcv(m)+'">'+NO[m.id]+'</i>'+esc((m.text||'(사진 메모)').split('\n')[0])+'</b><small>'+fmtT(m.t)+'</small></div></div>'});h+='<button class="btn on" style="width:100%;margin-top:8px" id="memPickZ">확대해서 펼쳐 보기</button><button class="btn" style="width:100%;margin-top:6px" id="memPickX">닫기</button></div>';d.innerHTML=h;document.body.appendChild(d);
  d.onclick=function(e){var f=e.target.closest&&e.target.closest('.fi');if(f){var m=arr[+f.dataset.k];d.remove();openMemo(m);return}if(e.target.id==='memPickZ'){var bd=L.latLngBounds(arr.map(function(m){return [m.lat,m.lng]}));d.remove();if(bd.getNorthEast().equals(bd.getSouthWest())){status('이 메모들은 위치가 같아서 더 펼칠 수 없어요 (번호 목록에서 고르세요)')}else{map.fitBounds(bd,{padding:[70,70],maxZoom:21});status('확대했습니다 · 아직 겹치면 더 확대해 보세요')}return}if(e.target===d||e.target.id==='memPickX')d.remove()}}
@@ -2862,7 +2909,8 @@ window.__fld={parseLL:parseLL};
  window.__diag=diag})();
 /* v17: 업데이트 내용 · 저장 공간 */
 (function(){var $=function(i){return document.getElementById(i)};
- var LOGV='2026-11-07b',CH=[
+ var LOGV='2026-11-07c',CH=[
+  ['2026.11.07 (지도 그림 저장)',['도구 → “지도 그림 저장”: 지금 보는 범위를 정북이 위인 PNG로 저장 (배경지도·지적선·지번·번호 핀·시야·축척·북쪽 표시 포함)']],
   ['2026.11.07 (색상 대폭 추가)',['색상 테마 11종 추가(오션·청록·숲·올리브·호박·코랄·와인·라벤더·인디고·슬레이트·모카) — 화면 설정 → 색상','왼쪽 버튼열 정리: 지적·지번을 한 줄 버튼으로 묶고 버튼 크기를 줄여 위쪽 컨트롤과 겹치지 않게 함','레이어 창의 빈 상태 칸 제거, 모서리·글자 간격 다듬기']],
   ['2026.11.06 (지적·지번 분리)',['지적선과 지번을 따로 켜고 끌 수 있게 분리 (레이어에는 “지적선”만 남음)','지도 왼쪽 버튼열에 “지적”·“지번” 버튼을 꺼내 바로 켜고 끔']],
   ['2026.11.06 (색 맞춤)',['시야 부채꼴·겹침 개수 배지가 고른 테마 색을 따라가고, 테마·밝기를 바꾸면 바로 다시 칠함 (메모에서 직접 고른 핀 색은 그대로)']],
