@@ -828,9 +828,9 @@ a.xl:active{background:var(--acc2)}
 .hasbar .toast{bottom:calc(max(18px,env(safe-area-inset-bottom)) + 210px)}
 
 /* ================= v5: 모바일 우선 · 평평하고 조용한 디자인 ================= */
-:root{--bg:#f5f5f2;--fg:#1b1d1c;--mut:#6a706d;--card:#fff;--line:#e1e2dd;--acc:#1d6a52;--acc2:#e8f1ed;--warn:#b3392b;--r:12px;--sh:0 1px 2px #0002,0 0 0 1px #0000000f;--pop:0 6px 20px #0003,0 0 0 1px #0000000f}
-@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#141817;--fg:#e6e9e7;--mut:#8f9894;--card:#1d2220;--line:#2c3330;--acc:#62c3a1;--acc2:#20332c;--warn:#ff8a7a}}
-:root[data-theme=dark]{--bg:#141817;--fg:#e6e9e7;--mut:#8f9894;--card:#1d2220;--line:#2c3330;--acc:#62c3a1;--acc2:#20332c;--warn:#ff8a7a}
+:root{--bg:#f2f4f3;--fg:#1c2321;--mut:#68736f;--card:#fff;--line:#dfe5e2;--acc:#2f6b5f;--acc2:#e4eeea;--acc-ink:#fff;--warn:#b3392b;--r:12px;--sh:0 1px 2px #0002,0 0 0 1px #0000000f;--pop:0 6px 20px #0003,0 0 0 1px #0000000f}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#101514;--fg:#e4e9e6;--mut:#8e9a95;--card:#181e1c;--line:#27302d;--acc:#86bfb0;--acc2:#1e2d29;--acc-ink:#0d1a16;--warn:#ff8a7a}}
+:root[data-theme=dark]{--bg:#101514;--fg:#e4e9e6;--mut:#8e9a95;--card:#181e1c;--line:#27302d;--acc:#86bfb0;--acc2:#1e2d29;--acc-ink:#0d1a16;--warn:#ff8a7a}
 body{font-size:13px;letter-spacing:0}
 .btn{height:36px;padding:0 12px;border-radius:10px;font-size:13px;font-weight:600;box-shadow:none}
 .btn.on{color:#fff}:root[data-theme=dark] .btn.on,:root[data-theme=dark] .srch .go{color:#0d1412}
@@ -957,9 +957,9 @@ body.hasbar .rail #bGps{bottom:calc(max(14px,env(safe-area-inset-bottom)) + 226p
 .sec{padding:6px 0 2px}
 @media (min-width:1000px){#info{left:14px!important;right:auto!important;bottom:14px!important;width:440px;max-height:72vh!important;border-radius:16px!important;box-shadow:0 8px 30px #0003,0 0 0 1px #0000000d!important}}
 /* ---- v9: 색상 ---- */
-:root[data-pal=navy]{--bg:#eef2f8;--fg:#14202f;--mut:#5c6f8a;--card:#ffffff;--line:#cfd8e6;--acc:#0b6fc0;--acc2:#e2eefa;--acc-ink:#ffffff}
-@media (prefers-color-scheme:dark){:root[data-pal=navy]:not([data-theme=light]){--bg:#0d1726;--fg:#e8f0fa;--mut:#8ea6c4;--card:#182a44;--line:#27405f;--acc:#4cc3ff;--acc2:#12304f;--acc-ink:#06213a;color-scheme:dark}}
-:root[data-pal=navy][data-theme=dark]{--bg:#0d1726;--fg:#e8f0fa;--mut:#8ea6c4;--card:#182a44;--line:#27405f;--acc:#4cc3ff;--acc2:#12304f;--acc-ink:#06213a;color-scheme:dark}
+:root[data-pal=navy]{--bg:#eef2f8;--fg:#14202f;--mut:#5c6f8a;--card:#ffffff;--line:#cfd8e6;--acc:#1f6aa8;--acc2:#e3edf7;--acc-ink:#ffffff}
+@media (prefers-color-scheme:dark){:root[data-pal=navy]:not([data-theme=light]){--bg:#0d1726;--fg:#e8f0fa;--mut:#8ea6c4;--card:#182a44;--line:#27405f;--acc:#6db8e6;--acc2:#17304d;--acc-ink:#06213a;color-scheme:dark}}
+:root[data-pal=navy][data-theme=dark]{--bg:#0d1726;--fg:#e8f0fa;--mut:#8ea6c4;--card:#182a44;--line:#27405f;--acc:#6db8e6;--acc2:#17304d;--acc-ink:#06213a;color-scheme:dark}
 :root[data-pal=plum]{--bg:#f6f2fb;--fg:#231a33;--mut:#75658f;--card:#ffffff;--line:#ddd2ec;--acc:#7a3fd0;--acc2:#efe6fb;--acc-ink:#ffffff}
 @media (prefers-color-scheme:dark){:root[data-pal=plum]:not([data-theme=light]){--bg:#1a1226;--fg:#f0eafa;--mut:#aa9cc8;--card:#2e2144;--line:#4a3870;--acc:#c08bff;--acc2:#3d2d5a;--acc-ink:#24093f;color-scheme:dark}}
 :root[data-pal=plum][data-theme=dark]{--bg:#1a1226;--fg:#f0eafa;--mut:#aa9cc8;--card:#2e2144;--line:#4a3870;--acc:#c08bff;--acc2:#3d2d5a;--acc-ink:#24093f;color-scheme:dark}
@@ -1185,6 +1185,21 @@ html[data-out="1"] #lgrp{border:2px solid var(--fg)}html[data-out="1"] #lgrp #bU
 /* ---- v17: 업데이트 내용 ---- */
 #logBody{max-height:60dvh;overflow:auto;font-size:13.5px;line-height:1.5}#logBody h4{margin:12px 0 4px;font-size:13px;color:var(--acc)}#logBody h4:first-child{margin-top:2px}
 #logBody ul{margin:0;padding-left:18px}#logBody li{margin:2px 0}
+
+/* ===== v6: 차분한 톤 · 부드러운 선택 표시 · 시트 손잡이 ===== */
+html .ftabs button.on,html .dfr button.on,html .tgr button.on,html .chks button.on,html .fi .eye.on,html .cpal .au.on,html .opts3 button.on,html #themeSeg button.on{background:var(--acc2);color:var(--acc);border-color:var(--acc)}
+html .ftabs button,html .dfr button,html .tgr button,html .chks button,html .fi .eye{transition:background .15s,border-color .15s,color .15s}
+html .ftabs button:active,html .dfr button:active,html .tgr button:active,html .chks button:active{transform:scale(.97)}
+html #quick button.on{background:var(--acc2);color:var(--acc);box-shadow:inset 0 0 0 2px var(--acc),var(--sh)}
+html .btn{border-radius:12px}
+html .sheet{border-radius:18px 18px 0 0;box-shadow:0 -8px 28px #0003}
+@media (max-width:999px){html .sheet:not(.fl)::before{content:"";display:block;width:38px;height:4px;border-radius:2px;background:var(--line);margin:0 auto 8px}}
+html .modal .box{border-radius:18px}
+html .fi{border-bottom-color:color-mix(in srgb,var(--line) 70%,transparent)}
+html .fi .th{border-radius:10px}
+html .mfold{border-radius:12px;background:color-mix(in srgb,var(--card) 92%,var(--bg))}
+html .sub,html .ph{letter-spacing:-.1px}
+html #memPick .box{border-radius:18px 18px 0 0}
 </style></head><body>
 <div id="map"></div>
 <div class="bar">
@@ -1368,7 +1383,7 @@ var LS=window.localStorage;function g(k,d){try{var v=LS.getItem(k);return v==nul
  if(o.m!=null){var mm={};o.m.split(',').forEach(function(i){if(i)mm[i]=true});s('muniOn',mm)}
  history.replaceState(null,'',location.pathname+location.search)}catch(e){}})();
 var KEY=g('key',''),DOM=g('dom',location.hostname||'localhost');
-var BUILD="2611062202";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
+var BUILD="2611062226";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
 applyTheme(THEME);
 var BASE=g('base','Base');if(['Base','Satellite','SatLabel','white','none'].indexOf(BASE)<0)BASE='Base';
 // 레이어: id, 이름, 표시 WMS 이름, 조회용 data 코드
@@ -2394,7 +2409,7 @@ window.__fld={parseLL:parseLL};
 })();
 
 /* 색상 선택 */
-(function(){var SB={navy:'#182a44',green:'#1b2622',plum:'#2e2144',sand:'#33281f',rose:'#38222c',graphite:'#26262c'},PS={"navy": "딸깍 블루", "green": "초록", "plum": "자두", "sand": "모래", "rose": "로즈", "graphite": "차콜"},SW={"navy": "#4cc3ff", "green": "#2fae86", "plum": "#c08bff", "sand": "#ffb066", "rose": "#ff7aa8", "graphite": "#5eb1ff"},box=document.getElementById('palSeg');
+(function(){var SB={navy:'#182a44',green:'#1b2622',plum:'#2e2144',sand:'#33281f',rose:'#38222c',graphite:'#26262c'},PS={"navy": "딸깍 블루", "green": "초록", "plum": "자두", "sand": "모래", "rose": "로즈", "graphite": "차콜"},SW={"navy": "#6db8e6", "green": "#2fae86", "plum": "#c08bff", "sand": "#ffb066", "rose": "#ff7aa8", "graphite": "#5eb1ff"},box=document.getElementById('palSeg');
  function cur(){return document.documentElement.getAttribute('data-pal')||'navy'}
  function mark(){var c=cur();[].forEach.call(box.children,function(b){b.classList.toggle('on',b.dataset.p===c)})}
  Object.keys(PS).forEach(function(k){var b=document.createElement('button');b.dataset.p=k;b.innerHTML='<i style="background:linear-gradient(135deg,'+SB[k]+' 52%,'+SW[k]+' 52%)"></i>'+PS[k];b.onclick=function(){document.documentElement.setAttribute('data-pal',k);s('pal',k);mark();try{refreshVec()}catch(e){}};box.appendChild(b)});mark()})();
@@ -2793,7 +2808,8 @@ window.__fld={parseLL:parseLL};
  window.__diag=diag})();
 /* v17: 업데이트 내용 · 저장 공간 */
 (function(){var $=function(i){return document.getElementById(i)};
- var LOGV='2026-11-06x',CH=[
+ var LOGV='2026-11-06y',CH=[
+  ['2026.11.06 (디자인 다듬기)',['기본 테마 색을 차분한 톤으로 변경(눈이 덜 피로한 짙은 청록·연한 세이지)','선택된 칩·탭·버튼은 꽉 찬 색 대신 옅은 색+테두리로 표시','창 위쪽에 손잡이 선, 모서리·그림자 정리']],
   ['2026.11.06 (안내·펼치기)',['현장 기록 목록 위에 빈 번호 안내(예: 번호 2, 5는 지운 메모)','겹친 핀 목록에 “확대해서 펼쳐 보기” 버튼']],
   ['2026.11.06 (정리)',['“메모 핀 켜짐 / 시야 부채꼴 켜짐” 전체 스위치 삭제 (핀별 표시/숨김과 전체 표시·숨김은 그대로)']],
   ['2026.11.06 (번호 고정·핀치 확대)',['메모 번호 고정: 지워도 다른 번호가 바뀌지 않고, 메모 창에서 번호를 직접 바꿀 수 있음(이미 있는 번호면 서로 맞바뀜)','겹친 핀 목록에도 메모 색 표시','숨김·핀 표시 설정이 프로젝트 zip·기기 전송에 포함','사진 크게 보기: 두 손가락 확대·이동 (PC는 휠·끌기)']],
