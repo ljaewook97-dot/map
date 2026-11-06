@@ -1259,6 +1259,19 @@ html.shot .leaflet-control-container .leaflet-control:not(.leaflet-control-scale
 #shotBar button{border:0;border-radius:16px;padding:8px 14px;font:700 13px system-ui;white-space:nowrap;background:#fff;color:#111}
 #shotBar #shotX{background:#ffffff33;color:#fff}
 #shotBar span{white-space:nowrap}
+#qShot{width:34px!important;height:34px!important;align-self:flex-start;margin-left:4px;color:var(--mut)!important}#qShot svg{width:18px!important;height:18px!important}
+@media (max-width:600px){
+.srch{height:38px;padding:0 4px 0 10px;gap:6px}.srch svg{flex-basis:17px;width:17px;height:17px}.srch input{font-size:13.5px}.srch .go{height:30px;padding:0 11px;font-size:12px}
+.seg button#bMap{height:32px;padding:0 10px;font-size:12px;gap:5px}.seg button#bMap svg{width:15px;height:15px}
+.rail{padding:3px;gap:0;border-radius:14px}html .rail .tool:not(#bGps):not(#bRef){width:42px!important;height:38px!important;border-radius:9px}html .rail .tool svg{width:17px!important;height:17px!important}html .rail .tool span{font-size:9px!important}html[data-rl=x] .rail .tool:not(#bGps):not(#bRef){height:34px!important}
+#rose{width:36px;height:36px;top:calc(max(10px,env(safe-area-inset-top)) + 82px)}#rose svg{width:31px;height:31px}
+html #quick{gap:5px;bottom:calc(max(12px,env(safe-area-inset-bottom)) + 44px)}
+html #quick>button:not(#qTog):not(#qShot){width:36px;height:36px}html #quick svg{width:17px;height:17px}
+html #quick .qp{border-radius:17px}html #quick .qp button{height:32px;min-width:38px;padding:0 9px}html #quick button.qt{font-size:11px}
+#qTog{width:28px!important;height:28px!important}#qShot{width:28px!important;height:28px!important}#qShot svg{width:15px!important;height:15px!important}
+.rail #bGps,.rail #bRef{width:38px;height:38px}
+.rail #bRef{bottom:calc(max(12px,env(safe-area-inset-bottom)) + 84px)}.rail #bGps{bottom:calc(max(12px,env(safe-area-inset-bottom)) + 40px)}
+}
 </style></head><body>
 <div id="map"></div>
 <div class="bar">
@@ -1362,7 +1375,7 @@ html.shot .leaflet-control-container .leaflet-control:not(.leaflet-control-scale
  <div class="cm" id="cmpMsg"></div>
  <div><small>화면 나누기 (가운데 선을 끌어 조절)</small><div id="cmpSplit"><button data-s="50" type="button">반반 비교</button><button data-s="0" type="button">오른쪽만 전체</button></div></div>
  <div><small>위치 맞추기 (사진마다 수십 m 어긋나 있어 자동으로 보정합니다)</small><div id="cmpAl"><button id="alAuto" type="button">자동 맞추기</button><button id="alOn" type="button">직접 끌어 맞추기</button><button id="alRs" type="button">원래대로</button></div><div class="cm" id="alTx"></div></div></div>
-<div id="quick"><button data-q="tMeas" aria-label="측정"></button><button data-q="tSel" aria-label="필지 선택"></button><button data-q="tDrw" aria-label="그리기"></button><button data-q="tRad" aria-label="반경 분석"></button><div class="qp"><button class="qt" id="qJk" type="button" aria-label="지적선 켜기/끄기">지적</button><button class="qt" id="qJb" type="button" aria-label="지번 켜기/끄기">지번</button></div><button id="qCam" type="button" aria-label="사진 바로 찍기"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-2.5h6L17 8h3a1 1 0 011 1v9a1 1 0 01-1 1H4a1 1 0 01-1-1V9a1 1 0 011-1z"/><circle cx="12" cy="13" r="3.6"/></svg></button><button id="qTog" type="button" aria-label="도구 버튼 접기"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 15l6-6 6 6"/></svg></button></div>
+<div id="quick"><button data-q="tMeas" aria-label="측정"></button><button data-q="tSel" aria-label="필지 선택"></button><button data-q="tDrw" aria-label="그리기"></button><button data-q="tRad" aria-label="반경 분석"></button><div class="qp"><button class="qt" id="qJk" type="button" aria-label="지적선 켜기/끄기">지적</button><button class="qt" id="qJb" type="button" aria-label="지번 켜기/끄기">지번</button></div><button id="qCam" type="button" aria-label="사진 바로 찍기"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-2.5h6L17 8h3a1 1 0 011 1v9a1 1 0 01-1 1H4a1 1 0 01-1-1V9a1 1 0 011-1z"/><circle cx="12" cy="13" r="3.6"/></svg></button><button id="qShot" type="button" aria-label="화면 그대로 캡처"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9V5h4M20 9V5h-4M4 15v4h4M20 15v4h-4"/><circle cx="12" cy="12" r="2.2"/></svg></button><button id="qTog" type="button" aria-label="도구 버튼 접기"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 15l6-6 6 6"/></svg></button></div>
 <div class="modal" id="svModal" hidden><div class="box"><h3 style="margin:0 0 6px">측정 저장</h3><input id="svName" style="width:100%;box-sizing:border-box;font:inherit;padding:9px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--fg)" placeholder="이름 (예: 진입도로 폭)"><div id="svInfo" class="sub" style="margin:6px 0 0"></div><div style="display:flex;justify-content:flex-end;gap:6px;margin-top:10px"><button class="btn" id="svNo" type="button">취소</button><button class="btn on" id="svOk" type="button">저장</button></div></div></div>
 <div class="modal" id="logModal" hidden><div class="box"><h3 style="margin:0 0 6px">업데이트 내용</h3><div id="logBody"></div><div style="display:flex;justify-content:flex-end;margin-top:10px"><button class="btn on" id="logX" type="button">닫기</button></div></div></div>
 <div class="modal" id="tourModal" hidden><div class="box tour"><div class="tk" id="tkIc"></div><h3 id="tkT"></h3><p id="tkP"></p><div class="tdots" id="tkD"></div><div style="display:flex;gap:8px"><button class="btn" id="tkPrev">이전</button><span style="flex:1"></span><button class="btn" id="tkSkip">건너뛰기</button><button class="btn on" id="tkNext">다음</button></div></div></div>
@@ -1447,7 +1460,7 @@ var LS=window.localStorage;function g(k,d){try{var v=LS.getItem(k);return v==nul
  if(o.m!=null){var mm={};o.m.split(',').forEach(function(i){if(i)mm[i]=true});s('muniOn',mm)}
  history.replaceState(null,'',location.pathname+location.search)}catch(e){}})();
 var KEY=g('key',''),DOM=g('dom',location.hostname||'localhost');
-var BUILD="2611062312";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
+var BUILD="2611062316";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
 applyTheme(THEME);
 var BASE=g('base','Base');if(['Base','Satellite','SatLabel','white','none'].indexOf(BASE)<0)BASE='Base';
 // 레이어: id, 이름, 표시 WMS 이름, 조회용 data 코드
@@ -2336,7 +2349,7 @@ function shotGrab(){var md=navigator.mediaDevices;if(!md||!md.getDisplayMedia){s
    if(!cropped){var k=vw/window.innerWidth;sx=r.left*k;sy=r.top*k;sw=r.width*k;sh=r.height*k}
    c.width=Math.round(sw);c.height=Math.round(sh);c.getContext('2d').drawImage(v,sx,sy,sw,sh,0,0,c.width,c.height);st.getTracks().forEach(function(t){t.stop()});bar.style.display='';
    c.toBlob(function(bb){if(!bb){status('저장하지 못했습니다');return}window.__dl(bb,'화면_'+fmtT(Date.now()).replace(/[: ]/g,'').replace(/-/g,'')+'.png','image/png','화면을 저장했습니다')},'image/png')})})}).catch(function(){if(bar)bar.style.display='';status('화면 저장이 허용되지 않았습니다. 기기의 화면 캡처를 쓰세요');shotBar(false)})}
-var _sb=$('tShot');if(_sb)_sb.onclick=shotOn;
+var _sb=$('tShot');if(_sb)_sb.onclick=shotOn;var _qs=$('qShot');if(_qs)_qs.onclick=shotOn;
 function nextNo(){var mx=0;MEM.forEach(function(m){if(m.no>mx)mx=m.no});return mx+1}
 function pickList(arr){var d=document.createElement('div');d.id='memPick';var h='<div class="box"><div style="font-weight:700;margin-bottom:6px">여기에 겹친 메모 '+arr.length+'개</div>';arr.forEach(function(m,k){h+='<div class="fi" data-k="'+k+'"><div class="th" style="box-shadow:0 0 0 3px '+pcv(m)+'">'+(m.photos&&m.photos[0]?'<img src="'+m.photos[0]+'">':'M')+'</div><div class="tx"><b><i class="dot" style="background:'+pcv(m)+'">'+NO[m.id]+'</i>'+esc((m.text||'(사진 메모)').split('\n')[0])+'</b><small>'+fmtT(m.t)+'</small></div></div>'});h+='<button class="btn on" style="width:100%;margin-top:8px" id="memPickZ">확대해서 펼쳐 보기</button><button class="btn" style="width:100%;margin-top:6px" id="memPickX">닫기</button></div>';d.innerHTML=h;document.body.appendChild(d);
  d.onclick=function(e){var f=e.target.closest&&e.target.closest('.fi');if(f){var m=arr[+f.dataset.k];d.remove();openMemo(m);return}if(e.target.id==='memPickZ'){var bd=L.latLngBounds(arr.map(function(m){return [m.lat,m.lng]}));d.remove();if(bd.getNorthEast().equals(bd.getSouthWest())){status('이 메모들은 위치가 같아서 더 펼칠 수 없어요 (번호 목록에서 고르세요)')}else{map.fitBounds(bd,{padding:[70,70],maxZoom:21});status('확대했습니다 · 아직 겹치면 더 확대해 보세요')}return}if(e.target===d||e.target.id==='memPickX')d.remove()}}
@@ -2937,7 +2950,8 @@ window.__fld={parseLL:parseLL};
  window.__diag=diag})();
 /* v17: 업데이트 내용 · 저장 공간 */
 (function(){var $=function(i){return document.getElementById(i)};
- var LOGV='2026-11-07d',CH=[
+ var LOGV='2026-11-07e',CH=[
+  ['2026.11.07 (모바일 UI 축소)',['모바일에서 검색창·도구줄·빠른 버튼을 작게 조정','“화면 그대로 캡처”를 지도 위 작은 버튼으로 이동']],
   ['2026.11.07 (화면 그대로 캡처)',['도구 → “화면 그대로 캡처”: 버튼·창을 모두 숨기고 지도만 표시 (PC는 PNG 저장 시도, 폰은 기기 화면 캡처 사용)']],
   ['2026.11.07 (지도 그림 저장)',['도구 → “지도 그림 저장”: 지금 보는 범위를 정북이 위인 PNG로 저장 (배경지도·지적선·지번·번호 핀·시야·축척·북쪽 표시 포함)']],
   ['2026.11.07 (색상 대폭 추가)',['색상 테마 11종 추가(오션·청록·숲·올리브·호박·코랄·와인·라벤더·인디고·슬레이트·모카) — 화면 설정 → 색상','왼쪽 버튼열 정리: 지적·지번을 한 줄 버튼으로 묶고 버튼 크기를 줄여 위쪽 컨트롤과 겹치지 않게 함','레이어 창의 빈 상태 칸 제거, 모서리·글자 간격 다듬기']],
