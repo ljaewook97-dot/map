@@ -1276,6 +1276,8 @@ html #quick .qp{border-radius:17px}html #quick .qp button{height:32px;min-width:
 #exCrs{width:100%;box-sizing:border-box;font:inherit;font-size:13px;padding:9px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--fg)}#cmpYrs{display:flex;flex-wrap:wrap;gap:5px;margin:8px 0 2px}#cmpYrs button{height:28px;padding:0 10px;border:1px solid var(--line);border-radius:14px;background:none;color:var(--fg);font:inherit;font-size:12px;font-weight:700}#cmpYrs button.on{background:var(--acc2);color:var(--acc);border-color:var(--acc)}
 #p2Qr{display:none;margin-top:8px;text-align:center}#p2Qr svg{width:150px;height:150px;background:#fff;padding:6px;border-radius:10px}#p2Cam{display:none;margin-top:8px}#p2Cam video{width:100%;max-height:260px;border-radius:12px;background:#000;object-fit:cover}
 #selBar .mb .btn{min-width:0;white-space:nowrap;font-size:12px;padding:0 2px}
+#qrOv{position:fixed;inset:0;z-index:5000;background:#000c;display:flex;align-items:center;justify-content:center;padding:16px}#qrOv[hidden]{display:none}#qrOv .box{background:var(--card);color:var(--fg);border-radius:14px;padding:14px;width:min(420px,100%);display:flex;flex-direction:column;gap:8px}#qrOv video{width:100%;max-height:60vh;border-radius:12px;background:#000;object-fit:cover}
+#inBar{position:fixed;z-index:3500;left:10px;right:10px;bottom:max(10px,env(safe-area-inset-bottom));display:flex;align-items:center;gap:8px;background:var(--card);color:var(--fg);border-radius:12px;padding:8px 8px 8px 12px;font-size:12px;box-shadow:0 4px 18px #0005;line-height:1.35}#inBar span{flex:1}#inBar button{border:0;border-radius:9px;height:32px;padding:0 10px;font:700 12px system-ui;background:var(--acc2);color:var(--acc);white-space:nowrap}
 </style></head><body>
 <div id="map"></div>
 <div class="bar">
@@ -1344,6 +1346,7 @@ html #quick .qp{border-radius:17px}html #quick .qp button{height:32px;min-width:
  <div class="ph" style="margin-top:14px">현재 화면 공유</div>
  <div class="sub" style="margin:0 0 6px">위치·레이어·지도 종류가 담깁니다. 인증키와 내 SHP는 포함되지 않습니다.</div>
  <div style="display:flex;gap:6px"><input id="shareUrl" readonly style="flex:1;min-width:0;font:inherit;font-size:12px;padding:8px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--fg)"><button class="btn on" id="shareGo" style="padding:0 14px">공유</button></div><div id="shareMsg" class="sub"></div>
+ <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:4px"><button class="btn" id="shQr" type="button">QR로 보여주기</button><button class="btn" id="shScan" type="button">QR 읽기</button><button class="btn" id="shPaste" type="button">링크 붙여넣어 열기</button></div><div id="shQrBox" style="display:none;text-align:center;margin-top:8px"></div><div class="sub" style="margin:6px 0 0;font-size:12px">받은 링크가 사파리·크롬으로 열릴 때(특히 아이폰)는 여기서 QR을 읽거나 링크를 붙여넣으면 앱 안에서 같은 화면이 열립니다.</div>
  <div class="ph" style="margin-top:14px">지도 중심에서 다른 지도로</div><div id="ctrLinks" class="xls"></div>
 </div>
 <div id="sRes" hidden></div>
@@ -13869,6 +13872,7 @@ function findAlignmentPattern(matrix, alignmentPatternQuads, topRight, topLeft, 
 /******/ ])["default"];
 });</script>
 <script>
+window.__inLink=(location.hash||'').indexOf('c=')>=0?location.href:'';
 (function(){
 var LS=window.localStorage;function g(k,d){try{var v=LS.getItem(k);return v==null?d:JSON.parse(v)}catch(e){return d}}function s(k,v){try{LS.setItem(k,JSON.stringify(v))}catch(e){}}
 (function(){try{var h=location.hash.replace(/^#/,'');if(!h||h.indexOf('c=')<0)return;var o={};h.split('&').forEach(function(x){var i=x.indexOf('=');if(i>0)o[x.slice(0,i)]=decodeURIComponent(x.slice(i+1))});
@@ -13878,7 +13882,7 @@ var LS=window.localStorage;function g(k,d){try{var v=LS.getItem(k);return v==nul
  if(o.m!=null){var mm={};o.m.split(',').forEach(function(i){if(i)mm[i]=true});s('muniOn',mm)}
  history.replaceState(null,'',location.pathname+location.search)}catch(e){}})();
 var KEY=g('key',''),DOM=g('dom',location.hostname||'localhost');
-var BUILD="2611062358";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
+var BUILD="2611070000";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
 applyTheme(THEME);
 var BASE=g('base','Base');if(['Base','Satellite','SatLabel','white','none'].indexOf(BASE)<0)BASE='Base';
 // 레이어: id, 이름, 표시 WMS 이름, 조회용 data 코드
@@ -14390,6 +14394,24 @@ document.getElementById('pFile').onchange=function(e){var f=e.target.files[0];e.
 })();
 [['layers','bLayers'],['legend','bLeg']].forEach(function(p){var el=document.getElementById(p[0]),bt=document.getElementById(p[1]);new MutationObserver(function(){bt.classList.toggle('on',!el.hidden)}).observe(el,{attributes:true,attributeFilter:['hidden']})});
 
+/* 공용 QR 읽기 + 링크로 열렸을 때 안내 */
+(function(){var $=function(i){return document.getElementById(i)};
+ var ov=document.createElement('div');ov.id='qrOv';ov.hidden=true;ov.innerHTML='<div class="box"><b id="qrHint">QR을 비춰 주세요</b><video playsinline muted></video><button class="btn" type="button" id="qrX" style="width:100%">닫기</button></div>';document.body.appendChild(ov);
+ var st=null,raf=0;function stop(){cancelAnimationFrame(raf);if(st){try{st.getTracks().forEach(function(t){t.stop()})}catch(e){}st=null}ov.hidden=true}
+ window.__qrScan=function(cb,hint){if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia||typeof jsQR==='undefined'){status('이 기기에서는 카메라로 읽을 수 없습니다');return}
+  navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:'environment'}},audio:false}).then(function(s0){st=s0;var v=ov.querySelector('video');v.srcObject=s0;v.setAttribute('playsinline','');v.play();$('qrHint').textContent=hint||'QR을 비춰 주세요';ov.hidden=false;
+   var cv=document.createElement('canvas'),cx=cv.getContext('2d',{willReadFrequently:true});
+   (function tick(){if(!st)return;if(v.readyState>=2&&v.videoWidth){var w=Math.min(520,v.videoWidth),h=Math.round(w*v.videoHeight/v.videoWidth);cv.width=w;cv.height=h;cx.drawImage(v,0,0,w,h);var r=jsQR(cx.getImageData(0,0,w,h).data,w,h,{inversionAttempts:'dontInvert'});if(r&&r.data){stop();cb(r.data);return}}raf=requestAnimationFrame(tick)})()}).catch(function(){status('카메라 권한이 필요합니다')})};
+ $('qrX').onclick=stop;
+ /* 사파리·크롬 등 앱 밖에서 링크로 열린 경우: 앱에서 여는 방법 안내 */
+ try{var L0=window.__inLink,sa=(window.matchMedia&&matchMedia('(display-mode: standalone)').matches)||navigator.standalone,mob=/Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+  if(L0&&!sa&&mob&&!/Win|Mac OS X 10/.test(navigator.platform||'x')){var b=document.createElement('div');b.id='inBar';var ios=/iPhone|iPad|iPod/i.test(navigator.userAgent);
+   b.innerHTML='<span>'+(ios?'홈 화면의 “딸깍 지도” 앱에서 열려면: 링크 복사 후 앱의 도구 → 링크 붙여넣어 열기':'앱이 설치되어 있으면 홈 화면 아이콘에서 열 수 있습니다')+'</span><button type="button" id="inCp">링크 복사</button><button type="button" id="inX">닫기</button>';document.body.appendChild(b);
+   $('inX').onclick=function(){b.remove()};$('inCp').onclick=function(){var ok=function(){status('링크를 복사했습니다')};if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(L0).then(ok,function(){status('복사하지 못했습니다')});else status('복사하지 못했습니다')}}}catch(e){}
+ /* 설치된 앱이 링크로 열릴 때 (안드로이드 크롬 등) */
+ try{if('launchQueue' in window&&window.launchQueue){window.launchQueue.setConsumer(function(p){if(p&&p.targetURL&&window.__goLink){var u=String(p.targetURL);if(u.indexOf('c=')>=0&&u!==location.href)window.__goLink(u)}})}}catch(e){}
+ window.addEventListener('hashchange',function(){if(location.hash.indexOf('c=')>=0&&window.__goLink)window.__goLink(location.href)})})();
+
 /* p2p */
 (function(){var CH=4000,peer=null,tmr=null;window.__p2dbg=function(){var o={};if(peer)for(var k in peer.connections){o[k]=(peer.connections[k]||[]).map(function(c){var d=c.dataChannel;return {open:c.open,rs:d&&d.readyState,buf:d&&d.bufferedAmount,bs:c._buffering,q:c._queue&&c._queue.length}})}return o};
 function $(i){return document.getElementById(i)}
@@ -14715,7 +14737,16 @@ window.__cadExport=open;window.__cadParts=parts;
  document.getElementById('tMeas').onclick=function(){toggle('meas')};document.getElementById('tSel').onclick=function(){toggle('sel')};document.getElementById('tDrw').onclick=function(){toggle('drw')};
  document.getElementById('shareGo').onclick=function(){var u=link(),m=document.getElementById('shareMsg');document.getElementById('shareUrl').value=u;
   function cp(){var i=document.getElementById('shareUrl');i.select();try{document.execCommand('copy');m.textContent='링크를 복사했습니다'}catch(e){m.textContent='위 주소를 길게 눌러 복사하세요'}}
-  if(navigator.share){navigator.share({title:'딸깍 지도',url:u}).catch(function(){})}else if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(u).then(function(){m.textContent='링크를 복사했습니다'},cp)}else cp()}})();
+  if(navigator.share){navigator.share({title:'딸깍 지도',url:u}).catch(function(){})}else if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(u).then(function(){m.textContent='링크를 복사했습니다'},cp)}else cp()};
+ var qb=document.getElementById('shQrBox');
+ document.getElementById('shQr').onclick=function(){if(qb.style.display==='block'){qb.style.display='none';return}var u=link();try{var q=qrcode(0,'L');q.addData(u);q.make();qb.innerHTML=q.createSvgTag(3,12).replace('<svg','<svg style="width:200px;height:200px;background:#fff;border-radius:10px"');qb.style.display='block'}catch(e){document.getElementById('shareMsg').textContent='QR을 만들지 못했습니다'}};
+ function hashOf(t){t=String(t||'').trim();var i=t.indexOf('#');if(i<0)return '';var h=t.slice(i+1);return h.indexOf('c=')>=0?h:''}
+ function goHash(h){if(window.__rl)return true;if(!h){document.getElementById('shareMsg').textContent='지도 링크가 아닙니다';return false}try{location.replace(location.pathname+location.search+'#'+h)}catch(e){location.hash=h}window.__rl=1;setTimeout(function(){location.reload()},50);return true}
+ window.__goLink=function(t){return goHash(hashOf(t))};
+ document.getElementById('shPaste').onclick=function(){var m=document.getElementById('shareMsg');
+  function use(t){if(!window.__goLink(t))m.textContent='붙여넣은 내용이 지도 링크가 아닙니다'}
+  if(navigator.clipboard&&navigator.clipboard.readText){navigator.clipboard.readText().then(use,function(){m.textContent='붙여넣기가 허용되지 않았습니다. 주소창에 링크를 붙여넣어 열어 주세요'})}else m.textContent='이 브라우저는 붙여넣기를 지원하지 않습니다'};
+ document.getElementById('shScan').onclick=function(){window.__qrScan(function(t){if(!window.__goLink(t))document.getElementById('shareMsg').textContent='지도 링크 QR이 아닙니다'},'보내는 기기의 지도 QR을 비춰 주세요')}})();
 
 /* scale + view width */
 (function(){L.control.scale({metric:true,imperial:false,position:'bottomleft',maxWidth:96}).addTo(map);
@@ -15487,7 +15518,8 @@ window.__fld={parseLL:parseLL};
  window.__diag=diag})();
 /* v17: 업데이트 내용 · 저장 공간 */
 (function(){var $=function(i){return document.getElementById(i)};
- var LOGV='2026-11-07i',CH=[
+ var LOGV='2026-11-07j',CH=[
+  ['2026.11.07 (화면 공유 개선)',['도구 → 현재 화면 공유: “QR로 보여주기”, “QR 읽기”, “링크 붙여넣어 열기” 추가 — 사파리로 열린 링크도 앱 안에서 같은 화면으로 열림','링크가 앱 밖(사파리·크롬)에서 열리면 앱에서 여는 방법 안내 막대 표시','안드로이드: 설치된 앱이 링크를 직접 열도록 설정 보강(앱 설치 정보 manifest.json도 함께 올려야 함)']],
   ['2026.11.07 (CAD·GIS 내보내기 외)',['선택 필지 → “CAD·GIS”: DXF(AutoCAD)·SHP(QGIS) 내보내기, 좌표계 5186/5174/5179/4326 선택','저장한 측정(거리·면적)도 같은 방법으로 CAD·GIS에 내보내기 (현장 기록 → 측정 탭)','과거 항공사진 비교: 연도 버튼으로 바로 이동','기기 간 전송: 보내는 쪽에 QR 표시, 받는 쪽은 카메라로 읽어 연결 (코드 입력도 그대로 가능)']],
   ['2026.11.07 (방향 센서 정밀화)',['자북→진북 보정: 위치로 편차(한국 약 −8~9°)를 계산해 반영','기울기 보정: 폰을 세워 정면을 볼 때는 카메라 방향, 눕혀 들 때는 폰 상단 방향으로 계산','센서 정확도(±°) 표시, 흔들림이 크면 “8자로 흔들어 보정” 안내, 시야 부채꼴을 오차만큼 넓힘','떨림 완화: 천천히 돌릴 땐 안정적으로, 빨리 돌릴 땐 즉시 따라감','방향 보정값(수동·걸음 학습)은 이번 한 번 초기화됨 — 진북 보정이 들어갔기 때문']],
   ['2026.11.07 (버튼 정리)',['왼쪽 빠른 버튼: 측정·필지선택·그리기·반경을 “도구” 버튼 하나로 묶어 펼침','폰에서는 오른쪽 메뉴 글자를 기본으로 숨김 (설정에서 변경 가능)','설정 → “현장 기록 표시”: 숨긴 핀 모두 표시 / 핀 색 모두 기본으로','도구 메뉴의 “지도 그림으로 저장” 숨김']],
