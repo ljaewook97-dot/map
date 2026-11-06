@@ -1291,7 +1291,7 @@ html[data-out="1"] #lgrp{border:2px solid var(--fg)}html[data-out="1"] #lgrp #bU
  <h3 style="margin:0 0 4px">프로젝트</h3><p class="sub" style="margin:0 0 8px">지도 위치·배경·레이어 켜기/순서·스타일·올린 SHP를 이름 붙여 저장하고, 나중에 불러옵니다. 이 기기·브라우저에 저장됩니다.</p>
  <label>새 이름으로 저장</label><div style="display:flex;gap:6px"><input id="pName" placeholder="예: 마곡 검토안 1" autocomplete="off"><button class="btn on" id="pSave" style="height:42px;margin-top:4px">저장</button></div>
  <div id="pList" style="margin:6px 0"></div>
- <div style="display:flex;gap:6px;flex-wrap:wrap"><button class="btn" id="pImp">파일에서 가져오기</button><input type="file" id="pFile" accept=".json,application/json" hidden><button class="btn" id="pClose" style="margin-left:auto">닫기</button></div>
+ <div style="display:flex;gap:6px;flex-wrap:wrap"><button class="btn" id="pImp">파일에서 가져오기</button><input type="file" id="pFile" accept=".json,.zip,application/json,application/zip" hidden><button class="btn" id="pClose" style="margin-left:auto">닫기</button></div>
  <div style="border-top:1px solid var(--line);margin:10px 0 6px;padding-top:8px"><b>다른 기기와 바로 주고받기</b>
   <p class="sub" style="margin:2px 0 6px">PC와 폰의 웹 지도를 직접 연결해 지금 지도 상태(올린 SHP 포함)를 보냅니다. 파일은 서버에 저장되지 않습니다. 두 기기 모두 이 화면을 열어 두세요.</p>
   <div style="display:flex;gap:6px;flex-wrap:wrap"><button class="btn on" id="p2Send">이 기기 → 보내기</button><button class="btn" id="p2Recv">다른 기기에서 받기</button></div>
@@ -1367,7 +1367,7 @@ var LS=window.localStorage;function g(k,d){try{var v=LS.getItem(k);return v==nul
  if(o.m!=null){var mm={};o.m.split(',').forEach(function(i){if(i)mm[i]=true});s('muniOn',mm)}
  history.replaceState(null,'',location.pathname+location.search)}catch(e){}})();
 var KEY=g('key',''),DOM=g('dom',location.hostname||'localhost');
-var BUILD="2611061911";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
+var BUILD="2611061915";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
 applyTheme(THEME);
 var BASE=g('base','Base');if(['Base','Satellite','SatLabel','white','none'].indexOf(BASE)<0)BASE='Base';
 // 레이어: id, 이름, 표시 WMS 이름, 조회용 data 코드
@@ -1823,7 +1823,26 @@ function all(cb){idb(function(db){if(!db)return cb([]);try{var r=db.transaction(
 function del(n,cb){idb(function(db){var tx=db.transaction('prj','readwrite');tx.objectStore('prj').delete(n);tx.oncomplete=cb})}
 function load(p){msg('불러오는 중…');idb(function(db){var tx=db.transaction('shp','readwrite'),st=tx.objectStore('shp');st.clear();(p.shp||[]).forEach(function(u){st.put(u)});
  tx.oncomplete=function(){s('base',p.base||'Base');if(p.c)s('c',p.c);if(p.z)s('z',p.z);s('layers',p.layers||{});s('ord',p.ord||[]);s('sty',p.sty||{});s('muniOn',p.muniOn||{});s('muni',p.muni||[]);s('draw',p.draw||[]);location.reload()};tx.onerror=function(){msg('불러오기 실패')}})}
-function exp(p){var b=new Blob([JSON.stringify(p)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=(p.name||'project').replace(/[\\\/:*?"<>|]/g,'_')+'.ddmap.json';document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove()},2000)}
+function dl(blob,name){var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove()},2000)}
+function stAll(st,cb){idb(function(db){if(!db)return cb([]);try{var r=db.transaction(st).objectStore(st).getAll();r.onsuccess=function(){cb(r.result||[])};r.onerror=function(){cb([])}}catch(e){cb([])}})}
+function stPut(st,arr,cb){idb(function(db){if(!db||!arr.length)return cb&&cb();try{var tx=db.transaction(st,'readwrite'),os=tx.objectStore(st);arr.forEach(function(o){os.put(o)});tx.oncomplete=function(){cb&&cb()};tx.onerror=function(){cb&&cb()}}catch(e){cb&&cb()}})}
+function b64(d){return String(d).split(',')[1]||''}
+function exp(p){var nm=(p.name||'project').replace(/[\\\/:*?"<>|]/g,'_');
+ if(typeof JSZip==='undefined'){dl(new Blob([JSON.stringify(p)],{type:'application/json'}),nm+'.ddmap.json');return}
+ msg('사진·도면 모으는 중…');
+ stAll('memo',function(M){stAll('trk',function(T){stAll('ovl',function(O){
+  var z=new JSZip(),ph=0,dw=0,q=Object.assign({},p);
+  var mx=M.map(function(m,i){var c=Object.assign({},m);c.photos=(m.photos||[]).map(function(d,k){var n='사진/'+(i+1)+'_'+(k+1)+'.jpg';z.file(n,b64(d),{base64:true});ph++;return n});return c});
+  var ox=O.map(function(o,i){var c=Object.assign({},o),n='도면/'+(i+1)+'_'+String(o.name||'도면').replace(/[\\\/:*?"<>|]/g,'_')+'.jpg';z.file(n,b64(o.img),{base64:true});dw++;c.img=n;return c});
+  q.extra={memo:mx,trk:T,ovl:ox,measSv:g('measSv',[])};
+  z.file(nm+'.ddmap.json',JSON.stringify(q));
+  z.generateAsync({type:'blob'}).then(function(b){dl(b,nm+'.ddmap.zip');msg('저장했습니다: 메모 '+M.length+'개, 사진 '+ph+'장, 도면 '+dw+'장 포함')},function(){msg('압축 실패')})})})})}
+function importExtra(x,z,cb){if(!x)return cb(0);var men=0;
+ function img(n,done){if(!z){done(null);return}var f=z.file(n);if(!f){done(null);return}f.async('base64').then(function(b){done('data:image/jpeg;base64,'+b)},function(){done(null)})}
+ var M=x.memo||[],O=x.ovl||[],jobs=0,fin=function(){if(--jobs>0)return;stPut('memo',M,function(){stPut('trk',x.trk||[],function(){stPut('ovl',O,function(){if(x.measSv&&x.measSv.length){var a=g('measSv',[]),ids={};a.forEach(function(r){ids[r.id]=1});x.measSv.forEach(function(r){if(!ids[r.id])a.push(r)});s('measSv',a.slice(0,200))}cb(M.length+O.length)})})})};
+ jobs=1;M.forEach(function(m){(m.photos||[]).forEach(function(n,k){if(String(n).indexOf('data:')===0)return;jobs++;img(n,function(d){m.photos[k]=d;fin()})});m.photos=m.photos||[]});
+ O.forEach(function(o){if(String(o.img).indexOf('data:')===0)return;jobs++;img(o.img,function(d){o.img=d;fin()})});
+ fin()}
 function fmt(t){var d=new Date(t);return (d.getMonth()+1)+'/'+d.getDate()+' '+('0'+d.getHours()).slice(-2)+':'+('0'+d.getMinutes()).slice(-2)}
 function render(){all(function(a){LST.innerHTML='';if(!a.length){LST.innerHTML='<p class="sub">저장된 프로젝트가 없습니다.</p>';return}
  a.forEach(function(p){var r=document.createElement('div');r.style.cssText='border:1px solid var(--line);border-radius:10px;padding:8px;margin:6px 0';
@@ -1832,7 +1851,7 @@ function render(){all(function(a){LST.innerHTML='';if(!a.length){LST.innerHTML='
   var bx=r.children[2];function B(t,f,c){var b=document.createElement('button');b.className='btn'+(c?' on':'');b.style.padding='6px 10px';b.textContent=t;b.onclick=f;bx.appendChild(b)}
   B('불러오기',function(){load(p)},1);
   B('덮어쓰기',function(){put(snap(p.name),function(){msg('"'+p.name+'" 덮어씀');render()})});
-  B('파일로 저장',function(){exp(p)});
+  B('파일로 저장 (사진·도면 포함)',function(){exp(p)});
   var dl=false;B('삭제',function(e){if(!dl){dl=true;e.target.textContent='한 번 더 누르면 삭제';return}del(p.name,render)});
  LST.appendChild(r)})})}
 window.__p2put=put;window.__p2render=render;
@@ -1842,7 +1861,10 @@ document.getElementById('pSave').onclick=function(){var n=document.getElementByI
  all(function(a){if(a.some(function(p){return p.name===n})&&!confirm_ok(n)){return}put(snap(n),function(){document.getElementById('pName').value='';msg('"'+n+'" 저장됨');render()})})};
 var armed='';function confirm_ok(n){if(armed===n){armed='';return true}armed=n;msg('같은 이름이 있습니다. 덮어쓰려면 저장을 한 번 더 누르세요');return false}
 document.getElementById('pImp').onclick=function(){document.getElementById('pFile').click()};
-document.getElementById('pFile').onchange=function(e){var f=e.target.files[0];if(!f)return;var fr=new FileReader();fr.onload=function(){try{var p=JSON.parse(fr.result);if(!p||!p.name||!p.layers)throw 0;put(p,function(){msg('"'+p.name+'" 가져옴');render()})}catch(x){msg('올바른 프로젝트 파일이 아닙니다')}};fr.readAsText(f);e.target.value=''};
+document.getElementById('pFile').onchange=function(e){var f=e.target.files[0];e.target.value='';if(!f)return;
+ function use(txt,z){try{var p=JSON.parse(txt);if(!p||!p.name||!p.layers)throw 0;var x=p.extra;delete p.extra;put(p,function(){render();if(x){importExtra(x,z,function(n){msg('"'+p.name+'" 가져옴 · 메모·도면 '+n+'개 복원 (새로고침합니다)');setTimeout(function(){location.reload()},1500)})}else msg('"'+p.name+'" 가져옴')})}catch(err){msg('올바른 프로젝트 파일이 아닙니다')}}
+ if(/\.zip$/i.test(f.name)&&typeof JSZip!=='undefined'){JSZip.loadAsync(f).then(function(z){var jf=Object.keys(z.files).filter(function(n){return /\.ddmap\.json$/.test(n)})[0];if(!jf){msg('올바른 프로젝트 파일이 아닙니다');return}z.file(jf).async('string').then(function(t){use(t,z)})},function(){msg('압축 파일을 열 수 없습니다')});return}
+ var fr=new FileReader();fr.onload=function(){use(fr.result,null)};fr.readAsText(f)};
 })();
 [['layers','bLayers'],['legend','bLeg']].forEach(function(p){var el=document.getElementById(p[0]),bt=document.getElementById(p[1]);new MutationObserver(function(){bt.classList.toggle('on',!el.hidden)}).observe(el,{attributes:true,attributeFilter:['hidden']})});
 
@@ -2698,7 +2720,8 @@ window.__fld={parseLL:parseLL};
  window.__diag=diag})();
 /* v17: 업데이트 내용 · 저장 공간 */
 (function(){var $=function(i){return document.getElementById(i)};
- var LOGV='2026-11-06i',CH=[
+ var LOGV='2026-11-06j',CH=[
+  ['2026.11.06 (프로젝트 내보내기)',['프로젝트 “파일로 저장”이 zip으로 바뀌어 메모·경로·메모 사진·내 도면 이미지가 함께 담김 (사진/·도면/ 폴더에 jpg로도 들어 있음). “파일에서 가져오기”는 zip·기존 json 모두 가능, 가져오면 메모·도면도 복원']],
   ['2026.11.06 (조례 추가)',['건폐율·용적률 상한에 서울·고양·남양주·김포·의정부·과천·파주 조례 값 반영 (그 밖의 지역은 시행령 상한으로 표시)']],
   ['2026.11.06 (오후 정리)',['조회 결과 창 정리: 건폐율·용적률을 표로, 지구단위는 한 칸 카드로, 용도지구·시설·토지이용은 기본으로 접고 개수만 표시','순서를 용도지역 → 건폐율·용적률 → 지구단위 → 개발제한 순으로 재배치, 면적 비율은 아래로']],
   ['2026.11.06 (오후 추가 2)',['도구 메뉴를 “측정·표시”(측정·반경·필지 선택·그리기)와 “기록”(메모·경로·현장 기록)으로 나눔','도구 메뉴에 “오프라인 미리 받기”: 지금 보는 범위의 지도를 미리 저장 (저장 범위·용량 확인 후 시작)','조회 결과 창의 구역(용도지역·건폐율·시설 등) 제목을 눌러 접고 펼침 — 접은 상태는 기억','공유: “복사” 버튼 추가, 공유 문구에 좌표·확대 포함','도면 패널을 위로 옮기거나 작게 줄일 수 있음','처음 사용 안내에 점검·방향·건폐율·도면·오프라인 항목 추가']],
