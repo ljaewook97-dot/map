@@ -1362,7 +1362,7 @@ var LS=window.localStorage;function g(k,d){try{var v=LS.getItem(k);return v==nul
  if(o.m!=null){var mm={};o.m.split(',').forEach(function(i){if(i)mm[i]=true});s('muniOn',mm)}
  history.replaceState(null,'',location.pathname+location.search)}catch(e){}})();
 var KEY=g('key',''),DOM=g('dom',location.hostname||'localhost');
-var BUILD="2611061832";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
+var BUILD="2611061838";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
 applyTheme(THEME);
 var BASE=g('base','Base');if(['Base','Satellite','SatLabel','white','none'].indexOf(BASE)<0)BASE='Base';
 // 레이어: id, 이름, 표시 WMS 이름, 조회용 data 코드
@@ -1777,7 +1777,7 @@ function draw(){lay.clearLayers();lbs=[];
  if(!pts.length)tx.innerHTML='지도를 눌러 점을 찍으세요.<div class="m">2점: 거리 · 3점 이상: 둘레와 면적 (대략값, 측량 아님)</div>';
  else{var h='거리 <b>'+fm(tot)+'</b>';if(pts.length>=3)h+=' · 둘레 '+fm(tot+cl)+'<br>면적 <b>'+a.toLocaleString('ko-KR',{maximumFractionDigits:1})+' ㎡</b> ('+(a/3.3058).toLocaleString('ko-KR',{maximumFractionDigits:1})+' 평)';
   tx.innerHTML=h+'<div class="m">점 '+pts.length+'개 · 대략값 (측량 아님)</div>'}}
-function set(v){if(!v&&on&&pts.length&&window.__UM)window.__UM('측정 끝내기');on=v;bar.hidden=!v;btn.classList.toggle('on',v);document.getElementById('map').style.cursor=v?'crosshair':'';if(!v){pts=[];lay.clearLayers()}else draw()}
+function set(v){on=v;bar.hidden=!v;btn.classList.toggle('on',v);document.getElementById('map').style.cursor=v?'crosshair':'';if(v){pts=[];lay.clearLayers();draw()}}
 window.__meas=function(e){if(!on)return false;pts.push(e.latlng);draw();return true};
 btn.onclick=function(){set(!on)};window.__M=window.__M||{};window.__M.meas=set;
 function stat(){var tot=0;for(var i=1;i<pts.length;i++)tot+=map.distance(pts[i-1],pts[i]);var cl=pts.length>=3?map.distance(pts[pts.length-1],pts[0]):0;return {dist:tot,per:tot+cl,area:area()}}
@@ -2673,7 +2673,8 @@ window.__fld={parseLL:parseLL};
  window.__diag=diag})();
 /* v17: 업데이트 내용 · 저장 공간 */
 (function(){var $=function(i){return document.getElementById(i)};
- var LOGV='2026-11-06e',CH=[
+ var LOGV='2026-11-06f',CH=[
+  ['2026.11.06 (오후 수정)',['측정 “끝내기”를 눌러도 거리·면적 표시가 지도에 그대로 남습니다 (다시 측정을 시작하거나 한 번 더 켰다 끄면 지워집니다)']],
   ['2026.11.06 (오후)',['필지 조회에 용도지역별 건폐율·용적률 상한 표시 (고양시는 도시계획 조례 값, 그 밖의 지역은 국토계획법 시행령 상한)','지구단위계획구역 안이면 안내 카드와 토지이음 열람 링크','메모에 현장 점검 체크 항목(진입로·석축·옹벽 등, 항목 추가 가능)과 촬영 방향 저장, 지도에 부채꼴로 표시','내 도면(이미지·PDF)을 지도 위에 겹쳐 투명도·크기·회전·위치를 맞춰 보기 (도구의 레이어 창 → 도면 올리기)']],
   ['2026.11.06 (오전 추가 3)',['되돌리기 버튼을 길게 누르면 최근 작업 목록에서 원하는 시점으로 한 번에 되돌립니다','조회 결과 창 “내리기”로 작은 막대로 줄이고 다시 올릴 수 있습니다','나침반과 되돌리기 버튼을 한 묶음으로 정리','처음 사용 안내에 반경·되돌리기·저장·야외 모드 추가']],
   ['2026.11.06 (오전 추가 2)',['되돌리기 버튼(왼쪽, 나침반 아래): 지도 위치, 레이어 켜기·끄기, 그리기·측정·필지 선택·반경 지우기, 메모·경로·즐겨찾기 삭제를 되돌립니다 (PC는 Ctrl+Z)','반경 동그라미 테두리 어디든 잡고 끌어 크기를 조절']],
