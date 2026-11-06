@@ -1293,7 +1293,7 @@ html[data-out="1"] #lgrp{border:2px solid var(--fg)}html[data-out="1"] #lgrp #bU
  <div id="pList" style="margin:6px 0"></div>
  <div style="display:flex;gap:6px;flex-wrap:wrap"><button class="btn" id="pImp">파일에서 가져오기</button><input type="file" id="pFile" accept=".json,.zip,application/json,application/zip" hidden><button class="btn" id="pClose" style="margin-left:auto">닫기</button></div>
  <div style="border-top:1px solid var(--line);margin:10px 0 6px;padding-top:8px"><b>다른 기기와 바로 주고받기</b>
-  <p class="sub" style="margin:2px 0 6px">PC와 폰의 웹 지도를 직접 연결해 지금 지도 상태(올린 SHP 포함)를 보냅니다. 파일은 서버에 저장되지 않습니다. 두 기기 모두 이 화면을 열어 두세요.</p>
+  <p class="sub" style="margin:2px 0 6px">PC와 폰의 웹 지도를 직접 연결해 지금 지도 상태(올린 SHP)와 메모·사진·경로·도면·즐겨찾기까지 모두 보냅니다. 파일은 서버에 저장되지 않습니다. 두 기기 모두 이 화면을 열어 두세요.</p>
   <div style="display:flex;gap:6px;flex-wrap:wrap"><button class="btn on" id="p2Send">이 기기 → 보내기</button><button class="btn" id="p2Recv">다른 기기에서 받기</button></div>
   <div id="p2Code" style="display:none;margin-top:8px"></div>
   <div id="p2In" style="display:none;margin-top:8px"><label>보내는 기기에 표시된 6자리 코드</label><div style="display:flex;gap:6px"><input id="p2Num" inputmode="numeric" maxlength="6" autocomplete="off" placeholder="123456"><button class="btn on" id="p2Go" style="height:42px;margin-top:4px">연결</button></div></div>
@@ -1367,7 +1367,7 @@ var LS=window.localStorage;function g(k,d){try{var v=LS.getItem(k);return v==nul
  if(o.m!=null){var mm={};o.m.split(',').forEach(function(i){if(i)mm[i]=true});s('muniOn',mm)}
  history.replaceState(null,'',location.pathname+location.search)}catch(e){}})();
 var KEY=g('key',''),DOM=g('dom',location.hostname||'localhost');
-var BUILD="2611061915";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
+var BUILD="2611061917";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
 applyTheme(THEME);
 var BASE=g('base','Base');if(['Base','Satellite','SatLabel','white','none'].indexOf(BASE)<0)BASE='Base';
 // 레이어: id, 이름, 표시 WMS 이름, 조회용 data 코드
@@ -1826,6 +1826,9 @@ function load(p){msg('불러오는 중…');idb(function(db){var tx=db.transacti
 function dl(blob,name){var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove()},2000)}
 function stAll(st,cb){idb(function(db){if(!db)return cb([]);try{var r=db.transaction(st).objectStore(st).getAll();r.onsuccess=function(){cb(r.result||[])};r.onerror=function(){cb([])}}catch(e){cb([])}})}
 function stPut(st,arr,cb){idb(function(db){if(!db||!arr.length)return cb&&cb();try{var tx=db.transaction(st,'readwrite'),os=tx.objectStore(st);arr.forEach(function(o){os.put(o)});tx.oncomplete=function(){cb&&cb()};tx.onerror=function(){cb&&cb()}}catch(e){cb&&cb()}})}
+function lsX(){return {fav:g('fav',[]),rec:g('rec',[]),chkItems:g('chkItems',null)}}
+window.__prjExtra=function(cb){stAll('memo',function(M){stAll('trk',function(T){stAll('ovl',function(O){cb({memo:M,trk:T,ovl:O,measSv:g('measSv',[]),ls:lsX()})})})})};
+function mergeLS(l){if(!l)return;['fav','rec'].forEach(function(k){if(!Array.isArray(l[k])||!l[k].length)return;var a=g(k,[]);if(!Array.isArray(a))a=[];var h={};a.forEach(function(x){h[JSON.stringify(x)]=1});l[k].forEach(function(x){if(!h[JSON.stringify(x)]){a.push(x);h[JSON.stringify(x)]=1}});s(k,a.slice(0,k==='rec'?60:300))});if(Array.isArray(l.chkItems)){var c=g('chkItems',null)||[];l.chkItems.forEach(function(x){if(c.indexOf(x)<0)c.push(x)});s('chkItems',c)}}
 function b64(d){return String(d).split(',')[1]||''}
 function exp(p){var nm=(p.name||'project').replace(/[\\\/:*?"<>|]/g,'_');
  if(typeof JSZip==='undefined'){dl(new Blob([JSON.stringify(p)],{type:'application/json'}),nm+'.ddmap.json');return}
@@ -1834,12 +1837,13 @@ function exp(p){var nm=(p.name||'project').replace(/[\\\/:*?"<>|]/g,'_');
   var z=new JSZip(),ph=0,dw=0,q=Object.assign({},p);
   var mx=M.map(function(m,i){var c=Object.assign({},m);c.photos=(m.photos||[]).map(function(d,k){var n='사진/'+(i+1)+'_'+(k+1)+'.jpg';z.file(n,b64(d),{base64:true});ph++;return n});return c});
   var ox=O.map(function(o,i){var c=Object.assign({},o),n='도면/'+(i+1)+'_'+String(o.name||'도면').replace(/[\\\/:*?"<>|]/g,'_')+'.jpg';z.file(n,b64(o.img),{base64:true});dw++;c.img=n;return c});
-  q.extra={memo:mx,trk:T,ovl:ox,measSv:g('measSv',[])};
+  q.extra={memo:mx,trk:T,ovl:ox,measSv:g('measSv',[]),ls:lsX()};
   z.file(nm+'.ddmap.json',JSON.stringify(q));
   z.generateAsync({type:'blob'}).then(function(b){dl(b,nm+'.ddmap.zip');msg('저장했습니다: 메모 '+M.length+'개, 사진 '+ph+'장, 도면 '+dw+'장 포함')},function(){msg('압축 실패')})})})})}
+window.__prjImport=function(x,z,cb){return importExtra(x,z,cb)};
 function importExtra(x,z,cb){if(!x)return cb(0);var men=0;
  function img(n,done){if(!z){done(null);return}var f=z.file(n);if(!f){done(null);return}f.async('base64').then(function(b){done('data:image/jpeg;base64,'+b)},function(){done(null)})}
- var M=x.memo||[],O=x.ovl||[],jobs=0,fin=function(){if(--jobs>0)return;stPut('memo',M,function(){stPut('trk',x.trk||[],function(){stPut('ovl',O,function(){if(x.measSv&&x.measSv.length){var a=g('measSv',[]),ids={};a.forEach(function(r){ids[r.id]=1});x.measSv.forEach(function(r){if(!ids[r.id])a.push(r)});s('measSv',a.slice(0,200))}cb(M.length+O.length)})})})};
+ var M=x.memo||[],O=x.ovl||[],jobs=0,fin=function(){if(--jobs>0)return;stPut('memo',M,function(){stPut('trk',x.trk||[],function(){stPut('ovl',O,function(){if(x.measSv&&x.measSv.length){var a=g('measSv',[]),ids={};a.forEach(function(r){ids[r.id]=1});x.measSv.forEach(function(r){if(!ids[r.id])a.push(r)});s('measSv',a.slice(0,200))}mergeLS(x.ls);cb(M.length+O.length)})})})};
  jobs=1;M.forEach(function(m){(m.photos||[]).forEach(function(n,k){if(String(n).indexOf('data:')===0)return;jobs++;img(n,function(d){m.photos[k]=d;fin()})});m.photos=m.photos||[]});
  O.forEach(function(o){if(String(o.img).indexOf('data:')===0)return;jobs++;img(o.img,function(d){o.img=d;fin()})});
  fin()}
@@ -1877,11 +1881,11 @@ function mk(id){var h=g('peerHost',null);var o=h?{host:h.host,port:h.port,path:h
 function snapNow(name){var c=g('c',null),z=g('z',null);return {name:name,saved:Date.now(),base:g('base','Base'),c:c,z:z,layers:g('layers',{}),ord:g('ord',[]),sty:g('sty',{}),muniOn:g('muniOn',{}),muni:g('muni',[]),draw:g('draw',[]),
  shp:UP.map(function(u){return {id:u.id,name:u.name,color:u.color,on:u.on,gj:u.gj,bbox:u.bbox,st:u.st}})}}
 function sendAll(conn){var d=new Date(),nm='보낸 지도 '+(d.getMonth()+1)+'/'+d.getDate()+' '+('0'+d.getHours()).slice(-2)+':'+('0'+d.getMinutes()).slice(-2);
- var txt=JSON.stringify(snapNow(nm)),n=Math.ceil(txt.length/CH),i=0;pm('보내는 중… 0%');conn.send({t:'meta',n:n,len:txt.length});
+ pm('사진·메모 모으는 중…');window.__prjExtra(function(x){var P=snapNow(nm);P.extra=x;var txt=JSON.stringify(P),n=Math.ceil(txt.length/CH),i=0;pm('보내는 중… 0% ('+(txt.length/1048576).toFixed(1)+'MB)');conn.send({t:'meta',n:n,len:txt.length});
  (function step(){var k=0;while(i<n&&k<8){conn.send({t:'c',i:i,d:txt.substr(i*CH,CH)});i++;k++;
   var bo=conn.dataChannel&&conn.dataChannel.bufferedAmount;if(bo>4e6)break}
   pm('보내는 중… '+Math.round(100*i/n)+'%');
-  if(i<n)setTimeout(step,bo_wait(conn));else{pm('보내는 중… 마무리');var w0=Date.now();(function fin(){if(conn.__ok){pm('보냈습니다. 받는 기기에서 확인하세요.');setTimeout(stop,1500)}else if(Date.now()-w0>180000){pm('받는 기기가 응답하지 않습니다');stop()}else setTimeout(fin,300)})()}})()}
+  if(i<n)setTimeout(step,bo_wait(conn));else{pm('보내는 중… 마무리');var w0=Date.now();(function fin(){if(conn.__ok){pm('보냈습니다. 받는 기기에서 확인하세요.');setTimeout(stop,1500)}else if(Date.now()-w0>180000){pm('받는 기기가 응답하지 않습니다');stop()}else setTimeout(fin,300)})()}})()})}
 function bo_wait(conn){var bo=conn.dataChannel&&conn.dataChannel.bufferedAmount||0;return bo>2e6?100:5}
 $('p2Send').onclick=function(){stop();pm('연결 준비 중…');var tries=0;
  function open(){var code=('00000'+Math.floor(Math.random()*1e6)).slice(-6);peer=mk('ddm'+code);
@@ -1897,8 +1901,8 @@ $('p2Go').onclick=function(){var code=$('p2Num').value.replace(/\D/g,'');if(code
  peer.on('open',function(){var c=peer.connect('ddm'+code,{reliable:true,serialization:'json'});
   c.on('open',function(){pm('받는 중… 0%');clearTimeout(to)});
   c.on('data',function(m){if(m.t==='meta'){clearTimeout(to);meta=m;buf=new Array(m.n)}else if(m.t==='c'&&meta){buf[m.i]=m.d;got++;pm('받는 중… '+Math.round(100*got/meta.n)+'%');
-    if(got>=meta.n){done=true;clearTimeout(to);try{c.send({t:'ok'})}catch(e){}try{var p=JSON.parse(buf.join(''));if(!p||!p.name||!p.layers)throw 0;p.name=p.name+' (받음)';
-      window.__p2put(p,function(){pm('받았습니다: "'+p.name+'" — 아래 목록에서 불러오기를 누르세요');stop();window.__p2render()})}catch(e){pm('받은 데이터가 올바르지 않습니다')}}}});
+    if(got>=meta.n){done=true;clearTimeout(to);try{c.send({t:'ok'})}catch(e){}try{var p=JSON.parse(buf.join(''));if(!p||!p.name||!p.layers)throw 0;p.name=p.name+' (받음)';var X=p.extra;delete p.extra;
+      window.__p2put(p,function(){if(X){window.__prjImport(X,null,function(n){pm('받았습니다: "'+p.name+'" + 메모·사진·도면 '+n+'개 (새로고침합니다)');stop();setTimeout(function(){location.reload()},1500)})}else{pm('받았습니다: "'+p.name+'" — 아래 목록에서 불러오기를 누르세요');stop();window.__p2render()}})}catch(e){pm('받은 데이터가 올바르지 않습니다')}}}});
   c.on('error',function(e){pm('연결 오류: '+(e&&e.message||e))})});
  peer.on('error',function(e){clearTimeout(to);pm('연결 오류: '+(e&&e.type||e)+(e&&e.type==='peer-unavailable'?' — 코드가 틀렸거나 보내는 쪽이 아직 준비되지 않았습니다':' (회사 네트워크가 막았을 수 있습니다)'))})};
 $('pClose').addEventListener('click',stop);
@@ -2720,7 +2724,8 @@ window.__fld={parseLL:parseLL};
  window.__diag=diag})();
 /* v17: 업데이트 내용 · 저장 공간 */
 (function(){var $=function(i){return document.getElementById(i)};
- var LOGV='2026-11-06j',CH=[
+ var LOGV='2026-11-06k',CH=[
+  ['2026.11.06 (주고받기)',['“다른 기기와 바로 주고받기”로 메모·사진·경로·내 도면·저장한 측정·즐겨찾기·최근 본 곳까지 한 번에 전달 (받으면 자동 복원 후 새로고침)']],
   ['2026.11.06 (프로젝트 내보내기)',['프로젝트 “파일로 저장”이 zip으로 바뀌어 메모·경로·메모 사진·내 도면 이미지가 함께 담김 (사진/·도면/ 폴더에 jpg로도 들어 있음). “파일에서 가져오기”는 zip·기존 json 모두 가능, 가져오면 메모·도면도 복원']],
   ['2026.11.06 (조례 추가)',['건폐율·용적률 상한에 서울·고양·남양주·김포·의정부·과천·파주 조례 값 반영 (그 밖의 지역은 시행령 상한으로 표시)']],
   ['2026.11.06 (오후 정리)',['조회 결과 창 정리: 건폐율·용적률을 표로, 지구단위는 한 칸 카드로, 용도지구·시설·토지이용은 기본으로 접고 개수만 표시','순서를 용도지역 → 건폐율·용적률 → 지구단위 → 개발제한 순으로 재배치, 면적 비율은 아래로']],
