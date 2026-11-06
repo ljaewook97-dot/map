@@ -1006,6 +1006,11 @@ html[data-fs="1.12"] body>*:not(#map):not(script):not(style){zoom:1.12}html[data
 .tour h3{margin:0 0 6px;font-size:18px;font-weight:800}.tour p{margin:0 0 12px;font-size:14px;line-height:1.55;color:var(--mut);text-align:left}
 .tdots{display:flex;justify-content:center;gap:6px;margin:0 0 14px}.tdots i{width:7px;height:7px;border-radius:50%;background:var(--line)}.tdots i.on{background:var(--acc);width:18px;border-radius:4px}
 /* ---- v7: 현장 기록(메모 핀·경로·즐겨찾기) ---- */
+.sec{border-top:0!important;padding:10px 0 2px!important}.sec>small{font-size:12px!important;font-weight:700!important;color:var(--fg)!important;opacity:.85;letter-spacing:.01em;margin-bottom:5px!important}.sec>small .cnt{font-style:normal;font-weight:600;font-size:11px;background:var(--line);color:var(--mut);border-radius:9px;padding:0 6px;margin-left:6px}.sec.fdc>small{gap:6px}.sec.fdc>small>em.sub{margin-right:auto;margin-left:6px;opacity:.7}.sec.fdc>small:after{margin-left:auto;font-size:14px!important}
+.sec.mut .tag{background:transparent!important;border:1px solid var(--line);color:var(--fg)!important;font-size:12px!important;padding:2px 7px!important}.sec.mut.closed{opacity:.85}
+.cap2{display:grid;grid-template-columns:minmax(0,1fr) auto auto;column-gap:18px;row-gap:4px;align-items:baseline;background:var(--bg);border-radius:10px;padding:8px 12px;font-size:13px}.cap2 .h{font-size:11px;color:var(--mut);text-align:right}.cap2 .zn{font-weight:600}.cap2 .cv{text-align:right;white-space:nowrap}.cap2 .cv b{font-size:17px;font-weight:800}
+.dcard{background:color-mix(in srgb,#e06fa0 10%,transparent);border-radius:10px;border-left:3px solid #e06fa0!important;padding:8px 10px!important;margin-top:8px}.dcard>small{color:#c0457f!important}
+#infoBody .stats{margin-bottom:2px}
 #toolPop .opts3.o2{margin-top:6px}.opts3.o4{grid-template-columns:repeat(4,1fr)}.sec.fdc>small{cursor:pointer;display:flex;justify-content:space-between;align-items:center}.sec.fdc>small:after{content:'▾';font-size:12px;opacity:.7}.sec.fdc.closed>small:after{content:'▸'}.sec.closed>*:not(small){display:none!important}#ovPanel.top{bottom:auto;top:calc(8px + env(safe-area-inset-top,0px))}#ovPanel.mini>*:nth-child(n+3){display:none}#ovPanel .sm{padding:2px 8px;font-size:12px}#offBox{margin-top:12px}#offBox .bar{height:6px;border-radius:3px;background:var(--line);overflow:hidden;margin:6px 0}#offBox .bar i{display:block;height:100%;width:0;background:var(--acc)}
 .mmp{width:0!important;height:0!important;margin:0!important;background:none!important;border:0!important}
 .mmp s{position:absolute;left:-13px;top:-27px;width:26px;height:26px;background:var(--acc);border:2px solid #fff;border-radius:50% 50% 50% 0;transform:rotate(-45deg);box-shadow:0 2px 6px #0006;box-sizing:border-box}
@@ -1362,7 +1367,7 @@ var LS=window.localStorage;function g(k,d){try{var v=LS.getItem(k);return v==nul
  if(o.m!=null){var mm={};o.m.split(',').forEach(function(i){if(i)mm[i]=true});s('muniOn',mm)}
  history.replaceState(null,'',location.pathname+location.search)}catch(e){}})();
 var KEY=g('key',''),DOM=g('dom',location.hostname||'localhost');
-var BUILD="2611061848";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
+var BUILD="2611061857";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
 applyTheme(THEME);
 var BASE=g('base','Base');if(['Base','Satellite','SatLabel','white','none'].indexOf(BASE)<0)BASE='Base';
 // 레이어: id, 이름, 표시 WMS 이름, 조회용 data 코드
@@ -1584,7 +1589,11 @@ function nm(p){var m=bad(p.mls_nam)?'':p.mls_nam,l=bad(p.lcl_nam)?'':p.lcl_nam;i
 function row(k,v){return v?'<div class="row"><b>'+k+'</b><span>'+v+'</span></div>':''}
 function dedupFac(a){var out=[];a.forEach(function(x){var b=x.replace(/\(.*$/,'');var i=out.findIndex(function(y){return y.replace(/\(.*$/,'')===b});if(i<0)out.push(x);else if(x.indexOf('(')>=0&&out[i].indexOf('(')<0)out[i]=x});return out}
 function tags(a,gb){return a.length?a.map(function(x){return '<span class="tag'+(gb?' gb':'')+'">'+esc(x)+'</span>'}).join(''):''}
-function foldSecs(){var cl=g('secClosed',[]);[].forEach.call(document.querySelectorAll('#infoBody .sec'),function(el){var h=el.children[0];if(!h||h.tagName!=='SMALL'||el.children.length<2)return;var k=h.textContent.split('·')[0].replace(/\s+/g,' ').trim();el.classList.add('fdc');if(cl.indexOf(k)>=0)el.classList.add('closed');h.onclick=function(){var c=el.classList.toggle('closed'),a=g('secClosed',[]),i=a.indexOf(k);if(c&&i<0)a.push(k);if(!c&&i>=0)a.splice(i,1);s('secClosed',a)}})}
+var FDEF=['용도지구','시설','토지이용','이 필지 안 면적 비율'];
+function foldSecs(){var cl=g('secClosed',null),def=!Array.isArray(cl);if(def)cl=FDEF.slice();[].forEach.call(document.querySelectorAll('#infoBody .sec'),function(el){var h=el.children[0];if(!h||h.tagName!=='SMALL'||el.children.length<2||el.classList.contains('fdc'))return;var k=h.textContent.split('·')[0].replace(/\s+/g,' ').trim();el.classList.add('fdc');if(FDEF.indexOf(k)>=0&&k!=='이 필지 안 면적 비율')el.classList.add('mut');
+  var n=el.querySelectorAll('.tag').length;if(n>1){var e=document.createElement('em');e.className='cnt';e.textContent=n;h.appendChild(e)}
+  if(cl.indexOf(k)>=0)el.classList.add('closed');
+  h.onclick=function(){var c=el.classList.toggle('closed'),a=Array.isArray(g('secClosed',null))?g('secClosed',[]):FDEF.slice(),i=a.indexOf(k);if(c&&i<0)a.push(k);if(!c&&i>=0)a.splice(i,1);s('secClosed',a)}})}
 function openInfo(h){document.getElementById('infoBody').innerHTML=h;try{foldSecs()}catch(e){}document.getElementById('info').hidden=false;document.getElementById('layers').hidden=true;document.getElementById('legend').hidden=true}
 /* 필지 안 면적 비율 (표본 점 방식, 약 1% 오차) */
 function polysOf(g){var o=[];if(!g)return o;if(g.type==='Polygon')o.push(g.coordinates);else if(g.type==='MultiPolygon')g.coordinates.forEach(function(p){o.push(p)});return o}
@@ -1640,11 +1649,12 @@ function ratioSec(S){if(!S.ratio||!S.ratio.length)return '';var a=Number(S.area)
 var ZC={'제1종전용주거지역':[50,100,50,100],'제2종전용주거지역':[50,150,50,150],'제1종일반주거지역':[60,200,60,180],'제2종일반주거지역':[60,250,60,230],'제3종일반주거지역':[50,300,50,250],'준주거지역':[70,500,60,380],'중심상업지역':[90,1500,80,1200],'일반상업지역':[80,1300,70,900],'근린상업지역':[70,900,60,700],'유통상업지역':[80,1100,70,400],'전용공업지역':[70,300,70,300],'일반공업지역':[70,350,70,350],'준공업지역':[70,400,70,400],'보전녹지지역':[20,80,20,50],'생산녹지지역':[20,100,20,90],'자연녹지지역':[20,100,20,100],'보전관리지역':[20,80,20,80],'생산관리지역':[20,80,20,80],'계획관리지역':[40,100,40,100],'농림지역':[20,80,20,80],'자연환경보전지역':[20,80,20,50]};
 function capSec(S){if(!S.zones||!S.zones.length)return '';var gy=/고양시/.test(S.addr||''),rows='',n=0;
  S.zones.forEach(function(z){var k=String(z).replace(/\(.*?\)/g,'').replace(/\s/g,''),v=ZC[k];if(!v)return;n++;var b=gy?v[2]:v[0],r=gy?v[3]:v[1];
-  rows+='<div class="rr cap"><span>'+esc(k)+'</span><b>건폐율 '+b+'% 이하 · 용적률 '+r+'% 이하</b></div>'});
+  rows+='<span class="zn">'+esc(k)+'</span><span class="cv"><b>'+b+'</b>%</span><span class="cv"><b>'+r+'</b>%</span>'});
  if(!n)return '';
- return '<div class="sec"><small>건폐율·용적률 상한 <em class="sub" style="font-style:normal;font-weight:400">· '+(gy?'고양시 도시계획 조례':'국토계획법 시행령 상한')+'</em></small>'+rows+'<p class="sub" style="margin:4px 0 0">'+(gy?'':'지자체 조례로 이보다 낮게 정한 곳이 많아 실제 값은 해당 시·군 조례를 확인하세요. ')+'지구단위계획·경관지구 등이 있으면 그 기준이 우선합니다.</p></div>'}
-function distCard(S){var a=[];(S.dist||[]).concat((S.spec||[]).filter(function(x){return /지구단위/.test(x)})).forEach(function(x){if(a.indexOf(x)<0)a.push(x)});if(!a.length)return '';
- return '<div class="sec dcard"><small>지구단위계획구역 안에 있습니다</small><div>'+a.map(function(x){return '<span class="tag">'+esc(x)+'</span>'}).join(' ')+'</div><p class="sub" style="margin:4px 0 0">건축물 용도·높이·건폐율 등 세부 기준은 구역별 계획이 우선합니다. 아래 토지이음에서 계획도서를 열람하세요.</p></div>'}
+ return '<div class="sec"><small>건폐율·용적률 상한 <em class="sub" style="font-style:normal;font-weight:400">· '+(gy?'고양시 조례':'시행령 상한')+'</em></small><div class="cap2"><span></span><span class="h">건폐율</span><span class="h">용적률</span>'+rows+'</div><p class="sub" style="margin:2px 0 0;font-size:12px">'+(gy?'':'지자체 조례로 더 낮을 수 있어 해당 시·군 조례 확인 필요 · ')+'지구단위계획·경관지구 등은 그 기준이 우선</p></div>'}
+function distCard(S){var a=distNames(S);if(!a.length)return '';
+ return '<div class="sec dcard"><small>지구단위계획구역</small><div>'+a.map(function(x){return '<span class="tag">'+esc(x)+'</span>'}).join('')+'</div><p class="sub" style="margin:2px 0 0;font-size:12px">세부 기준은 구역별 계획이 우선합니다. 아래 토지이음에서 계획도서를 열람하세요.</p></div>'}
+function distNames(S){var a=[];(S.dist||[]).concat((S.spec||[]).filter(function(x){return /지구단위/.test(x)})).forEach(function(x){if(a.indexOf(x)<0)a.push(x)});return a}
 function render(S,pnu,partial){
  var won=function(n){return n?Number(n).toLocaleString('ko-KR')+'원/㎡':''},ow=owner(S.own);
  function sec(l,v){return v?'<div class="sec"><small>'+l+'</small><div>'+v+'</div></div>':''}
@@ -1652,7 +1662,7 @@ function render(S,pnu,partial){
   '<div class="stats"><div class="st"><small>지목 · 면적</small><b>'+esc(S.jimok||'—')+(S.area?'<em>'+Number(S.area).toLocaleString('ko-KR')+'㎡</em>':'')+'</b></div>'+
   '<div class="st"><small>소유</small><b>'+(S.own?'<span class="tag own-'+ow+'">'+ow+'</span>':'—')+(S.own&&S.own!==ow?'<em>'+esc(S.own)+'</em>':'')+'</b></div>'+
   '<div class="st wide"><small>공시지가'+(S.gy?' · '+esc(S.gy)+'년':'')+'</small><b>'+(S.jiga?won(S.jiga):'—')+'</b>'+(S.jiga?'<div class="sub" style="margin:2px 0 0">평당 약 '+man(S.jiga*3.3058)+(S.area?' · 총액(추정) 약 '+man(S.jiga*S.area):'')+'</div>':'')+'</div></div>'+
-  (window.__dirHTML&&S.ll?window.__dirHTML():'')+ratioSec(S)+distCard(S)+sec('용도지역',tags(S.zones))+capSec(S)+sec('개발제한',tags(S.gbs,1))+sec('지구단위',tags(S.dist))+sec('용도지구',tags(S.spec))+sec('시설',tags(dedupFac(S.fac)))+sec('토지이용',tags(S.use))+shpRows(S.shp)+
+  (window.__dirHTML&&S.ll?window.__dirHTML():'')+sec('용도지역',tags(S.zones))+capSec(S)+distCard(S)+sec('개발제한',tags(S.gbs,1))+sec('용도지구',tags(S.spec.filter(function(x){return !/지구단위/.test(x)})))+sec('시설',tags(dedupFac(S.fac)))+sec('토지이용',tags(S.use))+ratioSec(S)+shpRows(S.shp)+
   (S.ll?sec('바로가기',extLinks(S.ll[0],S.ll[1],S.addr,pnu)):'')+(partial?'<p class="sub sk-t">세부 정보를 불러오는 중…</p>':'<p class="sub">PNU '+esc(pnu)+' · 켜 둔 레이어만 조회됩니다.</p>');
  document.getElementById('infoBody').innerHTML=h;try{foldSecs()}catch(e){}}
 map.on('click',function(e){if(window.__rad&&window.__rad(e))return;if(window.__meas&&window.__meas(e))return;if(window.__sel&&window.__sel(e))return;if(window.__drw&&window.__drw(e))return;if(window.__mem&&window.__mem(e))return;pick(e.latlng.lat,e.latlng.lng)});
@@ -2678,7 +2688,8 @@ window.__fld={parseLL:parseLL};
  window.__diag=diag})();
 /* v17: 업데이트 내용 · 저장 공간 */
 (function(){var $=function(i){return document.getElementById(i)};
- var LOGV='2026-11-06g',CH=[
+ var LOGV='2026-11-06h',CH=[
+  ['2026.11.06 (오후 정리)',['조회 결과 창 정리: 건폐율·용적률을 표로, 지구단위는 한 칸 카드로, 용도지구·시설·토지이용은 기본으로 접고 개수만 표시','순서를 용도지역 → 건폐율·용적률 → 지구단위 → 개발제한 순으로 재배치, 면적 비율은 아래로']],
   ['2026.11.06 (오후 추가 2)',['도구 메뉴를 “측정·표시”(측정·반경·필지 선택·그리기)와 “기록”(메모·경로·현장 기록)으로 나눔','도구 메뉴에 “오프라인 미리 받기”: 지금 보는 범위의 지도를 미리 저장 (저장 범위·용량 확인 후 시작)','조회 결과 창의 구역(용도지역·건폐율·시설 등) 제목을 눌러 접고 펼침 — 접은 상태는 기억','공유: “복사” 버튼 추가, 공유 문구에 좌표·확대 포함','도면 패널을 위로 옮기거나 작게 줄일 수 있음','처음 사용 안내에 점검·방향·건폐율·도면·오프라인 항목 추가']],
   ['2026.11.06 (오후 수정)',['측정 “끝내기”를 눌러도 거리·면적 표시가 지도에 그대로 남습니다 (다시 측정을 시작하거나 한 번 더 켰다 끄면 지워집니다)']],
   ['2026.11.06 (오후)',['필지 조회에 용도지역별 건폐율·용적률 상한 표시 (고양시는 도시계획 조례 값, 그 밖의 지역은 국토계획법 시행령 상한)','지구단위계획구역 안이면 안내 카드와 토지이음 열람 링크','메모에 현장 점검 체크 항목(진입로·석축·옹벽 등, 항목 추가 가능)과 촬영 방향 저장, 지도에 부채꼴로 표시','내 도면(이미지·PDF)을 지도 위에 겹쳐 투명도·크기·회전·위치를 맞춰 보기 (도구의 레이어 창 → 도면 올리기)']],
