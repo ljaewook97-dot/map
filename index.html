@@ -1160,7 +1160,7 @@ html[data-oh="1"] #recStrip{bottom:calc(max(14px,env(safe-area-inset-bottom)) + 
 #infoBody details.rd[open]{padding-bottom:6px}
 body:has(#info:not([hidden]):not(.min)) #radBar{display:none}
 #viewPop .ph:empty,#toolPop .ph:empty{display:none}
-#qCam{background:var(--acc)!important;color:var(--acc-ink,#fff)!important}#quick.cl button[data-q]{display:none}#qTog{width:34px!important;height:34px!important;align-self:flex-start;margin-left:6px;opacity:.9}#qTog svg{width:16px!important;height:16px!important;transition:transform .15s}#quick.cl #qTog svg{transform:rotate(180deg)}
+#qCam{background:var(--acc)!important;color:var(--acc-ink,#fff)!important}#quick.cl button[data-q],#quick.cl button.qt{display:none}#quick button.qt{font:800 12px/1 system-ui;letter-spacing:-.3px}#qTog{width:34px!important;height:34px!important;align-self:flex-start;margin-left:6px;opacity:.9}#qTog svg{width:16px!important;height:16px!important;transition:transform .15s}#quick.cl #qTog svg{transform:rotate(180deg)}
 html[data-rl="m"] .rail .tool span{font-size:12.5px;font-weight:800}html[data-rl="m"] .rail .tool{width:58px;height:56px}html[data-rl="m"] .rail .tool svg{width:22px;height:22px}
 html[data-rl="x"] .rail .tool span{display:none}html[data-rl="x"] .rail .tool{height:46px}
 html[data-out="1"]{--mut:var(--fg);--line:color-mix(in srgb,var(--fg) 75%,transparent)}
@@ -1298,7 +1298,7 @@ html #memPick .box{border-radius:18px 18px 0 0}
  <div class="cm" id="cmpMsg"></div>
  <div><small>화면 나누기 (가운데 선을 끌어 조절)</small><div id="cmpSplit"><button data-s="50" type="button">반반 비교</button><button data-s="0" type="button">오른쪽만 전체</button></div></div>
  <div><small>위치 맞추기 (사진마다 수십 m 어긋나 있어 자동으로 보정합니다)</small><div id="cmpAl"><button id="alAuto" type="button">자동 맞추기</button><button id="alOn" type="button">직접 끌어 맞추기</button><button id="alRs" type="button">원래대로</button></div><div class="cm" id="alTx"></div></div></div>
-<div id="quick"><button data-q="tMeas" aria-label="측정"></button><button data-q="tSel" aria-label="필지 선택"></button><button data-q="tDrw" aria-label="그리기"></button><button data-q="tRad" aria-label="반경 분석"></button><button id="qCam" type="button" aria-label="사진 바로 찍기"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-2.5h6L17 8h3a1 1 0 011 1v9a1 1 0 01-1 1H4a1 1 0 01-1-1V9a1 1 0 011-1z"/><circle cx="12" cy="13" r="3.6"/></svg></button><button id="qTog" type="button" aria-label="도구 버튼 접기"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 15l6-6 6 6"/></svg></button></div>
+<div id="quick"><button data-q="tMeas" aria-label="측정"></button><button data-q="tSel" aria-label="필지 선택"></button><button data-q="tDrw" aria-label="그리기"></button><button data-q="tRad" aria-label="반경 분석"></button><button class="qt" id="qJk" type="button" aria-label="지적선 켜기/끄기">지적</button><button class="qt" id="qJb" type="button" aria-label="지번 켜기/끄기">지번</button><button id="qCam" type="button" aria-label="사진 바로 찍기"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-2.5h6L17 8h3a1 1 0 011 1v9a1 1 0 01-1 1H4a1 1 0 01-1-1V9a1 1 0 011-1z"/><circle cx="12" cy="13" r="3.6"/></svg></button><button id="qTog" type="button" aria-label="도구 버튼 접기"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 15l6-6 6 6"/></svg></button></div>
 <div class="modal" id="svModal" hidden><div class="box"><h3 style="margin:0 0 6px">측정 저장</h3><input id="svName" style="width:100%;box-sizing:border-box;font:inherit;padding:9px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--fg)" placeholder="이름 (예: 진입도로 폭)"><div id="svInfo" class="sub" style="margin:6px 0 0"></div><div style="display:flex;justify-content:flex-end;gap:6px;margin-top:10px"><button class="btn" id="svNo" type="button">취소</button><button class="btn on" id="svOk" type="button">저장</button></div></div></div>
 <div class="modal" id="logModal" hidden><div class="box"><h3 style="margin:0 0 6px">업데이트 내용</h3><div id="logBody"></div><div style="display:flex;justify-content:flex-end;margin-top:10px"><button class="btn on" id="logX" type="button">닫기</button></div></div></div>
 <div class="modal" id="tourModal" hidden><div class="box tour"><div class="tk" id="tkIc"></div><h3 id="tkT"></h3><p id="tkP"></p><div class="tdots" id="tkD"></div><div style="display:flex;gap:8px"><button class="btn" id="tkPrev">이전</button><span style="flex:1"></span><button class="btn" id="tkSkip">건너뛰기</button><button class="btn on" id="tkNext">다음</button></div></div></div>
@@ -1383,12 +1383,12 @@ var LS=window.localStorage;function g(k,d){try{var v=LS.getItem(k);return v==nul
  if(o.m!=null){var mm={};o.m.split(',').forEach(function(i){if(i)mm[i]=true});s('muniOn',mm)}
  history.replaceState(null,'',location.pathname+location.search)}catch(e){}})();
 var KEY=g('key',''),DOM=g('dom',location.hostname||'localhost');
-var BUILD="2611062238";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
+var BUILD="2611062243";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
 applyTheme(THEME);
 var BASE=g('base','Base');if(['Base','Satellite','SatLabel','white','none'].indexOf(BASE)<0)BASE='Base';
 // 레이어: id, 이름, 표시 WMS 이름, 조회용 data 코드
 var LAYERS=[
- {id:'cad',n:'지적선·지번',vec:true,on:true},
+ {id:'cad',n:'지적선',vec:true,on:true},
  {id:'zone',n:'용도지역',wms:'lt_c_uq111,lt_c_uq112,lt_c_uq113,lt_c_uq114',data:['LT_C_UQ111','LT_C_UQ112','LT_C_UQ113','LT_C_UQ114'],on:true},
  {id:'fac',n:'시설',vec:true,wms:'lt_c_upisuq151,lt_c_upisuq152,lt_c_upisuq153,lt_c_upisuq154,lt_c_upisuq155,lt_c_upisuq156,lt_c_upisuq157,lt_c_upisuq158,lt_c_upisuq159',data:['LT_C_UPISUQ151','LT_C_UPISUQ152','LT_C_UPISUQ153','LT_C_UPISUQ154','LT_C_UPISUQ155','LT_C_UPISUQ156','LT_C_UPISUQ157','LT_C_UPISUQ158','LT_C_UPISUQ159']},
  {id:'dist',n:'지구단위계획구역',vec:true,data:['LT_C_UPISUQ161']},
@@ -1398,6 +1398,7 @@ var LAYERS=[
  {id:'use',n:'토지이용계획',wms:'lt_c_lhblpn',data:['LT_C_LHBLPN']}
 ];
 LAYERS.forEach(function(l){if(l.vec)return});
+var JB=g('jb',true);window.__jbGet=function(){return JB};window.__cadChk=function(){return lay('cad').on};window.__jbSet=function(v){JB=!!v;s('jb',JB);applyLayers();try{window.__qjUpd&&window.__qjUpd()}catch(e){}};window.__cadSet=function(v){lay('cad').on=!!v;saveLayers();applyLayers();try{renderLayerUI()}catch(e){}};
 var st=g('layers',{});LAYERS.forEach(function(l){if(st[l.id]!=null)l.on=!!st[l.id]});
 var map=L.map('map',{zoomControl:false,center:g('c',[37.5665,126.9780]),zoom:g('z',17),maxZoom:22,tap:true});
 map.on('moveend',function(){var c=map.getCenter();s('c',[c.lat,c.lng]);s('z',map.getZoom())});
@@ -1497,10 +1498,10 @@ var PEND={};function getFeats(code,size,cb,maxPg){var vb=viewBB(),c=FC[code];if(
  var s0=vecSeq;ALIVEF=function(){return s0===vecSeq};boxAll(code,size,pb,maxPg||pgMax(),function(fs,tr){if(fs&&!fs.length&&!pb._r){var q2=[pb[0]-.004,pb[1]-.004,pb[2]+.004,pb[3]+.004];q2._r=1;pb=q2;ALIVEF=function(){return s0===vecSeq};boxAll(code,size,pb,maxPg||pgMax(),function(fs2,tr2){if(!fs2){cb(null);return}var ok2=fs2.filter(function(f){return f.geometry});if(ok2.length)FC[code]={bb:pb,feats:ok2,trunc:tr2,t:Date.now()};cb(ok2)});return}if(!fs){cb(null);return}var ok=fs.filter(function(f){return f.geometry});if(ok.length)FC[code]={bb:pb,feats:ok,trunc:tr,t:Date.now()};if(tr)status('필지가 너무 많아 일부만 표시됩니다 — 조금 더 확대해 주세요');cb(ok)})}
 function visF(fs){var vb=viewBB(),mx=(vb[2]-vb[0])*.05,my=(vb[3]-vb[1])*.05;return fs.filter(function(f){var b=fbb(f);return !(b[2]<vb[0]-mx||b[0]>vb[2]+mx||b[3]<vb[1]-my||b[1]>vb[3]+my)})}
 function doCad(seq){var z=map.getZoom(),cs=S_('cad');
- if(!lay('cad').on||!KEY||z<16||tooWide()){lst('cad',lay('cad').on&&KEY?'확대 필요':'');swapG('cad',L.layerGroup());swapG('txt',L.layerGroup());if(lay('cad').on&&KEY)status(z<16?'지적은 지도를 더 확대하면 표시됩니다':wideMsg(viewW()));return}
+ var CL=lay('cad').on;if(!(CL||JB)||!KEY||z<16||tooWide()){lst('cad',(CL||JB)&&KEY?'확대 필요':'');swapG('cad',L.layerGroup());swapG('txt',L.layerGroup());if((CL||JB)&&KEY)status(z<16?'지적은 지도를 더 확대하면 표시됩니다':wideMsg(viewW()));return}
  lst('cad','조회 중…');getFeats('LP_PA_CBND_BUBUN',1000,function(fs){if(seq!==vecSeq)return;if(!fs){CADRT=(CADRT||0)+1;if(CADRT<=3){lst('cad','재시도 '+CADRT+'/3');status('지적을 불러오지 못해 다시 시도합니다 ('+CADRT+'/3)…');clearTimeout(CADTM);CADTM=setTimeout(function(){if(seq===vecSeq)doVec()},2500)}else{lst('cad','조회 실패');status('지적 조회 실패 — 인증키·도메인 또는 인터넷을 확인하고 지도를 살짝 움직여 보세요')}return}CADRT=0;if(!fs.length){lst('cad','필지 없음');status('이 화면에는 지적 정보가 없습니다');return}lst('cad','');var vis=visF(fs),ng=L.layerGroup(),items=[];
-  vis.forEach(function(x){L.geoJSON(x.geometry,{interactive:false,renderer:RN.cad,style:{color:cs.color,weight:cs.weight,opacity:cs.opacity,dashArray:cs.dash||null,fill:false}}).addTo(ng)});
-  swapG('cad',ng);if(z<18){swapG('txt',L.layerGroup());return}
+  if(CL)vis.forEach(function(x){L.geoJSON(x.geometry,{interactive:false,renderer:RN.cad,style:{color:cs.color,weight:cs.weight,opacity:cs.opacity,dashArray:cs.dash||null,fill:false}}).addTo(ng)});
+  swapG('cad',ng);if(z<18||!JB){swapG('txt',L.layerGroup());return}
   vis.forEach(function(x){var rg=ringPx(x.geometry),xs=rg.map(function(p){return p[0]}),ys=rg.map(function(p){return p[1]});items.push({rg:rg,w:Math.max.apply(0,xs)-Math.min.apply(0,xs),h:Math.max.apply(0,ys)-Math.min.apply(0,ys),p:x.properties||{}})});
   items.sort(function(a,b){return b.w*b.h-a.w*a.h});var tg=L.layerGroup(),placed=[],i=0,k=cs.fs/11;
   var minMn=z>=20.5?0:Math.max(0,16-(z-18)*6.5),minA=z>=20.3?0:Math.max(0,1600-(z-18)*700);
@@ -1778,7 +1779,7 @@ function renderLayerUI(){var box=document.getElementById('chips');box.innerHTML=
   var sb=document.createElement('button');sb.className='ab'+(openId===id?' sel':'');sb.textContent='\u2699\ufe0e';sb.title='스타일';sb.style.cssText='min-width:30px;height:28px;font-size:15px;padding:0';sb.onclick=function(){openId=(openId===id?'':id);renderLayerUI()};row.appendChild(sb);
   if(isU){var x=document.createElement('button');x.className='ab';x.textContent='✕';x.style.minWidth='28px';x.style.height='28px';x.title='삭제';x.onclick=function(){upDel(l)};row.appendChild(x)}
   box.appendChild(row);rows.push(row);if(openId===id)box.appendChild(isU?stylePanel(l):builtinPanel(id))});
- sortable(rows,'.dh',function(a,b){moveTo(ORDER,a,b);s('ord',ORDER);applyZ();renderLayerUI()})}
+ sortable(rows,'.dh',function(a,b){moveTo(ORDER,a,b);s('ord',ORDER);applyZ();renderLayerUI()});try{window.__qjUpd&&window.__qjUpd()}catch(e){}}
 renderLayerUI();applyZ();upInit();
 document.querySelectorAll('[data-b]').forEach(function(e){e.onclick=function(){setBase(e.dataset.b)}});
 function closeSheet(el){if(el.id==='legend'){HL='';hlG.clearLayers()}el.hidden=true;if(hf){map.removeLayer(hf);hf=null}if(hi){map.removeLayer(hi);hi=null}if(pin){map.removeLayer(pin);pin=null}}
@@ -2295,6 +2296,7 @@ $('memUpFile').onchange=function(){var fs=[].slice.call(this.files||[]),self=thi
  fs.forEach(function(f){var r=new FileReader();r.onload=function(){var ex=exifAll(r.result),has=ex.lat!=null;shrink(f,function(d){keepOrig(f,function(pk){if(d){var t=ex.t||f.lastModified||Date.now(),o={id:'m'+t+Math.floor(Math.random()*99999),t:t,lat:+(has?ex.lat:c.lat).toFixed(7),lng:+(has?ex.lng:c.lng).toFixed(7),text:'',photos:[d],po:[pk],az:ex.az!=null?((ex.az%360)+360)%360:null,vp:has,u:Date.now()};if(has)gp++;else nogp++;if(ex.az!=null)dir++;dbPut('memo',o,function(){if(++n===fs.length)fin()})}else if(++n===fs.length)fin()})})};r.readAsArrayBuffer(f)});
  function fin(){self.value='';loadMem(function(){refresh();var b=MEM.filter(function(m){return m.vp}).slice(0,1)[0];if(b)try{map.setView([b.lat,b.lng],Math.max(map.getZoom(),18))}catch(e){}});status(fs.length+'장 올림 · 위치 있음 '+gp+(dir?' (방향 '+dir+')':'')+(nogp?' · 위치 없음 '+nogp+'장은 지도 가운데에 둠':''))}};
 var camH=null,camLL=null;function camGo(){try{window.__oriEnsure&&window.__oriEnsure()}catch(e){}var G=window.__gps&&window.__gps();camH=G&&G.hdg!=null?G.hdg:null;camLL=G&&G.on&&G.last?[G.last[0],G.last[1]]:null;$('trkFile').click()}
+window.__qjUpd=function(){var a=$('qJk'),b=$('qJb'),c=window.__cadChk&&window.__cadChk();if(a)a.classList.toggle('on',!!c);if(b)b.classList.toggle('on',!!(window.__jbGet&&window.__jbGet()))};$('qJk').onclick=function(){window.__cadSet(!window.__cadChk());window.__qjUpd()};$('qJb').onclick=function(){window.__jbSet(!window.__jbGet());window.__qjUpd()};window.__qjUpd();
 $('trkCam').onclick=camGo;$('qCam').onclick=camGo;
 $('trkFile').onchange=function(){var f=this.files&&this.files[0],self=this;if(!f)return;
  function put(ll){shrink(f,function(d){keepOrig(f,function(pk){self.value='';if(!d){status('사진을 읽지 못했습니다');return}saveShot(d,ll,Date.now(),rec&&rec.t0,camH!=null?camH:(window.__gps&&window.__gps().hdg),pk)})})}
@@ -2809,7 +2811,8 @@ window.__fld={parseLL:parseLL};
  window.__diag=diag})();
 /* v17: 업데이트 내용 · 저장 공간 */
 (function(){var $=function(i){return document.getElementById(i)};
- var LOGV='2026-11-06z',CH=[
+ var LOGV='2026-11-07a',CH=[
+  ['2026.11.06 (지적·지번 분리)',['지적선과 지번을 따로 켜고 끌 수 있게 분리 (레이어에는 “지적선”만 남음)','지도 왼쪽 버튼열에 “지적”·“지번” 버튼을 꺼내 바로 켜고 끔']],
   ['2026.11.06 (색 맞춤)',['시야 부채꼴·겹침 개수 배지가 고른 테마 색을 따라가고, 테마·밝기를 바꾸면 바로 다시 칠함 (메모에서 직접 고른 핀 색은 그대로)']],
   ['2026.11.06 (디자인 다듬기)',['기본 테마 색을 차분한 톤으로 변경(눈이 덜 피로한 짙은 청록·연한 세이지)','선택된 칩·탭·버튼은 꽉 찬 색 대신 옅은 색+테두리로 표시','창 위쪽에 손잡이 선, 모서리·그림자 정리']],
   ['2026.11.06 (안내·펼치기)',['현장 기록 목록 위에 빈 번호 안내(예: 번호 2, 5는 지운 메모)','겹친 핀 목록에 “확대해서 펼쳐 보기” 버튼']],
