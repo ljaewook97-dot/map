@@ -1,5 +1,5 @@
 /* 딸깍 지도 서비스 워커 - 페이지는 인터넷이 되면 항상 새 것, 안 되면 저장본. 지도 그림은 본 만큼 저장. */
-var V='ddm-page-v1',T='ddm-tiles-v1',MAXT=1500,puts=0;
+var V='ddm-page-v1',T='ddm-tiles-v1',MAXT=3000,puts=0;
 var PAGE=new URL('./__page',self.registration.scope).href;
 self.addEventListener('install',function(e){self.skipWaiting();e.waitUntil(caches.open(V).then(function(c){return c.addAll(['manifest.json','icon-192.png','icon-512.png','apple-touch-icon.png'])}).catch(function(){}))});
 self.addEventListener('activate',function(e){e.waitUntil(caches.keys().then(function(ks){return Promise.all(ks.filter(function(k){return k!==V&&k!==T}).map(function(k){return caches.delete(k)}))}).then(function(){return self.clients.claim()}))});
