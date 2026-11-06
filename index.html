@@ -1069,7 +1069,7 @@ html[data-fs="1.12"] body>*:not(#map):not(script):not(style){zoom:1.12}html[data
 #bGps.on{background:var(--acc)!important;color:var(--acc-ink,#fff)!important}
 .gpsm{background:none!important;border:0!important}.gw{position:relative;width:0;height:0}
 .gdot{position:absolute;left:-9px;top:-9px;width:18px;height:18px;border-radius:50%;background:#1a73e8;border:3px solid #fff;box-shadow:0 0 0 1px #0004,0 2px 6px #0006;box-sizing:border-box}
-.gcone{position:absolute;left:-36px;top:-36px;width:72px;height:72px;border-radius:50%;display:none;transform:rotate(var(--h,0deg));background:conic-gradient(from -32deg at 50% 50%,#1a73e8aa 0 64deg,#1a73e800 64deg);-webkit-mask:radial-gradient(circle,transparent 0 9px,#000 10px);mask:radial-gradient(circle,transparent 0 9px,#000 10px)}
+.gcone{position:absolute;left:-36px;top:-36px;width:72px;height:72px;border-radius:50%;display:none;transform:rotate(var(--h,0deg));background:conic-gradient(from calc(-1*var(--cw,32deg)) at 50% 50%,#1a73e8aa 0 calc(2*var(--cw,32deg)),#1a73e800 0);-webkit-mask:radial-gradient(circle,transparent 0 9px,#000 10px);mask:radial-gradient(circle,transparent 0 9px,#000 10px)}
 .gw.hh .gcone{display:block}
 #gpsPill{position:absolute;z-index:1200;left:12px;top:100px;display:flex;align-items:center;gap:8px;background:var(--card);color:var(--fg);border-radius:14px;padding:6px 10px 6px 7px;font-size:12.5px;line-height:1.3;box-shadow:var(--sh);max-width:calc(100vw - 90px)}
 #gpsPill[hidden]{display:none}@media (min-width:1000px){#gpsPill{top:114px}}
@@ -1468,7 +1468,7 @@ var LS=window.localStorage;function g(k,d){try{var v=LS.getItem(k);return v==nul
  if(o.m!=null){var mm={};o.m.split(',').forEach(function(i){if(i)mm[i]=true});s('muniOn',mm)}
  history.replaceState(null,'',location.pathname+location.search)}catch(e){}})();
 var KEY=g('key',''),DOM=g('dom',location.hostname||'localhost');
-var BUILD="2611062324";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
+var BUILD="2611062347";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
 applyTheme(THEME);
 var BASE=g('base','Base');if(['Base','Satellite','SatLabel','white','none'].indexOf(BASE)<0)BASE='Base';
 // 레이어: id, 이름, 표시 WMS 이름, 조회용 data 코드
@@ -2606,7 +2606,8 @@ window.__fld={parseLL:parseLL};
 /* v12: 내 위치·방향 / 야간 타일 / 한 손 / 로딩 표시 / 지도 비교 */
 (function(){var $=function(i){return document.getElementById(i)};
  /* ---- 내 위치 · 방위 ---- */
- var on=false,wid=null,mk=null,ac=null,ln=null,last=null,acc=0,hdg=null,gw=null,first=true,oriT=0,oriOn=false,spd=0,rawH=null,smH=null,hOff=g('hOff',0),aOn=g('hAutoOn',true),aX=g('hAX',0),aY=g('hAY',0),aN=g('hAN',0),cAcc=null;
+ var on=false,wid=null,mk=null,ac=null,ln=null,last=null,acc=0,hdg=null,gw=null,first=true,oriT=0,oriOn=false,spd=0,rawH=null,smH=null,hOff=g('hOff',0),aOn=g('hAutoOn',true),aX=g('hAX',0),aY=g('hAY',0),aN=g('hAN',0),cAcc=null,jit=8,tiltW=0;if(!g('hDecl',0)){hOff=0;aX=aY=aN=0;s('hOff',0);s('hAX',0);s('hAY',0);s('hAN',0);s('hDecl',1)}
+ function decl(la,lo){var x=Math.max(32,Math.min(39,la))-36,y=Math.max(124,Math.min(132,lo))-128,t=(Date.now()-Date.UTC(2026,10,6))/31557600000;return -8.65007-0.29013*x-0.06599*y-0.00053*x*x-0.00342*x*y+0.01025*y*y-0.0404*t}
  function ad(a,b){return ((a-b+540)%360)-180}
  function aOffD(){return aN>=4?Math.atan2(aY,aX)*180/Math.PI:0}
  function totOff(){return hOff+(aOn?aOffD():0)}
@@ -2626,9 +2627,9 @@ window.__fld={parseLL:parseLL};
  window.__dirHTML=function(){return '<div class="sec" id="dirSec"><small>내 위치에서 이 필지까지</small><div id="dirIn">'+dirInner()+'</div></div>'};
  function bindDir(){var b=$('dirGo');if(b)b.onclick=function(){if(!on)start()}}
  function upd(){
-  if(gw){gw.style.setProperty('--h',((hdg||0)-(window.__bear?window.__bear():0))+'deg');gw.classList.toggle('hh',hdg!=null)}
+  if(gw){gw.style.setProperty('--h',((hdg||0)-(window.__bear?window.__bear():0))+'deg');gw.style.setProperty('--cw',Math.max(32,Math.min(70,hUnc()+12))+'deg');gw.classList.toggle('hh',hdg!=null)}
   var p=$('gpsPill');if(!on||!last){p.hidden=true;document.body.classList.remove('gpson')}else{p.hidden=false;document.body.classList.add('gpson');
-   p.innerHTML='<div class="cp"><i style="--n:'+(hdg==null?0:(360-hdg).toFixed(0))+'deg"></i></div><div><span class="ac '+accCls(acc)+'"></span>오차 <b>±'+Math.round(acc)+'m</b>'+(acc>30?' · 위치를 믿기 어렵습니다':'')+'<small>'+(hdg==null?'북쪽 위 · 방위 센서 없음':'폰 방향 '+nm(hdg)+' '+Math.round(hdg)+'°')+'</small></div>'}
+   p.innerHTML='<div class="cp"><i style="--n:'+(hdg==null?0:(360-hdg).toFixed(0))+'deg"></i></div><div><span class="ac '+accCls(acc)+'"></span>오차 <b>±'+Math.round(acc)+'m</b>'+(acc>30?' · 위치를 믿기 어렵습니다':'')+'<small>'+(hdg==null?'북쪽 위 · 방위 센서 없음':'폰 방향 '+nm(hdg)+' '+Math.round(hdg)+'° (±'+Math.round(hUnc())+'°)'+(hUnc()>25?' · 8자로 흔들어 보정':''))+'</small></div>'}
   var di=$('dirIn');if(di){di.innerHTML=dirInner();bindDir()}
   if(ln){var T=window.__tgt;if(on&&last&&T)ln.setLatLngs([last,T]);else ln.setLatLngs([])}
   $('bGps').classList.toggle('on',on)}
@@ -2644,10 +2645,23 @@ window.__fld={parseLL:parseLL};
   if(first){first=false;map.setView(last,Math.max(map.getZoom(),18))}else if(window.__onFix)window.__onFix(last);
   upd()}
  function onErr(e){status(e&&e.code===1?'위치 권한이 꺼져 있습니다 — 브라우저 설정에서 허용해 주세요':'위치를 가져오지 못했습니다');stop()}
- function onOri(e){var now=Date.now();if(now-oriT<90)return;var h=null;
-  if(e.webkitCompassHeading!=null)h=e.webkitCompassHeading;
-  else if(e.alpha!=null&&(e.absolute||e.type==='deviceorientationabsolute'))h=360-e.alpha;
-  if(h==null||isNaN(h))return;oriT=now;oriOn=true;var sa=(screen.orientation&&screen.orientation.angle)||0;rawH=((h+sa)%360+360)%360;smH=smH==null?rawH:(((smH+.35*ad(rawH,smH))%360)+360)%360;if(e.webkitCompassAccuracy!=null&&e.webkitCompassAccuracy>=0)cAcc=e.webkitCompassAccuracy;reH();upd();if(window.__onHeading)window.__onHeading(hdg,last)}
+ function tiltH(e){var r=Math.PI/180,A=e.alpha*r,B=e.beta*r,G=e.gamma*r,cA=Math.cos(A),sA=Math.sin(A),cB=Math.cos(B),sB=Math.sin(B),cG=Math.cos(G),sG=Math.sin(G);
+  var xe=cG*cA-sA*sB*sG,xn=cG*sA+cA*sB*sG,ye=-cB*sA,yn=cA*cB,ze=cG*sA*sB+cA*sG,zn=sA*sG-cA*cG*sB,zu=cB*cG;
+  var sa=((screen.orientation&&screen.orientation.angle)||0)*r,fe=Math.cos(sa)*ye+Math.sin(sa)*xe,fn=Math.cos(sa)*yn+Math.sin(sa)*xn;
+  var tl=Math.acos(Math.min(1,Math.abs(zu)))/r,w=Math.max(0,Math.min(1,(tl-35)/25));tiltW=w;
+  var ve=(1-w)*fe+w*(-ze),vn=(1-w)*fn+w*(-zn);if(Math.abs(ve)+Math.abs(vn)<.05)return null;
+  return (Math.atan2(ve,vn)/r+360)%360}
+ function onOri(e){var now=Date.now();if(now-oriT<60)return;var h=null,tc=false;
+  if(e.webkitCompassHeading!=null){h=e.webkitCompassHeading;tc=true}
+  else if(e.alpha!=null&&(e.absolute||e.type==='deviceorientationabsolute')){if(e.beta!=null&&e.gamma!=null){h=tiltH(e);tc=true}else h=360-e.alpha}
+  if(h==null||isNaN(h))return;oriT=now;oriOn=true;
+  var sa=(screen.orientation&&screen.orientation.angle)||0;if(e.webkitCompassHeading!=null||!tc)h=h+sa;
+  var dc=last?decl(last[0],last[1]):-8.6;
+  rawH=((h+dc)%360+360)%360;
+  if(smH==null)smH=rawH;else{var d=ad(rawH,smH),k=.1+.5*Math.min(1,Math.abs(d)/25);smH=(((smH+k*d)%360)+360)%360;jit=jit*.95+Math.min(Math.abs(d),40)*.05}
+  if(e.webkitCompassAccuracy!=null&&e.webkitCompassAccuracy>=0)cAcc=e.webkitCompassAccuracy;
+  reH();upd();if(window.__onHeading)window.__onHeading(hdg,last)}
+ function hUnc(){return cAcc!=null?cAcc:Math.max(5,Math.min(60,jit*3))}
  function oriStart(){
   function add(){var ev='ondeviceorientationabsolute' in window?'deviceorientationabsolute':'deviceorientation';window.addEventListener(ev,onOri,true)}
   add();try{if(typeof DeviceOrientationEvent!=='undefined'&&typeof DeviceOrientationEvent.requestPermission==='function'){var pr=DeviceOrientationEvent.requestPermission();if(pr&&pr.catch)pr.catch(function(){})}}catch(e){}}
@@ -2961,7 +2975,8 @@ window.__fld={parseLL:parseLL};
  window.__diag=diag})();
 /* v17: 업데이트 내용 · 저장 공간 */
 (function(){var $=function(i){return document.getElementById(i)};
- var LOGV='2026-11-07g',CH=[
+ var LOGV='2026-11-07h',CH=[
+  ['2026.11.07 (방향 센서 정밀화)',['자북→진북 보정: 위치로 편차(한국 약 −8~9°)를 계산해 반영','기울기 보정: 폰을 세워 정면을 볼 때는 카메라 방향, 눕혀 들 때는 폰 상단 방향으로 계산','센서 정확도(±°) 표시, 흔들림이 크면 “8자로 흔들어 보정” 안내, 시야 부채꼴을 오차만큼 넓힘','떨림 완화: 천천히 돌릴 땐 안정적으로, 빨리 돌릴 땐 즉시 따라감','방향 보정값(수동·걸음 학습)은 이번 한 번 초기화됨 — 진북 보정이 들어갔기 때문']],
   ['2026.11.07 (버튼 정리)',['왼쪽 빠른 버튼: 측정·필지선택·그리기·반경을 “도구” 버튼 하나로 묶어 펼침','폰에서는 오른쪽 메뉴 글자를 기본으로 숨김 (설정에서 변경 가능)','설정 → “현장 기록 표시”: 숨긴 핀 모두 표시 / 핀 색 모두 기본으로','도구 메뉴의 “지도 그림으로 저장” 숨김']],
   ['2026.11.07 (도구 메뉴 정리)',['도구 메뉴의 “측정·표시”는 왼쪽 빠른 버튼과 중복이라 숨김']],
   ['2026.11.07 (모바일 UI 축소)',['모바일에서 검색창·도구줄·빠른 버튼을 작게 조정','“화면 그대로 캡처”를 지도 위 작은 버튼으로 이동']],
