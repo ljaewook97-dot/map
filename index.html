@@ -1251,6 +1251,14 @@ html .sheet h3{letter-spacing:-.2px}
 html .ph{font-weight:700}
 html ::selection{background:var(--acc2);color:var(--acc)}
 html *{-webkit-tap-highlight-color:transparent}
+
+html.shot body>*:not(#mapClip):not(#shotBar):not(script):not(style){display:none!important}
+html.shot .leaflet-control-container .leaflet-control:not(.leaflet-control-scale){display:none!important}
+#shotBar{position:fixed;left:50%;bottom:max(16px,env(safe-area-inset-bottom));transform:translateX(-50%);z-index:3000;display:flex;align-items:center;gap:8px;background:#000c;color:#fff;border-radius:22px;padding:8px 8px 8px 16px;font-size:12px;width:max-content;max-width:94vw;transition:opacity .35s}
+#shotBar.fade{opacity:0;pointer-events:none}
+#shotBar button{border:0;border-radius:16px;padding:8px 14px;font:700 13px system-ui;white-space:nowrap;background:#fff;color:#111}
+#shotBar #shotX{background:#ffffff33;color:#fff}
+#shotBar span{white-space:nowrap}
 </style></head><body>
 <div id="map"></div>
 <div class="bar">
@@ -1307,6 +1315,8 @@ html *{-webkit-tap-highlight-color:transparent}
  <div class="ph" style="margin-top:14px">지도 그림으로 저장</div>
  <div class="sub" style="margin:0 0 6px">지금 보는 범위를 정북이 위인 그림(PNG)으로 저장합니다. 배경지도·지적선·지번·번호 핀·시야가 합쳐져 보고서 현황도에 바로 쓸 수 있습니다.</div>
  <button class="btn on" id="tCap" type="button" style="width:100%">지도 그림 저장</button>
+ <div class="sub" style="margin:10px 0 6px">레이어·측정·그리기까지 지금 화면 그대로 담으려면 버튼·창만 숨기고 캡처하세요 (PC는 자동 저장 시도, 폰은 화면 캡처 사용).</div>
+ <button class="btn" id="tShot" type="button" style="width:100%">화면 그대로 캡처 (버튼·창 숨김)</button>
  <div class="ph" style="margin-top:14px">현재 화면 공유</div>
  <div class="sub" style="margin:0 0 6px">위치·레이어·지도 종류가 담깁니다. 인증키와 내 SHP는 포함되지 않습니다.</div>
  <div style="display:flex;gap:6px"><input id="shareUrl" readonly style="flex:1;min-width:0;font:inherit;font-size:12px;padding:8px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--fg)"><button class="btn on" id="shareGo" style="padding:0 14px">공유</button></div><div id="shareMsg" class="sub"></div>
@@ -1437,7 +1447,7 @@ var LS=window.localStorage;function g(k,d){try{var v=LS.getItem(k);return v==nul
  if(o.m!=null){var mm={};o.m.split(',').forEach(function(i){if(i)mm[i]=true});s('muniOn',mm)}
  history.replaceState(null,'',location.pathname+location.search)}catch(e){}})();
 var KEY=g('key',''),DOM=g('dom',location.hostname||'localhost');
-var BUILD="2611062305";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
+var BUILD="2611062312";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
 applyTheme(THEME);
 var BASE=g('base','Base');if(['Base','Satellite','SatLabel','white','none'].indexOf(BASE)<0)BASE='Base';
 // 레이어: id, 이름, 표시 WMS 이름, 조회용 data 코드
@@ -2309,6 +2319,24 @@ function capMap(btn){var el=document.getElementById('map'),W=el.clientWidth,H=el
   try{cv.toBlob(function(bb){if(!bb){status('그림을 만들지 못했습니다');return}var nm='지도_'+fmtT(Date.now()).replace(/[: ]/g,'').replace(/-/g,'')+'.png';window.__dl(bb,nm,'image/png','지도 그림을 저장했습니다');if(miss)status('배경지도는 서버 제한으로 빠졌습니다 (지적·핀만 저장)')},'image/png')}catch(e){status('그림을 만들지 못했습니다 (배경지도 제한)')}
  })}
 var _cb=$('tCap');if(_cb)_cb.onclick=function(){capMap(this)};
+
+/* ---- 화면 그대로 캡처: 버튼·창을 숨기고 지도만 보이게 (PC는 현재 화면 녹화 API로 PNG 저장 시도) ---- */
+var shotTm=null,shotBlock=function(e){e.stopPropagation();shotBar(true)};
+function shotBar(show){var b=$('shotBar');if(!b)return;b.classList.toggle('fade',!show);clearTimeout(shotTm);if(show)shotTm=setTimeout(function(){b.classList.add('fade')},4000)}
+function shotOff(){document.documentElement.classList.remove('shot');var b=$('shotBar');if(b)b.remove();var m=$('mapClip');if(m)m.removeEventListener('click',shotBlock,true);clearTimeout(shotTm)}
+function shotOn(){var tp=$('toolPop');if(tp)tp.hidden=true;try{$('bTool').setAttribute('aria-expanded','false')}catch(e){}
+ ['layers','legend','info','fieldSheet'].forEach(function(i){var e=$(i);if(e)e.hidden=true});
+ document.documentElement.classList.add('shot');var b=document.createElement('div');b.id='shotBar';b.innerHTML='<span>화면 터치 시 막대 표시</span><button id="shotSave" type="button">PNG 저장</button><button id="shotX" type="button">나가기</button>';document.body.appendChild(b);
+ $('shotX').onclick=shotOff;$('shotSave').onclick=shotGrab;$('mapClip').addEventListener('click',shotBlock,true);shotBar(true)}
+function shotGrab(){var md=navigator.mediaDevices;if(!md||!md.getDisplayMedia){status('이 기기는 자동 저장을 지원하지 않습니다. 기기의 화면 캡처(폰: 전원+볼륨)를 쓰세요');shotBar(false);return}
+ var bar=$('shotBar'),cropped=false;md.getDisplayMedia({video:true,audio:false,preferCurrentTab:true,selfBrowserSurface:'include'}).then(function(st){var tr=st.getVideoTracks()[0];
+  var p0=Promise.resolve();if(window.CropTarget&&tr.cropTo)p0=CropTarget.fromElement($('mapClip')).then(function(ct){return tr.cropTo(ct)}).then(function(){cropped=true}).catch(function(){});
+  return p0.then(function(){bar.style.display='none';var v=document.createElement('video');v.srcObject=st;v.muted=true;v.playsInline=true;return v.play().then(function(){return new Promise(function(r){setTimeout(r,450)})}).then(function(){
+   var vw=v.videoWidth,vh=v.videoHeight,c=document.createElement('canvas'),r=$('mapClip').getBoundingClientRect(),sx=0,sy=0,sw=vw,sh=vh;
+   if(!cropped){var k=vw/window.innerWidth;sx=r.left*k;sy=r.top*k;sw=r.width*k;sh=r.height*k}
+   c.width=Math.round(sw);c.height=Math.round(sh);c.getContext('2d').drawImage(v,sx,sy,sw,sh,0,0,c.width,c.height);st.getTracks().forEach(function(t){t.stop()});bar.style.display='';
+   c.toBlob(function(bb){if(!bb){status('저장하지 못했습니다');return}window.__dl(bb,'화면_'+fmtT(Date.now()).replace(/[: ]/g,'').replace(/-/g,'')+'.png','image/png','화면을 저장했습니다')},'image/png')})})}).catch(function(){if(bar)bar.style.display='';status('화면 저장이 허용되지 않았습니다. 기기의 화면 캡처를 쓰세요');shotBar(false)})}
+var _sb=$('tShot');if(_sb)_sb.onclick=shotOn;
 function nextNo(){var mx=0;MEM.forEach(function(m){if(m.no>mx)mx=m.no});return mx+1}
 function pickList(arr){var d=document.createElement('div');d.id='memPick';var h='<div class="box"><div style="font-weight:700;margin-bottom:6px">여기에 겹친 메모 '+arr.length+'개</div>';arr.forEach(function(m,k){h+='<div class="fi" data-k="'+k+'"><div class="th" style="box-shadow:0 0 0 3px '+pcv(m)+'">'+(m.photos&&m.photos[0]?'<img src="'+m.photos[0]+'">':'M')+'</div><div class="tx"><b><i class="dot" style="background:'+pcv(m)+'">'+NO[m.id]+'</i>'+esc((m.text||'(사진 메모)').split('\n')[0])+'</b><small>'+fmtT(m.t)+'</small></div></div>'});h+='<button class="btn on" style="width:100%;margin-top:8px" id="memPickZ">확대해서 펼쳐 보기</button><button class="btn" style="width:100%;margin-top:6px" id="memPickX">닫기</button></div>';d.innerHTML=h;document.body.appendChild(d);
  d.onclick=function(e){var f=e.target.closest&&e.target.closest('.fi');if(f){var m=arr[+f.dataset.k];d.remove();openMemo(m);return}if(e.target.id==='memPickZ'){var bd=L.latLngBounds(arr.map(function(m){return [m.lat,m.lng]}));d.remove();if(bd.getNorthEast().equals(bd.getSouthWest())){status('이 메모들은 위치가 같아서 더 펼칠 수 없어요 (번호 목록에서 고르세요)')}else{map.fitBounds(bd,{padding:[70,70],maxZoom:21});status('확대했습니다 · 아직 겹치면 더 확대해 보세요')}return}if(e.target===d||e.target.id==='memPickX')d.remove()}}
@@ -2909,7 +2937,8 @@ window.__fld={parseLL:parseLL};
  window.__diag=diag})();
 /* v17: 업데이트 내용 · 저장 공간 */
 (function(){var $=function(i){return document.getElementById(i)};
- var LOGV='2026-11-07c',CH=[
+ var LOGV='2026-11-07d',CH=[
+  ['2026.11.07 (화면 그대로 캡처)',['도구 → “화면 그대로 캡처”: 버튼·창을 모두 숨기고 지도만 표시 (PC는 PNG 저장 시도, 폰은 기기 화면 캡처 사용)']],
   ['2026.11.07 (지도 그림 저장)',['도구 → “지도 그림 저장”: 지금 보는 범위를 정북이 위인 PNG로 저장 (배경지도·지적선·지번·번호 핀·시야·축척·북쪽 표시 포함)']],
   ['2026.11.07 (색상 대폭 추가)',['색상 테마 11종 추가(오션·청록·숲·올리브·호박·코랄·와인·라벤더·인디고·슬레이트·모카) — 화면 설정 → 색상','왼쪽 버튼열 정리: 지적·지번을 한 줄 버튼으로 묶고 버튼 크기를 줄여 위쪽 컨트롤과 겹치지 않게 함','레이어 창의 빈 상태 칸 제거, 모서리·글자 간격 다듬기']],
   ['2026.11.06 (지적·지번 분리)',['지적선과 지번을 따로 켜고 끌 수 있게 분리 (레이어에는 “지적선”만 남음)','지도 왼쪽 버튼열에 “지적”·“지번” 버튼을 꺼내 바로 켜고 끔']],
