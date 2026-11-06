@@ -1367,7 +1367,7 @@ var LS=window.localStorage;function g(k,d){try{var v=LS.getItem(k);return v==nul
  if(o.m!=null){var mm={};o.m.split(',').forEach(function(i){if(i)mm[i]=true});s('muniOn',mm)}
  history.replaceState(null,'',location.pathname+location.search)}catch(e){}})();
 var KEY=g('key',''),DOM=g('dom',location.hostname||'localhost');
-var BUILD="2611061857";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
+var BUILD="2611061911";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
 applyTheme(THEME);
 var BASE=g('base','Base');if(['Base','Satellite','SatLabel','white','none'].indexOf(BASE)<0)BASE='Base';
 // 레이어: id, 이름, 표시 WMS 이름, 조회용 data 코드
@@ -1646,12 +1646,22 @@ function ratioSec(S){if(!S.ratio||!S.ratio.length)return '';var a=Number(S.area)
  S.ratio.forEach(function(g){h+='<div class="rg2"><small>'+g.g+'</small>'+g.items.map(function(it){var p=Math.min(100,it[1]),t=p>=99?'100%':p.toFixed(p<10?1:0)+'%';return '<div class="rr"><span>'+esc(it[0])+'</span><i style="--w:'+p.toFixed(1)+'%"></i><b>'+t+(a?'<em> · 약 '+Math.round(a*p/100).toLocaleString('ko-KR')+'㎡</em>':'')+'</b></div>'}).join('')+'</div>'});
  return '<div class="sec"><small>이 필지 안 면적 비율 <em class="sub" style="font-style:normal;font-weight:400">· 켜 둔 레이어 기준, 약값</em></small>'+h+'</div>'}
 
-var ZC={'제1종전용주거지역':[50,100,50,100],'제2종전용주거지역':[50,150,50,150],'제1종일반주거지역':[60,200,60,180],'제2종일반주거지역':[60,250,60,230],'제3종일반주거지역':[50,300,50,250],'준주거지역':[70,500,60,380],'중심상업지역':[90,1500,80,1200],'일반상업지역':[80,1300,70,900],'근린상업지역':[70,900,60,700],'유통상업지역':[80,1100,70,400],'전용공업지역':[70,300,70,300],'일반공업지역':[70,350,70,350],'준공업지역':[70,400,70,400],'보전녹지지역':[20,80,20,50],'생산녹지지역':[20,100,20,90],'자연녹지지역':[20,100,20,100],'보전관리지역':[20,80,20,80],'생산관리지역':[20,80,20,80],'계획관리지역':[40,100,40,100],'농림지역':[20,80,20,80],'자연환경보전지역':[20,80,20,50]};
-function capSec(S){if(!S.zones||!S.zones.length)return '';var gy=/고양시/.test(S.addr||''),rows='',n=0;
- S.zones.forEach(function(z){var k=String(z).replace(/\(.*?\)/g,'').replace(/\s/g,''),v=ZC[k];if(!v)return;n++;var b=gy?v[2]:v[0],r=gy?v[3]:v[1];
-  rows+='<span class="zn">'+esc(k)+'</span><span class="cv"><b>'+b+'</b>%</span><span class="cv"><b>'+r+'</b>%</span>'});
+var ZK=['제1종전용주거지역','제2종전용주거지역','제1종일반주거지역','제2종일반주거지역','제3종일반주거지역','준주거지역','중심상업지역','일반상업지역','근린상업지역','유통상업지역','전용공업지역','일반공업지역','준공업지역','보전녹지지역','생산녹지지역','자연녹지지역','보전관리지역','생산관리지역','계획관리지역','농림지역','자연환경보전지역'];
+var SB=[50,50,60,60,50,70,90,80,70,80,70,70,70,20,20,20,20,20,40,20,20],SR=[100,150,200,250,300,500,1500,1300,900,1100,300,350,400,80,100,100,80,80,100,80,80],N=null;
+var ORD=[['서울특별시','서울시 조례','서울도심은 용적률이 더 낮습니다(제48조). ',[50,40,60,60,50,60,60,60,60,60,60,60,60,20,20,20],[100,120,150,200,250,400,1000,800,600,600,200,200,400,50,50,50]],
+ ['고양시','고양시 조례','',[50,50,60,60,50,60,80,70,60,70,70,70,70,20,20,20,20,20,40,20,20],[100,150,180,230,250,380,1200,900,700,400,300,350,400,50,90,100,80,80,100,80,50]],
+ ['남양주시','남양주시 조례','',[50,50,60,60,50,70,90,80,70,80,70,70,70,20,20,20,20,20,40,20,20],[100,150,200,250,300,500,1500,900,900,900,300,350,400,80,100,100,60,80,100,60,60]],
+ ['김포시','김포시 조례','성장관리계획구역 등 예외가 있습니다. ',[50,50,60,60,50,70,90,80,70,80,70,70,70,20,20,20,20,20,40,20,20],[100,150,200,250,300,500,1500,1300,900,1100,300,350,400,80,100,100,80,80,100,80,80]],
+ ['의정부시','의정부시 조례','',[40,50,60,60,50,60,80,80,60,60,70,70,70,20,20,20],[80,120,200,250,300,500,1000,1000,500,500,300,350,400,50,60,80]],
+ ['과천시','과천시 조례','',[50,50,60,60,50,70,90,80,70,80,70,70,70,20,N,20],[100,150,200,250,300,500,1500,1300,900,1100,300,350,400,50,N,60]],
+ ['파주시','파주시 조례','',[40,50,60,60,50,60,80,80,70,70,70,70,70,20,20,20,20,20,40,20,20],[80,120,180,250,300,300,1000,900,600,600,200,250,250,50,50,80,80,80,100,50,50]]];
+function ordOf(a){a=a||'';for(var i=0;i<ORD.length;i++)if(a.indexOf(ORD[i][0])>=0)return ORD[i];return null}
+function capSec(S){if(!S.zones||!S.zones.length)return '';var o=ordOf(S.addr),rows='',n=0,fb=0;
+ S.zones.forEach(function(z){var k=String(z).replace(/\(.*?\)/g,'').replace(/\s/g,''),ix=ZK.indexOf(k);if(ix<0)return;n++;var b=o&&o[3][ix]!=null?o[3][ix]:SB[ix],r=o&&o[4][ix]!=null?o[4][ix]:SR[ix],st=o&&(o[3][ix]==null||o[4][ix]==null)?'*':'';if(st)fb=1;
+  rows+='<span class="zn">'+esc(k)+'</span><span class="cv"><b>'+b+'</b>%'+st+'</span><span class="cv"><b>'+r+'</b>%'+st+'</span>'});
  if(!n)return '';
- return '<div class="sec"><small>건폐율·용적률 상한 <em class="sub" style="font-style:normal;font-weight:400">· '+(gy?'고양시 조례':'시행령 상한')+'</em></small><div class="cap2"><span></span><span class="h">건폐율</span><span class="h">용적률</span>'+rows+'</div><p class="sub" style="margin:2px 0 0;font-size:12px">'+(gy?'':'지자체 조례로 더 낮을 수 있어 해당 시·군 조례 확인 필요 · ')+'지구단위계획·경관지구 등은 그 기준이 우선</p></div>'}
+ var nt=(o?o[2]:'지자체 조례로 더 낮을 수 있어 해당 시·군 조례 확인 필요 · ')+(fb?'* 이 조례에 따로 정한 값이 없어 시행령 상한 · ':'')+'지구단위계획·경관지구 등은 그 기준이 우선';
+ return '<div class="sec"><small>건폐율·용적률 상한 <em class="sub" style="font-style:normal;font-weight:400">· '+(o?o[1]:'시행령 상한')+'</em></small><div class="cap2"><span></span><span class="h">건폐율</span><span class="h">용적률</span>'+rows+'</div><p class="sub" style="margin:2px 0 0;font-size:12px">'+nt+'</p></div>'}
 function distCard(S){var a=distNames(S);if(!a.length)return '';
  return '<div class="sec dcard"><small>지구단위계획구역</small><div>'+a.map(function(x){return '<span class="tag">'+esc(x)+'</span>'}).join('')+'</div><p class="sub" style="margin:2px 0 0;font-size:12px">세부 기준은 구역별 계획이 우선합니다. 아래 토지이음에서 계획도서를 열람하세요.</p></div>'}
 function distNames(S){var a=[];(S.dist||[]).concat((S.spec||[]).filter(function(x){return /지구단위/.test(x)})).forEach(function(x){if(a.indexOf(x)<0)a.push(x)});return a}
@@ -2688,7 +2698,8 @@ window.__fld={parseLL:parseLL};
  window.__diag=diag})();
 /* v17: 업데이트 내용 · 저장 공간 */
 (function(){var $=function(i){return document.getElementById(i)};
- var LOGV='2026-11-06h',CH=[
+ var LOGV='2026-11-06i',CH=[
+  ['2026.11.06 (조례 추가)',['건폐율·용적률 상한에 서울·고양·남양주·김포·의정부·과천·파주 조례 값 반영 (그 밖의 지역은 시행령 상한으로 표시)']],
   ['2026.11.06 (오후 정리)',['조회 결과 창 정리: 건폐율·용적률을 표로, 지구단위는 한 칸 카드로, 용도지구·시설·토지이용은 기본으로 접고 개수만 표시','순서를 용도지역 → 건폐율·용적률 → 지구단위 → 개발제한 순으로 재배치, 면적 비율은 아래로']],
   ['2026.11.06 (오후 추가 2)',['도구 메뉴를 “측정·표시”(측정·반경·필지 선택·그리기)와 “기록”(메모·경로·현장 기록)으로 나눔','도구 메뉴에 “오프라인 미리 받기”: 지금 보는 범위의 지도를 미리 저장 (저장 범위·용량 확인 후 시작)','조회 결과 창의 구역(용도지역·건폐율·시설 등) 제목을 눌러 접고 펼침 — 접은 상태는 기억','공유: “복사” 버튼 추가, 공유 문구에 좌표·확대 포함','도면 패널을 위로 옮기거나 작게 줄일 수 있음','처음 사용 안내에 점검·방향·건폐율·도면·오프라인 항목 추가']],
   ['2026.11.06 (오후 수정)',['측정 “끝내기”를 눌러도 거리·면적 표시가 지도에 그대로 남습니다 (다시 측정을 시작하거나 한 번 더 켰다 끄면 지워집니다)']],
