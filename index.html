@@ -1289,6 +1289,7 @@ html[data-out="1"] #lgrp{border:2px solid var(--fg)}html[data-out="1"] #lgrp #bU
 <div class="modal" id="tourModal" hidden><div class="box tour"><div class="tk" id="tkIc"></div><h3 id="tkT"></h3><p id="tkP"></p><div class="tdots" id="tkD"></div><div style="display:flex;gap:8px"><button class="btn" id="tkPrev">이전</button><span style="flex:1"></span><button class="btn" id="tkSkip">건너뛰기</button><button class="btn on" id="tkNext">다음</button></div></div></div>
 <div class="modal" id="prjModal" hidden><div class="box" style="max-height:88%;overflow:auto">
  <h3 style="margin:0 0 4px">프로젝트</h3><p class="sub" style="margin:0 0 8px">지도 위치·배경·레이어 켜기/순서·스타일·올린 SHP를 이름 붙여 저장하고, 나중에 불러옵니다. 이 기기·브라우저에 저장됩니다.</p>
+ <div style="display:flex;gap:6px;margin:0 0 8px"><button class="btn" id="pNew" style="flex:1">＋ 새 프로젝트 시작</button></div><div id="pNewBox" hidden style="border:1px solid var(--line);border-radius:10px;padding:8px;margin:0 0 8px"><div style="font-weight:700">새로 시작하면 지워지는 것</div><div class="sub" style="margin:2px 0 6px">메모·사진·경로·내 도면·올린 SHP·그리기·저장한 측정. 지도 위치와 레이어 설정, 인증키는 그대로 둡니다.</div><label style="display:flex;gap:6px;align-items:center;font-size:13px;margin:0 0 6px"><input type="checkbox" id="pNewBk" checked> 지우기 전에 지금 내용을 zip으로 저장 (권장)</label><div style="display:flex;gap:6px;justify-content:flex-end"><button class="btn" id="pNewNo">취소</button><button class="btn on" id="pNewGo" style="background:var(--warn);border-color:var(--warn)">새로 시작</button></div></div>
  <label>새 이름으로 저장</label><div style="display:flex;gap:6px"><input id="pName" placeholder="예: 마곡 검토안 1" autocomplete="off"><button class="btn on" id="pSave" style="height:42px;margin-top:4px">저장</button></div>
  <div id="pList" style="margin:6px 0"></div>
  <div style="display:flex;gap:6px;flex-wrap:wrap"><button class="btn" id="pImp">파일에서 가져오기</button><input type="file" id="pFile" accept=".json,.zip,application/json,application/zip" hidden><button class="btn" id="pClose" style="margin-left:auto">닫기</button></div>
@@ -1367,7 +1368,7 @@ var LS=window.localStorage;function g(k,d){try{var v=LS.getItem(k);return v==nul
  if(o.m!=null){var mm={};o.m.split(',').forEach(function(i){if(i)mm[i]=true});s('muniOn',mm)}
  history.replaceState(null,'',location.pathname+location.search)}catch(e){}})();
 var KEY=g('key',''),DOM=g('dom',location.hostname||'localhost');
-var BUILD="2611061926";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
+var BUILD="2611061933";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
 applyTheme(THEME);
 var BASE=g('base','Base');if(['Base','Satellite','SatLabel','white','none'].indexOf(BASE)<0)BASE='Base';
 // 레이어: id, 이름, 표시 WMS 이름, 조회용 data 코드
@@ -1830,8 +1831,8 @@ function lsX(){return {fav:g('fav',[]),rec:g('rec',[]),chkItems:g('chkItems',nul
 window.__prjExtra=function(cb){stAll('memo',function(M){stAll('trk',function(T){stAll('ovl',function(O){cb({memo:M,trk:T,ovl:O,measSv:g('measSv',[]),ls:lsX()})})})})};
 function mergeLS(l){if(!l)return;['fav','rec'].forEach(function(k){if(!Array.isArray(l[k])||!l[k].length)return;var a=g(k,[]);if(!Array.isArray(a))a=[];var h={};a.forEach(function(x){h[JSON.stringify(x)]=1});l[k].forEach(function(x){if(!h[JSON.stringify(x)]){a.push(x);h[JSON.stringify(x)]=1}});s(k,a.slice(0,k==='rec'?60:300))});if(Array.isArray(l.chkItems)){var c=g('chkItems',null)||[];l.chkItems.forEach(function(x){if(c.indexOf(x)<0)c.push(x)});s('chkItems',c)}}
 function b64(d){return String(d).split(',')[1]||''}
-function exp(p){var nm=(p.name||'project').replace(/[\\\/:*?"<>|]/g,'_');
- if(typeof JSZip==='undefined'){dl(new Blob([JSON.stringify(p)],{type:'application/json'}),nm+'.ddmap.json');return}
+function exp(p,cb){var nm=(p.name||'project').replace(/[\\\/:*?"<>|]/g,'_');
+ if(typeof JSZip==='undefined'){dl(new Blob([JSON.stringify(p)],{type:'application/json'}),nm+'.ddmap.json');cb&&cb();return}
  msg('사진·도면 모으는 중…');
  stAll('memo',function(M){stAll('trk',function(T){stAll('ovl',function(O){stAll('orig',function(OA){var OM={};OA.forEach(function(r){OM[r.id]=r});
   var z=new JSZip(),ph=0,dw=0,og=0,q=Object.assign({},p);
@@ -1839,7 +1840,7 @@ function exp(p){var nm=(p.name||'project').replace(/[\\\/:*?"<>|]/g,'_');
   var ox=O.map(function(o,i){var c=Object.assign({},o),n='도면/'+(i+1)+'_'+String(o.name||'도면').replace(/[\\\/:*?"<>|]/g,'_')+'.jpg';z.file(n,b64(o.img),{base64:true});dw++;c.img=n;return c});
   q.extra={memo:mx,trk:T,ovl:ox,measSv:g('measSv',[]),ls:lsX()};
   z.file(nm+'.ddmap.json',JSON.stringify(q));
-  z.generateAsync({type:'blob'}).then(function(b){dl(b,nm+'.ddmap.zip');msg('저장했습니다: 메모 '+M.length+'개, 사진 '+ph+'장'+(og?'(원본 '+og+'장)':'')+', 도면 '+dw+'장 포함')},function(){msg('압축 실패')})})})})})}
+  z.generateAsync({type:'blob'}).then(function(b){dl(b,nm+'.ddmap.zip');msg('저장했습니다: 메모 '+M.length+'개, 사진 '+ph+'장'+(og?'(원본 '+og+'장)':'')+', 도면 '+dw+'장 포함');cb&&cb()},function(){msg('압축 실패')})})})})})}
 window.__prjImport=function(x,z,cb){return importExtra(x,z,cb)};
 function importExtra(x,z,cb){if(!x)return cb(0);var men=0;
  function img(n,done){if(!z){done(null);return}var f=z.file(n);if(!f){done(null);return}f.async('base64').then(function(b){done('data:image/jpeg;base64,'+b)},function(){done(null)})}
@@ -1861,6 +1862,12 @@ function render(){all(function(a){LST.innerHTML='';if(!a.length){LST.innerHTML='
 window.__p2put=put;window.__p2render=render;
 document.getElementById('bPrj').onclick=function(){M.hidden=false;msg('');render()};
 document.getElementById('pClose').onclick=function(){M.hidden=true};
+document.getElementById('pNew').onclick=function(){document.getElementById('pNewBox').hidden=false;this.hidden=true};
+document.getElementById('pNewNo').onclick=function(){document.getElementById('pNewBox').hidden=true;document.getElementById('pNew').hidden=false};
+document.getElementById('pNewGo').onclick=function(){var bt=this;bt.disabled=true;
+ function wipe(){idb(function(db){if(!db){msg('저장소를 쓸 수 없습니다');bt.disabled=false;return}try{var names=['memo','trk','ovl','orig','shp'].filter(function(n){return db.objectStoreNames.contains(n)}),tx=db.transaction(names,'readwrite');names.forEach(function(n){tx.objectStore(n).clear()});
+  tx.oncomplete=function(){s('draw',[]);s('measSv',[]);msg('새 프로젝트를 시작합니다…');setTimeout(function(){location.reload()},600)};tx.onerror=function(){msg('지우지 못했습니다');bt.disabled=false}}catch(e){msg('지우지 못했습니다');bt.disabled=false}})}
+ if(document.getElementById('pNewBk').checked){var d=new Date(),nm='새 프로젝트 전 '+(d.getMonth()+1)+'-'+d.getDate()+' '+('0'+d.getHours()).slice(-2)+('0'+d.getMinutes()).slice(-2);msg('현재 내용을 저장하는 중…');exp(snap(nm),function(){setTimeout(wipe,800)})}else wipe()};
 document.getElementById('pSave').onclick=function(){var n=document.getElementById('pName').value.trim();if(!n){msg('이름을 입력하세요');return}
  all(function(a){if(a.some(function(p){return p.name===n})&&!confirm_ok(n)){return}put(snap(n),function(){document.getElementById('pName').value='';msg('"'+n+'" 저장됨');render()})})};
 var armed='';function confirm_ok(n){if(armed===n){armed='';return true}armed=n;msg('같은 이름이 있습니다. 덮어쓰려면 저장을 한 번 더 누르세요');return false}
@@ -2746,7 +2753,8 @@ window.__fld={parseLL:parseLL};
  window.__diag=diag})();
 /* v17: 업데이트 내용 · 저장 공간 */
 (function(){var $=function(i){return document.getElementById(i)};
- var LOGV='2026-11-06l',CH=[
+ var LOGV='2026-11-06m',CH=[
+  ['2026.11.06 (새 프로젝트)',['프로젝트 창에 “＋ 새 프로젝트 시작”: 메모·사진·경로·도면·SHP·그리기·저장한 측정을 비우고 새로 시작 (지우기 전 zip 저장이 기본으로 켜져 있음)']],
   ['2026.11.06 (사진 원본·올리기)',['메모 사진의 원본을 함께 보관하고(메모 창 아래 “원본 사진도 보관” 선택), 현장 기록·프로젝트 zip을 내보낼 때 원본 파일로 들어감 (바로주고받기는 줄인 사진만 전달)','메모 막대의 “사진 올리기”: 사진을 고르면 사진에 들어 있는 촬영 위치·방향으로 메모를 만들고 지도에 방향 부채꼴을 표시. 위치 정보가 없는 사진은 지도 가운데에 둠','경로 사진 올리기에서도 사진에 위치가 있으면 그 위치를 우선 사용']],
   ['2026.11.06 (주고받기)',['“다른 기기와 바로 주고받기”로 메모·사진·경로·내 도면·저장한 측정·즐겨찾기·최근 본 곳까지 한 번에 전달 (받으면 자동 복원 후 새로고침)']],
   ['2026.11.06 (프로젝트 내보내기)',['프로젝트 “파일로 저장”이 zip으로 바뀌어 메모·경로·메모 사진·내 도면 이미지가 함께 담김 (사진/·도면/ 폴더에 jpg로도 들어 있음). “파일에서 가져오기”는 zip·기존 json 모두 가능, 가져오면 메모·도면도 복원']],
