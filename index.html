@@ -13907,7 +13907,7 @@ var LS=window.localStorage;function g(k,d){try{var v=LS.getItem(k);return v==nul
  if(o.m!=null){var mm={};o.m.split(',').forEach(function(i){if(i)mm[i]=true});s('muniOn',mm)}
  history.replaceState(null,'',location.pathname+location.search)}catch(e){}})();
 var KEY=g('key',''),DOM=g('dom',location.hostname||'localhost');
-var BUILD="2611091748";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
+var BUILD="2611091753";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
 applyTheme(THEME);
 var BASE=g('base','Base');if(['Base','Satellite','SatLabel','white','none'].indexOf(BASE)<0)BASE='Base';
 // 레이어: id, 이름, 표시 WMS 이름, 조회용 data 코드
@@ -14246,7 +14246,8 @@ function render(S,pnu,partial){
   (window.__dirHTML&&S.ll?window.__dirHTML():'')+sec('용도지역',tags(S.zones))+capSec(S)+distCard(S)+sec('개발제한',tags(S.gbs,1))+sec('용도지구',tags(S.spec.filter(function(x){return !/지구단위/.test(x)})))+sec('시설',tags(dedupFac(S.fac)))+sec('토지이용',tags(S.use))+(S.bld&&S.bld.length?sec('건축물',S.bld.map(function(x){var t=bRows(x.b,S.area);return (t||'<div class="sub">표시할 항목 없음</div>')+(x.r?'<details style="margin-top:4px;font-size:11px;opacity:.75"><summary>받은 항목 원본</summary>'+x.r.replace(/ · /g,'<br>')+'</details>':'')}).join('')):'')+ratioSec(S)+shpRows(S.shp)+
   (S.ll?sec('바로가기',extLinks(S.ll[0],S.ll[1],S.addr,pnu)):'')+(partial?'<p class="sub sk-t">세부 정보를 불러오는 중…</p>':'<p class="sub">PNU '+esc(pnu)+' · 켜 둔 레이어만 조회됩니다.</p>');
  document.getElementById('infoBody').innerHTML=h;try{foldSecs()}catch(e){}}
-map.on('click',function(e){if(window.__rad&&window.__rad(e))return;if(window.__meas&&window.__meas(e))return;if(window.__sel&&window.__sel(e))return;if(window.__drw&&window.__drw(e))return;if(window.__mem&&window.__mem(e))return;pick(e.latlng.lat,e.latlng.lng)});
+var _ck=0,_ckN=0,_ckT=0;map.on('click',function(e){var oe=e.originalEvent,tch=Date.now()-(window.__lastTouch||0)<700||(oe&&oe.pointerType==='touch');if(tch){if(_ck){clearTimeout(_ck);_ck=0;return}var n0=window.__dtN||0;_ck=setTimeout(function(){_ck=0;if((window.__dtN||0)!==n0)return;clickMap(e)},300);return}clickMap(e)});
+function clickMap(e){if(window.__rad&&window.__rad(e))return;if(window.__meas&&window.__meas(e))return;if(window.__sel&&window.__sel(e))return;if(window.__drw&&window.__drw(e))return;if(window.__mem&&window.__mem(e))return;pick(e.latlng.lat,e.latlng.lng)}
 // UI
 function sortable(items,handleSel,onDrop){items.forEach(function(it,from){var hd=it.querySelector(handleSel);if(!hd)return;
  hd.addEventListener('pointerdown',function(e){if(e.button>0)return;e.preventDefault();try{hd.setPointerCapture(e.pointerId)}catch(x){}
@@ -14890,8 +14891,8 @@ if(!adm()&&!lg('accOk')){var pre=function(){if(!gate&&document.body)showGate()};
  try{if(!localStorage.getItem('railHint')){localStorage.setItem('railHint','1');setTimeout(function(){var a=tools.filter(function(b){return b.id!=='bGps'&&b.id!=='bRef'&&b.offsetParent}).map(function(b){return show(b)});setTimeout(function(){a.forEach(hide)},3800)},1800)}}catch(e){}
  /* 두 번 터치 → 두 번째에서 손가락을 누른 채 위로 = 확대, 아래로 = 축소 */
  var c=map.getContainer(),lastT=0,lx=0,ly=0,g=null,STEP=70;
- c.addEventListener('touchstart',function(e){if(e.touches.length!==1){g=null;return}if(e.target.closest&&e.target.closest('.leaflet-control,.leaflet-marker-icon,button,a,input,select'))return;var t=e.touches[0],now=Date.now();
-  if(now-lastT<320&&Math.abs(t.clientX-lx)<32&&Math.abs(t.clientY-ly)<32){g={y:t.clientY,z:map.getZoom(),moved:false,pt:map.mouseEventToContainerPoint(t)};try{map.doubleClickZoom.disable();map.dragging.disable()}catch(x){}}
+ c.addEventListener('touchstart',function(e){window.__lastTouch=Date.now();if(e.touches.length!==1){g=null;return}if(e.target.closest&&e.target.closest('.leaflet-control,.leaflet-marker-icon,button,a,input,select'))return;var t=e.touches[0],now=Date.now();
+  if(now-lastT<320&&Math.abs(t.clientX-lx)<32&&Math.abs(t.clientY-ly)<32){window.__dtN=(window.__dtN||0)+1;g={y:t.clientY,z:map.getZoom(),moved:false,pt:map.mouseEventToContainerPoint(t)};try{map.doubleClickZoom.disable();map.dragging.disable()}catch(x){}}
   else g=null;lastT=now;lx=t.clientX;ly=t.clientY},{passive:true,capture:true});
  c.addEventListener('touchmove',function(e){if(!g||e.touches.length!==1){return}var t=e.touches[0],dy=g.y-t.clientY;if(!g.moved&&Math.abs(dy)<10)return;g.moved=true;if(e.cancelable)e.preventDefault();e.stopPropagation();
   var z=Math.max(map.getMinZoom(),Math.min(map.getMaxZoom(),Math.round(g.z+dy/STEP)));if(z!==map.getZoom())map.setZoomAround(g.pt,z,{animate:false})},{passive:false,capture:true});
@@ -15663,7 +15664,8 @@ window.__fld={parseLL:parseLL};
  window.__diag=diag})();
 /* v17: 업데이트 내용 · 저장 공간 */
 (function(){var $=function(i){return document.getElementById(i)};
- var LOGV='2026-11-09j',CH=[
+ var LOGV='2026-11-09k',CH=[
+  ['2026.11.09 (두 번 터치 확대 수정)',['한 번 터치한 뒤 0.3초 안에 다시 터치하면 필지 조회를 하지 않고 확대·축소로 처리']],
   ['2026.11.09 (화면 정리)',['왼쪽 아래 버튼 크기·모양·간격 통일','오른쪽 메뉴: 처음 한 번 이름 표시, 이후엔 길게 누르면 이름 표시','알림(불러오는 중·안내)을 같은 모양으로 위쪽 한 곳에 표시','축척과 화면 가로를 두 줄로 정리','두 번 터치한 뒤 두 번째에서 누른 채 위로 올리면 확대, 내리면 축소']],
   ['2026.11.09 (문의 문구)',['승인이 되지 않으면 관리자에게 문의하도록 문구 수정']],
   ['2026.11.09 (승인 대기 안내)',['승인 요청 화면과 대기 화면에 “관리자(이재욱)에게 문의” 안내 추가']],
