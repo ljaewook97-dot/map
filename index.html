@@ -13888,7 +13888,7 @@ var LS=window.localStorage;function g(k,d){try{var v=LS.getItem(k);return v==nul
  if(o.m!=null){var mm={};o.m.split(',').forEach(function(i){if(i)mm[i]=true});s('muniOn',mm)}
  history.replaceState(null,'',location.pathname+location.search)}catch(e){}})();
 var KEY=g('key',''),DOM=g('dom',location.hostname||'localhost');
-var BUILD="2611091730";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
+var BUILD="2611091733";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
 applyTheme(THEME);
 var BASE=g('base','Base');if(['Base','Satellite','SatLabel','white','none'].indexOf(BASE)<0)BASE='Base';
 // 레이어: id, 이름, 표시 WMS 이름, 조회용 data 코드
@@ -14053,6 +14053,11 @@ function bkey(p,re,ex){for(var k in p){if(re.test(k)&&!(ex&&ex.test(k))&&p[k]!=n
 function bInfo(p){p=p||{};var o={nm:bkey(p,/bld_?nm|bldnm|buld_?nm|건물명/i),us:bkey(p,/main_?prpos|main_?purps|purps_?cd_?nm|purps_?nm|bdtyp|use_?nm|usage|용도/i,/etc|cd$|code$/i),up:bkey(p,/(^|_)grnd_?flr|grndflr|ground_?flr|gro_?flo|flr_?co|^flr$|ground_?floor|지상/i,/ugrnd|ungrnd|under|und_?flo|지하/i),dn:bkey(p,/ugrnd_?flr|ungrnd_?flr|under_?flr|und_?flo|undgrnd|지하/i),h:bkey(p,/(^|_)(hgt|height|bldg_?hg)|^h$|높이/i),ap:bkey(p,/useapr|apr_?day|approv|confm_?de|use_?confm|사용승인/i),vl:bkey(p,/vl_?rat|vlrat|floor_?area_?rat|vlr|용적/i),ar:bkey(p,/^archarea$|arch_?area|bld_?ar|건축면적/i),ta:bkey(p,/^totalarea$|tot_?area|totar|연면적/i,/vlr|rat/i),pa:bkey(p,/^platarea$|plat_?area|대지면적/i),bc:bkey(p,/bc_?rat|bcrat|bld_?cov|cover_?rat|bcr|건폐/i)};return o}
 function bpc(v){var n=parseFloat(v);return isFinite(n)&&n>0?(Math.round(n*100)/100).toLocaleString('ko-KR')+'%':''}
 function bTxt(b,land){var a=[];var est=0;if(!(+b.vl>0)&&+b.ta>0){var pa=+b.pa>0?+b.pa:+land;if(pa>0){b=Object.assign({},b,{vl:(b.ta/pa*100).toFixed(2)});est=1}}if(!(+b.bc>0)&&+b.ar>0){var pb=+b.pa>0?+b.pa:+land;if(pb>0){b=Object.assign({},b,{bc:(b.ar/pb*100).toFixed(2)});est=1}}if(b.us)a.push('<b>'+esc(b.us)+'</b>');if(b.up&&+b.up>0)a.push('최고 '+esc(b.up)+'층');var v=+b.vl>0?bpc(b.vl):'';if(v)a.push('용적률 '+v+(est?'*':''));var c=+b.bc>0?bpc(b.bc):'';if(c)a.push('건폐율 '+c+(est?'*':''));if(b.ap){var d=String(b.ap).replace(/\D/g,'');a.push('사용승인 '+(d.length>=8?d.slice(0,4)+'.'+d.slice(4,6)+'.'+d.slice(6,8):esc(b.ap)))}return a.join(' · ')}
+function bRows(b,land){var est=0,vl=+b.vl,bc=+b.bc,pa=+b.pa>0?+b.pa:+land;if(!(vl>0)&&+b.ta>0&&pa>0){vl=b.ta/pa*100;est=1}if(!(bc>0)&&+b.ar>0&&pa>0){bc=b.ar/pa*100;est=1}
+ var f=function(n){return Math.round(n*100)/100},h='',ap=b.ap?String(b.ap).replace(/\D/g,''):'';
+ var fl=(+b.up>0?'지상 '+esc(b.up)+'층':'')+(+b.dn>0?(+b.up>0?' · ':'')+'지하 '+esc(b.dn)+'층':'');
+ h+=row('용도',b.us?esc(b.us):'')+row('층수',fl)+row('용적률',vl>0?f(vl).toLocaleString('ko-KR')+'%'+(est&&!(+b.vl>0)?' *':''):'')+row('건폐율',bc>0?f(bc).toLocaleString('ko-KR')+'%'+(est&&!(+b.bc>0)?' *':''):'')+row('사용승인일',ap.length>=8?ap.slice(0,4)+'.'+ap.slice(4,6)+'.'+ap.slice(6,8):(b.ap?esc(b.ap):''));
+ if(h&&est)h+='<div class="sub" style="font-size:11px;margin:2px 0 0">* 면적으로 계산한 추정값 (공식 값은 건축물대장 확인)</div>';return h}
 function bRaw(p){var a=[];for(var k in (p||{})){var v=p[k];if(v==null||v===''||typeof v==='object')continue;a.push(esc(k)+': '+esc(v));if(a.length>=40)break}return a.join(' · ')}
 function bGet(cb){var cs=bldCodes(),i=0,emp=null,known=!!g('bldOk','')||!!g('bldLy','').trim();(function nx(){if(i>=cs.length){cb(emp,'');return}var c=cs[i++];getFeats(c,1000,function(fs){if(fs===null){nx();return}if(!fs.length&&!known){emp=fs;nx();return}if(!g('bldLy','').trim()&&fs.length)s('bldOk',c);cb(fs,c)})})()}
 function bFlat(d,o,dep){o=o||{};dep=dep||0;if(!d||dep>6||typeof d!=='object')return o;if(Array.isArray(d)){for(var i=0;i<d.length&&i<3;i++)bFlat(d[i],o,dep+1);return o}for(var k in d){var v=d[k];if(v&&typeof v==='object')bFlat(v,o,dep+1);else if(v!=null&&String(v).trim()!==''&&!(k in o))o[k]=v}return o}
@@ -14136,10 +14141,10 @@ function row(k,v){return v?'<div class="row"><b>'+k+'</b><span>'+v+'</span></div
 function dedupFac(a){var out=[];a.forEach(function(x){var b=x.replace(/\(.*$/,'');var i=out.findIndex(function(y){return y.replace(/\(.*$/,'')===b});if(i<0)out.push(x);else if(x.indexOf('(')>=0&&out[i].indexOf('(')<0)out[i]=x});return out}
 function tags(a,gb){return a.length?a.map(function(x){return '<span class="tag'+(gb?' gb':'')+'">'+esc(x)+'</span>'}).join(''):''}
 var FDEF=['용도지구','시설','토지이용','이 필지 안 면적 비율'];
-function foldSecs(){var cl=g('secClosed',null),def=!Array.isArray(cl);if(def)cl=FDEF.slice();[].forEach.call(document.querySelectorAll('#infoBody .sec'),function(el){var h=el.children[0];if(!h||h.tagName!=='SMALL'||el.children.length<2||el.classList.contains('fdc'))return;var k=h.textContent.split('·')[0].replace(/\s+/g,' ').trim();el.classList.add('fdc');if(FDEF.indexOf(k)>=0&&k!=='이 필지 안 면적 비율')el.classList.add('mut');
+function foldSecs(){var op=g('secOpen',[]);if(!Array.isArray(op))op=[];[].forEach.call(document.querySelectorAll('#infoBody .sec'),function(el){var h=el.children[0];if(!h||h.tagName!=='SMALL'||el.children.length<2||el.classList.contains('fdc'))return;var k=h.textContent.split('·')[0].replace(/\s+/g,' ').trim();el.classList.add('fdc');if(FDEF.indexOf(k)>=0&&k!=='이 필지 안 면적 비율')el.classList.add('mut');
   var n=el.querySelectorAll('.tag').length;if(n>1){var e=document.createElement('em');e.className='cnt';e.textContent=n;h.appendChild(e)}
-  if(cl.indexOf(k)>=0)el.classList.add('closed');
-  h.onclick=function(){var c=el.classList.toggle('closed'),a=Array.isArray(g('secClosed',null))?g('secClosed',[]):FDEF.slice(),i=a.indexOf(k);if(c&&i<0)a.push(k);if(!c&&i>=0)a.splice(i,1);s('secClosed',a)}})}
+  if(op.indexOf(k)<0)el.classList.add('closed');
+  h.onclick=function(){var c=el.classList.toggle('closed'),a=g('secOpen',[]);if(!Array.isArray(a))a=[];var i=a.indexOf(k);if(!c&&i<0)a.push(k);if(c&&i>=0)a.splice(i,1);s('secOpen',a)}})}
 function openInfo(h){document.getElementById('infoBody').innerHTML=h;try{foldSecs()}catch(e){}document.getElementById('info').hidden=false;document.getElementById('layers').hidden=true;document.getElementById('legend').hidden=true}
 /* 필지 안 면적 비율 (표본 점 방식, 약 1% 오차) */
 function polysOf(g){var o=[];if(!g)return o;if(g.type==='Polygon')o.push(g.coordinates);else if(g.type==='MultiPolygon')g.coordinates.forEach(function(p){o.push(p)});return o}
@@ -14219,7 +14224,7 @@ function render(S,pnu,partial){
   '<div class="stats"><div class="st"><small>지목 · 면적</small><b>'+esc(S.jimok||'—')+(S.area?'<em>'+Number(S.area).toLocaleString('ko-KR')+'㎡</em>':'')+'</b></div>'+
   '<div class="st"><small>소유</small><b>'+(S.own?'<span class="tag own-'+ow+'">'+ow+'</span>':'—')+(S.own&&S.own!==ow?'<em>'+esc(S.own)+'</em>':'')+'</b></div>'+
   '<div class="st wide"><small>공시지가'+(S.gy?' · '+esc(S.gy)+'년':'')+'</small><b>'+(S.jiga?won(S.jiga):'—')+'</b>'+(S.jiga?'<div class="sub" style="margin:2px 0 0">평당 약 '+man(S.jiga*3.3058)+(S.area?' · 총액(추정) 약 '+man(S.jiga*S.area):'')+'</div>':'')+'</div></div>'+
-  (window.__dirHTML&&S.ll?window.__dirHTML():'')+sec('용도지역',tags(S.zones))+capSec(S)+distCard(S)+sec('개발제한',tags(S.gbs,1))+sec('용도지구',tags(S.spec.filter(function(x){return !/지구단위/.test(x)})))+sec('시설',tags(dedupFac(S.fac)))+sec('토지이용',tags(S.use))+(S.bld&&S.bld.length?sec('건축물',S.bld.map(function(x){var t=bTxt(x.b,S.area);return '<div>'+(t||'<span style="opacity:.7">표시할 항목 없음</span>')+'</div>'+(x.r?'<details style="margin-top:4px;font-size:11px;opacity:.75"><summary>받은 항목 원본</summary>'+x.r.replace(/ · /g,'<br>')+'</details>':'')}).join('')):'')+ratioSec(S)+shpRows(S.shp)+
+  (window.__dirHTML&&S.ll?window.__dirHTML():'')+sec('용도지역',tags(S.zones))+capSec(S)+distCard(S)+sec('개발제한',tags(S.gbs,1))+sec('용도지구',tags(S.spec.filter(function(x){return !/지구단위/.test(x)})))+sec('시설',tags(dedupFac(S.fac)))+sec('토지이용',tags(S.use))+(S.bld&&S.bld.length?sec('건축물',S.bld.map(function(x){var t=bRows(x.b,S.area);return (t||'<div class="sub">표시할 항목 없음</div>')+(x.r?'<details style="margin-top:4px;font-size:11px;opacity:.75"><summary>받은 항목 원본</summary>'+x.r.replace(/ · /g,'<br>')+'</details>':'')}).join('')):'')+ratioSec(S)+shpRows(S.shp)+
   (S.ll?sec('바로가기',extLinks(S.ll[0],S.ll[1],S.addr,pnu)):'')+(partial?'<p class="sub sk-t">세부 정보를 불러오는 중…</p>':'<p class="sub">PNU '+esc(pnu)+' · 켜 둔 레이어만 조회됩니다.</p>');
  document.getElementById('infoBody').innerHTML=h;try{foldSecs()}catch(e){}}
 map.on('click',function(e){if(window.__rad&&window.__rad(e))return;if(window.__meas&&window.__meas(e))return;if(window.__sel&&window.__sel(e))return;if(window.__drw&&window.__drw(e))return;if(window.__mem&&window.__mem(e))return;pick(e.latlng.lat,e.latlng.lng)});
@@ -15615,7 +15620,8 @@ window.__fld={parseLL:parseLL};
  window.__diag=diag})();
 /* v17: 업데이트 내용 · 저장 공간 */
 (function(){var $=function(i){return document.getElementById(i)};
- var LOGV='2026-11-09e',CH=[
+ var LOGV='2026-11-09f',CH=[
+  ['2026.11.09 (정보창 정리)',['건축물 정보를 용도·층수·용적률·건폐율·사용승인일 표로 정리','정보창의 모든 항목이 기본으로 접힌 상태로 열림(펼친 항목은 기억)']],
   ['2026.11.09 (건축물 용도·비율 수정)',['용도(제1종근린생활시설 등)가 빠지던 문제 수정, 용적률·건폐율이 0으로 올 때는 연면적·건축면적÷대지면적으로 계산해 * 표시(추정)']],
   ['2026.11.09 (건축물 항목 보강)',['건축물: 여러 건물 레이어와 건축물 속성 조회를 함께 받아 합쳐서 표시(용도·층수·용적률·건폐율·사용승인일)','건축물 칸의 “받은 항목 원본”을 열면 서버가 준 항목 이름이 그대로 보임 → 비어 있는 항목 원인 확인용']],
   ['2026.11.09 (건축물 정보 정리)',['건축물 정보: 용도(시설)·최고층수·용적률·건폐율·사용승인일만 표시, 지도 위 층수 글자 제거']],
