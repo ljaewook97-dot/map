@@ -13888,7 +13888,7 @@ var LS=window.localStorage;function g(k,d){try{var v=LS.getItem(k);return v==nul
  if(o.m!=null){var mm={};o.m.split(',').forEach(function(i){if(i)mm[i]=true});s('muniOn',mm)}
  history.replaceState(null,'',location.pathname+location.search)}catch(e){}})();
 var KEY=g('key',''),DOM=g('dom',location.hostname||'localhost');
-var BUILD="2611091733";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
+var BUILD="2611091740";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
 applyTheme(THEME);
 var BASE=g('base','Base');if(['Base','Satellite','SatLabel','white','none'].indexOf(BASE)<0)BASE='Base';
 // 레이어: id, 이름, 표시 WMS 이름, 조회용 data 코드
@@ -14729,7 +14729,7 @@ window.__cadExport=open;window.__cadParts=parts;
 
 /* 접속 승인: 소속·이름을 적어 요청 → 관리자가 앱에서 승인해야 사용 가능. 서버 주소가 없으면 꺼져 있음. */
 (function(){
-var URL0='';try{URL0=localStorage.getItem('accUrl')||''}catch(e){}if(!URL0)URL0='';
+var URL0='';try{URL0=localStorage.getItem('accUrl')||''}catch(e){}if(!URL0)URL0='https://script.google.com/macros/s/AKfycbz0L4xw4vzUfsn_TgFKn1h41ANo-Iyy6owntaMn6CWlG_FGMw8nzdK82XwF-_tjNC2H/exec';
 if(!/^https:\/\/script\.google\.com\/macros\/s\/[\w-]+\/exec$/.test(URL0))return;
 var $=function(i){return document.getElementById(i)};
 function lg(k){try{return localStorage.getItem(k)}catch(e){return null}}function ls(k,v){try{if(v==null)localStorage.removeItem(k);else localStorage.setItem(k,v)}catch(e){}}
@@ -15620,7 +15620,8 @@ window.__fld={parseLL:parseLL};
  window.__diag=diag})();
 /* v17: 업데이트 내용 · 저장 공간 */
 (function(){var $=function(i){return document.getElementById(i)};
- var LOGV='2026-11-09f',CH=[
+ var LOGV='2026-11-09g',CH=[
+  ['2026.11.09 (접속 승인 켜짐)',['승인된 기기만 사용 가능: 처음 쓰는 기기는 소속·이름 입력 후 관리자 승인 필요']],
   ['2026.11.09 (정보창 정리)',['건축물 정보를 용도·층수·용적률·건폐율·사용승인일 표로 정리','정보창의 모든 항목이 기본으로 접힌 상태로 열림(펼친 항목은 기억)']],
   ['2026.11.09 (건축물 용도·비율 수정)',['용도(제1종근린생활시설 등)가 빠지던 문제 수정, 용적률·건폐율이 0으로 올 때는 연면적·건축면적÷대지면적으로 계산해 * 표시(추정)']],
   ['2026.11.09 (건축물 항목 보강)',['건축물: 여러 건물 레이어와 건축물 속성 조회를 함께 받아 합쳐서 표시(용도·층수·용적률·건폐율·사용승인일)','건축물 칸의 “받은 항목 원본”을 열면 서버가 준 항목 이름이 그대로 보임 → 비어 있는 항목 원인 확인용']],
