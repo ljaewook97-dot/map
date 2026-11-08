@@ -13888,7 +13888,7 @@ var LS=window.localStorage;function g(k,d){try{var v=LS.getItem(k);return v==nul
  if(o.m!=null){var mm={};o.m.split(',').forEach(function(i){if(i)mm[i]=true});s('muniOn',mm)}
  history.replaceState(null,'',location.pathname+location.search)}catch(e){}})();
 var KEY=g('key',''),DOM=g('dom',location.hostname||'localhost');
-var BUILD="2611091657";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
+var BUILD="2611091709";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
 applyTheme(THEME);
 var BASE=g('base','Base');if(['Base','Satellite','SatLabel','white','none'].indexOf(BASE)<0)BASE='Base';
 // 레이어: id, 이름, 표시 WMS 이름, 조회용 data 코드
@@ -13987,7 +13987,7 @@ function axisAng(r){var best=0,ba=1e18,al=0;for(var a=0;a<180;a+=5){var t=a*Math
 function obbHit(A,B){function ax(P){var out=[];for(var i=0;i<4;i++){var j=(i+1)%4,dx=P[j][0]-P[i][0],dy=P[j][1]-P[i][1];out.push([-dy,dx])}return out}
  var axes=ax(A).concat(ax(B));for(var k=0;k<axes.length;k++){var u=axes[k],a0=1e18,a1=-1e18,b0=1e18,b1=-1e18;A.slice(0,4).forEach(function(p){var d=p[0]*u[0]+p[1]*u[1];if(d<a0)a0=d;if(d>a1)a1=d});B.slice(0,4).forEach(function(p){var d=p[0]*u[0]+p[1]*u[1];if(d<b0)b0=d;if(d>b1)b1=d});if(a1<b0||b1<a0)return false}return true}
 function txtW(t){var w=4;for(var i=0;i<t.length;i++){var ch=t[i];w+=/[0-9]/.test(ch)?6.8:ch==='-'?4.5:11.5}return w}
-var STY=g('sty',{}),DEF={bld:{color:'#6d4c41',weight:1,opacity:.95,fillOpacity:.35,lab:1},dist:{color:'#e60000',weight:2.5,opacity:1,dash:'16 4 3 4 3 4',fillOpacity:.12},cad:{color:'#ffb020',weight:1,opacity:.9,dash:'',fs:11,fc:'#ffffff'},own:{kuk:'#0b57ff',gong:'#a020c8',fillOpacity:.2,weight:1.6},fac:{line:'',weight:1.5,opacity:.9,fillOpacity:.35},wms:{opacity:.55}};
+var STY=g('sty',{}),DEF={bld:{color:'#6d4c41',weight:1,opacity:.95,fillOpacity:.35},dist:{color:'#e60000',weight:2.5,opacity:1,dash:'16 4 3 4 3 4',fillOpacity:.12},cad:{color:'#ffb020',weight:1,opacity:.9,dash:'',fs:11,fc:'#ffffff'},own:{kuk:'#0b57ff',gong:'#a020c8',fillOpacity:.2,weight:1.6},fac:{line:'',weight:1.5,opacity:.9,fillOpacity:.35},wms:{opacity:.55}};
 function isDk(){return THEME==='dark'||(THEME==='auto'&&(window.__brTheme?window.__brTheme==='dark':(window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches)))}
 function autoCad(){return (BASE==='Satellite'||BASE==='SatLabel'||(BASE==='none'&&isDk()))?'#ffe14d':'#c2185b'}
 function S_(id){var d=DEF[id]||DEF.wms,o={},k;for(k in d)o[k]=d[k];var u=STY[id]||{};for(k in u)o[k]=u[k];if(id==='cad'&&!u.color)o.color=autoCad();return o}
@@ -14050,15 +14050,16 @@ function doDist(seq){var z=map.getZoom();if(!lay('dist').on||!KEY||z<13){lst('di
 var BLDC=['LT_C_BLDGINFO','LT_C_SPBD'];
 function bldCodes(){var u=g('bldLy','').trim(),ok=g('bldOk','');if(u)return [u];return ok?[ok].concat(BLDC.filter(function(x){return x!==ok})):BLDC.slice()}
 function bkey(p,re,ex){for(var k in p){if(re.test(k)&&!(ex&&ex.test(k))&&p[k]!=null&&String(p[k]).trim()!=='')return p[k]}return ''}
-function bInfo(p){p=p||{};var o={nm:bkey(p,/bld_?nm|bldnm|buld_?nm|건물명/i),us:bkey(p,/main_?purps|purps_?cd_?nm|use_?nm|usage|용도/i,/etc/i),up:bkey(p,/(^|_)grnd_?flr|grndflr|ground_?flr|flr_?co|^flr$|지상/i,/ugrnd|ungrnd|under|지하/i),dn:bkey(p,/ugrnd_?flr|ungrnd_?flr|under_?flr|지하/i),h:bkey(p,/(^|_)(hgt|height|bldg_?hg)|^h$|높이/i),ap:bkey(p,/useapr|apr_?day|approv|사용승인/i),ar:bkey(p,/archarea|arch_?ar|bldg_?ar|건축면적/i),ta:bkey(p,/totalarea|tot_?ar|totarea|연면적/i),st:bkey(p,/strct|structure|구조/i)};return o}
-function bTxt(b){var a=[];if(b.nm)a.push('<b>'+esc(b.nm)+'</b>');if(b.us)a.push(esc(b.us));var f='';if(b.up)f='지상 '+esc(b.up)+'층';if(b.dn&&+b.dn>0)f+=(f?' / ':'')+'지하 '+esc(b.dn)+'층';if(f)a.push(f);if(b.st)a.push(esc(b.st));if(b.h&&+b.h>0)a.push('높이 '+(+b.h).toFixed(1)+'m');if(b.ar&&+b.ar>0)a.push('건축면적 '+(+b.ar).toLocaleString('ko-KR',{maximumFractionDigits:1})+'㎡');if(b.ta&&+b.ta>0)a.push('연면적 '+(+b.ta).toLocaleString('ko-KR',{maximumFractionDigits:1})+'㎡');if(b.ap){var d=String(b.ap).replace(/\D/g,'');a.push('사용승인 '+(d.length>=8?d.slice(0,4)+'.'+d.slice(4,6)+'.'+d.slice(6,8):esc(b.ap)))}return a.join(' · ')}
+function bInfo(p){p=p||{};var o={nm:bkey(p,/bld_?nm|bldnm|buld_?nm|건물명/i),us:bkey(p,/main_?purps|purps_?cd_?nm|use_?nm|usage|용도/i,/etc/i),up:bkey(p,/(^|_)grnd_?flr|grndflr|ground_?flr|flr_?co|^flr$|지상/i,/ugrnd|ungrnd|under|지하/i),dn:bkey(p,/ugrnd_?flr|ungrnd_?flr|under_?flr|지하/i),h:bkey(p,/(^|_)(hgt|height|bldg_?hg)|^h$|높이/i),ap:bkey(p,/useapr|apr_?day|approv|사용승인/i),vl:bkey(p,/vl_?rat|vlrat|floor_?area_?rat|용적/i),bc:bkey(p,/bc_?rat|bcrat|bld_?cov|cover_?rat|건폐/i)};return o}
+function pc(v){var n=parseFloat(v);return isFinite(n)&&n>0?(Math.round(n*100)/100).toLocaleString('ko-KR')+'%':''}
+function bTxt(b){var a=[];if(b.us)a.push('<b>'+esc(b.us)+'</b>');if(b.up&&+b.up>0)a.push('최고 '+esc(b.up)+'층');var v=pc(b.vl);if(v)a.push('용적률 '+v);var c=pc(b.bc);if(c)a.push('건폐율 '+c);if(b.ap){var d=String(b.ap).replace(/\D/g,'');a.push('사용승인 '+(d.length>=8?d.slice(0,4)+'.'+d.slice(4,6)+'.'+d.slice(6,8):esc(b.ap)))}return a.join(' · ')}
 function bRaw(p){var a=[];for(var k in (p||{})){var v=p[k];if(v==null||v===''||typeof v==='object')continue;a.push(esc(k)+': '+esc(v));if(a.length>=10)break}return a.join(' · ')}
 function bGet(cb){var cs=bldCodes(),i=0,emp=null,known=!!g('bldOk','')||!!g('bldLy','').trim();(function nx(){if(i>=cs.length){cb(emp,'');return}var c=cs[i++];getFeats(c,1000,function(fs){if(fs===null){nx();return}if(!fs.length&&!known){emp=fs;nx();return}if(!g('bldLy','').trim()&&fs.length)s('bldOk',c);cb(fs,c)})})()}
 function bPoint(lng,lat,cb){var cs=bldCodes(),i=0,known=!!g('bldOk','')||!!g('bldLy','').trim();(function nx(){if(i>=cs.length){cb([]);return}var c=cs[i++];dataQ(c,lng,lat,false,function(fs){if(fs===null||(!known&&fs&&!fs.length)){nx();return}cb((fs||[]).map(function(x){var b=bInfo(x.properties);return bTxt(b)||bRaw(x.properties)}).filter(Boolean))})})()}
 function doBld(seq){var z=map.getZoom();if(!lay('bld').on||!KEY||z<17){lst('bld',lay('bld').on&&KEY?'확대 필요 (17↑)':'');swapG('bld',L.layerGroup());return}
  lst('bld','조회 중…');bGet(function(fs,code){if(seq!==vecSeq)return;if(fs===null){lst('bld','조회 실패 · 레이어 ID 확인');return}lst('bld',fs.length?'':'건축물 없음');var o=S_('bld'),ng=L.layerGroup();
-  visF(fs).forEach(function(x){var b=bInfo(x.properties),lw=null;try{L.geoJSON(x.geometry,{interactive:false,renderer:RN.bld,style:{color:o.color,weight:o.weight,opacity:o.opacity,fill:true,fillColor:o.color,fillOpacity:o.fillOpacity,lineJoin:'round'}}).addTo(ng)}catch(e){}
-   if(o.lab&&z>=18){var tx=b.up?b.up+'F':'';if(tx){try{var c=gcen(x.geometry);L.marker([c[0],c[1]],{interactive:false,keyboard:false,icon:L.divIcon({className:'bldLb',html:tx,iconSize:[0,0]})}).addTo(ng)}catch(e){}}}});swapG('bld',ng)})}
+  visF(fs).forEach(function(x){try{L.geoJSON(x.geometry,{interactive:false,renderer:RN.bld,style:{color:o.color,weight:o.weight,opacity:o.opacity,fill:true,fillColor:o.color,fillOpacity:o.fillOpacity,lineJoin:'round'}}).addTo(ng)}catch(e){}
+  });swapG('bld',ng)})}
 function reBld(){var c=S_('bld');GG.bld.eachLayer(function(l){if(l.setStyle)l.setStyle({color:c.color,fillColor:c.color,fillOpacity:c.fillOpacity,weight:c.weight,opacity:c.opacity})})}
 function reDist(){var c=S_('dist');GG.dist.eachLayer(function(l){l.setStyle({color:c.color,fillColor:c.color,fillOpacity:c.fillOpacity,weight:c.weight,opacity:c.opacity,dashArray:c.dash||null})})}
 function doVec(){var seq=++vecSeq;status('');rootVars();if(!KEY)return;doCad(seq);doFac(seq);doOwn(seq);doDist(seq);doBld(seq)}
@@ -15607,7 +15608,8 @@ window.__fld={parseLL:parseLL};
  window.__diag=diag})();
 /* v17: 업데이트 내용 · 저장 공간 */
 (function(){var $=function(i){return document.getElementById(i)};
- var LOGV='2026-11-09b',CH=[
+ var LOGV='2026-11-09c',CH=[
+  ['2026.11.09 (건축물 정보 정리)',['건축물 정보: 용도(시설)·최고층수·용적률·건폐율·사용승인일만 표시, 지도 위 층수 글자 제거']],
   ['2026.11.09 (접속 승인)',['처음 쓰는 기기는 소속·이름을 적고 승인 요청 → 관리자가 앱(설정 → 접속 승인)에서 승인해야 사용 가능','승인된 기기는 계속 사용(인터넷이 없어도 유지), 관리자가 차단·삭제하면 다음 접속 때 막힘','승인 서버는 구글 Apps Script(access_server.gs)에 두며, 서버 주소가 없으면 이 기능은 꺼져 있음']],
   ['2026.11.09 (건축물 레이어)',['레이어에 “건축물” 추가: 건물 외곽(확대 17 이상)과 지상 층수 표시, 필지를 누르면 건축물 정보(용도·층수·사용승인 등) 표시','V-World 건물 레이어 ID는 자동으로 후보를 시도하며, 안 되면 레이어 설정에서 직접 입력할 수 있음']],
   ['2026.11.07 (화면 공유 개선)',['도구 → 현재 화면 공유: “QR로 보여주기”, “QR 읽기”, “링크 붙여넣어 열기” 추가 — 사파리로 열린 링크도 앱 안에서 같은 화면으로 열림','링크가 앱 밖(사파리·크롬)에서 열리면 앱에서 여는 방법 안내 막대 표시','안드로이드: 설치된 앱이 링크를 직접 열도록 설정 보강(앱 설치 정보 manifest.json도 함께 올려야 함)']],
