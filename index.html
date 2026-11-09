@@ -1154,8 +1154,8 @@ html[data-bright="night"] #mapClip{filter:brightness(.82)}
 .fsq{display:flex;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--bg)}
 .fsq button{flex:1;height:34px;border:0;border-left:1px solid var(--line);background:none;color:var(--fg);font:inherit;font-size:13px;font-weight:600}.fsq button:first-child{border-left:0}
 .fsq button.on{background:var(--acc2);color:var(--acc);font-weight:800}
-#slSeg{display:flex;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--bg)}
-#slSeg button{flex:1;height:34px;border:0;background:none;color:var(--fg);font:inherit;font-size:13px;font-weight:600}#slSeg button.on{background:var(--acc2);color:var(--acc)}
+#slSeg,#wlSeg{display:flex;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--bg)}
+#slSeg button,#wlSeg button{flex:1;height:34px;border:0;background:none;color:var(--fg);font:inherit;font-size:13px;font-weight:600}#slSeg button.on,#wlSeg button.on{background:var(--acc2);color:var(--acc)}
 details.vg{border-bottom:1px solid var(--line);padding:2px 0 10px;margin-bottom:6px}details.vg:last-child{border-bottom:0;margin-bottom:0}
 details.vg>summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;font-weight:800;font-size:14px;padding:8px 2px;color:var(--fg)}
 details.vg>summary::-webkit-details-marker{display:none}details.vg>summary:after{content:"";width:8px;height:8px;border-right:2px solid var(--mut);border-bottom:2px solid var(--mut);transform:rotate(45deg);transition:transform .15s;margin-right:4px}
@@ -1396,7 +1396,7 @@ body:has(.modal:not([hidden])) .rtip,body:has(.modal:not([hidden])) #railTip{opa
 .frow.mq{margin:0 0 8px}.frow.mq input{width:100%;box-sizing:border-box}
 
 /* ===== PC: 옆 패널 · 끌어다 놓기 · 우클릭 · 호버 말풍선 ===== */
-@media (min-width:1000px){
+@media (min-width:1000px),(orientation:landscape) and (max-height:520px) and (min-width:560px){
  #info:not(.min){left:0!important;top:0!important;bottom:0!important;right:auto!important;width:var(--dk,440px)!important;max-height:none!important;height:100dvh!important;border-radius:0!important;box-shadow:3px 0 18px #0002!important;border-right:1px solid var(--line)!important;padding-top:14px!important}
  body:has(#info:not([hidden]):not(.min)) #map{left:var(--dk,440px)}
  body:has(#info:not([hidden]):not(.min)) .bar{left:calc(var(--dk,440px) + 8px);padding-left:12px}
@@ -1412,6 +1412,16 @@ body:has(.modal:not([hidden])) .rtip,body:has(.modal:not([hidden])) #railTip{opa
 #ctxMenu button{display:block;width:100%;text-align:left;border:0;background:none;color:inherit;font:inherit;font-size:13.5px;font-weight:600;padding:8px 12px;border-radius:8px;cursor:pointer}#ctxMenu button:hover{background:var(--acc2);color:var(--acc)}
 #ctxMenu hr{border:0;border-top:1px solid var(--line);margin:4px 6px}
 #hvTip{position:fixed;z-index:2900;pointer-events:none;background:var(--card);color:var(--fg);border-radius:9px;padding:6px 10px;font-size:12.5px;font-weight:600;box-shadow:0 3px 12px #0004,0 0 0 1px #0000001a;max-width:320px;line-height:1.4}#hvTip small{display:block;color:var(--mut);font-weight:500;font-size:12px}
+
+/* ===== 모바일: 당겨서 새로고침 방지 · 가로 화면 · 따라가기 표시 ===== */
+html{overscroll-behavior:none;overscroll-behavior-y:none}
+.sheet,.modal .box,#viewPop,#toolPop,#mapPop,#infoBody{overscroll-behavior:contain}
+#map,#mapClip{touch-action:none}
+@media (max-width:999px){#dkRz{display:none!important}}
+@media (orientation:landscape) and (max-height:520px) and (max-width:999px){#info:not(.min){padding-left:max(14px,env(safe-area-inset-left))!important;border-radius:0 14px 14px 0!important}}
+.rail #bGps.fol{box-shadow:0 0 0 3px var(--acc),var(--sh)!important}
+#infoShare{font-weight:700}
+@media (orientation:landscape) and (max-height:520px) and (max-width:999px){html #quick{flex-direction:row!important;align-items:flex-end;bottom:max(10px,env(safe-area-inset-bottom))!important;gap:6px}html #quick>button,html #quick>button:not(#qTog):not(#qShot),html #qTog,html #qShot{align-self:flex-end!important}html #quick .qp{align-self:flex-end}html .rail #bGps,html .rail #bRef{right:calc(max(12px,env(safe-area-inset-right)) + 62px)}html .rail #bRef{bottom:calc(max(10px,env(safe-area-inset-bottom)) + 48px)}html .rail #bGps{bottom:max(10px,env(safe-area-inset-bottom))}}
 </style></head><body>
 <div id="map"></div>
 <div class="bar">
@@ -1452,6 +1462,7 @@ body:has(.modal:not([hidden])) .rtip,body:has(.modal:not([hidden])) #railTip{opa
  </details>
  <details class="vg" data-g="ctl"><summary>조작</summary>
  <div class="ph">시작할 때 내 위치로 이동</div><div id="slSeg"><button data-l="0" type="button">끔</button><button data-l="1" type="button">켬</button></div>
+ <div class="ph">화면 꺼짐 방지</div><div id="wlSeg"><button data-w="0" type="button">끔</button><button data-w="1" type="button">내 위치 켠 동안</button><button data-w="2" type="button">항상</button></div><div class="sub" id="wlTx" style="margin:4px 0 0;font-size:12px"></div>
  </details>
  <details class="vg" data-g="rec"><summary>현장 기록 표시</summary>
  <div class="sub" style="margin:0 0 6px;font-size:12px">메모마다 따로 설정한 숨김·핀 색을 한꺼번에 되돌립니다. 메모 내용은 지워지지 않습니다.</div>
@@ -1501,7 +1512,7 @@ body:has(.modal:not([hidden])) .rtip,body:has(.modal:not([hidden])) #railTip{opa
 <p class="sub" style="margin:4px 0 0">파랑 국유지 · 보라 공유지 · 사유지 색 없음 (17단계 이상)</p></div>
 <div class="sheet" id="legend" hidden><button class="btn x" data-close>닫기</button><h3 style="font-size:14px;margin:0 0 4px">이 화면의 시설 <span style="font-weight:400;color:var(--mut);font-size:12px">누르면 지도에서 강조</span></h3><div id="legBody" class="lgs"></div>
 </div>
-<div class="sheet" id="info" hidden><button class="btn x" data-close>닫기</button><button class="btn x" id="infoMin" type="button">내리기</button><div id="infoBar" hidden></div><div id="infoBody"></div></div>
+<div class="sheet" id="info" hidden><button class="btn x" data-close>닫기</button><button class="btn x" id="infoMin" type="button">내리기</button><button class="btn x" id="infoShare" type="button">위치 공유</button><div id="infoBar" hidden></div><div id="infoBody"></div></div>
 <div class="mbar" id="memBar" hidden><div id="memTxt">지도를 눌러 메모 위치를 지정하세요</div><div class="mb"><button class="btn" id="memHere">내 위치에 메모</button><button class="btn" id="memUp">사진 올리기</button><input type="file" id="memUpFile" accept="image/*" multiple hidden><button class="btn" id="memList">현장 기록</button><button class="btn on" id="memDone">끝내기</button></div></div>
 <div id="trkPill" hidden><span class="dot"></span><b id="trkTxt">기록 중</b><button id="trkCam">사진</button><button id="trkStop">정지·저장</button></div><input type="file" id="trkFile" accept="image/*" capture="environment" hidden><input type="file" id="imFile" accept=".zip,.json,application/zip,application/json" hidden><input type="file" id="trkGal" accept="image/*" multiple hidden>
 <div class="sheet" id="fieldSheet" hidden><button class="btn x" data-close>닫기</button>
@@ -14054,13 +14065,13 @@ window.__inLink=(location.hash||'').indexOf('c=')>=0?location.href:'';
 (function(){
 var LS=window.localStorage;function g(k,d){try{var v=LS.getItem(k);return v==null?d:JSON.parse(v)}catch(e){return d}}function s(k,v){try{LS.setItem(k,JSON.stringify(v))}catch(e){}}
 (function(){try{var h=location.hash.replace(/^#/,'');if(!h||h.indexOf('c=')<0)return;var o={};h.split('&').forEach(function(x){var i=x.indexOf('=');if(i>0)o[x.slice(0,i)]=decodeURIComponent(x.slice(i+1))});
- var c=(o.c||'').split(',').map(Number);if(c.length===2&&isFinite(c[0])&&isFinite(c[1])){s('c',c);if(o.z)s('z',+o.z)}
+ var c=(o.c||'').split(',').map(Number);if(c.length===2&&isFinite(c[0])&&isFinite(c[1])){s('c',c);if(o.z)s('z',+o.z);if(o.pin==='1')window.__inPin=c.slice()}
  if(['Base','Satellite','SatLabel','white','none'].indexOf(o.b)>=0)s('base',o.b);
  if(o.l!=null){var on=o.l.split(','),m={};['cad','own','fac','zone','spec','dist','gb','use','bld'].forEach(function(i){m[i]=on.indexOf(i)>=0});s('layers',m)}
  if(o.m!=null){var mm={};o.m.split(',').forEach(function(i){if(i)mm[i]=true});s('muniOn',mm)}
  history.replaceState(null,'',location.pathname+location.search)}catch(e){}})();
 var KEY=g('key',''),DOM=g('dom',location.hostname||'localhost');
-var BUILD="2611092100";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
+var BUILD="2611092107";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
 applyTheme(THEME);
 var BASE=g('base','Base');if(['Base','Satellite','SatLabel','white','none'].indexOf(BASE)<0)BASE='Base';
 // 레이어: id, 이름, 표시 WMS 이름, 조회용 data 코드
@@ -15981,7 +15992,8 @@ function lines(){var base=$('bjBase').value.trim(),a=[];$('bjTx').value.split(/\
 (function(){var I=document.getElementById('info');if(!I||!window.MutationObserver)return;var tm=0;new MutationObserver(function(){clearTimeout(tm);tm=setTimeout(function(){try{map.invalidateSize({pan:false})}catch(e){}},60)}).observe(I,{attributes:true,attributeFilter:['hidden','class']})})();
 (function(){var $=function(i){return document.getElementById(i)},R=document.documentElement,h=document.createElement('div');h.id='dkRz';h.title='끌어서 폭 조절 · 더블클릭: 기본 폭';document.body.appendChild(h);
  function cl(w){return Math.max(340,Math.min(w,Math.min(760,window.innerWidth-420)))}
- function set(w){R.style.setProperty('--dk',cl(w)+'px')}
+ function land(){return window.matchMedia&&matchMedia('(orientation:landscape) and (max-height:520px) and (min-width:560px) and (max-width:999px)').matches}
+ function set(w){R.style.setProperty('--dk',(land()?Math.round(Math.min(380,window.innerWidth*.46)):cl(w))+'px')}
  var sv=g('dkw',440);set(sv);window.addEventListener('resize',function(){set(g('dkw',440))});
  function inv(){try{map.invalidateSize({pan:false})}catch(e){}}
  h.addEventListener('pointerdown',function(e){e.preventDefault();h.setPointerCapture(e.pointerId);h.classList.add('on');var tm=0;
@@ -16004,6 +16016,44 @@ function lines(){var base=$('bjBase').value.trim(),a=[];$('bjTx').value.split(/\
   if(k==='v'){e.preventDefault();$('bLeg').click();return}
   if(k==='?'||k==='/'&&e.shiftKey){e.preventDefault();status('단축키  M 측정 · S 필지 선택 · D 그리기 · R 반경 · L 레이어 · V 시설 목록 · Ctrl+F 검색 · Ctrl+Z 되돌리기 · Esc 닫기')}
  })})();
+(function(){var $=function(i){return document.getElementById(i)},R=document.documentElement;
+ /* 내 위치 따라가기 (북쪽 위) */
+ var FOL=false,gb=$('bGps'),oc=gb.onclick;
+ function mk(){gb.classList.toggle('fol',FOL)}
+ gb.onclick=function(e){var G=window.__gps&&window.__gps();
+  if(!G||!G.on){FOL=true;mk();oc.call(this,e);return}
+  if(G.last){var a=map.latLngToContainerPoint(G.last),c=map.getSize().divideBy(2),mid=a.distanceTo(c)<28;
+   if(mid&&FOL){FOL=false;mk();status('따라가기를 껐습니다 · 한 번 더 누르면 내 위치 표시도 끕니다');return}
+   if(mid){FOL=false;mk();oc.call(this,e);return}
+   FOL=true;mk();oc.call(this,e);status('내 위치를 따라갑니다 · 지도를 끌면 해제됩니다');return}
+  oc.call(this,e)};
+ map.on('dragstart',function(){if(FOL){FOL=false;mk()}});
+ var of=window.__onFix;window.__onFix=function(l){if(of)of(l);if(FOL&&l&&!(window.__rot&&window.__rot.mode()==='head'))map.panTo(l,{animate:true,duration:.4})};
+ setInterval(function(){var G=window.__gps&&window.__gps();if(FOL&&G&&!G.on){FOL=false;mk()}},2000);
+ /* 화면 꺼짐 방지 */
+ var WL=g('wl',1),lock=null,wb=$('wlSeg'),wt=$('wlTx');
+ var TX=['화면이 평소처럼 꺼집니다.','내 위치를 켜 둔 동안 화면이 꺼지지 않습니다. (배터리 소모가 늘 수 있습니다)','앱이 보이는 동안 화면이 꺼지지 않습니다.'];
+ function wmark(){[].forEach.call(wb.children,function(b){b.classList.toggle('on',+b.dataset.w===WL)});wt.textContent=navigator.wakeLock?TX[WL]:'이 기기·브라우저는 화면 꺼짐 방지를 지원하지 않습니다.'}
+ function want(){if(document.visibilityState!=='visible')return false;if(WL===2)return true;if(WL===1){var G=window.__gps&&window.__gps();return !!(G&&G.on)}return false}
+ function wsync(){if(!navigator.wakeLock)return;var w=want();
+  if(w&&!lock){lock='p';navigator.wakeLock.request('screen').then(function(l){lock=l;l.addEventListener('release',function(){if(lock===l)lock=null})}).catch(function(){lock=null})}
+  else if(!w&&lock&&lock!=='p'){try{lock.release()}catch(e){}lock=null}}
+ [].forEach.call(wb.children,function(b){b.onclick=function(){WL=+b.dataset.w;s('wl',WL);wmark();wsync()}});wmark();
+ document.addEventListener('visibilitychange',function(){if(document.visibilityState==='visible')lock=null;wsync()});setInterval(wsync,3000);wsync();
+ /* 위치 공유 링크 */
+ var sb=$('infoShare');
+ function sharePt(ll,title){var u=location.origin+location.pathname+'#c='+ll.lat.toFixed(6)+','+ll.lng.toFixed(6)+'&z=18&pin=1',t=(title||'지도 위치')+'\n';
+  if(navigator.share){navigator.share({title:title||'딸깍 지도 위치',text:t,url:u}).catch(function(){})}
+  else if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t+u).then(function(){status('위치 링크를 복사했습니다')},function(){status('복사하지 못했습니다')})}else status('이 기기에서는 공유를 쓸 수 없습니다')}
+ window.__sharePt=sharePt;
+ sb.onclick=function(){if(!pin){status('먼저 필지를 눌러 조회하세요');return}var h=$('infoBody').querySelector('h3'),t=h?h.textContent.replace(/\s+/g,' ').trim():'';if(/^조회/.test(t))t='';sharePt(pin.getLatLng(),t)};
+ if(window.__inPin){var P=window.__inPin;map.whenReady(function(){setTimeout(function(){status('공유받은 위치로 이동했습니다');try{pick(P[0],P[1])}catch(e){}},1200)})}
+ /* 우클릭 메뉴에도 */
+ var cm=$('ctxMenu');if(cm){new MutationObserver(function(){if(!cm.hidden&&!cm.querySelector('[data-a=sh]')){var b=document.createElement('button');b.dataset.a='sh';b.textContent='이 위치 링크 공유·복사';cm.appendChild(b)}}).observe(cm,{attributes:true,attributeFilter:['hidden']});
+}
+ map.on('contextmenu',function(e){map._lastCtx=e.latlng});
+ if(cm)cm.addEventListener('click',function(e){var b=e.target.closest('button[data-a=sh]');if(b&&map._lastCtx)sharePt(map._lastCtx,'지도 위치')});
+})();
  var VG=g('vg',{fav:1});if(VG.fav===undefined)VG.fav=1;[].forEach.call(document.querySelectorAll('#viewPop details.vg'),function(d){var k=d.dataset.g;d.open=!!VG[k];d.addEventListener('toggle',function(){VG[k]=d.open?1:0;s('vg',VG)})});
  /* 시작할 때 내 위치로 */
  var SL=g('sl',1);function slMark(){[].forEach.call($('slSeg').children,function(b){b.classList.toggle('on',(b.dataset.l==='1')===!!SL)})}
@@ -16070,7 +16120,8 @@ function lines(){var base=$('bjBase').value.trim(),a=[];$('bjTx').value.split(/\
  window.__diag=diag})();
 /* v17: 업데이트 내용 · 저장 공간 */
 (function(){var $=function(i){return document.getElementById(i)};
- var LOGV='2026-11-10f',CH=[
+ var LOGV='2026-11-10g',CH=[
+  ['2026.11.10 (모바일 보강)',['내 위치 버튼: 한 번 더 누르면 따라가기(지도 끌면 해제), 따라가기 중엔 버튼에 테두리 표시','폰 가로 화면: 정보창이 아래 시트 대신 왼쪽 옆 패널로','지도를 아래로 끌다 앱이 새로고침되는 문제 방지','화면 꺼짐 방지 설정 (화면 → 조작): 끔 / 내 위치 켠 동안 / 항상','정보창의 “위치 공유”와 PC 우클릭 메뉴: 위치 링크를 카카오톡 등으로 보내면 받은 사람이 누르면 같은 지점의 필지를 조회']],
   ['2026.11.10 (PC 패널 · 단축키)',['옆 패널 경계를 끌어 폭 조절(더블클릭=기본 폭, 기억함)','옆 패널 열릴 때 검색창·버튼 간격 정리','레이어·시설 창이 새로 열거나 누르면 맨 위로, 기본 위치도 서로 겹치지 않게','단축키: M 측정 · S 필지 선택 · D 그리기 · R 반경 · L 레이어 · V 시설 목록 · Ctrl+F 검색 · Ctrl+Z 되돌리기 · ? 도움말']],
   ['2026.11.10 (PC 정보 + 레이어 동시 보기)',['PC에서 정보창(옆 패널)과 레이어·시설 창을 함께 볼 수 있음(레이어 창은 기본으로 오른쪽, 옆 패널과 겹치지 않게 비켜 줌)','옆 패널이 열릴 때 방위 표시가 옆으로 밀리던 문제 수정']],
   ['2026.11.10 (PC 화면 바로잡기)',['PC에서 옆 패널이 열릴 때 왼쪽 버튼 줄이 위로 밀려 검색창과 겹치던 문제 수정']],
@@ -16390,7 +16441,7 @@ function lines(){var base=$('bjBase').value.trim(),a=[];$('bjTx').value.split(/\
   function lk(){var f=document.getElementById('shareUrl');return f.value&&/^https?:/.test(f.value)?f.value:location.href}
   cb.onclick=function(){var m=$('shareMsg'),u=lk();function ok(){m.textContent='링크를 복사했습니다'}if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(u).then(ok,function(){$('shareUrl').select();document.execCommand('copy');ok()});else{$('shareUrl').select();try{document.execCommand('copy');ok()}catch(e){}}};
   sg.addEventListener('click',function(){setTimeout(function(){var m=$('shareMsg');if(!m.textContent){var on=LAYERS.filter(function(l){return l.on}).length;m.textContent=sumTx()+' · 켜 둔 레이어 '+on+'개'}},50)},true);
-  var _sh=navigator.share;if(_sh)navigator.share=function(o){o=o||{};o.text=sumTx();return _sh.call(navigator,o)}}
+  var _sh=navigator.share;if(_sh)navigator.share=function(o){o=o||{};if(!o.text)o.text=sumTx();return _sh.call(navigator,o)}}
  /* 오프라인 미리 받기 */
  var tp=$('toolPop'),sm=$('shareMsg');if(tp&&sm){var ob=document.createElement('div');ob.id='offBox';ob.innerHTML='<div class="ph">오프라인 미리 받기</div><div class="sub" style="margin:0 0 6px">지금 보는 범위의 지도(지금 쓰는 지도 종류)를 폰에 저장해 신호가 약한 현장에서도 나오게 합니다. 지적·용도지역 같은 조회 데이터는 인터넷이 필요합니다.</div><div style="display:flex;gap:6px"><button class="btn" id="offEst" style="flex:1">저장 범위 확인</button></div><div id="offTx" class="sub" style="margin-top:6px"></div><div class="bar" id="offBar" hidden><i></i></div><div id="offBt" style="display:flex;gap:6px;margin-top:4px" hidden><button class="btn on" id="offGo" style="flex:1">받기 시작</button><button class="btn" id="offNo">취소</button></div>';tp.appendChild(ob);
   var plan=null,run=false,stop=false;
