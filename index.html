@@ -1350,6 +1350,19 @@ body.lpdrag{user-select:none;-webkit-user-select:none;-webkit-touch-callout:none
 .bd>summary{list-style:none;display:flex;align-items:center;gap:6px;min-height:40px}.bd>summary::-webkit-details-marker{display:none}
 .bd[open]>summary{color:var(--acc)}.bd[open]{background:var(--acc2);border-radius:10px;padding:0 8px 8px;margin:4px 0}.bd:not([open]){padding:0 2px}
 .bd .row{border-color:color-mix(in srgb,var(--line) 70%,transparent)}
+
+/* ===== 정리: 닫기 위치 · 알림/팝업 겹침 · 왼쪽 버튼 줄 ===== */
+#prjModal .mh{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:0 0 4px}
+#prjModal .mh .btn{width:36px;height:36px;padding:0;border-radius:50%;line-height:1}
+@media (max-width:700px){
+ body:has(#viewPop:not([hidden])) .toast,body:has(#toolPop:not([hidden])) .toast,body:has(#mapPop:not([hidden])) .toast{top:auto!important;bottom:calc(max(18px,env(safe-area-inset-bottom)) + 10px)!important}
+ body:has(#viewPop:not([hidden])) #ldPill,body:has(#toolPop:not([hidden])) #ldPill,body:has(#mapPop:not([hidden])) #ldPill{display:none}
+}
+html #quick .qp{flex-direction:column;align-self:flex-start;width:46px;height:auto;border-radius:23px}
+html #quick .qp button{width:46px!important;min-width:0;height:36px!important;padding:0;border-radius:0}
+html #quick .qp button+button{border-left:0;border-top:1px solid var(--line)}
+@media (max-width:600px){html #quick .qp{width:38px;height:auto;border-radius:19px}html #quick .qp button{width:38px!important;height:32px!important}}
+@media (min-width:1000px){html #quick .qp{width:50px}html #quick .qp button{width:50px!important}}
 </style></head><body>
 <div id="map"></div>
 <div class="bar">
@@ -1378,8 +1391,6 @@ body.lpdrag{user-select:none;-webkit-user-select:none;-webkit-touch-callout:none
  <div class="ph">밝기 자동 조절 (햇빛·밤)</div><div id="briSeg"><button data-b="0" type="button">끔</button><button data-b="1" type="button">자동</button></div><div class="sub" id="briTx" style="margin:4px 0 0;font-size:11.5px"></div>
  <div class="ph">글자 크기 (메뉴·창)</div><div id="fsSeg"><button data-f="1">보통</button><button data-f="1.12">크게</button><button data-f="1.25">아주 크게</button></div>
  <div class="ph">한 손 조작</div><div id="ohSeg"><button data-o="0" type="button">끔</button><button data-o="1" type="button">켬 · 버튼을 아래로</button></div>
- <div class="ph">야외 모드 (진한 글자·굵은 테두리)</div><div id="outSeg"><button data-o="0" type="button">끔</button><button data-o="1" type="button">켬</button></div>
- <div class="ph">오른쪽 메뉴 글자</div><div id="rlSeg"><button data-r="s" type="button">작게</button><button data-r="m" type="button">크게</button><button data-r="x" type="button">숨김</button></div>
  <div class="ph"></div><button class="btn" id="cmpOpen" type="button" style="width:100%">지도 비교 · 과거 항공사진</button>
  </details>
  <details class="vg" data-g="view"><summary>보기</summary>
@@ -1387,6 +1398,8 @@ body.lpdrag{user-select:none;-webkit-user-select:none;-webkit-touch-callout:none
  <div class="ph" style="margin-top:12px">색상</div><div id="palSeg"></div>
  <div class="ph">지도 위 글자 크기 (지번)</div><div class="fsq" id="lsSeg"></div>
  <div class="ph">지도 어둡게 (일반·백지도)</div><div id="tdSeg"><button data-t="auto" type="button">자동</button><button data-t="on" type="button">켬</button><button data-t="off" type="button">끔</button></div>
+ <div class="ph">야외 모드 (진한 글자·굵은 테두리)</div><div id="outSeg"><button data-o="0" type="button">끔</button><button data-o="1" type="button">켬</button></div>
+ <div class="ph">오른쪽 메뉴 글자</div><div id="rlSeg"><button data-r="s" type="button">작게</button><button data-r="m" type="button">크게</button><button data-r="x" type="button">숨김</button></div>
  </details>
  <details class="vg" data-g="ctl"><summary>조작</summary>
  <div class="ph">시작할 때 내 위치로 이동</div><div id="slSeg"><button data-l="0" type="button">끔</button><button data-l="1" type="button">켬</button></div>
@@ -1471,11 +1484,11 @@ body.lpdrag{user-select:none;-webkit-user-select:none;-webkit-touch-callout:none
 <div class="modal" id="logModal" hidden><div class="box"><h3 style="margin:0 0 6px">업데이트 내용</h3><div id="logBody"></div><div style="display:flex;justify-content:flex-end;margin-top:10px"><button class="btn on" id="logX" type="button">닫기</button></div></div></div>
 <div class="modal" id="tourModal" hidden><div class="box tour"><div class="tk" id="tkIc"></div><h3 id="tkT"></h3><p id="tkP"></p><div class="tdots" id="tkD"></div><div style="display:flex;gap:8px"><button class="btn" id="tkPrev">이전</button><span style="flex:1"></span><button class="btn" id="tkSkip">건너뛰기</button><button class="btn on" id="tkNext">다음</button></div></div></div>
 <div class="modal" id="prjModal" hidden><div class="box" style="max-height:88%;overflow:auto">
- <h3 style="margin:0 0 4px">프로젝트</h3><p class="sub" style="margin:0 0 8px">지도 위치·배경·레이어 켜기/순서·스타일·올린 SHP를 이름 붙여 저장하고, 나중에 불러옵니다. 이 기기·브라우저에 저장됩니다.</p>
+ <div class="mh"><h3 style="margin:0">프로젝트</h3><button class="btn" id="pClose" type="button" aria-label="닫기">✕</button></div><p class="sub" style="margin:0 0 8px">지도 위치·배경·레이어 켜기/순서·스타일·올린 SHP를 이름 붙여 저장하고, 나중에 불러옵니다. 이 기기·브라우저에 저장됩니다.</p>
  <div style="display:flex;gap:6px;margin:0 0 8px"><button class="btn" id="pNew" style="flex:1">＋ 새 프로젝트 시작</button></div><div id="pNewBox" hidden style="border:1px solid var(--line);border-radius:10px;padding:8px;margin:0 0 8px"><div style="font-weight:700">새로 시작하면 지워지는 것</div><div class="sub" style="margin:2px 0 6px">메모·사진·경로·내 도면·올린 SHP·그리기·저장한 측정. 지도 위치와 레이어 설정, 인증키는 그대로 둡니다.</div><label style="display:flex;gap:6px;align-items:center;font-size:13px;margin:0 0 6px"><input type="checkbox" id="pNewBk" checked> 지우기 전에 지금 내용을 zip으로 저장 (권장)</label><div style="display:flex;gap:6px;justify-content:flex-end"><button class="btn" id="pNewNo">취소</button><button class="btn on" id="pNewGo" style="background:var(--warn);border-color:var(--warn)">새로 시작</button></div></div>
  <label>새 이름으로 저장</label><div style="display:flex;gap:6px"><input id="pName" placeholder="예: 마곡 검토안 1" autocomplete="off"><button class="btn on" id="pSave" style="height:42px;margin-top:4px">저장</button></div>
  <div id="pList" style="margin:6px 0"></div>
- <div style="display:flex;gap:6px;flex-wrap:wrap"><button class="btn" id="pImp">파일에서 가져오기</button><input type="file" id="pFile" accept=".json,.zip,application/json,application/zip" hidden><button class="btn" id="pClose" style="margin-left:auto">닫기</button></div>
+ <div style="display:flex;gap:6px;flex-wrap:wrap"><button class="btn" id="pImp">파일에서 가져오기</button><input type="file" id="pFile" accept=".json,.zip,application/json,application/zip" hidden></div>
  <div style="border-top:1px solid var(--line);margin:10px 0 6px;padding-top:8px"><b>다른 기기와 바로 주고받기</b>
   <p class="sub" style="margin:2px 0 6px">PC와 폰의 웹 지도를 직접 연결해 지금 지도 상태(올린 SHP)와 메모·사진·경로·도면·즐겨찾기까지 모두 보냅니다. 파일은 서버에 저장되지 않습니다. 두 기기 모두 이 화면을 열어 두세요.</p>
   <div style="display:flex;gap:6px;flex-wrap:wrap"><button class="btn on" id="p2Send">이 기기 → 보내기</button><button class="btn" id="p2Recv">다른 기기에서 받기</button></div>
@@ -13964,7 +13977,7 @@ var LS=window.localStorage;function g(k,d){try{var v=LS.getItem(k);return v==nul
  if(o.m!=null){var mm={};o.m.split(',').forEach(function(i){if(i)mm[i]=true});s('muniOn',mm)}
  history.replaceState(null,'',location.pathname+location.search)}catch(e){}})();
 var KEY=g('key',''),DOM=g('dom',location.hostname||'localhost');
-var BUILD="2611091931";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
+var BUILD="2611091944";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
 applyTheme(THEME);
 var BASE=g('base','Base');if(['Base','Satellite','SatLabel','white','none'].indexOf(BASE)<0)BASE='Base';
 // 레이어: id, 이름, 표시 WMS 이름, 조회용 data 코드
@@ -15730,6 +15743,17 @@ window.__fld={parseLL:parseLL};
   if(n.classList.contains('ph')&&!tx){if(n.parentNode===P)P.removeChild(n);return}
   if(cur)cur.appendChild(n)})}finally{busy=0}}
  grp();try{new MutationObserver(function(){if(!busy)grp()}).observe(P,{childList:true})}catch(e){}})();
+(function(){document.addEventListener('keydown',function(e){if(e.key!=='Escape'||e.defaultPrevented)return;
+ var $=function(i){return document.getElementById(i)},vis=function(el){return el&&!el.hidden};
+ if($('lb'))return;
+ var ms=[].slice.call(document.querySelectorAll('.modal')).filter(vis);
+ if(ms.length){var m=ms[ms.length-1];var bt=[].slice.call(m.querySelectorAll('button')).filter(function(b){return /^(닫기|취소|✕|×)$/.test(b.textContent.trim())})[0];e.preventDefault();if(bt)bt.click();else m.hidden=true;return}
+ var pops=[['viewPop','bView'],['toolPop','bTool'],['mapPop','bMap']];
+ for(var i=0;i<pops.length;i++){var pp=$(pops[i][0]);if(vis(pp)){e.preventDefault();pp.hidden=true;var b=$(pops[i][1]);if(b){b.setAttribute('aria-expanded','false');b.classList.remove('on')}return}}
+ var sh=[].slice.call(document.querySelectorAll('.sheet')).filter(vis);
+ if(sh.length){var x=sh[sh.length-1].querySelector('[data-close]');if(x){e.preventDefault();x.click();return}}
+ var a=document.activeElement;if(a&&/^(INPUT|TEXTAREA)$/.test(a.tagName)&&a.id!=='q'){a.blur()}
+})})();
  var VG=g('vg',{fav:1});if(VG.fav===undefined)VG.fav=1;[].forEach.call(document.querySelectorAll('#viewPop details.vg'),function(d){var k=d.dataset.g;d.open=!!VG[k];d.addEventListener('toggle',function(){VG[k]=d.open?1:0;s('vg',VG)})});
  /* 시작할 때 내 위치로 */
  var SL=g('sl',1);function slMark(){[].forEach.call($('slSeg').children,function(b){b.classList.toggle('on',(b.dataset.l==='1')===!!SL)})}
@@ -15796,7 +15820,8 @@ window.__fld={parseLL:parseLL};
  window.__diag=diag})();
 /* v17: 업데이트 내용 · 저장 공간 */
 (function(){var $=function(i){return document.getElementById(i)};
- var LOGV='2026-11-09u',CH=[
+ var LOGV='2026-11-09v',CH=[
+  ['2026.11.09 (화면 정리 · Esc)',['컴퓨터에서 Esc 키로 열린 창·팝업·시트를 닫음(가장 위에 있는 것부터)','프로젝트 창의 닫기를 오른쪽 위 ✕로 이동','화면 설정: 자주 쓰는 설정에는 밝기·글자 크기·한 손 조작만 두고 야외 모드·메뉴 글자는 “보기”로 이동','팝업이 열려 있으면 알림이 팝업을 가리지 않도록 아래로 이동','왼쪽 아래 지적/지번 버튼을 세로 한 줄로 맞춤']],
   ['2026.11.09 (도구 창 정리)',['도구 창을 기록·현재 화면 공유·다른 지도로·오프라인 미리 받기 묶음으로 나눠 접어서, 길게 이어지던 화면을 정리','펼침 상태는 기억']],
   ['2026.11.09 (설정 화면 정리)',['인증키 창의 항목을 묶음별로 접어서 정리: 접속 승인(관리자)·화면·메뉴·연결 진단·앱 정보','접속 승인 묶음에는 대기 중인 요청 수가 붙어서, 접어 둬도 새 요청을 알 수 있음','펼침 상태는 기억']],
   ['2026.11.09 (씨:리얼 안내 수정)',['씨:리얼은 주소를 링크로 받지 않아 “주소 복사” 버튼으로 표시(열고 붙여넣기)']],
