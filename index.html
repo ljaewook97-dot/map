@@ -1387,6 +1387,13 @@ html[data-bright="sun"] .jbi span{-webkit-text-stroke:2.4px color-mix(in srgb,va
 body:has(.modal:not([hidden])) .rtip,body:has(.modal:not([hidden])) #railTip{opacity:0!important;visibility:hidden!important}
 .vsq{display:flex;align-items:center;gap:6px;margin:0 0 8px;flex-wrap:wrap}.vsq .btn{padding:6px 10px;font-size:13px}
 #vsN{width:56px;font:inherit;font-size:14px;padding:6px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--fg);text-align:center}
+
+/* ===== 지번 일괄 · 핀 이동 · 메모 검색 ===== */
+#bjModal .mh{display:flex;align-items:center;justify-content:space-between;gap:8px}#bjModal .mh .btn{width:36px;height:36px;padding:0;border-radius:50%;line-height:1}
+#bjRes .bh{margin:10px 0 3px;font-weight:700;font-size:13px}#bjRes .bi{display:flex;gap:8px;align-items:center;padding:6px 0;border-bottom:1px solid var(--line);font-size:13px}#bjRes .bi span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}#bjRes .bi small{color:var(--mut);flex:0 0 auto}#bjRes .bi.ok{cursor:pointer}
+#pmBar{position:absolute;z-index:1300;left:50%;transform:translateX(-50%);bottom:calc(max(14px,env(safe-area-inset-bottom)) + 12px);display:flex;align-items:center;gap:8px;background:var(--card);color:var(--fg);border-radius:14px;padding:8px 10px;box-shadow:0 4px 16px #0004;max-width:calc(100vw - 24px);font-size:13px;font-weight:600}
+#pmBar span{flex:1;min-width:0}#pmBar .btn{padding:7px 10px;font-size:13px;flex:0 0 auto}
+.frow.mq{margin:0 0 8px}.frow.mq input{width:100%;box-sizing:border-box}
 </style></head><body>
 <div id="map"></div>
 <div class="bar">
@@ -1446,6 +1453,7 @@ body:has(.modal:not([hidden])) .rtip,body:has(.modal:not([hidden])) #railTip{opa
  <div class="ph">기록</div>
  <div class="opts3"><button id="tMem"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg><b>메모 핀</b></button><button id="tTrk"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="18" r="2"/><circle cx="18" cy="6" r="2"/><path d="M8 18h6a3 3 0 0 0 0-6h-4a3 3 0 0 1 0-6h6"/></svg><b>경로 기록</b></button><button id="tRec"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/></svg><b>현장 기록</b></button></div>
  <button class="btn" id="vsOpen" type="button" style="width:100%;margin-top:6px">방문 순서 정하기</button>
+ <button class="btn" id="bjOpen" type="button" style="width:100%;margin-top:6px">지번 목록 일괄 표시</button>
  <div style="display:none">
  <div class="ph" style="margin-top:14px">지도 그림으로 저장</div>
  <div class="sub" style="margin:0 0 6px">지금 보는 범위를 정북이 위인 그림(PNG)으로 저장합니다. 배경지도·지적선·지번·번호 핀·시야가 합쳐져 보고서 현황도에 바로 쓸 수 있습니다.</div>
@@ -1488,7 +1496,7 @@ body:has(.modal:not([hidden])) .rtip,body:has(.modal:not([hidden])) #railTip{opa
  <div id="memPh" class="mph"></div><button class="btn" id="memAdd" type="button" style="margin-top:6px;width:100%">+ 사진 추가</button><input type="file" id="memFile" accept="image/*" multiple hidden>
  <div class="nor"><label for="memNo">번호</label><input id="memNo" type="number" min="1" inputmode="numeric"><span class="sub">보고서에 쓰는 번호예요. 지워도 다른 번호는 안 바뀌고, 이미 쓰는 번호로 바꾸면 서로 맞바뀝니다.</span></div><details class="mfold" id="memColD"><summary>핀 색 <span id="memColV"></span></summary><div class="cpal" id="memCol"></div></details><details class="mfold" id="memChkD"><summary>현장 점검 <span id="memChkV"></span></summary><div id="memChk" class="chks"></div><div style="display:flex;gap:6px;margin-top:6px"><input id="memChkNew" type="text" placeholder="항목 추가" style="flex:1;min-width:0"><button class="btn" id="memChkAdd" type="button">추가</button></div></details>
  <details class="mfold" id="memAzD"><summary>촬영·관찰 방향 <span id="memAzV"></span></summary><div class="azr" style="margin-top:6px"><button class="btn" id="memAzC" type="button">지금 폰 방향</button><input id="memAz" type="number" min="0" max="359" placeholder="0~359°" style="width:84px"><button class="btn" id="memAzX" type="button">지움</button></div><div id="memAzB" class="chks" style="margin-top:6px"></div></details>
- <div style="display:flex;gap:6px;align-items:center;margin-top:10px"><button class="btn" id="memDel" style="color:var(--warn)">삭제</button><span style="flex:1"></span><button class="btn" id="memCancel">취소</button><button class="btn on" id="memSave">저장</button></div>
+ <div style="display:flex;gap:6px;align-items:center;margin-top:10px"><button class="btn" id="memDel" style="color:var(--warn)">삭제</button><button class="btn" id="memMv" type="button">위치 옮기기</button><span style="flex:1"></span><button class="btn" id="memCancel">취소</button><button class="btn on" id="memSave">저장</button></div>
  <div id="memInfo" class="sub" style="margin-top:6px"></div>
 </div></div>
 <div id="cmpBar" hidden><i></i><span class="l"></span><span class="r"></span></div>
@@ -1506,6 +1514,15 @@ body:has(.modal:not([hidden])) .rtip,body:has(.modal:not([hidden])) #railTip{opa
 <div class="sub" style="margin:6px 0 0;font-size:12px">둘 다 고르면 zip 한 개로 저장됩니다. 지도 경계는 참고용(측량 성과 아님)입니다.</div>
 <div style="display:flex;justify-content:flex-end;gap:6px;margin-top:12px"><button class="btn" id="exNo" type="button">취소</button><button class="btn on" id="exOk" type="button">저장</button></div></div></div>
 <div class="modal" id="svModal" hidden><div class="box"><h3 style="margin:0 0 6px">측정 저장</h3><input id="svName" style="width:100%;box-sizing:border-box;font:inherit;padding:9px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--fg)" placeholder="이름 (예: 진입도로 폭)"><div id="svInfo" class="sub" style="margin:6px 0 0"></div><div style="display:flex;justify-content:flex-end;gap:6px;margin-top:10px"><button class="btn" id="svNo" type="button">취소</button><button class="btn on" id="svOk" type="button">저장</button></div></div></div>
+<div id="pmBar" hidden><span>핀을 끌거나 옮길 곳을 눌러 위치를 정하세요</span><button class="btn" id="pmNo" type="button">취소</button><button class="btn on" id="pmOk" type="button">여기로 저장</button></div>
+<div class="modal" id="bjModal" hidden><div class="box" style="max-height:90%;overflow:auto">
+ <div class="mh"><h3 style="margin:0">지번 목록 일괄 표시</h3><button class="btn" id="bjX" type="button" aria-label="닫기">✕</button></div>
+ <p class="sub" style="margin:4px 0 8px">편입토지조서나 엑셀의 지번을 한 줄에 하나씩 붙여넣으세요. 번지만 있는 줄(예: 123-4, 산 12)은 아래 기본 주소를 앞에 붙여 찾습니다.</p>
+ <label class="sub" style="display:block;margin:0 0 3px">기본 주소 (선택)</label><input id="bjBase" placeholder="예: 경기도 고양시 일산서구 대화동" autocomplete="off" style="width:100%;box-sizing:border-box;font:inherit;padding:9px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--fg)">
+ <textarea id="bjTx" rows="7" placeholder="대화동 123-4&#10;대화동 산 12-3&#10;125-7" style="width:100%;box-sizing:border-box;margin-top:8px;font:inherit;font-size:13.5px;padding:9px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--fg);resize:vertical"></textarea>
+ <div style="display:flex;gap:6px;align-items:center;margin-top:8px;flex-wrap:wrap"><span class="sub">색</span><input id="bjCol" type="color" value="#ff8a00" style="width:40px;height:34px;padding:0;border:1px solid var(--line);border-radius:8px;background:none"><span style="flex:1"></span><button class="btn" id="bjClr" type="button">표시 지우기</button><button class="btn on" id="bjGo" type="button">찾아서 표시</button></div>
+ <div id="bjSt" class="sub" style="margin:8px 0 0"></div><div id="bjRes"></div>
+</div></div>
 <div class="modal" id="vsModal" hidden><div class="box" style="max-height:88%;overflow:auto">
  <div class="mh"><h3 style="margin:0">방문 순서 정하기</h3><button class="btn" id="vsX" type="button" aria-label="닫기">✕</button></div>
  <p class="sub" style="margin:4px 0 8px">갈 곳을 고르면 가까운 순서로 정렬합니다. 직선거리 기준이라 실제 도로 거리와 다를 수 있습니다.</p>
@@ -14013,7 +14030,7 @@ var LS=window.localStorage;function g(k,d){try{var v=LS.getItem(k);return v==nul
  if(o.m!=null){var mm={};o.m.split(',').forEach(function(i){if(i)mm[i]=true});s('muniOn',mm)}
  history.replaceState(null,'',location.pathname+location.search)}catch(e){}})();
 var KEY=g('key',''),DOM=g('dom',location.hostname||'localhost');
-var BUILD="2611092018";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
+var BUILD="2611092026";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
 applyTheme(THEME);
 var BASE=g('base','Base');if(['Base','Satellite','SatLabel','white','none'].indexOf(BASE)<0)BASE='Base';
 // 레이어: id, 이름, 표시 WMS 이름, 조회용 data 코드
@@ -14375,7 +14392,7 @@ function render(S,pnu,partial){
   (S.ll?sec('바로가기',extLinks(S.ll[0],S.ll[1],S.addr,pnu)):'')+(partial?'<p class="sub sk-t">세부 정보를 불러오는 중…</p>':'<p class="sub">PNU '+esc(pnu)+' · 켜 둔 레이어만 조회됩니다.</p>');
  document.getElementById('infoBody').innerHTML=h;try{foldSecs()}catch(e){}}
 var _ck=0,_ckN=0,_ckT=0;map.on('click',function(e){var oe=e.originalEvent,tch=Date.now()-(window.__lastTouch||0)<700||(oe&&oe.pointerType==='touch');if(tch){if(_ck){clearTimeout(_ck);_ck=0;return}var n0=window.__dtN||0;_ck=setTimeout(function(){_ck=0;if((window.__dtN||0)!==n0)return;clickMap(e)},300);return}clickMap(e)});
-function clickMap(e){if(window.__rad&&window.__rad(e))return;if(window.__meas&&window.__meas(e))return;if(window.__sel&&window.__sel(e))return;if(window.__drw&&window.__drw(e))return;if(window.__mem&&window.__mem(e))return;pick(e.latlng.lat,e.latlng.lng)}
+function clickMap(e){if(window.__pmClick&&window.__pmClick(e))return;if(window.__rad&&window.__rad(e))return;if(window.__meas&&window.__meas(e))return;if(window.__sel&&window.__sel(e))return;if(window.__drw&&window.__drw(e))return;if(window.__mem&&window.__mem(e))return;pick(e.latlng.lat,e.latlng.lng)}
 // UI
 /* 꾹 눌러서 끌어 옮기기: items=옮길 줄들, grab(it)=잡는 부분, 손잡이(.dh)는 바로, 나머지는 0.4초 누르면 시작. 놓을 자리는 선으로 표시 */
 function lpSort(items,grab,onDrop,label,opts){opts=opts||{};items.forEach(function(it,from){var gr=grab(it);if(!gr||gr.__lp)return;gr.__lp=1;
@@ -15213,7 +15230,7 @@ var _sb=$('tShot');if(_sb)_sb.onclick=shotOn;var _qs=$('qShot');if(_qs)_qs.oncli
 function nextNo(){var mx=0;MEM.forEach(function(m){if(m.no>mx)mx=m.no});return mx+1}
 function pickList(arr){var d=document.createElement('div');d.id='memPick';var h='<div class="box"><div style="font-weight:700;margin-bottom:6px">여기에 겹친 메모 '+arr.length+'개</div>';arr.forEach(function(m,k){h+='<div class="fi" data-k="'+k+'"><div class="th" style="box-shadow:0 0 0 3px '+pcv(m)+'">'+(m.photos&&m.photos[0]?'<img src="'+m.photos[0]+'">':'M')+'</div><div class="tx"><b><i class="dot" style="background:'+pcv(m)+'">'+NO[m.id]+'</i>'+esc((m.text||'(사진 메모)').split('\n')[0])+'</b><small>'+fmtT(m.t)+'</small></div></div>'});h+='<button class="btn on" style="width:100%;margin-top:8px" id="memPickZ">확대해서 펼쳐 보기</button><button class="btn" style="width:100%;margin-top:6px" id="memPickX">닫기</button></div>';d.innerHTML=h;document.body.appendChild(d);
  d.onclick=function(e){var f=e.target.closest&&e.target.closest('.fi');if(f){var m=arr[+f.dataset.k];d.remove();openMemo(m);return}if(e.target.id==='memPickZ'){var bd=L.latLngBounds(arr.map(function(m){return [m.lat,m.lng]}));d.remove();if(bd.getNorthEast().equals(bd.getSouthWest())){status('이 메모들은 위치가 같아서 더 펼칠 수 없어요 (번호 목록에서 고르세요)')}else{map.fitBounds(bd,{padding:[70,70],maxZoom:21});status('확대했습니다 · 아직 겹치면 더 확대해 보세요')}return}if(e.target===d||e.target.id==='memPickX')d.remove()}}
-function drawMem(){mg.clearLayers();var gs=[];MEM.slice().sort(function(a,b){return (a.no||0)-(b.no||0)}).forEach(function(m){if(!PIN||HID.indexOf(m.id)>=0)return;if(FAN&&m.az!=null&&isFinite(m.az))try{fan(m).addTo(mg)}catch(e){}var pt=map.latLngToContainerPoint([m.lat,m.lng]),g0=null;for(var k=0;k<gs.length;k++){var q=gs[k].pt;if(Math.abs(q.x-pt.x)<24&&Math.abs(q.y-pt.y)<28){g0=gs[k];break}}if(g0)g0.list.push(m);else gs.push({pt:pt,list:[m]})});
+function drawMem(){mg.clearLayers();var gs=[];MEM.slice().sort(function(a,b){return (a.no||0)-(b.no||0)}).forEach(function(m){if(!PIN||HID.indexOf(m.id)>=0||m._mv)return;if(FAN&&m.az!=null&&isFinite(m.az))try{fan(m).addTo(mg)}catch(e){}var pt=map.latLngToContainerPoint([m.lat,m.lng]),g0=null;for(var k=0;k<gs.length;k++){var q=gs[k].pt;if(Math.abs(q.x-pt.x)<24&&Math.abs(q.y-pt.y)<28){g0=gs[k];break}}if(g0)g0.list.push(m);else gs.push({pt:pt,list:[m]})});
  gs.forEach(function(g1){var m=g1.list[0];L.marker([m.lat,m.lng],{icon:mIcon(m,g1.list.length),keyboard:false}).on('click',function(){if(g1.list.length>1)pickList(g1.list);else openMemo(m)}).addTo(mg)})}
 map.on('zoomend',function(){if(MEM.length)drawMem()});
 try{var _rd=null;function reMem(){clearTimeout(_rd);_rd=setTimeout(function(){if(MEM.length)drawMem()},60)}new MutationObserver(reMem).observe(document.documentElement,{attributes:true,attributeFilter:['data-pal','data-theme','data-bright']});if(window.matchMedia)matchMedia('(prefers-color-scheme: dark)').addEventListener('change',reMem)}catch(e){}
@@ -15242,7 +15259,14 @@ $('memChkAdd').onclick=function(){var v=$('memChkNew').value.trim();if(!v)return
 $('memAz').oninput=function(){var v=parseFloat(this.value);curAz=isFinite(v)?((v%360)+360)%360:null;$('memAzV').textContent=curAz==null?'':'· '+D8[Math.round(curAz/45)%8]+'쪽 '+Math.round(curAz)+'°'};
 $('memAzX').onclick=function(){curAz=null;renderAz()};
 $('memAzC').onclick=function(){var h=window.__gps&&window.__gps().hdg;if(h==null||!isFinite(h)){$('memInfo').textContent='폰 방향 값이 없습니다 (내 위치를 켜고 폰을 움직인 뒤 다시)';return}curAz=((h%360)+360)%360;renderAz()};
-function openMemo(m,ll){cur=m||{id:'m'+Date.now(),t:Date.now(),lat:ll[0],lng:ll[1],text:'',photos:[],isNew:true};curPh=(cur.photos||[]).slice();curPo=curPh.map(function(_,i){return (cur.po||[])[i]||null});curChk=(cur.chk||[]).slice();curAz=cur.az==null?null:cur.az;curCol=cur.col||null;renderCol();$('memNo').value=cur.no||'';$('memNo').placeholder=String(nextNo());if(cur.isNew&&curAz==null){var G0=window.__gps&&window.__gps();if(G0&&G0.hdg!=null&&isFinite(G0.hdg))curAz=((G0.hdg%360)+360)%360}renderChk();renderAz();$('memText').value=cur.text||'';$('memTitle').textContent=cur.isNew?'새 메모':'메모 · '+fmtT(cur.t);$('memDel').hidden=!!cur.isNew;$('memInfo').textContent='위치 '+cur.lat.toFixed(6)+', '+cur.lng.toFixed(6);renderPh();$('memModal').hidden=false}
+function openMemo(m,ll){cur=m||{id:'m'+Date.now(),t:Date.now(),lat:ll[0],lng:ll[1],text:'',photos:[],isNew:true};curPh=(cur.photos||[]).slice();curPo=curPh.map(function(_,i){return (cur.po||[])[i]||null});curChk=(cur.chk||[]).slice();curAz=cur.az==null?null:cur.az;curCol=cur.col||null;renderCol();$('memNo').value=cur.no||'';$('memNo').placeholder=String(nextNo());if(cur.isNew&&curAz==null){var G0=window.__gps&&window.__gps();if(G0&&G0.hdg!=null&&isFinite(G0.hdg))curAz=((G0.hdg%360)+360)%360}renderChk();renderAz();$('memText').value=cur.text||'';$('memTitle').textContent=cur.isNew?'새 메모':'메모 · '+fmtT(cur.t);$('memDel').hidden=!!cur.isNew;$('memMv').hidden=!!cur.isNew;$('memInfo').textContent='위치 '+cur.lat.toFixed(6)+', '+cur.lng.toFixed(6);renderPh();$('memModal').hidden=false}
+var pmM=null,pmMk=null;
+function pmEnd(){if(pmMk){try{map.removeLayer(pmMk)}catch(e){}pmMk=null}if(pmM){delete pmM._mv;pmM=null}$('pmBar').hidden=true;drawMem()}
+$('memMv').onclick=function(){if(!cur||cur.isNew)return;pmM=cur;pmM._mv=1;$('memModal').hidden=true;drawMem();pmMk=L.marker([pmM.lat,pmM.lng],{icon:mIcon(pmM,1),draggable:true,zIndexOffset:2000,keyboard:false}).addTo(map);try{map.panTo([pmM.lat,pmM.lng])}catch(e){}$('pmBar').hidden=false};
+window.__pmClick=function(e){if(!pmM||!pmMk)return false;pmMk.setLatLng(e.latlng);return true};
+$('pmNo').onclick=pmEnd;
+$('pmOk').onclick=function(){if(!pmM||!pmMk)return;var ll=pmMk.getLatLng(),m=pmM;m.lat=+ll.lat.toFixed(7);m.lng=+ll.lng.toFixed(7);delete m._mv;dbPut('memo',m,function(ok){pmM=null;pmEnd();try{refresh()}catch(e){}status(ok?'핀 위치를 옮겼습니다':'저장하지 못했습니다')})};
+document.addEventListener('keydown',function(e){if(e.key==='Escape'&&pmM){e.preventDefault();pmEnd()}});
 function shrink(f,cb){var r=new FileReader();r.onload=function(){var im=new Image();im.onload=function(){var M=1280,k=Math.min(1,M/Math.max(im.width,im.height)),c=document.createElement('canvas');c.width=Math.round(im.width*k);c.height=Math.round(im.height*k);c.getContext('2d').drawImage(im,0,0,c.width,c.height);cb(c.toDataURL('image/jpeg',.75))};im.onerror=function(){cb(null)};im.src=r.result};r.onerror=function(){cb(null)};r.readAsDataURL(f)}
 $('memAdd').onclick=function(){$('memFile').click()};
 var ORIG_ON=g('origOn',true);
@@ -15329,12 +15353,12 @@ function showTrk(t){if(showL)map.removeLayer(showL);showL=L.polyline(t.pts.map(f
 /* ===== 현장 기록 시트 ===== */
 var tab='memo';
 function openField(t){tab=t||tab;$('fieldSheet').hidden=false;document.getElementById('info').hidden=true;refresh()}
-function refresh(){if($('fieldSheet').hidden)return;if(tab==='all')tab='memo';var MORE=['meas','fav','rec'],isMore=MORE.indexOf(tab)>=0;[].forEach.call($('fTabs').children,function(b){b.classList.toggle('on',b.dataset.t===tab||(b.dataset.t==='more'&&isMore))});var h='',B=$('fBody');
+var MQ='';function refresh(){if($('fieldSheet').hidden)return;if(tab==='all')tab='memo';var MORE=['meas','fav','rec'],isMore=MORE.indexOf(tab)>=0;[].forEach.call($('fTabs').children,function(b){b.classList.toggle('on',b.dataset.t===tab||(b.dataset.t==='more'&&isMore))});var h='',B=$('fBody');
  if(tab==='memo'){var as=MEM.slice().sort(function(a,b){return (a.no||0)-(b.no||0)});
   if(!as.length)h='<div class="fempty">저장된 메모가 없습니다. 도구 → 메모 핀을 켜고 지도를 눌러 보세요.</div>';
   else{var ds=[];as.forEach(function(m){var d=fmtT(m.t).slice(0,10);if(ds.indexOf(d)<0)ds.push(d)});if(DF&&ds.indexOf(DF)<0)DF=null;
-   h=togHTML();if(ds.length>1)h+='<div class="dfr"><button data-df="" class="'+(DF?'':'on')+'">전체</button>'+ds.map(function(d){return '<button data-df="'+d+'" class="'+(DF===d?'on':'')+'">'+d.slice(5).replace('-','/')+'</button>'}).join('')+'</div>';
-   var vs=DF?as.filter(function(m){return fmtT(m.t).slice(0,10)===DF}):as;
+   h=togHTML()+'<div class="frow mq"><input id="memQ" type="search" placeholder="메모 검색 (내용·번호·체크 항목)" autocomplete="off" value="'+esc(MQ)+'"></div>';if(ds.length>1)h+='<div class="dfr"><button data-df="" class="'+(DF?'':'on')+'">전체</button>'+ds.map(function(d){return '<button data-df="'+d+'" class="'+(DF===d?'on':'')+'">'+d.slice(5).replace('-','/')+'</button>'}).join('')+'</div>';
+   var vs=DF?as.filter(function(m){return fmtT(m.t).slice(0,10)===DF}):as;if(MQ){var qq=MQ.toLowerCase();vs=vs.filter(function(m){return (String(m.text||'')+' '+(m.no||'')+' #'+(m.no||'')+' '+(m.chk||[]).join(' ')+' '+fmtT(m.t)).toLowerCase().indexOf(qq)>=0})}
    h+='<div class="sub" style="margin:0 0 4px">'+gapTx(as)+'메모 '+as.length+'개 · 사진 '+as.reduce(function(a,m){return a+(m.photos?m.photos.length:0)},0)+'장 · 빨간 핀 = 주의 항목(진입로 좁음·경사·배수·묘지·송전탑·악취) 체크</div><div class="frows">';
    vs.forEach(function(m){h+='<div class="fi gc'+(HID.indexOf(m.id)>=0?' hd':'')+'" data-mid="'+m.id+'"><div class="th" style="box-shadow:0 0 0 3px '+pcv(m)+'">'+(m.photos&&m.photos[0]?'<img src="'+m.photos[0]+'">':'M')+'</div><div class="tx"><b><i class="dot" style="background:'+pcv(m)+'">'+NO[m.id]+'</i>'+esc((m.text||'(사진 메모)').split('\n')[0])+'</b><small>'+fmtT(m.t)+(m.photos&&m.photos.length?' · 사진 '+m.photos.length:'')+(m.az!=null?' · '+D8[Math.round(m.az/45)%8]+'쪽':'')+(m.chk&&m.chk.length?' · ✔'+m.chk.length:'')+'</small></div>'+eyeB(m)+'</div>'});h+='</div>'}
   h+='<div class="frow"><button class="btn on" id="exAll">내보내기 (zip: 번호순 사진·표·지도 파일)</button></div><div class="frow"><button class="btn" id="imAll">다른 기기 기록 가져오기 (zip)</button></div>'}
@@ -15351,6 +15375,7 @@ function refresh(){if($('fieldSheet').hidden)return;if(tab==='all')tab='memo';va
   REC.forEach(function(r,i){var has=FAV.some(function(f){return f.n===r.n});h+='<div class="fi" data-i="'+i+'"><div class="th">□</div><div class="tx"><b>'+esc(r.n)+'</b><small>'+fmtT(r.t)+'</small></div><button class="ic" data-s="'+i+'">'+(has?'★':'☆')+'</button></div>'})}
  if(isMore)h='<div class="dfr">'+[['meas','측정'],['fav','즐겨찾기'],['rec','최근']].map(function(a){return '<button data-mt="'+a[0]+'" class="'+(tab===a[0]?'on':'')+'">'+a[1]+'</button>'}).join('')+'</div>'+h;
  B.innerHTML=h}
+$('fBody').addEventListener('input',function(e){var t=e.target;if(t&&t.id==='memQ'){MQ=t.value.trim();var n=t.value.length;refresh();var i=$('memQ');if(i){i.focus();try{i.setSelectionRange(n,n)}catch(x){}}}});
 $('fTabs').onclick=function(e){var b=e.target.closest('button');if(!b)return;tab=b.dataset.t==='more'?g('moreTab','meas'):b.dataset.t;refresh()};
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-df],[data-mt]');if(!b||!$('fieldSheet').contains(b))return;e.stopPropagation();if(b.dataset.mt){tab=b.dataset.mt;s('moreTab',tab)}else DF=b.dataset.df||null;refresh()},true);
 $('fBody').onclick=function(e){var t=e.target,i;var gc=t.closest&&t.closest('.gc');if(gc){var mm0=MEM.filter(function(x){return x.id===gc.dataset.mid})[0];if(mm0){$('fieldSheet').hidden=true;map.setView([mm0.lat,mm0.lng],Math.max(map.getZoom(),18));openMemo(mm0)}return}
@@ -15823,6 +15848,35 @@ window.__fld={parseLL:parseLL};
  $('vsRes').addEventListener('click',function(e){var t=e.target;if(t.id==='vsMap')draw();else if(t.id==='vsCp')cp();else if(t.id==='vsClr'){vsg.clearLayers();show()}});
 })();
 (function(){var sm=document.querySelector('#keyModal details[data-k="app"] summary');if(!sm)return;var n=0,t=0;sm.addEventListener('click',function(){var now=Date.now();if(now-t>3000)n=0;t=now;if(++n>=5){n=0;var a=document.getElementById('accSec');if(a){a.hidden=false;a.open=true;status('관리자 항목을 표시했습니다')}}})})();
+(function(){var $=function(i){return document.getElementById(i)};var bg=L.layerGroup().addTo(map),run=0,BB=null;
+ function lines(){var base=$('bjBase').value.trim(),a=[];$('bjTx').value.split(/\r?\n/).forEach(function(l){l=l.replace(/\t+/g,' ').replace(/\s+/g,' ').trim();if(!l)return;if(/^\d+[.)]?\s+/.test(l)&&/[가-힣]/.test(l.replace(/^\d+[.)]?\s+/,'')))l=l.replace(/^\d+[.)]?\s+/,'');var only=/^(산\s*)?\d+(-\d+)?$/.test(l);a.push({raw:l,q:only?(base?base+' '+l:''):l,only:only})});return a}
+ function jb(t){var m=String(t||'').match(/(산\s*)?\d+(-\d+)?(?=\D*$)/);return m?m[0].replace(/\s+/g,''):''}
+ function go(){if(!KEY){showKey();return}var a=lines();if(!a.length){$('bjSt').textContent='지번을 붙여넣어 주세요';return}try{localStorage.setItem('bjBase',$('bjBase').value.trim())}catch(e){}
+  bg.clearLayers();BB=null;var id=++run,col=$('bjCol').value||'#ff8a00',nf=[],warn=[],ok=[],done=0,i=0;$('bjRes').innerHTML='';$('bjGo').textContent='중지';
+  function st(){$('bjSt').textContent='찾는 중… '+done+' / '+a.length}st();
+  function fin(){if(id!==run)return;$('bjGo').textContent='찾아서 표시';var h='<div class="bh">찾음 '+ok.length+' · 확인 필요 '+warn.length+' · 못 찾음 '+nf.length+' (총 '+a.length+'줄)</div>';
+   if(BB){h+='<div style="margin:6px 0"><button class="btn on" id="bjView" type="button">지도에서 보기</button></div>'}
+   if(nf.length)h+='<div class="bh">못 찾음 <button class="btn" id="bjCp" type="button" style="padding:3px 8px;font-size:12px;margin-left:6px">목록 복사</button></div>'+nf.map(function(x){return '<div class="bi"><span>'+esc(x.raw)+'</span><small>'+esc(x.why)+'</small></div>'}).join('');
+   if(warn.length)h+='<div class="bh">다른 필지일 수 있음 (회색 점선으로 표시)</div>'+warn.map(function(x){return '<div class="bi ok" data-b="'+x.bb.join(',')+'"><span>'+esc(x.raw)+'</span><small>→ '+esc(x.got)+'</small></div>'}).join('');
+   if(ok.length)h+='<div class="bh">찾음 (누르면 이동)</div>'+ok.map(function(x){return '<div class="bi ok" data-b="'+x.bb.join(',')+'"><span>'+esc(x.raw)+'</span><small>'+esc(x.got)+'</small></div>'}).join('');
+   $('bjRes').innerHTML=h;$('bjSt').textContent='';window.__bjNf=nf.map(function(x){return x.raw}).join('\n')}
+  function ext(b,g){var xs=[],ys=[];(function w(c){if(typeof c[0]==='number'){xs.push(c[0]);ys.push(c[1])}else c.forEach(w)})(g.coordinates);var bb=[Math.min.apply(0,ys),Math.min.apply(0,xs),Math.max.apply(0,ys),Math.max.apply(0,xs)];if(!b)return bb;return [Math.min(b[0],bb[0]),Math.min(b[1],bb[1]),Math.max(b[2],bb[2]),Math.max(b[3],bb[3])]}
+  function one(){if(id!==run)return;var j=i++;if(j>=a.length){if(done>=a.length)fin();return}var it=a[j];
+   function end(){done++;st();if(done>=a.length)fin();else one()}
+   if(!it.q){nf.push({raw:it.raw,why:'기본 주소 필요'});return end()}
+   sQry(it.q,'address','parcel',function(r){if(id!==run)return;if(!r||!r.length){nf.push({raw:it.raw,why:r===null?'검색 실패':'검색 결과 없음'});return end()}
+    var o=r[0];dataQ('LP_PA_CBND_BUBUN',o.x,o.y,true,function(fs){if(id!==run)return;if(!fs||!fs.length){nf.push({raw:it.raw,why:'필지 없음'});return end()}
+     var f=fs[0],p=f.properties||{},got=p.addr||p.jibun||o.t,want=jb(it.raw),have=jb(got),bad=want&&have&&want!==have;
+     try{var lay=L.geoJSON(f.geometry,{interactive:false,style:bad?{color:'#777',weight:2,dashArray:'5 4',fillColor:'#777',fillOpacity:.2}:{color:col,weight:2,fillColor:col,fillOpacity:.38}});bg.addLayer(lay);var b2=lay.getBounds();var bb=[b2.getSouth(),b2.getWest(),b2.getNorth(),b2.getEast()];BB=BB?[Math.min(BB[0],bb[0]),Math.min(BB[1],bb[1]),Math.max(BB[2],bb[2]),Math.max(BB[3],bb[3])]:bb;(bad?warn:ok).push({raw:it.raw,got:got,bb:bb})}catch(e){nf.push({raw:it.raw,why:'도형 오류'})}
+     end()})})}
+  for(var w=0;w<3;w++)one()}
+ function view(bb){$('bjModal').hidden=true;try{map.fitBounds([[bb[0],bb[1]],[bb[2],bb[3]]],{maxZoom:19,padding:[40,40]})}catch(e){}}
+ $('bjOpen').onclick=function(){$('toolPop').hidden=true;try{$('bTool').setAttribute('aria-expanded','false');$('bTool').classList.remove('on')}catch(e){}try{$('bjBase').value=localStorage.getItem('bjBase')||''}catch(e){}$('bjModal').hidden=false};
+ $('bjX').onclick=function(){$('bjModal').hidden=true};
+ $('bjGo').onclick=function(){if($('bjGo').textContent==='중지'){run++;$('bjGo').textContent='찾아서 표시';$('bjSt').textContent='중지했습니다';return}go()};
+ $('bjClr').onclick=function(){run++;bg.clearLayers();BB=null;$('bjRes').innerHTML='';$('bjSt').textContent='표시를 지웠습니다';$('bjGo').textContent='찾아서 표시'};
+ $('bjRes').addEventListener('click',function(e){var t=e.target,r=t.closest&&t.closest('.bi.ok');if(t.id==='bjView'&&BB){view(BB);return}if(t.id==='bjCp'){try{navigator.clipboard.writeText(window.__bjNf||'').then(function(){status('못 찾은 목록을 복사했습니다')})}catch(x){}return}if(r&&r.dataset.b){view(r.dataset.b.split(',').map(Number))}});
+})();
  var VG=g('vg',{fav:1});if(VG.fav===undefined)VG.fav=1;[].forEach.call(document.querySelectorAll('#viewPop details.vg'),function(d){var k=d.dataset.g;d.open=!!VG[k];d.addEventListener('toggle',function(){VG[k]=d.open?1:0;s('vg',VG)})});
  /* 시작할 때 내 위치로 */
  var SL=g('sl',1);function slMark(){[].forEach.call($('slSeg').children,function(b){b.classList.toggle('on',(b.dataset.l==='1')===!!SL)})}
@@ -15889,7 +15943,8 @@ window.__fld={parseLL:parseLL};
  window.__diag=diag})();
 /* v17: 업데이트 내용 · 저장 공간 */
 (function(){var $=function(i){return document.getElementById(i)};
- var LOGV='2026-11-10a',CH=[
+ var LOGV='2026-11-10b',CH=[
+  ['2026.11.10 (지번 일괄 · 핀 이동 · 메모 검색)',['도구 → 지번 목록 일괄 표시: 편입토지조서·엑셀의 지번을 붙여넣으면 필지를 찾아 색칠, 못 찾은 줄과 다른 필지일 수 있는 줄을 따로 알려줌(기본 주소 지정 가능)','메모를 열면 “위치 옮기기”: 핀을 끌거나 지도를 눌러 새 위치로 저장','현장 기록 → 메모에 검색칸 추가(내용·번호·체크 항목)']],
   ['2026.11.10 (이름표·방문 순서·관리자 항목)',['창이 열려 있으면 오른쪽 메뉴 이름표를 숨겨 창 위에 겹치지 않게 함','방문 순서: 전체 선택·해제, 지도 가운데에서 가까운 N곳 고르기 추가','인증키 창의 접속 승인(관리자)은 관리자로 로그인한 기기에만 보임 · 일반 사용자는 “앱 정보”를 5번 연속 누르면 표시']],
   ['2026.11.09 (지번 외곽선 연하게)',['지번 글자 외곽선을 더 얇고 연하게 조정(햇빛 모드에서만 조금 진하게)']],
   ['2026.11.09 (지번 글자 선명하게)',['지번 글자의 번지는 그림자를 얇은 외곽선으로 바꾸고 글자 크기를 정수 단위로 맞춰 또렷하게 표시','지적선은 이전 방식으로 되돌림']],
