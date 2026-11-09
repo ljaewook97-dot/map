@@ -1110,9 +1110,9 @@ html[data-oh="1"] #oh1{display:none}
 #cmpPanel[hidden]{display:none}#cmpPanel .ch{display:flex;align-items:center;justify-content:space-between}#cmpPanel .ch b{font-size:14px}
 #cmpPanel .ch button{height:30px;padding:0 12px;border:1px solid var(--line);border-radius:9px;background:none;color:var(--fg);font:inherit;font-size:12.5px;font-weight:600}
 #cmpPanel small{display:block;color:var(--mut);font-size:11.5px;margin-bottom:4px}
-#cmpSeg,#cmpSplit{display:flex;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--bg)}
-#cmpSeg button,#cmpSplit button{flex:1;height:34px;border:0;background:none;color:var(--fg);font:inherit;font-size:12.5px;font-weight:600}
-#cmpSeg button.on,#cmpSplit button.on{background:var(--acc2);color:var(--acc)}
+#cmpSeg,#cmpSplit,#cmpOv{display:flex;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--bg)}
+#cmpSeg button,#cmpSplit button,#cmpOv button{flex:1;height:34px;border:0;background:none;color:var(--fg);font:inherit;font-size:12.5px;font-weight:600}
+#cmpSeg button.on,#cmpSplit button.on,#cmpOv button.on{background:var(--acc2);color:var(--acc)}
 #cmpPanel .cs{display:flex;align-items:center;gap:6px}#cmpPanel .cs button{flex:0 0 36px;height:34px;border:1px solid var(--line);border-radius:9px;background:none;color:var(--fg);font:inherit}
 #cmpPanel input[type=range]{flex:1;min-width:0}#cmpPanel .cm{font-size:12px;color:var(--mut);min-height:16px}#cmpPanel .cm.w{color:#c0392b}
 #cmpDate{font-weight:800;font-size:15px;color:var(--fg)}
@@ -1558,6 +1558,7 @@ body.hasbar #ruLg,body:has(.sheet:not([hidden]):not(#info)) #ruLg{display:none}
  <div id="cmpPastRow"><small>촬영(보관) 시점</small><div id="cmpDate">—</div><div class="cs"><button id="cmpPrev" type="button">◀</button><input type="range" id="cmpRng" min="0" max="0" value="0"><button id="cmpNext" type="button">▶</button></div><div id="cmpYrs"></div></div>
  <div class="cm" id="cmpMsg"></div>
  <div><small>화면 나누기 — 나란히: 왼쪽 화면과 같은 범위를 오른쪽에 과거로 보여 줍니다</small><div id="cmpSplit"><button data-s="sbs" type="button">나란히 (같은 범위)</button><button data-s="50" type="button">가운데 선 비교</button><button data-s="0" type="button">오른쪽만 전체</button></div></div>
+ <div id="cmpOvRow" hidden><small>오른쪽(과거) 화면에 표시</small><div id="cmpOv"><button data-o="cad" type="button">지적선</button><button data-o="jb" type="button">지번</button><button data-o="ov" type="button">용도지역 등</button></div></div>
  <div><small>위치 맞추기 (사진마다 수십 m 어긋나 있어 자동으로 보정합니다)</small><div id="cmpAl"><button id="alAuto" type="button">자동 맞추기</button><button id="alOn" type="button">직접 끌어 맞추기</button><button id="alRs" type="button">원래대로</button></div><div class="cm" id="alTx"></div></div></div>
 <div id="quick"><button data-q="tMeas" aria-label="측정"></button><button data-q="tSel" aria-label="필지 선택"></button><button data-q="tDrw" aria-label="그리기"></button><button data-q="tRad" aria-label="반경 분석"></button><button id="qMore" type="button" aria-label="도구 펼치기"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-2.5-.5-.5-2.5z"/></svg></button><div class="qp"><button class="qt" id="qJk" type="button" aria-label="지적선 켜기/끄기">지적</button><button class="qt" id="qJb" type="button" aria-label="지번 켜기/끄기">지번</button></div><button id="qCam" type="button" aria-label="사진 바로 찍기"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-2.5h6L17 8h3a1 1 0 011 1v9a1 1 0 01-1 1H4a1 1 0 01-1-1V9a1 1 0 011-1z"/><circle cx="12" cy="13" r="3.6"/></svg></button><button id="qShot" type="button" aria-label="화면 그대로 캡처"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9V5h4M20 9V5h-4M4 15v4h4M20 15v4h-4"/><circle cx="12" cy="12" r="2.2"/></svg></button><button id="qTog" type="button" aria-label="도구 버튼 접기"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 15l6-6 6 6"/></svg></button></div>
 <div class="modal" id="exModal" hidden><div class="box"><h3 style="margin:0 0 6px">CAD·GIS로 저장</h3><div id="exInfo" class="sub" style="margin:0 0 8px"></div>
@@ -14118,7 +14119,7 @@ var LS=window.localStorage;function g(k,d){try{var v=LS.getItem(k);return v==nul
  if(o.m!=null){var mm={};o.m.split(',').forEach(function(i){if(i)mm[i]=true});s('muniOn',mm)}
  history.replaceState(null,'',location.pathname+location.search)}catch(e){}})();
 var KEY=g('key',''),DOM=g('dom',location.hostname||'localhost');
-var BUILD="2611100149";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
+var BUILD="2611100153";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
 applyTheme(THEME);
 var BASE=g('base','Base');if(['Base','Satellite','SatLabel','white','none'].indexOf(BASE)<0)BASE='Base';
 // 레이어: id, 이름, 표시 WMS 이름, 조회용 data 코드
@@ -15730,7 +15731,7 @@ window.__fld={parseLL:parseLL};
   else lp.hidden=true};
  lp.onclick=function(){if(lp.classList.contains('f')){if(window.__failInfo)window.__failInfo(window.__failList||[]);else $('bRef').click()}};
  /* ---- 지도 비교 · 과거 항공사진 ---- */
- var WBU='https://s3-us-west-2.amazonaws.com/config.maptiles.arcgis.com/waybackconfig.json',WB=null,WBi=-1,cmpOn=false,rm='past',spx=null,spl=50,rL=null,sbs=false,m2=null,m2d=null,m2T=null,m2W=[],sg=false;
+ var WBU='https://s3-us-west-2.amazonaws.com/config.maptiles.arcgis.com/waybackconfig.json',WB=null,WBi=-1,cmpOn=false,rm='past',spx=null,spl=50,rL=null,sbs=false,m2=null,m2d=null,m2T=null,m2W=[],m2G={},sg=false,R2=g('r2',{cad:true,jb:true,ov:false});
  var P=$('cmpPanel'),BR=$('cmpBar'),msg=$('cmpMsg');
  function wbLoad(cb){if(WB)return cb(WB);
   try{var c=JSON.parse(localStorage.getItem('wbcfg2')||'null');if(c&&c.a&&c.a.length&&Date.now()-c.t<2592e6){WB=c.a;return cb(WB)}}catch(e){}
@@ -15757,9 +15758,21 @@ window.__fld={parseLL:parseLL};
  function m2Layers(){if(!m2)return;if(m2T){try{m2.removeLayer(m2T)}catch(e){}m2T=null}m2W.forEach(function(w){try{m2.removeLayer(w)}catch(e){}});m2W=[];
   var url=null;if(rm==='past'){if(WB&&WBi>=0)url=wbUrl(WB[WBi])}else if(rm==='Satellite')url=tileUrl('Satellite','jpeg');else url=tileUrl('Base','png');
   if(url){m2T=L.tileLayer(url,{maxZoom:22,maxNativeZoom:19,keepBuffer:3,updateWhenIdle:false}).addTo(m2)}
-  var wn=[];LAYERS.forEach(function(l){if(!l.on||!KEY)return;if(l.id==='cad')wn.push('lp_pa_cbnd_bonbun','lp_pa_cbnd_bubun');else if(l.id==='dist')wn.push('lt_c_upisuq161');else if(!l.vec&&l.wms)l.wms.split(',').forEach(function(n){wn.push(n)})});
+  var wn=[];if(R2.ov)LAYERS.forEach(function(l){if(!l.on||!KEY||l.vec||!l.wms)return;l.wms.split(',').forEach(function(n){wn.push(n)})});
   wn.forEach(function(n){var w=L.tileLayer.wms('https://api.vworld.kr/req/wms',{layers:n,styles:n,format:'image/png',transparent:true,version:'1.3.0',key:KEY,domain:DOM,maxZoom:22,zIndex:5,opacity:.85}).addTo(m2);m2W.push(w)});
+  m2Mirror();
   m2Off()}
+
+ function m2Walk(g,fn){if(g&&g.eachLayer&&!g.getLatLng&&!g.getLatLngs){g.eachLayer(function(x){m2Walk(x,fn)})}else if(g)fn(g)}
+ function m2Clone(src){var ng=L.layerGroup();m2Walk(src,function(l){try{if(l.getLatLng&&l.options&&l.options.icon){L.marker(l.getLatLng(),{interactive:false,keyboard:false,icon:l.options.icon}).addTo(ng)}
+   else if(l.getLatLngs){var o=l.options||{};L.polygon(l.getLatLngs(),{interactive:false,color:o.color,weight:o.weight,opacity:o.opacity,dashArray:o.dashArray||null,fill:!!o.fill,fillColor:o.fillColor,fillOpacity:o.fillOpacity}).addTo(ng)}}catch(e){}});return ng}
+ function m2Mirror(){if(!m2)return;['cad','txt','dist','hi'].forEach(function(k){if(m2G[k]){try{m2.removeLayer(m2G[k])}catch(e){}m2G[k]=null}
+   var on=k==='cad'?R2.cad:k==='txt'?R2.jb:k==='dist'?R2.ov:true,src=k==='hi'?hi:GG[k];if(!on||!src)return;m2G[k]=m2Clone(src).addTo(m2)})}
+ function ovShow(){[].forEach.call($('cmpOv').children,function(b){b.classList.toggle('on',!!R2[b.dataset.o])});$('cmpOvRow').hidden=!sbs}
+ [].forEach.call($('cmpOv').children,function(b){b.onclick=function(){R2[b.dataset.o]=!R2[b.dataset.o];s('r2',R2);ovShow();if(b.dataset.o==='ov')m2Layers();else m2Mirror()}});
+ var _sg=swapG;swapG=function(k,ng){_sg(k,ng);if(sbs&&(k==='cad'||k==='txt'||k==='dist'))m2Mirror()};
+ var _rd2=render;render=function(){var r=_rd2.apply(this,arguments);if(sbs)setTimeout(m2Mirror,150);return r};
+ map.on('resize',function(){if(cmpOn){place();m2Sync()}});try{new ResizeObserver(function(){if(cmpOn){place();m2Sync()}}).observe(map.getContainer())}catch(e){}
  function m2Off(){if(!m2)return;var o=(rm==='past'||rm==='Satellite')?ofPx():[0,0],tp=m2.getPane('tilePane');if(tp)tp.style.translate=o[0]+'px '+o[1]+'px'}
  function sbsOn(){if(sbs)return;sbs=true;spl=50;spx=null;
   m2d=document.createElement('div');m2d.id='cmp2';m2d.style.cssText='position:absolute;top:0;bottom:0;right:0;width:50%;z-index:450;background:#222;border-left:2px solid #fff';map.getContainer().appendChild(m2d);
@@ -15768,14 +15781,14 @@ window.__fld={parseLL:parseLL};
   m2Sync();m2Layers();
   m2.on('move zoom',m2Back);map.on('move zoom zoomend moveend',m2Sync);
   m2.on('click',function(e){try{map.fire('click',{latlng:e.latlng,containerPoint:map.latLngToContainerPoint(e.latlng),layerPoint:map.latLngToLayerPoint(e.latlng),originalEvent:e.originalEvent})}catch(x){}});
-  place();var pn=map.getPane('p_cmp');if(pn)pn.style.display='none'}
+  place();ovShow();var pn=map.getPane('p_cmp');if(pn)pn.style.display='none'}
  function sbsOff(){if(!sbs)return;sbs=false;try{map.off('move zoom zoomend moveend',m2Sync)}catch(e){}
-  if(m2){try{m2.off();m2.remove()}catch(e){}m2=null}if(m2d){m2d.remove();m2d=null}m2T=null;m2W=[];var pn=map.getPane('p_cmp');if(pn)pn.style.display=''}
+  if(m2){try{m2.off();m2.remove()}catch(e){}m2=null}if(m2d){m2d.remove();m2d=null}m2T=null;m2W=[];m2G={};ovShow();var pn=map.getPane('p_cmp');if(pn)pn.style.display=''}
  function clip(){if(sbs)m2Off();var pn=map.getPane('p_cmp');if(!pn||!cmpOn)return;var sz=map.getSize(),x=spx==null?sz.x*spl/100:spx;
   var o=(rm==='past'||rm==='Satellite')?ofPx():[0,0];pn.style.translate=o[0]+'px '+o[1]+'px';
   var a=map.containerPointToLayerPoint([x-o[0],-20-o[1]]),b=map.containerPointToLayerPoint([sz.x+20-o[0],sz.y+20-o[1]]);
   pn.style.clipPath='polygon('+a.x+'px '+a.y+'px,'+b.x+'px '+a.y+'px,'+b.x+'px '+b.y+'px,'+a.x+'px '+b.y+'px)'}
- function place(){var sz=map.getSize();spx=sz.x*spl/100;BR.style.left=spx+'px';BR.hidden=!(cmpOn&&spl>0);clip()}
+ function place(){var sz=map.getSize();spx=sz.x*spl/100;var mr=map.getContainer().getBoundingClientRect(),op=BR.offsetParent||document.body,or=op.getBoundingClientRect();BR.style.left=(mr.left-or.left+spx)+'px';BR.hidden=!(cmpOn&&spl>0);clip()}
  function labels(){var L1={Base:'일반',Satellite:'위성',SatLabel:'위성',white:'백지도',none:'지도 없음'}[BASE]||BASE;
   BR.querySelector('.l').textContent='왼쪽 · '+L1;BR.querySelector('.r').textContent='오른쪽 · '+(rm==='past'?(WB&&WBi>=0?WB[WBi].d:'과거'):rm==='Satellite'?'위성':'일반');
   $('cmpL').textContent='왼쪽: 지금 고른 배경지도 ('+L1+')'}
@@ -16383,8 +16396,8 @@ function lines(){var base=$('bjBase').value.trim(),a=[];$('bjTx').value.split(/\
  window.__diag=diag})();
 /* v17: 업데이트 내용 · 저장 공간 */
 (function(){var $=function(i){return document.getElementById(i)};
- var LOGV='2026-11-10q',CH=[
-  ['2026.11.10 (지도 비교 · 나란히 보기)',['지도 비교에 “나란히 (같은 범위)” 추가 — 왼쪽 화면에 보이는 범위가 오른쪽에 과거 영상으로 똑같이 펼쳐집니다 (가운데 선으로 가리는 방식이 아님)','오른쪽 화면을 끌거나 확대해도 왼쪽과 함께 움직이고, 오른쪽을 눌러도 필지가 선택됩니다','지적선·용도지역 등 켜 둔 레이어가 오른쪽에도 같이 표시됩니다 (WMS로 가능한 것만)']],
+ var LOGV='2026-11-10r',CH=[
+  ['2026.11.10 (지도 비교 · 나란히 보기)',['지도 비교에 “나란히 (같은 범위)” 추가 — 왼쪽 화면에 보이는 범위가 오른쪽에 과거 영상으로 똑같이 펼쳐집니다 (가운데 선으로 가리는 방식이 아님)','오른쪽 화면을 끌거나 확대해도 왼쪽과 함께 움직이고, 오른쪽을 눌러도 필지가 선택됩니다','오른쪽(과거) 화면에 지적선·지번·용도지역 등을 따로 켜고 끌 수 있습니다 (왼쪽 설정은 그대로)','왼쪽에서 필지를 조회해 옆 창이 열려도 가운데 선과 오른쪽 화면이 밀리지 않도록 수정','조회한 필지의 초록 표시가 오른쪽에도 같이 나옵니다']],
   ['2026.11.10 (도로구역 법령)',['기타 항목의 “도로구역”을 누르면 도로법 제25조로 바로 연결']],
   ['2026.11.10 (기타 항목 · 법령 바로가기)',['용도지구와 기타를 합쳐 “기타” 한 줄로 정리 (딸깍 박스의 기타 지역·지구와 같은 묶음)','정보창의 용도지역·개발제한·지구단위계획구역·기타·시설 항목을 누르면 관련 법령(국가법령정보센터)이 열림 (하천구역→하천법 등, 딸깍 박스와 같은 연결표)']],
   ['2026.11.10 (조회 항목 정리)',['용도지구에서 국토계획법상 용도지구가 아닌 항목(타 법령 구역 등)을 “기타” 줄로 분리','“내 위치에서 이 필지까지” 줄 삭제 (내 위치 표시와 방향·거리 안내는 그대로)','지구단위계획구역 줄에 “토지이음 바로가기” 버튼']],
