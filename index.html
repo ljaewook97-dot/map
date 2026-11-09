@@ -13941,7 +13941,7 @@ var LS=window.localStorage;function g(k,d){try{var v=LS.getItem(k);return v==nul
  if(o.m!=null){var mm={};o.m.split(',').forEach(function(i){if(i)mm[i]=true});s('muniOn',mm)}
  history.replaceState(null,'',location.pathname+location.search)}catch(e){}})();
 var KEY=g('key',''),DOM=g('dom',location.hostname||'localhost');
-var BUILD="2611091823";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
+var BUILD="2611091826";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
 applyTheme(THEME);
 var BASE=g('base','Base');if(['Base','Satellite','SatLabel','white','none'].indexOf(BASE)<0)BASE='Base';
 // 레이어: id, 이름, 표시 WMS 이름, 조회용 data 코드
@@ -14271,8 +14271,10 @@ function man(n){n=+n;if(!isFinite(n))return '';if(n>=1e8)return (n/1e8).toLocale
 function extLinks(lat,lng,addr,pnu){lat=(+lat).toFixed(6);lng=(+lng).toFixed(6);var u=[['카카오 로드뷰','https://map.kakao.com/link/roadview/'+lat+','+lng],['카카오맵','https://map.kakao.com/link/map/'+encodeURIComponent(addr||'선택 위치')+','+lat+','+lng]];
  if(addr)u.push(['네이버지도','https://map.naver.com/p/search/'+encodeURIComponent(addr)]);
  u.push(['구글 위성','https://www.google.com/maps/@?api=1&map_action=map&center='+lat+','+lng+'&zoom=19&basemap=satellite'],['구글 스트리트뷰','https://www.google.com/maps/@?api=1&map_action=pano&viewpoint='+lat+','+lng]);
+ if(addr)u.push(['씨:리얼(건축물)','https://seereal.lh.or.kr/SeerealMAP/seerealCommon/mainPage.do',addr]);
  if(pnu)u.push(['토지이음','https://www.eum.go.kr/web/ar/lu/luLandDet.jsp?isNoScr=script&mode=search&pnu='+encodeURIComponent(pnu)]);
- return '<div class="xls">'+u.map(function(x){return '<a class="xl" target="_blank" rel="noopener" href="'+x[1]+'">'+x[0]+'</a>'}).join('')+'</div>'}
+ return '<div class="xls">'+u.map(function(x){return '<a class="xl" target="_blank" rel="noopener" href="'+x[1]+'"'+(x[2]?' data-copy="'+esc(x[2])+'"':'')+'>'+x[0]+'</a>'}).join('')+'</div>'}
+document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a.xl[data-copy]');if(!a)return;var t=a.getAttribute('data-copy');try{navigator.clipboard.writeText(t).then(function(){status('주소를 복사했습니다 · 사이트 검색창에 붙여넣으세요')},function(){})}catch(x){}},true);
 function ratioSec(S){if(!S.ratio||!S.ratio.length)return '';var a=Number(S.area)||0,h='';
  S.ratio.forEach(function(g){h+='<div class="rg2"><small>'+g.g+'</small>'+g.items.map(function(it){var p=Math.min(100,it[1]),t=p>=99?'100%':p.toFixed(p<10?1:0)+'%';return '<div class="rr"><span>'+esc(it[0])+'</span><i style="--w:'+p.toFixed(1)+'%"></i><b>'+t+(a?'<em> · 약 '+Math.round(a*p/100).toLocaleString('ko-KR')+'㎡</em>':'')+'</b></div>'}).join('')+'</div>'});
  return '<div class="sec"><small>이 필지 안 면적 비율 <em class="sub" style="font-style:normal;font-weight:400">· 켜 둔 레이어 기준, 약값</em></small>'+h+'</div>'}
@@ -15759,7 +15761,8 @@ window.__fld={parseLL:parseLL};
  window.__diag=diag})();
 /* v17: 업데이트 내용 · 저장 공간 */
 (function(){var $=function(i){return document.getElementById(i)};
- var LOGV='2026-11-09q',CH=[
+ var LOGV='2026-11-09r',CH=[
+  ['2026.11.09 (씨:리얼 바로가기)',['바로가기에 “씨:리얼(건축물)” 추가: 누르면 LH 씨:리얼 지도가 열리고 이 필지 주소가 복사됨(검색창에 붙여넣기)']],
   ['2026.11.09 (펼침 표시)',['접힌 항목은 ＋ 원, 펼친 항목은 － 색 원과 강조된 제목·왼쪽 선으로 구분(동별 건물 포함)']],
   ['2026.11.09 (끌기 손잡이)',['필지 정보창 항목 제목 왼쪽에 ≡ 손잡이 추가(PC에서도 바로 끌기)','끌고 있는 항목은 반투명으로 표시']],
   ['2026.11.09 (승인 기기 정리)',['접속 승인 목록: 전체·대기·승인·차단 필터, 마지막 접속일 표시(서버 새 버전 배포 후)','오래 안 쓴 기기(30·60·90·180일) 일괄 정리']],
