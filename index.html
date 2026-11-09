@@ -1469,10 +1469,22 @@ body:has(#ldPill:not([hidden])) .toast.ld{display:none!important}
 .sumL .none{font-size:12.5px;color:var(--mut)}
 /* 지번 글자 선명도 */
 html[data-jbc="1"] .jbi span{font-weight:900!important;-webkit-text-stroke:3.2px color-mix(in srgb,var(--jbsc,#000) 80%,transparent)!important}
+#skBox{display:grid;grid-template-columns:1fr 1fr;gap:4px 8px;font-size:13px}.skl{display:flex;align-items:center;gap:4px}
 #hifSeg{display:flex;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--bg)}#hifSeg button{flex:1;height:34px;border:0;background:none;color:var(--fg);font:inherit;font-size:13px;font-weight:600}#hifSeg button.on{background:var(--acc2);color:var(--acc)}
 #jbcSeg{display:flex;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--bg)}#jbcSeg button{flex:1;height:34px;border:0;background:none;color:var(--fg);font:inherit;font-size:13px;font-weight:600}#jbcSeg button.on{background:var(--acc2);color:var(--acc)}
 #opBox .orow{display:grid;grid-template-columns:96px 1fr 38px;gap:8px;align-items:center;font-size:12.5px;margin:6px 0}#opBox .orow span:last-child{color:var(--mut);text-align:right}#opBox input[type=range]{width:100%;min-width:0}
 </style><style id="v15">
+/* 정보창: 닫기는 ✕, 나머지 버튼은 주소 아래 한 줄 */
+#info>[data-close]{width:34px;height:34px;padding:0!important;border-radius:50%;font-size:15px;line-height:1;display:inline-flex;align-items:center;justify-content:center}
+#infoTb{display:flex;gap:6px;flex-wrap:wrap;margin:2px 0 10px}
+#infoTb .btn.x{float:none;position:static;margin:0;flex:0 0 auto;height:32px;padding:0 11px!important;display:inline-flex;align-items:center;gap:5px;font-size:12.5px}
+#infoTb .btn.x::before{content:"";width:14px;height:14px;background:currentColor;-webkit-mask:var(--ic) center/contain no-repeat;mask:var(--ic) center/contain no-repeat}
+#infoMark{--ic:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 21s7-6.5 7-12a7 7 0 0 0-14 0c0 5.5 7 12 7 12z'/%3E%3Ccircle cx='12' cy='9' r='2.5'/%3E%3C/svg%3E")}
+#infoShare{--ic:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='18' cy='5' r='3'/%3E%3Ccircle cx='6' cy='12' r='3'/%3E%3Ccircle cx='18' cy='19' r='3'/%3E%3Cpath d='M8.6 10.6l6.8-4.2M8.6 13.4l6.8 4.2'/%3E%3C/svg%3E")}
+#infoMin{--ic:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");margin-right:0!important}
+#info.min #infoMin{--ic:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 15l6-6 6 6'/%3E%3C/svg%3E")}
+#info.min #infoTb{float:right;margin:0 0 0 6px;flex-wrap:nowrap}
+#infoBody .ih{padding-right:44px}
 /* 한글은 단어(띄어쓰기) 단위로 줄바꿈 */
 #infoBody,#infoBody .ih h3,#infoBody .ihs,#infoBody .st,#infoBody .sec,.sumL,.toast,#cmpPanel,#viewPop,#toolPop,#mapPop,.modal .box{word-break:keep-all;overflow-wrap:break-word}
 #infoBody .ih h3{text-wrap:balance}
@@ -1537,6 +1549,7 @@ html:root[data-theme=dark]:not([data-pal=__]):not([data-out="1"]):not([data-brig
  <div class="ph"></div><button class="btn" id="ruOpen" type="button" style="width:100%">필지 색 구분 (면적·공시지가)</button>
  <div class="ph">지도 위 글자 크기 (지번)</div><div class="fsq" id="lsSeg"></div>
  <div class="ph">지번 글자 선명도 (위성 위에서 더 또렷하게)</div><div id="jbcSeg"><button data-j="auto" type="button">자동</button><button data-j="off" type="button">보통</button><button data-j="on" type="button">진하게</button></div>
+ <details id="skDet" style="margin-top:12px"><summary class="ph" style="cursor:pointer">정보창 항목 기본 펼침·접힘</summary><div class="sub" style="margin:4px 0">체크한 항목만 펼쳐서 보입니다. 해제하면 접혀서 제목만 보입니다.</div><div style="display:flex;gap:6px;margin-bottom:6px"><button class="btn" id="skAll" type="button">모두 펼치기</button><button class="btn" id="skNone" type="button">모두 접기</button></div><div id="skBox"></div></details>
  <div class="ph">선택한 필지 면 채우기</div><div id="hifSeg"><button data-f="0" type="button">없음</button><button data-f="0.12" type="button">연하게</button><button data-f="0.25" type="button">보통</button></div>
  <details id="opDet" style="margin-top:12px"><summary class="ph" style="cursor:pointer">레이어 투명도 한곳에서 조절</summary><div id="opBox"></div></details>
  <div class="ph">지도 어둡게 (일반·백지도)</div><div id="tdSeg"><button data-t="auto" type="button">자동</button><button data-t="on" type="button">켬</button><button data-t="off" type="button">끔</button></div>
@@ -14182,7 +14195,7 @@ var LS=window.localStorage;function g(k,d){try{var v=LS.getItem(k);return v==nul
  if(o.m!=null){var mm={};o.m.split(',').forEach(function(i){if(i)mm[i]=true});s('muniOn',mm)}
  history.replaceState(null,'',location.pathname+location.search)}catch(e){}})();
 var KEY=g('key',''),DOM=g('dom',location.hostname||'localhost');
-var BUILD="2611101716";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
+var BUILD="2611101722";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
 applyTheme(THEME);
 var BASE=g('base','Base');if(['Base','Satellite','SatLabel','white','none'].indexOf(BASE)<0)BASE='Base';
 // 레이어: id, 이름, 표시 WMS 이름, 조회용 data 코드
@@ -15290,9 +15303,9 @@ if(!adm()&&!lg('accOk')){var pre=function(){if(!gate&&document.body)showGate()};
 })();
 /* theme + version/update */
 (function(){document.querySelectorAll('#themeSeg button').forEach(function(b){b.onclick=function(){applyTheme(b.dataset.th)}});applyTheme(THEME);
- var vl=document.getElementById('verLbl');if(vl)vl.textContent=BUILD;var last=0,shown=false;
+ var vl=document.getElementById('verLbl');if(vl)vl.textContent=BUILD.replace(/^(\d\d)(\d\d)(\d\d)(\d\d)(\d\d)$/,'20$1.$2.$3 $4:$5')+' ('+BUILD+')';var last=0,shown=false;
  function bar(nb){if(shown)return;shown=true;var d=document.createElement('div');d.id='updBar';d.innerHTML='<span>새 버전이 있습니다</span>';var b=document.createElement('button');b.textContent='새로고침';b.onclick=function(){location.href=location.pathname+'?v='+nb};d.appendChild(b);document.body.appendChild(d)}
- function check(force,cb){if(!/^https?:/.test(location.protocol)){cb&&cb('local');return}var n=Date.now();if(!force&&n-last<600000)return;last=n;
+ function check(force,cb){if(!/^https?:/.test(location.protocol)){cb&&cb('local');return}var n=Date.now();if(!force&&n-last<60000)return;last=n;
   try{fetch(location.pathname+'?_='+n,{cache:'no-store'}).then(function(r){return r.text()}).then(function(x){var m=/BUILD="(\d{10,})"/.exec(x);if(!m){cb&&cb('fail');return}if(m[1]!==BUILD){bar(m[1]);cb&&cb('new')}else cb&&cb('same')}).catch(function(){cb&&cb('fail')})}catch(e){cb&&cb('fail')}}
  setTimeout(function(){check(false)},3000);document.addEventListener('visibilitychange',function(){if(!document.hidden)check(false)});
  var cb=document.getElementById('verChk');if(cb)cb.onclick=function(){var m=document.getElementById('verMsg');m.textContent='확인 중…';check(true,function(r){m.textContent=({same:'최신 버전입니다.',new:'새 버전이 있습니다. 위쪽 안내에서 새로고침하세요.',fail:'확인하지 못했습니다 (인터넷 연결 확인).',local:'파일로 연 화면에서는 확인할 수 없습니다.'})[r]})}})();
@@ -16531,7 +16544,9 @@ function lines(){var base=$('bjBase').value.trim(),a=[];$('bjTx').value.split(/\
  window.__diag=diag})();
 /* v17: 업데이트 내용 · 저장 공간 */
 (function(){var $=function(i){return document.getElementById(i)};
- var LOGV='2026-11-10u',CH=[
+ var LOGV='2026-11-10w',CH=[
+  ['2026.11.10 (정보창 버튼 배치)',['주소를 윗줄 전체 폭으로 넓히고, 닫기는 오른쪽 위 ✕, 표시·위치 공유·내리기는 주소 바로 아래 한 줄로 이동 (아이콘 추가)']],
+  ['2026.11.10 (정보창 길이·선택 해제·버전)',['“해당 사항” 칩이 두 줄을 넘으면 “+N 더 보기”로 접음','설정 > 보기 > “정보창 항목 기본 펼침·접힘”: 항목별로 펼칠지 접을지 고르고, 모두 펼치기·모두 접기','선택해 둔 필지를 지도에서 한 번 더 누르면 선택이 해제됩니다','새 버전 확인을 앱을 다시 열 때마다(1분 간격 제한) 하고, 설정의 버전 표시를 날짜·시각으로 읽기 쉽게']],
   ['2026.11.10 (줄바꿈)',['정보창의 주소·항목 글이 단어 중간에서 끊기지 않고 띄어쓰기 단위로 줄바꿈 (예: “목감동”이 “목감 / 동”으로 갈라지지 않음)']],
   ['2026.11.10 (선택 필지 표시)',['선택한 필지를 면으로 채우지 않고 테두리만 표시 (아래 사진이 그대로 보입니다)','설정 > 보기 > “선택한 필지 면 채우기”에서 없음·연하게·보통을 고를 수 있습니다']],
   ['2026.11.10 (화면 다듬기)',['정보창 항목마다 색 띠와 아이콘 추가 (접혀 있어도 구분됩니다)','공시지가 변동에 10년 추이 꺾은선 추가','조회 전·정보 없음 칸을 깜빡이는 자리표시와 “정보 없음”으로 정리','선택한 필지에 흰 테두리와 그림자 (위성 위에서 또렷하게)','지도 비교 중 오른쪽 화면에도 축척 막대와 북쪽 표시','작은 필지의 지번 글자를 더 작게 줄여서라도 표시','넓은 PC 화면에서 오른쪽 메뉴 키움, 어두운 화면 보조 글자 대비 상향, 버튼 모서리 통일','처음 열었을 때 짧은 사용 안내 한 번']],
@@ -16911,6 +16926,12 @@ function lines(){var base=$('bjBase').value.trim(),a=[];$('bjTx').value.split(/\
 
 /* v15: 섹션 아이콘 · 빈 값 · 첫 안내 */
 (function(){var $=function(i){return document.getElementById(i)},ib=$('infoBody');
+ /* 정보창 버튼 배치 */
+ var inf=$('info'),tb=document.createElement('div');tb.id='infoTb';['infoMark','infoShare','infoMin'].forEach(function(id){var b=$(id);if(b)tb.appendChild(b)});
+ var cl=inf.querySelector('[data-close]');if(cl){cl.textContent='✕';cl.setAttribute('aria-label','닫기');cl.title='닫기'}
+ function placeTb(){try{if(inf.classList.contains('min')){var bar=$('infoBar');if(tb.parentNode!==inf||tb.nextSibling!==bar)inf.insertBefore(tb,bar);return}
+  var ih=ib.querySelector('.ih');if(ih){if(tb.parentNode!==ib||tb.previousSibling!==ih)ib.insertBefore(tb,ih.nextSibling)}else if(tb.parentNode!==inf||tb.nextSibling!==ib)inf.insertBefore(tb,ib)}catch(e){}}
+ placeTb();new MutationObserver(placeTb).observe(ib,{childList:true});new MutationObserver(placeTb).observe(inf,{attributes:true,attributeFilter:['class','hidden']});
  var K={'용도지역':['#f2b84b','<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>'],
   '개발제한':['#2ea36b','<path d="M12 3l6 8h-4l5 7H5l5-7H6z"/><path d="M12 18v3"/>'],
   '지구단위계획구역':['#e06fa0','<path d="M4 20V9l8-5 8 5v11z"/><path d="M9 20v-6h6v6"/>'],
@@ -16922,9 +16943,21 @@ function lines(){var base=$('bjBase').value.trim(),a=[];$('bjTx').value.split(/\
  var busy=false;function post(){if(busy)return;busy=true;try{
   [].forEach.call(ib.querySelectorAll('.sec'),function(el){var sm=el.children[0];if(!sm||sm.tagName!=='SMALL')return;var k=keyOf(sm);if(!k)return;el.dataset.k=k;el.style.setProperty('--kc',K[k][0]);
    if(!sm.querySelector('.si')){var i=document.createElement('i');i.className='si';i.innerHTML='<svg viewBox="0 0 24 24">'+K[k][1]+'</svg>';var h=sm.querySelector('span,i');sm.insertBefore(i,h&&h.nextSibling?h.nextSibling:sm.firstChild)}});
+  [].forEach.call(ib.querySelectorAll('.sumL:not([data-cl])'),function(sl){if($('info').hidden)return;sl.dataset.cl='1';var ch=[].slice.call(sl.querySelectorAll('.sc')),top0=null,rows=0,lastTop=-1,cut=-1;
+   ch.forEach(function(c,i){var tp=c.offsetTop;if(tp!==lastTop){rows++;lastTop=tp}if(rows>2&&cut<0)cut=i});
+   if(cut>0){var hid=ch.slice(cut);hid.forEach(function(c){c.hidden=true});var mb=document.createElement('button');mb.type='button';mb.className='sc z more';mb.textContent='+'+hid.length+' 더 보기';var open=false;mb.onclick=function(){open=!open;hid.forEach(function(c){c.hidden=!open});mb.textContent=open?'접기':'+'+hid.length+' 더 보기'};sl.appendChild(mb)}});
   [].forEach.call(ib.querySelectorAll('.st b'),function(b){var tx=(b.textContent||'').trim();if(tx==='—'||tx==='정보 없음'){b.classList.add('em');if(tx==='—'&&!ib.classList.contains('ldg'))b.textContent='정보 없음'}else b.classList.remove('em')})}catch(e){}busy=false}
  new MutationObserver(post).observe(ib,{childList:true,subtree:true});
  var _rd=render;render=function(S,pnu,partial){var r=_rd.apply(this,arguments);ib.classList.toggle('ldg',!!partial);post();return r};
+ /* 정보창 항목 기본 펼침·접힘 설정 */
+ var SK=['용도지역','건폐율·용적률 상한','지구단위계획구역','개발제한','기타','시설','토지이용','건축물','이 필지 안 면적 비율','바로가기','필지 변경 이력'];
+ function skFill(){var bx=$('skBox');bx.innerHTML='';var op=g('secOpen',[]);if(!Array.isArray(op))op=[];SK.forEach(function(k){var l=document.createElement('label');l.className='skl';var c=document.createElement('input');c.type='checkbox';c.checked=op.indexOf(k)>=0;c.onchange=function(){var a=g('secOpen',[]);if(!Array.isArray(a))a=[];var i=a.indexOf(k);if(c.checked&&i<0)a.push(k);if(!c.checked&&i>=0)a.splice(i,1);s('secOpen',a);skApply()};l.appendChild(c);l.appendChild(document.createTextNode(' '+k));bx.appendChild(l)})}
+ function skApply(){var op=g('secOpen',[]);[].forEach.call(ib.querySelectorAll('.sec.fdc'),function(el){var h=el.children[0];if(!h)return;var k=(h.textContent||'').split('·')[0].replace(/\s+/g,' ').replace(/\d+$/,'').trim();el.classList.toggle('closed',op.indexOf(k)<0)})}
+ $('skDet').addEventListener('toggle',function(){if(this.open)skFill()});
+ $('skAll').onclick=function(){s('secOpen',SK.slice());skFill();skApply()};$('skNone').onclick=function(){s('secOpen',[]);skFill();skApply()};
+ /* 선택한 필지를 한 번 더 누르면 선택 해제 */
+ var _cm=clickMap;clickMap=function(e){window.__fromClick=true;try{return _cm(e)}finally{window.__fromClick=false}};
+ var _pk=pick;pick=function(lat,lng){if(window.__fromClick&&hi&&!$('info').hidden){try{var gm=hi.getLayers()[0].toGeoJSON().geometry;if(pipA(polysOf(gm),lng,lat)){var cb=document.querySelector('#info [data-close]');if(cb){cb.click();status('선택을 해제했습니다');return}}}catch(x){}}return _pk.apply(this,arguments)};
  var h1=$('hint1');if(h1&&!g('hint1',false)&&g('tour',0)){setTimeout(function(){if($('info')&&!$('info').hidden)return;h1.hidden=false},1800);$('hint1X').onclick=function(){h1.hidden=true;s('hint1',true)};ib.addEventListener('click',function(){h1.hidden=true;s('hint1',true)},true)}
 })();
 })();
