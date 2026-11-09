@@ -14057,7 +14057,7 @@ var LS=window.localStorage;function g(k,d){try{var v=LS.getItem(k);return v==nul
  if(o.m!=null){var mm={};o.m.split(',').forEach(function(i){if(i)mm[i]=true});s('muniOn',mm)}
  history.replaceState(null,'',location.pathname+location.search)}catch(e){}})();
 var KEY=g('key',''),DOM=g('dom',location.hostname||'localhost');
-var BUILD="2611092031";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
+var BUILD="2611092039";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
 applyTheme(THEME);
 var BASE=g('base','Base');if(['Base','Satellite','SatLabel','white','none'].indexOf(BASE)<0)BASE='Base';
 // 레이어: id, 이름, 표시 WMS 이름, 조회용 data 코드
@@ -15828,7 +15828,7 @@ window.__fld={parseLL:parseLL};
  var _g=window.__gpsUpd;(function(){var last=-1;setInterval(function(){var b=window.__bear?window.__bear():0;if(b!==last){last=b;window.__lblRot()}},200)})();
  /* 왼쪽 버튼도 시트 위로 */
  var raf=0;function qf(){raf=0;var q=$('quick');if(!q)return;var W=window.innerWidth,H=window.innerHeight,up=0,bt=parseFloat(getComputedStyle(q).bottom)||72;
-  [].forEach.call(document.querySelectorAll('.sheet:not([hidden])'),function(e){var r=e.getBoundingClientRect();if(r.width<10||r.height<10)return;if(r.left<72&&r.bottom>H-230&&r.top<H)up=Math.max(up,H-r.top+10-bt)});
+  [].forEach.call(document.querySelectorAll('.sheet:not([hidden])'),function(e){if(e.id==='info'&&W>=1000&&!e.classList.contains('min'))return;var r=e.getBoundingClientRect();if(r.width<10||r.height<10)return;if(r.left<72&&r.bottom>H-230&&r.top<H)up=Math.max(up,H-r.top+10-bt)});
   up=Math.max(0,Math.min(up,H-340));document.documentElement.style.setProperty('--quickUp',Math.round(up)+'px')}
  setInterval(function(){if(!raf)raf=requestAnimationFrame(qf)},300);
  /* 밝기 자동 */
@@ -16041,7 +16041,8 @@ function lines(){var base=$('bjBase').value.trim(),a=[];$('bjTx').value.split(/\
  window.__diag=diag})();
 /* v17: 업데이트 내용 · 저장 공간 */
 (function(){var $=function(i){return document.getElementById(i)};
- var LOGV='2026-11-10c',CH=[
+ var LOGV='2026-11-10d',CH=[
+  ['2026.11.10 (PC 화면 바로잡기)',['PC에서 옆 패널이 열릴 때 왼쪽 버튼 줄이 위로 밀려 검색창과 겹치던 문제 수정']],
   ['2026.11.10 (PC 편의 기능)',['파일 끌어다 놓기: SHP(5174)·DXF·지번 목록(txt·csv·xlsx)을 지도 위에 놓으면 바로 처리(DXF는 좌표계 선택, 지번 목록은 일괄 표시로 연결)','마우스 우클릭 메뉴: 필지 조회·좌표 복사(위경도/5186)·메모 추가·카카오 로드뷰','PC에서는 정보창이 왼쪽 옆 패널로 고정되고 지도가 그 옆으로 맞춰짐','마우스를 필지에 올리면 주소·지번, 잠시 뒤 용도지역 말풍선']],
   ['2026.11.10 (지번 일괄 · 핀 이동 · 메모 검색)',['도구 → 지번 목록 일괄 표시: 편입토지조서·엑셀의 지번을 붙여넣으면 필지를 찾아 색칠, 못 찾은 줄과 다른 필지일 수 있는 줄을 따로 알려줌(기본 주소 지정 가능)','메모를 열면 “위치 옮기기”: 핀을 끌거나 지도를 눌러 새 위치로 저장','현장 기록 → 메모에 검색칸 추가(내용·번호·체크 항목)']],
   ['2026.11.10 (이름표·방문 순서·관리자 항목)',['창이 열려 있으면 오른쪽 메뉴 이름표를 숨겨 창 위에 겹치지 않게 함','방문 순서: 전체 선택·해제, 지도 가운데에서 가까운 N곳 고르기 추가','인증키 창의 접속 승인(관리자)은 관리자로 로그인한 기기에만 보임 · 일반 사용자는 “앱 정보”를 5번 연속 누르면 표시']],
