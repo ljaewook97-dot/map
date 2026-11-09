@@ -14117,7 +14117,7 @@ var LS=window.localStorage;function g(k,d){try{var v=LS.getItem(k);return v==nul
  if(o.m!=null){var mm={};o.m.split(',').forEach(function(i){if(i)mm[i]=true});s('muniOn',mm)}
  history.replaceState(null,'',location.pathname+location.search)}catch(e){}})();
 var KEY=g('key',''),DOM=g('dom',location.hostname||'localhost');
-var BUILD="2611092149";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
+var BUILD="2611092156";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
 applyTheme(THEME);
 var BASE=g('base','Base');if(['Base','Satellite','SatLabel','white','none'].indexOf(BASE)<0)BASE='Base';
 // 레이어: id, 이름, 표시 WMS 이름, 조회용 data 코드
@@ -14388,8 +14388,8 @@ function nm(p){var m=bad(p.mls_nam)?'':p.mls_nam,l=bad(p.lcl_nam)?'':p.lcl_nam;i
 function row(k,v){return v?'<div class="row"><b>'+k+'</b><span>'+v+'</span></div>':''}
 function dedupFac(a){var out=[];a.forEach(function(x){var b=x.replace(/\(.*$/,'');var i=out.findIndex(function(y){return y.replace(/\(.*$/,'')===b});if(i<0)out.push(x);else if(x.indexOf('(')>=0&&out[i].indexOf('(')<0)out[i]=x});return out}
 function tags(a,gb){return a.length?a.map(function(x){return '<span class="tag'+(gb?' gb':'')+'">'+esc(x)+'</span>'}).join(''):''}
-var FDEF=['용도지구','시설','토지이용','이 필지 안 면적 비율'];
-var DEFK=['내 위치에서 이 필지까지','용도지역','건폐율','지구단위계획구역','개발제한','용도지구','시설','토지이용','건축물','이 필지 안 면적 비율','바로가기'];
+var FDEF=['용도지구','기타','시설','토지이용','이 필지 안 면적 비율'];
+var DEFK=['내 위치에서 이 필지까지','용도지역','건폐율','지구단위계획구역','개발제한','용도지구','기타','시설','토지이용','건축물','이 필지 안 면적 비율','바로가기'];
 function secKey(el){var h=el.children[0];return (h&&h.tagName==='SMALL')?h.textContent.split('·')[0].replace(/\s+/g,' ').replace(/\d+$/,'').trim():''}
 function secOrd(){var o=g('secOrder',null);if(!Array.isArray(o))o=[];DEFK.forEach(function(k){if(o.indexOf(k)<0)o.push(k)});return o}
 function orderSecs(){var box=document.getElementById('infoBody'),secs=[].filter.call(box.children,function(e){return e.classList&&e.classList.contains('sec')&&secKey(e)});if(secs.length<2)return;var o=secOrd(),mk=secs.map(function(e){var m=document.createComment('');box.insertBefore(m,e);return m});
@@ -14432,7 +14432,7 @@ function pick(lat,lng){
   render(S,pnu,true);var ow0=0;
   pend++;ned('ladfrlList',pnu,function(d){try{var v=d.ladfrlVOList.ladfrlVOList[0];S.jimok=v.lndcgrCodeNm||'';S.area=v.lndpclAr||'';S.own=v.posesnSeCodeNm||'';var c={'국유지':'#2f7bff','공유지':'#3fb53f','사유지':'#ff9f1a'}[owner(S.own)];if(c&&hi)hi.setStyle({color:c,fillColor:c})}catch(e){}done()});
   pend++;ned('getLandUseAttr',pnu,function(d){try{var a=d.landUses.field;if(!Array.isArray(a))a=[a];a.forEach(function(it){var n=it.prposAreaDstrcCodeNm,c=String(it.prposAreaDstrcCode||'');if(!n)return;var cn=(it.cnflcAtNm||'').trim();
-   if(/^UQ[ABCD]/.test(c)){if(S.zones.indexOf(n)<0)S.zones.push(n)}else if(/^UQ[STUVWXY]/.test(c)){var t=cn?n+'('+cn+')':n;if(S.fac.indexOf(t)<0)S.fac.push(t)}else{if(S.spec.indexOf(n)<0)S.spec.push(n)}})}catch(e){}done()});
+   if(/^UQ[ABCD]/.test(c)){if(S.zones.indexOf(n)<0)S.zones.push(n)}else if(/^UQ[STUVWXY]/.test(c)){var t=cn?n+'('+cn+')':n;if(S.fac.indexOf(t)<0)S.fac.push(t)}else if(/^UQ/.test(c)){if(S.spec.indexOf(n)<0)S.spec.push(n)}else{S.etc=S.etc||[];if(S.etc.indexOf(n)<0)S.etc.push(n)}})}catch(e){}done()});
   pend++;(function(){var Y=new Date().getFullYear(),k=0;function tryY(){if(k>=5){done();return}var y=Y-k;k++;
    ned('getIndvdLandPriceAttr',pnu,function(d){var a=null;try{a=d.indvdLandPrices.field;if(!Array.isArray(a))a=a?[a]:[];a=a.filter(function(r){return r&&r.pblntfPclnd&&String(r.stdrYear||y)===String(y)}).sort(function(x,y2){return (y2.stdrYear||0)-(x.stdrYear||0)})[0]}catch(e){a=null}
     if(a){S.jiga=a.pblntfPclnd;S.gy=a.stdrYear||y;done()}else tryY()},'&stdrYear='+y)}tryY()})();
@@ -14465,9 +14465,9 @@ function capSec(S){if(!S.zones||!S.zones.length)return '';var o=ordOf(S.addr),ro
  if(!n)return '';
  var nt=(o?o[2]:'지자체 조례로 더 낮을 수 있어 해당 시·군 조례 확인 필요 · ')+(fb?'* 이 조례에 따로 정한 값이 없어 시행령 상한 · ':'')+'지구단위계획·경관지구 등은 그 기준이 우선';
  return '<div class="sec"><small>건폐율·용적률 상한 <em class="sub" style="font-style:normal;font-weight:400">· '+(o?o[1]:'시행령 상한')+'</em></small><div class="cap2"><span></span><span class="h">건폐율</span><span class="h">용적률</span>'+rows+'</div><p class="sub" style="margin:2px 0 0;font-size:12px">'+nt+'</p></div>'}
-function distCard(S){var a=distNames(S);if(!a.length)return '';
- return '<div class="sec dcard"><small>지구단위계획구역</small><div>'+a.map(function(x){return '<span class="tag">'+esc(x)+'</span>'}).join('')+'</div><p class="sub" style="margin:2px 0 0;font-size:12px">세부 기준은 구역별 계획이 우선합니다. 아래 토지이음에서 계획도서를 열람하세요.</p></div>'}
-function distNames(S){var a=[];(S.dist||[]).concat((S.spec||[]).filter(function(x){return /지구단위/.test(x)})).forEach(function(x){if(a.indexOf(x)<0)a.push(x)});return a}
+function distCard(S,pnu){var a=distNames(S);if(!a.length)return '';
+ return '<div class="sec dcard"><small>지구단위계획구역</small><div>'+a.map(function(x){return '<span class="tag">'+esc(x)+'</span>'}).join('')+'</div><p class="sub" style="margin:2px 0 0;font-size:12px">세부 기준은 구역별 계획이 우선합니다. 토지이음에서 계획도서를 열람하세요.</p>'+(pnu?'<a class="xl" target="_blank" rel="noopener" href="https://www.eum.go.kr/web/ar/lu/luLandDet.jsp?isNoScr=script&mode=search&pnu='+encodeURIComponent(pnu)+'" style="display:inline-block;margin-top:6px">토지이음 바로가기</a>':'')+'</div>'}
+function distNames(S){var a=[];(S.dist||[]).concat((S.spec||[]).concat(S.etc||[]).filter(function(x){return /지구단위/.test(x)})).forEach(function(x){if(a.indexOf(x)<0)a.push(x)});return a}
 function render(S,pnu,partial){
  var won=function(n){return n?Number(n).toLocaleString('ko-KR')+'원/㎡':''},ow=owner(S.own);
  function sec(l,v){return v?'<div class="sec"><small>'+l+'</small><div>'+v+'</div></div>':''}
@@ -14475,7 +14475,7 @@ function render(S,pnu,partial){
   '<div class="stats"><div class="st"><small>지목 · 면적</small><b>'+esc(S.jimok||'—')+(S.area?'<em>'+Number(S.area).toLocaleString('ko-KR')+'㎡</em>':'')+'</b></div>'+
   '<div class="st"><small>소유</small><b>'+(S.own?'<span class="tag own-'+ow+'">'+ow+'</span>':'—')+(S.own&&S.own!==ow?'<em>'+esc(S.own)+'</em>':'')+'</b></div>'+
   '<div class="st wide"><small>공시지가'+(S.gy?' · '+esc(S.gy)+'년':'')+'</small><b>'+(S.jiga?won(S.jiga):'—')+'</b>'+(S.jiga?'<div class="sub" style="margin:2px 0 0">평당 약 '+man(S.jiga*3.3058)+(S.area?' · 총액(추정) 약 '+man(S.jiga*S.area):'')+'</div>':'')+'</div></div>'+
-  (window.__dirHTML&&S.ll?window.__dirHTML():'')+sec('용도지역',tags(S.zones))+capSec(S)+distCard(S)+sec('개발제한',tags(S.gbs,1))+sec('용도지구',tags(S.spec.filter(function(x){return !/지구단위/.test(x)})))+sec('시설',tags(dedupFac(S.fac)))+sec('토지이용',tags(S.use))+(S.bld&&S.bld.length?sec('건축물',bldHtml(S.bld,S.area)):'')+ratioSec(S)+shpRows(S.shp)+
+  sec('용도지역',tags(S.zones))+capSec(S)+distCard(S,pnu)+sec('개발제한',tags(S.gbs,1))+sec('용도지구',tags(S.spec.filter(function(x){return !/지구단위/.test(x)})))+sec('기타',tags((S.etc||[]).filter(function(x){return !/지구단위/.test(x)})))+sec('시설',tags(dedupFac(S.fac)))+sec('토지이용',tags(S.use))+(S.bld&&S.bld.length?sec('건축물',bldHtml(S.bld,S.area)):'')+ratioSec(S)+shpRows(S.shp)+
   (S.ll?sec('바로가기',extLinks(S.ll[0],S.ll[1],S.addr,pnu)):'')+(partial?'<p class="sub sk-t">세부 정보를 불러오는 중…</p>':'<p class="sub">PNU '+esc(pnu)+' · 켜 둔 레이어만 조회됩니다.</p>');
  document.getElementById('infoBody').innerHTML=h;try{foldSecs()}catch(e){}}
 var _ck=0,_ckN=0,_ckT=0;map.on('click',function(e){var oe=e.originalEvent,tch=Date.now()-(window.__lastTouch||0)<700||(oe&&oe.pointerType==='touch');if(tch){if(_ck){clearTimeout(_ck);_ck=0;return}var n0=window.__dtN||0;_ck=setTimeout(function(){_ck=0;if((window.__dtN||0)!==n0)return;clickMap(e)},300);return}clickMap(e)});
@@ -16347,7 +16347,8 @@ function lines(){var base=$('bjBase').value.trim(),a=[];$('bjTx').value.split(/\
  window.__diag=diag})();
 /* v17: 업데이트 내용 · 저장 공간 */
 (function(){var $=function(i){return document.getElementById(i)};
- var LOGV='2026-11-10m',CH=[
+ var LOGV='2026-11-10n',CH=[
+  ['2026.11.10 (조회 항목 정리)',['용도지구에서 국토계획법상 용도지구가 아닌 항목(타 법령 구역 등)을 “기타” 줄로 분리','“내 위치에서 이 필지까지” 줄 삭제 (내 위치 표시와 방향·거리 안내는 그대로)','지구단위계획구역 줄에 “토지이음 바로가기” 버튼']],
   ['2026.11.10 (정보창 정리)',['지구단위계획구역 줄이 혼자 분홍색 상자로 튀던 것을 다른 줄과 같은 모양으로 통일','필지 변경 이력을 다른 줄처럼 접고 펼 수 있게 (펼친 상태 기억, 처음 펼치면 자동으로 불러옴)']],
   ['2026.11.10 (구역 집계 · 모서리 붙이기)',['그리기 → 면으로 구역을 그리고 “구역 집계”: 구역 안 필지 수·면적, 소유구분·지목·용도지역·용도지구별 면적과 비율, 공시지가 합계, 필지 목록 (복사·CSV 저장)','그리기·측정할 때 지적선 모서리·선에 점이 자동으로 붙음 (초록 동그라미로 미리 표시). “붙이기 켬/끔” 버튼으로 켜고 끔, PC는 Alt를 누른 채 찍으면 그 점만 붙지 않음']],
   ['2026.11.10 (필지 변경 이력)',['필지 조회 창 아래 “필지 변경 이력 보기”: 최근 10년 개별공시지가 변동(전년 대비 %)과 대장에 있는 토지이동·소유권 변동 기록을 표시']],
