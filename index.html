@@ -1316,12 +1316,14 @@ body:has(#ldPill:not([hidden])) .toast{top:calc(max(10px,env(safe-area-inset-top
 /* 꾹 눌러 끌기 */
 body.lpdrag{user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;cursor:grabbing}
 .lr,.lr .chip,#infoBody .sec>small{-webkit-touch-callout:none}
-.lr.drag,#infoBody .sec.drag{position:relative;z-index:50;background:var(--card);box-shadow:0 6px 18px #0005;border-radius:10px;opacity:.97;transition:none!important}
+.lr.drag,#infoBody .sec.drag{position:relative;z-index:50;background:var(--card);box-shadow:0 8px 22px #0006;border-radius:10px;opacity:.6;transition:none!important}
 .drag::before{content:attr(data-tip);position:absolute;right:44px;top:50%;transform:translateY(-50%);background:var(--acc);color:var(--acc-ink,#fff);font:700 11.5px/1 system-ui;padding:5px 9px;border-radius:9px;white-space:nowrap;box-shadow:0 2px 8px #0004;z-index:60;pointer-events:none}
 #infoBody .sec.drag::before{top:22px}
 .dl-a{box-shadow:0 -3px 0 0 var(--acc)!important}.dl-b{box-shadow:0 3px 0 0 var(--acc)!important}
 .lr.dl-a,.lr.dl-b,#infoBody .sec.dl-a,#infoBody .sec.dl-b{position:relative;z-index:4}
 .lr,#infoBody .sec>small{touch-action:pan-y}.lr .dh{touch-action:none}
+
+#infoBody .sec>small .dh.sh{flex:0 0 22px;margin:0 4px 0 -4px;font-size:18px;line-height:1;text-align:center;color:var(--mut);cursor:grab;touch-action:none;opacity:.7}#infoBody .sec>small .dh.sh:before{content:'≡'}#infoBody .sec>small .dh.sh:hover{opacity:1;color:var(--fg)}
 </style></head><body>
 <div id="map"></div>
 <div class="bar">
@@ -13928,7 +13930,7 @@ var LS=window.localStorage;function g(k,d){try{var v=LS.getItem(k);return v==nul
  if(o.m!=null){var mm={};o.m.split(',').forEach(function(i){if(i)mm[i]=true});s('muniOn',mm)}
  history.replaceState(null,'',location.pathname+location.search)}catch(e){}})();
 var KEY=g('key',''),DOM=g('dom',location.hostname||'localhost');
-var BUILD="2611091810";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
+var BUILD="2611091815";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
 applyTheme(THEME);
 var BASE=g('base','Base');if(['Base','Satellite','SatLabel','white','none'].indexOf(BASE)<0)BASE='Base';
 // 레이어: id, 이름, 표시 WMS 이름, 조회용 data 코드
@@ -14205,7 +14207,7 @@ function secKey(el){var h=el.children[0];return (h&&h.tagName==='SMALL')?h.textC
 function secOrd(){var o=g('secOrder',null);if(!Array.isArray(o))o=[];DEFK.forEach(function(k){if(o.indexOf(k)<0)o.push(k)});return o}
 function orderSecs(){var box=document.getElementById('infoBody'),secs=[].filter.call(box.children,function(e){return e.classList&&e.classList.contains('sec')&&secKey(e)});if(secs.length<2)return;var o=secOrd(),mk=secs.map(function(e){var m=document.createComment('');box.insertBefore(m,e);return m});
  var sorted=secs.map(function(e,i){var r=o.indexOf(secKey(e));return {e:e,r:r<0?1000+i:r}}).sort(function(a,b){return a.r-b.r});sorted.forEach(function(x,i){box.insertBefore(x.e,mk[i])});mk.forEach(function(m){m.remove()})}
-function secDrag(){var box=document.getElementById('infoBody'),secs=[].filter.call(box.children,function(e){return e.classList&&e.classList.contains('sec')&&secKey(e)});if(secs.length<2)return;
+function secDrag(){var box=document.getElementById('infoBody'),secs=[].filter.call(box.children,function(e){return e.classList&&e.classList.contains('sec')&&secKey(e)});if(secs.length<2)return;secs.forEach(function(e){var h=e.children[0];if(h&&!h.querySelector('.dh')){var d=document.createElement('span');d.className='dh sh';d.title='끌어서 순서 바꾸기';d.onclick=function(ev){ev.stopPropagation()};h.insertBefore(d,h.firstChild)}});
  lpSort(secs,function(e){return e.children[0]},function(a,b){var keys=secs.map(secKey),k=keys[a];keys.splice(a,1);keys.splice(b,0,k);var full=secOrd();full=full.filter(function(x){return x!==k});var pred=keys[keys.indexOf(k)-1],succ=keys[keys.indexOf(k)+1],ix;if(pred!=null&&(ix=full.indexOf(pred))>=0)full.splice(ix+1,0,k);else if(succ!=null&&(ix=full.indexOf(succ))>=0)full.splice(ix,0,k);else full.push(k);s('secOrder',full);try{orderSecs()}catch(e){}try{secDrag()}catch(e){}},function(e){return secKey(e)})}
 function foldSecs(){try{orderSecs()}catch(e){}var op=g('secOpen',[]);if(!Array.isArray(op))op=[];[].forEach.call(document.querySelectorAll('#infoBody .sec'),function(el){var h=el.children[0];if(!h||h.tagName!=='SMALL'||el.children.length<2||el.classList.contains('fdc'))return;var k=h.textContent.split('·')[0].replace(/\s+/g,' ').trim();el.classList.add('fdc');if(FDEF.indexOf(k)>=0&&k!=='이 필지 안 면적 비율')el.classList.add('mut');
   var n=el.querySelectorAll('.tag').length;if(n>1){var e=document.createElement('em');e.className='cnt';e.textContent=n;h.appendChild(e)}
@@ -15746,7 +15748,8 @@ window.__fld={parseLL:parseLL};
  window.__diag=diag})();
 /* v17: 업데이트 내용 · 저장 공간 */
 (function(){var $=function(i){return document.getElementById(i)};
- var LOGV='2026-11-09o',CH=[
+ var LOGV='2026-11-09p',CH=[
+  ['2026.11.09 (끌기 손잡이)',['필지 정보창 항목 제목 왼쪽에 ≡ 손잡이 추가(PC에서도 바로 끌기)','끌고 있는 항목은 반투명으로 표시']],
   ['2026.11.09 (승인 기기 정리)',['접속 승인 목록: 전체·대기·승인·차단 필터, 마지막 접속일 표시(서버 새 버전 배포 후)','오래 안 쓴 기기(30·60·90·180일) 일괄 정리']],
   ['2026.11.09 (꾹 눌러 순서 바꾸기)',['레이어 줄을 어디든 꾹 누른 채(0.4초) 위아래로 끌어 순서 변경, 왼쪽 ≡ 손잡이는 바로 끌기','끄는 동안 놓을 자리를 선과 안내(“○○ 아래로”)로 표시','필지 조회창의 항목(용도지역·시설·건축물 등)도 제목을 꾹 눌러 끌어 원하는 순서로 정렬(기억)']],
   ['2026.11.09 (건물 여러 동 · 정보창 정리)',['한 필지에 건물이 여러 동이면 동별로 나누어 보여주고, 동 수·연면적·건폐율·용적률 합계를 계산(모든 동의 면적이 있을 때)','정보창 줄 높이·간격·카드 글자 크기 통일','설정에 “메뉴 이름 보기” 버튼 추가']],
