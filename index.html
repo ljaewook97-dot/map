@@ -1380,8 +1380,8 @@ html #quick .qp button+button{border-left:0;border-top:1px solid var(--line)}
 .vsn{display:flex;align-items:center;justify-content:center;width:26px;height:26px;margin:-13px 0 0 -13px;border-radius:50%;background:var(--acc,#0f7a5a);color:#fff;font:800 13px/1 system-ui;border:2px solid #fff;box-shadow:0 1px 4px #0006}
 
 /* ===== 지번 글자 선명하게: 번지는 그림자 대신 얇은 외곽선 ===== */
-.jbi span,.jb{text-shadow:none!important;-webkit-text-stroke:2px var(--jbsc,#000);paint-order:stroke fill;text-rendering:geometricPrecision;-webkit-font-smoothing:antialiased;letter-spacing:.2px}
-html[data-bright="sun"] .jbi span{-webkit-text-stroke:2.6px var(--jbsc,#000)}
+.jbi span,.jb{text-shadow:none!important;-webkit-text-stroke:1.8px color-mix(in srgb,var(--jbsc,#000) 42%,transparent);paint-order:stroke fill;text-rendering:geometricPrecision;-webkit-font-smoothing:antialiased;letter-spacing:.2px}
+html[data-bright="sun"] .jbi span{-webkit-text-stroke:2.4px color-mix(in srgb,var(--jbsc,#000) 60%,transparent)}
 </style></head><body>
 <div id="map"></div>
 <div class="bar">
@@ -14006,7 +14006,7 @@ var LS=window.localStorage;function g(k,d){try{var v=LS.getItem(k);return v==nul
  if(o.m!=null){var mm={};o.m.split(',').forEach(function(i){if(i)mm[i]=true});s('muniOn',mm)}
  history.replaceState(null,'',location.pathname+location.search)}catch(e){}})();
 var KEY=g('key',''),DOM=g('dom',location.hostname||'localhost');
-var BUILD="2611092011";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
+var BUILD="2611092015";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
 applyTheme(THEME);
 var BASE=g('base','Base');if(['Base','Satellite','SatLabel','white','none'].indexOf(BASE)<0)BASE='Base';
 // 레이어: id, 이름, 표시 WMS 이름, 조회용 data 코드
@@ -15879,7 +15879,8 @@ window.__fld={parseLL:parseLL};
  window.__diag=diag})();
 /* v17: 업데이트 내용 · 저장 공간 */
 (function(){var $=function(i){return document.getElementById(i)};
- var LOGV='2026-11-09y',CH=[
+ var LOGV='2026-11-09z',CH=[
+  ['2026.11.09 (지번 외곽선 연하게)',['지번 글자 외곽선을 더 얇고 연하게 조정(햇빛 모드에서만 조금 진하게)']],
   ['2026.11.09 (지번 글자 선명하게)',['지번 글자의 번지는 그림자를 얇은 외곽선으로 바꾸고 글자 크기를 정수 단위로 맞춰 또렷하게 표시','지적선은 이전 방식으로 되돌림']],
   ['2026.11.09 (방문 순서 · 지적선)',['도구 → 방문 순서 정하기: 메모 핀·즐겨찾기 중 갈 곳을 고르면 가까운 순서로 정렬(출발점: 내 위치/지도 가운데/첫 번째 곳), 지도에 번호로 표시, 순서 복사, 카카오맵 길찾기(두 곳씩)','지적선은 원래 방식 유지']],
   ['2026.11.09 (조례 건폐율·용적률 전국)',['건폐율·용적률 상한에 딸깍 박스와 같은 조례 DB(시·군 160여 곳, 국가법령정보센터 자치법규 기준)를 반영','조례에 따로 정한 값이 없으면 시행령 상한을 쓰고 * 로 표시','지구단위계획 등은 그 기준이 우선하므로 사업 전 조문 확인 필요']],
