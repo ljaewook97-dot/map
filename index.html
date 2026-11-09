@@ -905,6 +905,7 @@ a.xl{height:30px;padding:0 10px;font-size:12px;font-weight:500;border-radius:8px
 
 /* ---- v6 ---- */
 .modal .box{max-height:calc(100vh - 24px);max-height:calc(100dvh - 24px);overflow:auto}.modal.first .adv{display:none!important}
+.bd{border-top:1px solid var(--line);padding:2px 0}.bd>summary{cursor:pointer;font-size:13px;font-weight:600;padding:5px 0}.bd[open]{padding-bottom:6px}
 .lr .chip .st{font-size:11px;color:var(--mut);font-weight:500;white-space:nowrap}.lr .chip .st.w{color:var(--warn)}
 .lr .chip .nm{flex:0 1 auto}.lr .chip .st{flex:1;min-width:0;text-align:left;overflow:hidden;text-overflow:ellipsis}
 .leaflet-bottom.leaflet-left{display:flex;flex-direction:column-reverse;align-items:flex-start}
@@ -1302,6 +1303,15 @@ body:has(#ldPill:not([hidden])) .toast{top:calc(max(10px,env(safe-area-inset-top
 #railTip{position:absolute;z-index:2000;background:var(--card);color:var(--fg);font-size:12px;font-weight:700;padding:5px 10px;border-radius:12px;box-shadow:0 2px 10px #0003,0 0 0 1px #00000012;white-space:nowrap;pointer-events:none;transform:translate(-100%,-50%);opacity:0;transition:opacity .15s}
 #railTip.on,.rtip.on{opacity:1}
 .rtip{position:absolute;z-index:2000;background:var(--card);color:var(--fg);font-size:12px;font-weight:700;padding:5px 10px;border-radius:12px;box-shadow:0 2px 10px #0003,0 0 0 1px #00000012;white-space:nowrap;pointer-events:none;transform:translate(-100%,-50%);opacity:0;transition:opacity .2s}
+
+/* 정보창 줄 높이·간격 통일 */
+#infoBody .stats{gap:8px;margin-bottom:8px}
+#infoBody .st{padding:11px 14px;border-radius:12px}#infoBody .st b{font-size:16px}
+#infoBody .sec{padding:0!important;margin:0;border-top:1px solid var(--line)!important}
+#infoBody .sec>small{min-height:44px;display:flex!important;align-items:center;margin:0!important;padding:0 2px;font-size:13.5px!important;box-sizing:border-box}
+#infoBody .sec:not(.closed)>div{padding:0 2px 12px}
+#infoBody .dcard{padding:0 10px!important;margin:8px 0 0;border-top:0!important;border-radius:10px}#infoBody .dcard:not(.closed)>div{padding:0 0 10px}
+#infoBody details.rd>summary{min-height:44px}
 </style></head><body>
 <div id="map"></div>
 <div class="bar">
@@ -1448,6 +1458,7 @@ body:has(#ldPill:not([hidden])) .toast{top:calc(max(10px,env(safe-area-inset-top
  <div style="display:flex;gap:8px;justify-content:flex-end"><button class="btn" id="kPaste" type="button" style="margin-right:auto">붙여넣기</button><button class="btn" id="kCancel">취소</button><button class="btn on" id="kSave">저장</button></div><div id="kMsg" class="sub" style="margin:6px 0 0"></div>
  <div class="adv"><label>최근 V-World 응답 (문제가 있으면 이 내용을 알려주세요)</label><pre id="dbg" style="font-size:11px;white-space:pre-wrap;word-break:break-all;margin:4px 0 8px;max-height:140px;overflow:auto;background:var(--bg);padding:6px;border-radius:6px"></pre><p class="sub">키는 이 폰의 브라우저에만 저장되고 다른 곳으로 보내지지 않습니다.</p></div>
  <div class="adv" style="margin-top:10px;padding-top:10px;border-top:1px solid var(--line)"><button class="btn" id="chkNet" type="button" style="width:100%">연결 상태 확인</button><div id="chkSum" class="sub" style="margin:8px 0 4px;font-weight:700"></div><div id="chkOut"></div></div>
+ <div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--line);display:flex;align-items:center;gap:8px"><div style="flex:1;min-width:0"><div style="font-weight:700;font-size:13px">메뉴 이름 보기</div><div class="sub" style="margin:2px 0 0;font-size:12px">오른쪽 메뉴 아이콘의 이름을 잠깐 보여줍니다. 평소엔 아이콘을 길게 누르면 나옵니다.</div></div><button class="btn" id="railTipBtn" type="button">보기</button></div>
  <div id="accSec" hidden style="margin-top:10px;padding-top:10px;border-top:1px solid var(--line)"><div style="font-weight:700;font-size:13px;margin-bottom:6px">접속 승인 (관리자)</div><div id="accList"></div></div>
  <div class="adv" style="display:flex;align-items:center;gap:8px;margin-top:10px;padding-top:10px;border-top:1px solid var(--line)"><div style="flex:1;min-width:0"><div style="font-weight:700;font-size:13px">앱 버전</div><div class="sub" style="margin:0">빌드 <span id="verLbl"></span> <span id="verMsg"></span></div></div><button class="btn" id="verChk">업데이트 확인</button></div></div></div>
 <script>/* @preserve
@@ -13907,7 +13918,7 @@ var LS=window.localStorage;function g(k,d){try{var v=LS.getItem(k);return v==nul
  if(o.m!=null){var mm={};o.m.split(',').forEach(function(i){if(i)mm[i]=true});s('muniOn',mm)}
  history.replaceState(null,'',location.pathname+location.search)}catch(e){}})();
 var KEY=g('key',''),DOM=g('dom',location.hostname||'localhost');
-var BUILD="2611091753";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
+var BUILD="2611091801";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
 applyTheme(THEME);
 var BASE=g('base','Base');if(['Base','Satellite','SatLabel','white','none'].indexOf(BASE)<0)BASE='Base';
 // 레이어: id, 이름, 표시 WMS 이름, 조회용 data 코드
@@ -14077,16 +14088,35 @@ function bRows(b,land){var est=0,vl=+b.vl,bc=+b.bc,pa=+b.pa>0?+b.pa:+land;if(!(v
  var fl=(+b.up>0?'지상 '+esc(b.up)+'층':'')+(+b.dn>0?(+b.up>0?' · ':'')+'지하 '+esc(b.dn)+'층':'');
  h+=row('용도',b.us?esc(b.us):'')+row('층수',fl)+row('용적률',vl>0?f(vl).toLocaleString('ko-KR')+'%'+(est&&!(+b.vl>0)?' *':''):'')+row('건폐율',bc>0?f(bc).toLocaleString('ko-KR')+'%'+(est&&!(+b.bc>0)?' *':''):'')+row('사용승인일',ap.length>=8?ap.slice(0,4)+'.'+ap.slice(4,6)+'.'+ap.slice(6,8):(b.ap?esc(b.ap):''));
  if(h&&est)h+='<div class="sub" style="font-size:11px;margin:2px 0 0">* 면적으로 계산한 추정값 (공식 값은 건축물대장 확인)</div>';return h}
+function bldHtml(L,land){var rw=function(x){var t=bRows(x.b,land);return (t||'<div class="sub">표시할 항목 없음</div>')+(x.r?'<details style="margin-top:4px;font-size:11px;opacity:.75"><summary>받은 항목 원본</summary>'+x.r.replace(/ · /g,'<br>')+'</details>':'')};
+ if(L.length===1)return rw(L[0]);
+ var ta=0,ar=0,okT=true,okA=true,mx=0,us={};L.forEach(function(x){var t=+x.b.ta,a=+x.b.ar;if(t>0)ta+=t;else okT=false;if(a>0)ar+=a;else okA=false;if(+x.b.up>mx)mx=+x.b.up;if(x.b.us)us[x.b.us]=1});
+ var pa=+land,f=function(n){return Math.round(n*100)/100};
+ var h='<div class="row"><b>건물 수</b><span>'+L.length+'동</span></div>'+(pa>0&&okT&&ta>0?row('용적률 합계',f(ta/pa*100).toLocaleString('ko-KR')+'% *'):'')+(pa>0&&okA&&ar>0?row('건폐율 합계',f(ar/pa*100).toLocaleString('ko-KR')+'% *'):'')+(okT&&ta>0?row('연면적 합계',f(ta).toLocaleString('ko-KR')+'㎡'):'')+(mx?row('최고 층수',mx+'층'):'')+'<div class="sub" style="font-size:11px;margin:2px 0 4px">* 동별 면적을 모두 더해 필지 면적으로 나눈 값</div>';
+ L.forEach(function(x,i){var b=x.b,fl=(+b.up>0?b.up+'층':'');h+='<details class="bd"><summary>'+(i+1)+'동 · '+esc(b.nm||b.us||'건물')+(b.us&&b.nm?' · '+esc(b.us):'')+(fl?' · '+esc(fl):'')+'</summary>'+rw(x)+'</details>'});
+ return h}
 function bRaw(p){var a=[];for(var k in (p||{})){var v=p[k];if(v==null||v===''||typeof v==='object')continue;a.push(esc(k)+': '+esc(v));if(a.length>=40)break}return a.join(' · ')}
 function bGet(cb){var cs=bldCodes(),i=0,emp=null,known=!!g('bldOk','')||!!g('bldLy','').trim();(function nx(){if(i>=cs.length){cb(emp,'');return}var c=cs[i++];getFeats(c,1000,function(fs){if(fs===null){nx();return}if(!fs.length&&!known){emp=fs;nx();return}if(!g('bldLy','').trim()&&fs.length)s('bldOk',c);cb(fs,c)})})()}
 function bFlat(d,o,dep){o=o||{};dep=dep||0;if(!d||dep>6||typeof d!=='object')return o;if(Array.isArray(d)){for(var i=0;i<d.length&&i<3;i++)bFlat(d[i],o,dep+1);return o}for(var k in d){var v=d[k];if(v&&typeof v==='object')bFlat(v,o,dep+1);else if(v!=null&&String(v).trim()!==''&&!(k in o))o[k]=v}return o}
 var BNED=['getBuildingUse','getBuildingAge','getBuildingFloor'];
-function bPoint(lng,lat,pnu,cb){var cs=bldCodes(),all={},n=0,raws=[],pend=0,fin=0;
- function put(p,src){if(!p)return;var any=false;for(var k in p){var v=p[k];if(v==null||v===''||typeof v==='object')continue;any=true;var kk=k;if(kk in all&&String(all[kk])!==String(v))kk=src+'.'+k;if(!(kk in all))all[kk]=v}if(any)raws.push(src)}
- function end(){if(fin++)return;var b=bInfo(all),r=bRaw(all);if(!r){cb([]);return}cb([{b:b,r:r}])}
- cs.forEach(function(c){pend++;dataQ(c,lng,lat,false,function(fs){(fs||[]).slice(0,1).forEach(function(x){put(x.properties,c)});if(fs&&fs.length&&!g('bldLy','').trim())s('bldOk',c);if(--pend<=0)ned2()})});
- var nd=0;function ned2(){if(nd++)return;if(!pnu){end();return}var left=BNED.length;BNED.forEach(function(op){ned(op,pnu,function(d){try{put(bFlat(d),op)}catch(e){}if(--left<=0)end()})})}
-}
+function dataP(code,polys,cb){var best=null;(polys||[]).forEach(function(pl){if(!best||pl[0].length>best[0].length)best=pl});if(!best){cb(null);return}var r=best[0],st=Math.max(1,Math.ceil(r.length/30)),pts=[];for(var i=0;i<r.length;i+=st)pts.push(r[i]);var l=r[r.length-1];if(pts[pts.length-1]!==l&&(pts[0][0]!==l[0]||pts[0][1]!==l[1]))pts.push(pts[0]);else if(pts[0][0]!==pts[pts.length-1][0]||pts[0][1]!==pts[pts.length-1][1])pts.push(pts[0]);
+ var wkt='POLYGON(('+pts.map(function(c){return c[0]+' '+c[1]}).join(',')+'))';
+ jsonp('https://api.vworld.kr/req/data?service=data&request=GetFeature&data='+code+'&format=json&size=40&attribute=true&geometry=true&crs=EPSG:4326&geomFilter='+encodeURIComponent(wkt)+'&'+q(),function(d){var f=null;try{f=d.response.status==='OK'?d.response.result.featureCollection.features:[]}catch(e){f=null}cb(f)})}
+function inPolys(x,y,polys){for(var k=0;k<polys.length;k++){var r=polys[k][0],ins=false;for(var i=0,j=r.length-1;i<r.length;j=i++){if((r[i][1]>y)!==(r[j][1]>y)&&x<(r[j][0]-r[i][0])*(y-r[i][1])/(r[j][1]-r[i][1])+r[i][0])ins=!ins}if(ins)return true}return false}
+function bPoint(lng,lat,pnu,geom,cb){var cs=bldCodes(),lists=[],pend=0,fin=0,polys=[];try{polys=polysOf(geom)}catch(e){}
+ function endAll(){if(fin++)return;
+  var main=null;lists.forEach(function(L){if(L.length&&(!main||L.length>main.length))main=L});
+  if(!main){nedOnly();return}
+  var out=main.map(function(f){var all={};put(all,f.properties,'L');var c=null;try{c=gcen(f.geometry)}catch(e){}
+   lists.forEach(function(L){if(L===main||!c)return;var bd=1e9,bf=null;L.forEach(function(g2){try{var c2=gcen(g2.geometry),d=Math.abs(c2[0]-c[0])+Math.abs(c2[1]-c[1]);if(d<bd){bd=d;bf=g2}}catch(e){}});if(bf&&bd<0.0002)put(all,bf.properties,'M')});return all});
+  if(out.length===1&&pnu){left=BNED.length;BNED.forEach(function(op){ned(op,pnu,function(d){try{put(out[0],bFlat(d),op)}catch(e){}if(--left<=0)fin2(out)})})}else fin2(out)}
+ var left=0;
+ function put(all,p,src){if(!p)return;for(var k in p){var v=p[k];if(v==null||v===''||typeof v==='object')continue;var kk=k;if(kk in all&&String(all[kk])!==String(v))kk=src+'.'+k;if(!(kk in all))all[kk]=v}}
+ function fin2(arr){var res=arr.map(function(all){return {b:bInfo(all),r:bRaw(all)}}).filter(function(x){return x.r});cb(res)}
+ function nedOnly(){if(!pnu){cb([]);return}var all={};left=BNED.length;BNED.forEach(function(op){ned(op,pnu,function(d){try{put(all,bFlat(d),op)}catch(e){}if(--left<=0)fin2([all])})})}
+ if(!cs.length){cb([]);return}
+ cs.forEach(function(c){pend++;var done=function(fs){var L=(fs||[]);if(polys.length)L=L.filter(function(x){try{var cc=gcen(x.geometry);return inPolys(cc[1],cc[0],polys)}catch(e){return true}});if(L.length){lists.push(L);if(!g('bldLy','').trim())s('bldOk',c)}if(--pend<=0)endAll()};
+  if(polys.length)dataP(c,polys,function(fs){if(fs&&fs.length){done(fs)}else dataQ(c,lng,lat,true,done)});else dataQ(c,lng,lat,true,done)})}
 function doBld(seq){var z=map.getZoom();if(!lay('bld').on||!KEY||z<17){lst('bld',lay('bld').on&&KEY?'확대 필요 (17↑)':'');swapG('bld',L.layerGroup());return}
  lst('bld','조회 중…');bGet(function(fs,code){if(seq!==vecSeq)return;if(fs===null){lst('bld','조회 실패 · 레이어 ID 확인');return}lst('bld',fs.length?'':'건축물 없음');var o=S_('bld'),ng=L.layerGroup();
   visF(fs).forEach(function(x){try{L.geoJSON(x.geometry,{interactive:false,renderer:RN.bld,style:{color:o.color,weight:o.weight,opacity:o.opacity,fill:true,fillColor:o.color,fillOpacity:o.fillOpacity,lineJoin:'round'}}).addTo(ng)}catch(e){}
@@ -14205,7 +14235,7 @@ function pick(lat,lng){
    (r||[]).forEach(function(x){var n=l.id==='fac'?fnm(x.properties||{}):nm(x.properties||{});if(!n)return;
     if(l.id==='fac'&&x.geometry){try{L.geoJSON(x.geometry,{style:{color:'#ff9800',weight:3,dashArray:'6 4',fillColor:'#ff9800',fillOpacity:.18}}).addTo(hf)}catch(e){}}
     var arr=l.id==='zone'?S.zones:l.id==='fac'?S.fac:l.id==='gb'?S.gbs:l.id==='dist'?S.dist:l.id==='spec'?S.spec:S.use;if(arr.indexOf(n)<0)arr.push(n)});done()})})});
-  if(lay('bld')&&lay('bld').on){pend++;S.bld=[];bPoint(lng,lat,pnu,function(a){S.bld=a;done()})}
+  if(lay('bld')&&lay('bld').on){pend++;S.bld=[];bPoint(lng,lat,pnu,f.geometry,function(a){S.bld=a;done()})}
   done()})}
 function man(n){n=+n;if(!isFinite(n))return '';if(n>=1e8)return (n/1e8).toLocaleString('ko-KR',{maximumFractionDigits:2})+'억원';return Math.round(n/1e4).toLocaleString('ko-KR')+'만원'}
 function extLinks(lat,lng,addr,pnu){lat=(+lat).toFixed(6);lng=(+lng).toFixed(6);var u=[['카카오 로드뷰','https://map.kakao.com/link/roadview/'+lat+','+lng],['카카오맵','https://map.kakao.com/link/map/'+encodeURIComponent(addr||'선택 위치')+','+lat+','+lng]];
@@ -14243,7 +14273,7 @@ function render(S,pnu,partial){
   '<div class="stats"><div class="st"><small>지목 · 면적</small><b>'+esc(S.jimok||'—')+(S.area?'<em>'+Number(S.area).toLocaleString('ko-KR')+'㎡</em>':'')+'</b></div>'+
   '<div class="st"><small>소유</small><b>'+(S.own?'<span class="tag own-'+ow+'">'+ow+'</span>':'—')+(S.own&&S.own!==ow?'<em>'+esc(S.own)+'</em>':'')+'</b></div>'+
   '<div class="st wide"><small>공시지가'+(S.gy?' · '+esc(S.gy)+'년':'')+'</small><b>'+(S.jiga?won(S.jiga):'—')+'</b>'+(S.jiga?'<div class="sub" style="margin:2px 0 0">평당 약 '+man(S.jiga*3.3058)+(S.area?' · 총액(추정) 약 '+man(S.jiga*S.area):'')+'</div>':'')+'</div></div>'+
-  (window.__dirHTML&&S.ll?window.__dirHTML():'')+sec('용도지역',tags(S.zones))+capSec(S)+distCard(S)+sec('개발제한',tags(S.gbs,1))+sec('용도지구',tags(S.spec.filter(function(x){return !/지구단위/.test(x)})))+sec('시설',tags(dedupFac(S.fac)))+sec('토지이용',tags(S.use))+(S.bld&&S.bld.length?sec('건축물',S.bld.map(function(x){var t=bRows(x.b,S.area);return (t||'<div class="sub">표시할 항목 없음</div>')+(x.r?'<details style="margin-top:4px;font-size:11px;opacity:.75"><summary>받은 항목 원본</summary>'+x.r.replace(/ · /g,'<br>')+'</details>':'')}).join('')):'')+ratioSec(S)+shpRows(S.shp)+
+  (window.__dirHTML&&S.ll?window.__dirHTML():'')+sec('용도지역',tags(S.zones))+capSec(S)+distCard(S)+sec('개발제한',tags(S.gbs,1))+sec('용도지구',tags(S.spec.filter(function(x){return !/지구단위/.test(x)})))+sec('시설',tags(dedupFac(S.fac)))+sec('토지이용',tags(S.use))+(S.bld&&S.bld.length?sec('건축물',bldHtml(S.bld,S.area)):'')+ratioSec(S)+shpRows(S.shp)+
   (S.ll?sec('바로가기',extLinks(S.ll[0],S.ll[1],S.addr,pnu)):'')+(partial?'<p class="sub sk-t">세부 정보를 불러오는 중…</p>':'<p class="sub">PNU '+esc(pnu)+' · 켜 둔 레이어만 조회됩니다.</p>');
  document.getElementById('infoBody').innerHTML=h;try{foldSecs()}catch(e){}}
 var _ck=0,_ckN=0,_ckT=0;map.on('click',function(e){var oe=e.originalEvent,tch=Date.now()-(window.__lastTouch||0)<700||(oe&&oe.pointerType==='touch');if(tch){if(_ck){clearTimeout(_ck);_ck=0;return}var n0=window.__dtN||0;_ck=setTimeout(function(){_ck=0;if((window.__dtN||0)!==n0)return;clickMap(e)},300);return}clickMap(e)});
@@ -14888,7 +14918,9 @@ if(!adm()&&!lg('accOk')){var pre=function(){if(!gate&&document.body)showGate()};
   b.addEventListener('touchstart',function(){fired=false;clearTimeout(lp);lp=setTimeout(function(){fired=true;t=show(b)},450)},{passive:true});
   ['touchend','touchcancel','touchmove'].forEach(function(ev){b.addEventListener(ev,function(e){clearTimeout(lp);if(t){var x=t;t=null;setTimeout(function(){hide(x)},900)}if(fired&&ev==='touchend'){e.preventDefault();e.stopPropagation()}},{passive:false,capture:true})});
   b.addEventListener('click',function(e){if(fired){fired=false;e.preventDefault();e.stopImmediatePropagation()}},true)});
- try{if(!localStorage.getItem('railHint')){localStorage.setItem('railHint','1');setTimeout(function(){var a=tools.filter(function(b){return b.id!=='bGps'&&b.id!=='bRef'&&b.offsetParent}).map(function(b){return show(b)});setTimeout(function(){a.forEach(hide)},3800)},1800)}}catch(e){}
+ function allTips(){var a=tools.filter(function(b){return b.id!=='bGps'&&b.id!=='bRef'&&b.offsetParent}).map(function(b){return show(b)});setTimeout(function(){a.forEach(hide)},3800)}
+ window.__railTips=allTips;var rb=document.getElementById('railTipBtn');if(rb)rb.onclick=function(){var m=document.querySelector('.modal:not([hidden])');if(m)m.hidden=true;setTimeout(allTips,300)};
+ try{if(!localStorage.getItem('railHint')){localStorage.setItem('railHint','1');setTimeout(allTips,1800)}}catch(e){}
  /* 두 번 터치 → 두 번째에서 손가락을 누른 채 위로 = 확대, 아래로 = 축소 */
  var c=map.getContainer(),lastT=0,lx=0,ly=0,g=null,STEP=70;
  c.addEventListener('touchstart',function(e){window.__lastTouch=Date.now();if(e.touches.length!==1){g=null;return}if(e.target.closest&&e.target.closest('.leaflet-control,.leaflet-marker-icon,button,a,input,select'))return;var t=e.touches[0],now=Date.now();
@@ -15664,7 +15696,8 @@ window.__fld={parseLL:parseLL};
  window.__diag=diag})();
 /* v17: 업데이트 내용 · 저장 공간 */
 (function(){var $=function(i){return document.getElementById(i)};
- var LOGV='2026-11-09k',CH=[
+ var LOGV='2026-11-09m',CH=[
+  ['2026.11.09 (건물 여러 동 · 정보창 정리)',['한 필지에 건물이 여러 동이면 동별로 나누어 보여주고, 동 수·연면적·건폐율·용적률 합계를 계산(모든 동의 면적이 있을 때)','정보창 줄 높이·간격·카드 글자 크기 통일','설정에 “메뉴 이름 보기” 버튼 추가']],
   ['2026.11.09 (두 번 터치 확대 수정)',['한 번 터치한 뒤 0.3초 안에 다시 터치하면 필지 조회를 하지 않고 확대·축소로 처리']],
   ['2026.11.09 (화면 정리)',['왼쪽 아래 버튼 크기·모양·간격 통일','오른쪽 메뉴: 처음 한 번 이름 표시, 이후엔 길게 누르면 이름 표시','알림(불러오는 중·안내)을 같은 모양으로 위쪽 한 곳에 표시','축척과 화면 가로를 두 줄로 정리','두 번 터치한 뒤 두 번째에서 누른 채 위로 올리면 확대, 내리면 축소']],
   ['2026.11.09 (문의 문구)',['승인이 되지 않으면 관리자에게 문의하도록 문구 수정']],
