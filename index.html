@@ -1382,6 +1382,11 @@ html #quick .qp button+button{border-left:0;border-top:1px solid var(--line)}
 /* ===== 지번 글자 선명하게: 번지는 그림자 대신 얇은 외곽선 ===== */
 .jbi span,.jb{text-shadow:none!important;-webkit-text-stroke:1.8px color-mix(in srgb,var(--jbsc,#000) 42%,transparent);paint-order:stroke fill;text-rendering:geometricPrecision;-webkit-font-smoothing:antialiased;letter-spacing:.2px}
 html[data-bright="sun"] .jbi span{-webkit-text-stroke:2.4px color-mix(in srgb,var(--jbsc,#000) 60%,transparent)}
+
+/* ===== 창이 열려 있으면 메뉴 이름표 숨김 · 방문 순서 선택 도구 ===== */
+body:has(.modal:not([hidden])) .rtip,body:has(.modal:not([hidden])) #railTip{opacity:0!important;visibility:hidden!important}
+.vsq{display:flex;align-items:center;gap:6px;margin:0 0 8px;flex-wrap:wrap}.vsq .btn{padding:6px 10px;font-size:13px}
+#vsN{width:56px;font:inherit;font-size:14px;padding:6px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--fg);text-align:center}
 </style></head><body>
 <div id="map"></div>
 <div class="bar">
@@ -1504,6 +1509,8 @@ html[data-bright="sun"] .jbi span{-webkit-text-stroke:2.4px color-mix(in srgb,va
 <div class="modal" id="vsModal" hidden><div class="box" style="max-height:88%;overflow:auto">
  <div class="mh"><h3 style="margin:0">방문 순서 정하기</h3><button class="btn" id="vsX" type="button" aria-label="닫기">✕</button></div>
  <p class="sub" style="margin:4px 0 8px">갈 곳을 고르면 가까운 순서로 정렬합니다. 직선거리 기준이라 실제 도로 거리와 다를 수 있습니다.</p>
+ <div class="vsq"><button class="btn" id="vsAll" type="button">전체 선택</button><button class="btn" id="vsNone" type="button">전체 해제</button></div>
+ <div class="vsq"><span class="sub">지도 가운데에서 가까운</span><input id="vsN" type="number" min="1" max="99" value="5" inputmode="numeric"><span class="sub">곳</span><button class="btn" id="vsNear" type="button">고르기</button></div>
  <div id="vsPick"></div>
  <div class="sub" style="margin:10px 0 4px;font-weight:700">출발점</div>
  <div id="vsSt" class="opts3"><button type="button" data-s="gps"><b>내 위치</b></button><button type="button" data-s="ctr"><b>지도 가운데</b></button><button type="button" data-s="first"><b>첫 번째 곳</b></button></div>
@@ -14006,7 +14013,7 @@ var LS=window.localStorage;function g(k,d){try{var v=LS.getItem(k);return v==nul
  if(o.m!=null){var mm={};o.m.split(',').forEach(function(i){if(i)mm[i]=true});s('muniOn',mm)}
  history.replaceState(null,'',location.pathname+location.search)}catch(e){}})();
 var KEY=g('key',''),DOM=g('dom',location.hostname||'localhost');
-var BUILD="2611092015";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
+var BUILD="2611092018";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
 applyTheme(THEME);
 var BASE=g('base','Base');if(['Base','Satellite','SatLabel','white','none'].indexOf(BASE)<0)BASE='Base';
 // 레이어: id, 이름, 표시 WMS 이름, 조회용 data 코드
@@ -14959,7 +14966,7 @@ function render(list,err){var bx=$('accList');if(!bx)return;
 function badge(n){var b=$('bKey');if(b)b.classList.toggle('accDot',n>0)}
 function refresh(){load(function(l){var p=l.filter(function(x){return x.s==='p'}).length;badge(p);if(p>lastP&&lastP>=0||(lastP<0&&p>0)){status('승인 요청 '+p+'건이 있습니다 · 설정 → 접속 승인');try{if(document.hidden&&window.Notification&&Notification.permission==='granted'){var q=l.filter(function(x){return x.s==='p'})[0];new Notification('딸깍 지도 승인 요청',{body:q.o+' '+q.n})}}catch(e){}}lastP=p;render(l)})}
 function adminInit(){var sec=$('accSec');if(sec)sec.hidden=false;refresh();clearInterval(tmr);tmr=setInterval(function(){if(!document.hidden)refresh()},30000);try{if(window.Notification&&Notification.permission==='default')Notification.requestPermission()}catch(e){}}
-function boot(){var sec=$('accSec');if(sec){sec.hidden=false;render(null)}
+function boot(){var sec=$('accSec');if(sec){sec.hidden=!adm();render(null)}
  if(adm()){jp({a:'chk',k:adm()},function(d){if(d.ok)adminInit();else{ls('accAdm',null);admin=false;render(null);if(!lg('accOk'))showGate()}},function(){/* 오프라인: 관리자는 그대로 사용 */});return}
  if(lg('accOk')){recheck();return}
  showGate()}
@@ -15811,8 +15818,11 @@ window.__fld={parseLL:parseLL};
  $('vsOpen').onclick=open;$('vsX').onclick=function(){$('vsModal').hidden=true};$('vsGo').onclick=go;
  $('vsPick').addEventListener('change',function(e){var t=e.target;if(t.dataset&&t.dataset.k)sel[t.dataset.k]=t.checked});
  $('vsSt').onclick=function(e){var b=e.target.closest('button');if(b)setSt(b.dataset.s)};
+ $('vsAll').onclick=function(){items().forEach(function(x){sel[x.k]=true});drawPick()};$('vsNone').onclick=function(){sel={};drawPick()};
+ $('vsNear').onclick=function(){var a=items(),c=map.getCenter(),n=Math.max(1,Math.min(99,parseInt($('vsN').value,10)||5));sel={};a.map(function(x){return {k:x.k,d:hv([c.lat,c.lng],[x.lat,x.lng])}}).sort(function(p,q){return p.d-q.d}).slice(0,n).forEach(function(x){sel[x.k]=true});drawPick();status('지도 가운데에서 가까운 '+Math.min(n,a.length)+'곳을 골랐습니다')};
  $('vsRes').addEventListener('click',function(e){var t=e.target;if(t.id==='vsMap')draw();else if(t.id==='vsCp')cp();else if(t.id==='vsClr'){vsg.clearLayers();show()}});
 })();
+(function(){var sm=document.querySelector('#keyModal details[data-k="app"] summary');if(!sm)return;var n=0,t=0;sm.addEventListener('click',function(){var now=Date.now();if(now-t>3000)n=0;t=now;if(++n>=5){n=0;var a=document.getElementById('accSec');if(a){a.hidden=false;a.open=true;status('관리자 항목을 표시했습니다')}}})})();
  var VG=g('vg',{fav:1});if(VG.fav===undefined)VG.fav=1;[].forEach.call(document.querySelectorAll('#viewPop details.vg'),function(d){var k=d.dataset.g;d.open=!!VG[k];d.addEventListener('toggle',function(){VG[k]=d.open?1:0;s('vg',VG)})});
  /* 시작할 때 내 위치로 */
  var SL=g('sl',1);function slMark(){[].forEach.call($('slSeg').children,function(b){b.classList.toggle('on',(b.dataset.l==='1')===!!SL)})}
@@ -15879,7 +15889,8 @@ window.__fld={parseLL:parseLL};
  window.__diag=diag})();
 /* v17: 업데이트 내용 · 저장 공간 */
 (function(){var $=function(i){return document.getElementById(i)};
- var LOGV='2026-11-09z',CH=[
+ var LOGV='2026-11-10a',CH=[
+  ['2026.11.10 (이름표·방문 순서·관리자 항목)',['창이 열려 있으면 오른쪽 메뉴 이름표를 숨겨 창 위에 겹치지 않게 함','방문 순서: 전체 선택·해제, 지도 가운데에서 가까운 N곳 고르기 추가','인증키 창의 접속 승인(관리자)은 관리자로 로그인한 기기에만 보임 · 일반 사용자는 “앱 정보”를 5번 연속 누르면 표시']],
   ['2026.11.09 (지번 외곽선 연하게)',['지번 글자 외곽선을 더 얇고 연하게 조정(햇빛 모드에서만 조금 진하게)']],
   ['2026.11.09 (지번 글자 선명하게)',['지번 글자의 번지는 그림자를 얇은 외곽선으로 바꾸고 글자 크기를 정수 단위로 맞춰 또렷하게 표시','지적선은 이전 방식으로 되돌림']],
   ['2026.11.09 (방문 순서 · 지적선)',['도구 → 방문 순서 정하기: 메모 핀·즐겨찾기 중 갈 곳을 고르면 가까운 순서로 정렬(출발점: 내 위치/지도 가운데/첫 번째 곳), 지도에 번호로 표시, 순서 복사, 카카오맵 길찾기(두 곳씩)','지적선은 원래 방식 유지']],
