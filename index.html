@@ -1548,13 +1548,15 @@ html:root[data-theme=dark]:not([data-pal=__]):not([data-out="1"]):not([data-brig
  <div class="ph" style="margin-top:12px">색상</div><div id="palSeg"></div>
  <div class="ph"></div><button class="btn" id="ruOpen" type="button" style="width:100%">필지 색 구분 (면적·공시지가)</button>
  <div class="ph">지도 위 글자 크기 (지번)</div><div class="fsq" id="lsSeg"></div>
+ <div class="ph">선택한 필지 면 채우기</div><div id="hifSeg"><button data-f="0" type="button">없음</button><button data-f="0.12" type="button">연하게</button><button data-f="0.25" type="button">보통</button></div>
+ <div class="ph">오른쪽 메뉴 글자</div><div id="rlSeg"><button data-r="s" type="button">작게</button><button data-r="m" type="button">크게</button><button data-r="x" type="button">숨김</button></div>
+<details id="advDet" style="margin-top:12px"><summary class="ph" style="cursor:pointer">고급 설정 (선명도·밝기·투명도 등)</summary>
  <div class="ph">지번 글자 선명도 (위성 위에서 더 또렷하게)</div><div id="jbcSeg"><button data-j="auto" type="button">자동</button><button data-j="off" type="button">보통</button><button data-j="on" type="button">진하게</button></div>
  <details id="skDet" style="margin-top:12px"><summary class="ph" style="cursor:pointer">정보창 항목 기본 펼침·접힘</summary><div class="sub" style="margin:4px 0">체크한 항목만 펼쳐서 보입니다. 해제하면 접혀서 제목만 보입니다.</div><div style="display:flex;gap:6px;margin-bottom:6px"><button class="btn" id="skAll" type="button">모두 펼치기</button><button class="btn" id="skNone" type="button">모두 접기</button></div><div id="skBox"></div></details>
- <div class="ph">선택한 필지 면 채우기</div><div id="hifSeg"><button data-f="0" type="button">없음</button><button data-f="0.12" type="button">연하게</button><button data-f="0.25" type="button">보통</button></div>
  <details id="opDet" style="margin-top:12px"><summary class="ph" style="cursor:pointer">레이어 투명도 한곳에서 조절</summary><div id="opBox"></div></details>
  <div class="ph">지도 어둡게 (일반·백지도)</div><div id="tdSeg"><button data-t="auto" type="button">자동</button><button data-t="on" type="button">켬</button><button data-t="off" type="button">끔</button></div>
  <div class="ph">야외 모드 (진한 글자·굵은 테두리)</div><div id="outSeg"><button data-o="0" type="button">끔</button><button data-o="1" type="button">켬</button></div>
- <div class="ph">오른쪽 메뉴 글자</div><div id="rlSeg"><button data-r="s" type="button">작게</button><button data-r="m" type="button">크게</button><button data-r="x" type="button">숨김</button></div>
+</details>
  </details>
  <details class="vg" data-g="ctl"><summary>조작</summary>
  <div class="ph">시작할 때 내 위치로 이동</div><div id="slSeg"><button data-l="0" type="button">끔</button><button data-l="1" type="button">켬</button></div>
@@ -14195,7 +14197,7 @@ var LS=window.localStorage;function g(k,d){try{var v=LS.getItem(k);return v==nul
  if(o.m!=null){var mm={};o.m.split(',').forEach(function(i){if(i)mm[i]=true});s('muniOn',mm)}
  history.replaceState(null,'',location.pathname+location.search)}catch(e){}})();
 var KEY=g('key',''),DOM=g('dom',location.hostname||'localhost');
-var BUILD="2611101722";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
+var BUILD="2611101730";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
 applyTheme(THEME);
 var BASE=g('base','Base');if(['Base','Satellite','SatLabel','white','none'].indexOf(BASE)<0)BASE='Base';
 // 레이어: id, 이름, 표시 WMS 이름, 조회용 data 코드
@@ -15281,7 +15283,7 @@ if(!adm()&&!lg('accOk')){var pre=function(){if(!gate&&document.body)showGate()};
  var tools=[].slice.call(document.querySelectorAll('.rail .tool')),tm=0,lp=0,tip=null;
  function nm(b){var sp=b.querySelector('span');return (sp&&sp.textContent.trim())||b.getAttribute('aria-label')||''}
  tools.forEach(function(b){var n=nm(b);if(n&&!b.title)b.title=n});
- function show(b,keep){var n=nm(b);if(!n)return null;var t=document.createElement('div');t.className='rtip';t.textContent=n;document.body.appendChild(t);var r=b.getBoundingClientRect();t.style.left=(r.left-8)+'px';t.style.top=(r.top+r.height/2)+'px';requestAnimationFrame(function(){t.classList.add('on')});if(!keep)return t;return t}
+ function show(b,keep){var n=nm(b);if(!n)return null;var t=document.createElement('div');t.className='rtip';t.textContent=n;document.body.appendChild(t);var r=b.getBoundingClientRect(),ex=Math.min.apply(null,tools.filter(function(x){return x.offsetParent}).map(function(x){return x.getBoundingClientRect().left}));t.style.left=(Math.min(r.left,ex)-8)+'px';t.style.minWidth='64px';t.style.textAlign='center';t.style.boxSizing='border-box';t.style.top=(r.top+r.height/2)+'px';requestAnimationFrame(function(){t.classList.add('on')});if(!keep)return t;return t}
  function hide(t){if(!t)return;t.classList.remove('on');setTimeout(function(){t.remove()},220)}
  tools.forEach(function(b){var t=null,fired=false;
   b.addEventListener('touchstart',function(){fired=false;clearTimeout(lp);lp=setTimeout(function(){fired=true;t=show(b)},450)},{passive:true});
@@ -16544,7 +16546,8 @@ function lines(){var base=$('bjBase').value.trim(),a=[];$('bjTx').value.split(/\
  window.__diag=diag})();
 /* v17: 업데이트 내용 · 저장 공간 */
 (function(){var $=function(i){return document.getElementById(i)};
- var LOGV='2026-11-10w',CH=[
+ var LOGV='2026-11-10x',CH=[
+ ['2026.11.10 (설정·이력·메뉴 글자 정리)',['설정 > 보기: 자주 쓰는 항목만 먼저 보이고, 지번 선명도·정보창 기본 펼침·투명도·지도 어둡게·야외 모드는 "고급 설정"으로 접었습니다.','이번에 바뀐 점: 최근 3건만 보이고 나머지는 "이전 변경 보기"로 접었습니다.','오른쪽 메뉴 이름 풍선: 폭을 맞추고 같은 선에 가지런히 정렬했습니다.']],
   ['2026.11.10 (정보창 버튼 배치)',['주소를 윗줄 전체 폭으로 넓히고, 닫기는 오른쪽 위 ✕, 표시·위치 공유·내리기는 주소 바로 아래 한 줄로 이동 (아이콘 추가)']],
   ['2026.11.10 (정보창 길이·선택 해제·버전)',['“해당 사항” 칩이 두 줄을 넘으면 “+N 더 보기”로 접음','설정 > 보기 > “정보창 항목 기본 펼침·접힘”: 항목별로 펼칠지 접을지 고르고, 모두 펼치기·모두 접기','선택해 둔 필지를 지도에서 한 번 더 누르면 선택이 해제됩니다','새 버전 확인을 앱을 다시 열 때마다(1분 간격 제한) 하고, 설정의 버전 표시를 날짜·시각으로 읽기 쉽게']],
   ['2026.11.10 (줄바꿈)',['정보창의 주소·항목 글이 단어 중간에서 끊기지 않고 띄어쓰기 단위로 줄바꿈 (예: “목감동”이 “목감 / 동”으로 갈라지지 않음)']],
@@ -16631,7 +16634,7 @@ function lines(){var base=$('bjBase').value.trim(),a=[];$('bjTx').value.split(/\
   ['2026.11.05 (오후)',['내 위치: 오차 원, 방위, 선택 필지까지 방향·거리, 진행 방향 위로 돌리기(왼쪽 위 방위 버튼, 두 손가락 비틀기)','지도 비교(좌우 분할)와 과거 항공사진(Esri 보관본)','검색: 최근 검색·최근 본 필지, 동 이름 후보','야간 지도 어둡게, 밝기 자동 조절(햇빛·밤), 한 손 조작','불러오는 중 표시, 실패 원인 보기, 연결 상태 확인','지번 글자 바로 세우기·겹침 줄이기, 지도 글자 크기 3단계','시작할 때 내 위치로 이동, 시작 화면 최근 본 필지','화면 메뉴를 보기·조작·도움말로 정리, 처음 안내 갱신','저장 공간 확인·비우기, 오래된 지도 그림 자동 정리']],
   ['2026.11.05 (낮)',['필지를 누르면 용도지역·시설 면적 비율 표시','왼쪽 아래 빠른 도구 버튼(측정·필지 선택·그리기)','글자 크기 선택, 처음 쓰는 사람용 안내']],
   ['이전',['메모 핀(사진 포함), 경로 기록, 즐겨찾기·최근, 좌표 붙여넣기 이동','오프라인 저장, 홈 화면 설치, 새로고침 버튼, 색상 테마, 지구단위계획구역 표시','지적 불완전 로딩 수정, 지적 범위 1km']]];
- $('logBody').innerHTML=CH.map(function(c){return '<h4>'+esc(c[0])+'</h4><ul>'+c[1].map(function(x){return '<li>'+esc(x)+'</li>'}).join('')+'</ul>'}).join('');
+ (function(){function it(c){return '<h4>'+esc(c[0])+'</h4><ul>'+c[1].map(function(x){return '<li>'+esc(x)+'</li>'}).join('')+'</ul>'}var n=3,h=CH.slice(0,n).map(it).join(''),r=CH.slice(n);if(r.length)h+='<details id="logOld" style="margin-top:10px"><summary class="ph" style="cursor:pointer">이전 변경 보기 ('+r.length+'건)</summary>'+r.map(it).join('')+'</details>';$('logBody').innerHTML=h})();
  function openLog(){$('keyModal').hidden=true;$('viewPop').hidden=true;try{$('bView').classList.remove('on')}catch(e){}$('logModal').hidden=false;s('logSeen',LOGV)}
  $('logVer').textContent=LOGV;function dot(){$('logDot').hidden=g('logSeen','')===LOGV}$('logOpen').onclick=openLog;$('logOpen2').onclick=function(){openLog();dot()};$('logX').onclick=function(){$('logModal').hidden=true;dot()};dot();
  if(g('tour',0)&&g('logSeen','')!==LOGV&&KEY)setTimeout(function(){if($('keyModal').hidden&&$('tourModal').hidden){status('새 기능이 있어요 · 설정 → 앱 정보 → 이번에 바뀐 점 보기')}},3500);
