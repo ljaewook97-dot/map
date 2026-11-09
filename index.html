@@ -13928,7 +13928,7 @@ var LS=window.localStorage;function g(k,d){try{var v=LS.getItem(k);return v==nul
  if(o.m!=null){var mm={};o.m.split(',').forEach(function(i){if(i)mm[i]=true});s('muniOn',mm)}
  history.replaceState(null,'',location.pathname+location.search)}catch(e){}})();
 var KEY=g('key',''),DOM=g('dom',location.hostname||'localhost');
-var BUILD="2611091808";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
+var BUILD="2611091810";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
 applyTheme(THEME);
 var BASE=g('base','Base');if(['Base','Satellite','SatLabel','white','none'].indexOf(BASE)<0)BASE='Base';
 // 레이어: id, 이름, 표시 WMS 이름, 조회용 data 코드
@@ -14852,7 +14852,9 @@ function wait(){if(poll)return;poll=setInterval(function(){if(document.hidden||!
 function recheck(){jp({a:'st',id:ID},function(d){if(d.s==='ok')ls('accOk',String(Date.now()));else if(d.s==='no'||d.s==='none'){ls('accOk',null);showGate(d.s==='no'?'이 기기의 접속이 차단되었습니다. 관리자에게 문의하세요':'다시 승인을 요청해 주세요')}})}
 function adminLogin(k,cb){jp({a:'chk',k:k},function(d){if(d.ok){ls('accAdm',k);admin=true;unlock();adminInit();cb&&cb(true)}else cb&&cb(false)},function(){cb&&cb(false)})}
 /* ---- 관리자 ---- */
-var lastP=-1,tmr=0;
+var lastP=-1,tmr=0,flt='all',pg=null,pgDays=90;
+function ago(t){if(!t)return '';var d=Math.floor((Date.now()-t)/864e5);return d<=0?'오늘':d+'일 전'}
+function lastOf(x){return x.ls||x.t2||x.t||0}
 function adm(){return lg('accAdm')||''}
 function load(cb){jp({a:'list',k:adm()},function(d){if(d.e==='auth'){ls('accAdm',null);admin=false;render([],'관리자 키가 더 이상 유효하지 않습니다');return}cb(d.list||[])},function(){render(null,'서버에 연결하지 못했습니다')})}
 function setS(id,s){jp({a:'set',k:adm(),id:id,s:s},function(){load(function(l){render(l)})})}
@@ -14864,10 +14866,20 @@ function render(list,err){var bx=$('accList');if(!bx)return;
  var pend=list.filter(function(x){return x.s==='p'}).length;
  var h='<div class="sub">'+(err?esc(err)+' · ':'')+'승인 대기 <b>'+pend+'</b>건 · 승인 <b>'+list.filter(function(x){return x.s==='ok'}).length+'</b>대</div>';
  if(!list.length)h+='<div class="sub">아직 요청이 없습니다</div>';
- list.forEach(function(x){var st=x.s==='p'?'대기':x.s==='ok'?'승인':'차단';h+='<div class="accRow s'+x.s+'"><div class="who"><b>'+esc(x.n)+'</b><small>'+esc(x.o)+' · '+when(x.t)+' · '+st+(x.id===ID?' · 이 기기':'')+'</small></div><div class="bt">'+
+ var cnt={all:list.length,p:pend,ok:list.filter(function(x){return x.s==='ok'}).length,no:list.filter(function(x){return x.s==='no'}).length};
+ h+='<div class="accF" style="display:flex;gap:5px;flex-wrap:wrap;margin:6px 0">'+[['all','전체'],['p','대기'],['ok','승인'],['no','차단']].map(function(f){return '<button type="button" class="btn'+(flt===f[0]?' on':'')+'" data-f="'+f[0]+'" style="height:30px;padding:0 10px;font-size:12px">'+f[1]+' '+cnt[f[0]]+'</button>'}).join('')+'</div>';
+ var vis=list.filter(function(x){return flt==='all'||x.s===flt}).sort(function(a1,b1){return flt==='ok'||flt==='no'?lastOf(a1)-lastOf(b1):0});
+ vis.forEach(function(x){var st=x.s==='p'?'대기':x.s==='ok'?'승인':'차단',lt=x.s==='p'?'요청 '+when(x.t):(x.ls?'마지막 접속 '+ago(x.ls):'접속 기록 없음 · 승인 '+ago(x.t2||x.t));h+='<div class="accRow s'+x.s+'"><div class="who"><b>'+esc(x.n)+'</b><small>'+esc(x.o)+' · '+st+' · '+lt+(x.id===ID?' · 이 기기':'')+'</small></div><div class="bt">'+
   (x.s!=='ok'?'<button type="button" data-a="ok" data-i="'+x.id+'">승인</button>':'')+(x.s==='p'?'<button type="button" data-a="no" data-i="'+x.id+'">거절</button>':'')+(x.s==='ok'?'<button type="button" data-a="no" data-i="'+x.id+'">차단</button>':'')+'<button type="button" data-a="del" data-i="'+x.id+'">삭제</button></div></div>'});
+ if(!vis.length&&list.length)h+='<div class="sub">해당하는 기기가 없습니다</div>';
+ var old=list.filter(function(x){return x.s!=='p'&&x.id!==ID&&Date.now()-lastOf(x)>pgDays*864e5});
+ h+='<div class="accPg" style="margin-top:8px;padding-top:8px;border-top:1px solid var(--line)"><div class="sub">오래 안 쓴 기기 정리</div><div style="display:flex;gap:6px;align-items:center;margin-top:4px"><select id="accDays" style="height:32px">'+[30,60,90,180].map(function(d){return '<option value="'+d+'"'+(d===pgDays?' selected':'')+'>'+d+'일 이상</option>'}).join('')+'</select><span class="sub" style="margin:0">'+old.length+'대</span>'+(pg&&pg.n===old.length&&old.length?'<button class="btn on" id="accPgY" type="button">'+old.length+'대 삭제 확인</button><button class="btn" id="accPgN" type="button">취소</button>':'<button class="btn" id="accPgB" type="button"'+(old.length?'':' disabled')+'>정리하기</button>')+'</div><div class="sub" style="font-size:11px">승인·차단된 기기 중 마지막 접속(없으면 승인일)이 오래된 것만 지웁니다. 지워진 기기는 다시 요청하면 됩니다.</div></div>';
  h+='<div style="display:flex;gap:6px;margin-top:6px"><button class="btn" id="accRf" type="button">새로고침</button><button class="btn" id="accOut" type="button">관리자 해제</button></div>';
  bx.innerHTML=h;[].forEach.call(bx.querySelectorAll('.accRow button'),function(b){b.onclick=function(){setS(b.dataset.i,b.dataset.a)}});
+ [].forEach.call(bx.querySelectorAll('.accF button'),function(b){b.onclick=function(){flt=b.dataset.f;render(list)}});
+ var sd=$('accDays');if(sd)sd.onchange=function(){pgDays=+sd.value;pg=null;render(list)};
+ var pb=$('accPgB');if(pb)pb.onclick=function(){pg={n:old.length};render(list)};var pn=$('accPgN');if(pn)pn.onclick=function(){pg=null;render(list)};
+ var py=$('accPgY');if(py)py.onclick=function(){py.disabled=true;var q=old.slice(),n=0;(function nx(){var x=q.shift();if(!x){pg=null;load(function(l){render(l,'정리했습니다 · '+n+'대 삭제')});return}jp({a:'set',k:adm(),id:x.id,s:'del'},function(){n++;nx()},function(){nx()})})()};
  $('accRf').onclick=refresh;$('accOut').onclick=function(){ls('accAdm',null);admin=false;clearInterval(tmr);badge(0);render(null)}}
 function badge(n){var b=$('bKey');if(b)b.classList.toggle('accDot',n>0)}
 function refresh(){load(function(l){var p=l.filter(function(x){return x.s==='p'}).length;badge(p);if(p>lastP&&lastP>=0||(lastP<0&&p>0)){status('승인 요청 '+p+'건이 있습니다 · 설정 → 접속 승인');try{if(document.hidden&&window.Notification&&Notification.permission==='granted'){var q=l.filter(function(x){return x.s==='p'})[0];new Notification('딸깍 지도 승인 요청',{body:q.o+' '+q.n})}}catch(e){}}lastP=p;render(l)})}
@@ -15734,7 +15746,8 @@ window.__fld={parseLL:parseLL};
  window.__diag=diag})();
 /* v17: 업데이트 내용 · 저장 공간 */
 (function(){var $=function(i){return document.getElementById(i)};
- var LOGV='2026-11-09n',CH=[
+ var LOGV='2026-11-09o',CH=[
+  ['2026.11.09 (승인 기기 정리)',['접속 승인 목록: 전체·대기·승인·차단 필터, 마지막 접속일 표시(서버 새 버전 배포 후)','오래 안 쓴 기기(30·60·90·180일) 일괄 정리']],
   ['2026.11.09 (꾹 눌러 순서 바꾸기)',['레이어 줄을 어디든 꾹 누른 채(0.4초) 위아래로 끌어 순서 변경, 왼쪽 ≡ 손잡이는 바로 끌기','끄는 동안 놓을 자리를 선과 안내(“○○ 아래로”)로 표시','필지 조회창의 항목(용도지역·시설·건축물 등)도 제목을 꾹 눌러 끌어 원하는 순서로 정렬(기억)']],
   ['2026.11.09 (건물 여러 동 · 정보창 정리)',['한 필지에 건물이 여러 동이면 동별로 나누어 보여주고, 동 수·연면적·건폐율·용적률 합계를 계산(모든 동의 면적이 있을 때)','정보창 줄 높이·간격·카드 글자 크기 통일','설정에 “메뉴 이름 보기” 버튼 추가']],
   ['2026.11.09 (두 번 터치 확대 수정)',['한 번 터치한 뒤 0.3초 안에 다시 터치하면 필지 조회를 하지 않고 확대·축소로 처리']],
