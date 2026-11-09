@@ -1444,6 +1444,33 @@ body.hasbar #ruLg,body:has(.sheet:not([hidden]):not(#info)) #ruLg{display:none}
 #agBody .lst{max-height:220px;overflow:auto;border:1px solid var(--line);border-radius:10px}
 #infoBody .sec.dcard{background:none!important;border-left:0!important;border-radius:0!important;padding:0!important;margin:0!important;border-top:1px solid var(--line)!important}#infoBody .sec.dcard>small,#infoBody .dcard>small{color:inherit!important}#infoBody .sec.dcard:not(.closed)>div{padding:0 2px 12px}#histBox #histOut:empty{display:none}
 #infoBody .tag.lw{cursor:pointer}#infoBody .tag.lw:after{content:' ↗';font-size:10px;opacity:.55}#infoBody .tag.lw:hover{filter:brightness(1.15);text-decoration:underline}
+</style><style id="v14">
+/* 상태 표시: 같은 내용이 위·아래에 따로 뜨지 않게 */
+body:has(#ldPill:not([hidden])) .toast.ld{display:none!important}
+/* 지도 비교 창: 끌어 옮기기 · 접기 */
+#cmpPanel .ch{cursor:grab;touch-action:none;user-select:none}#cmpPanel.drg .ch{cursor:grabbing}
+#cmpPanel .ch .chb{display:flex;gap:6px}
+#cmpPanel.mini>*:not(.ch){display:none}#cmpPanel.mini{padding:8px 12px;width:auto;min-width:210px}
+#cmpPanel.mv{transform:none;bottom:auto}
+#cmpPanel .uy{display:grid;grid-template-columns:38px 1fr auto;gap:8px;align-items:center;font-size:12px;padding:3px 0;cursor:pointer}
+#cmpPanel .uy .ub{display:flex;height:12px;border-radius:6px;overflow:hidden;background:var(--line)}#cmpPanel .uy .ub i{display:block;height:100%}
+#cmpPanel .uy.on b{color:var(--acc)}#cmpPanel .uy span:last-child{color:var(--mut);white-space:nowrap}
+#cmpPanel .ul{display:flex;gap:10px;flex-wrap:wrap;font-size:11.5px;color:var(--mut)}#cmpPanel .ul i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:4px;vertical-align:-1px}
+#cmpPanel .btn2{width:100%;height:34px;border:1px solid var(--line);border-radius:9px;background:none;color:var(--fg);font:inherit;font-size:12.5px;font-weight:600}
+/* 정보창 상단: 한 덩어리 + 해당 사항 한 줄 */
+#infoBody .stats{gap:0;background:var(--bg);border-radius:14px;overflow:hidden;margin-bottom:8px}
+#infoBody .st{background:none;border-radius:0;border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
+#infoBody .st:nth-child(2){border-right:0}#infoBody .st.wide{border-right:0;border-bottom:0}
+.sumL{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:0 0 10px;padding:9px 11px;border-radius:12px;background:var(--bg);border:1px solid var(--line)}
+.sumL b{font-size:11.5px;color:var(--mut);font-weight:700;margin-right:2px}
+.sumL .sc{border:0;font:inherit;font-size:12.5px;font-weight:700;padding:4px 10px;border-radius:999px;background:var(--acc2);color:var(--acc);cursor:pointer}
+.sumL .sc.z{background:color-mix(in srgb,var(--fg) 8%,transparent);color:var(--fg)}
+.sumL .sc.g{background:#fde8e5;color:var(--warn)}.sumL .sc.d{background:#efe4fb;color:#6a2fb5}.sumL .sc.f{background:#e3f0fb;color:#1c5d99}
+.sumL .none{font-size:12.5px;color:var(--mut)}
+/* 지번 글자 선명도 */
+html[data-jbc="1"] .jbi span{font-weight:900!important;-webkit-text-stroke:3.2px color-mix(in srgb,var(--jbsc,#000) 80%,transparent)!important}
+#jbcSeg{display:flex;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--bg)}#jbcSeg button{flex:1;height:34px;border:0;background:none;color:var(--fg);font:inherit;font-size:13px;font-weight:600}#jbcSeg button.on{background:var(--acc2);color:var(--acc)}
+#opBox .orow{display:grid;grid-template-columns:96px 1fr 38px;gap:8px;align-items:center;font-size:12.5px;margin:6px 0}#opBox .orow span:last-child{color:var(--mut);text-align:right}#opBox input[type=range]{width:100%;min-width:0}
 </style></head><body>
 <div id="map"></div>
 <div class="bar">
@@ -1479,6 +1506,8 @@ body.hasbar #ruLg,body:has(.sheet:not([hidden]):not(#info)) #ruLg{display:none}
  <div class="ph" style="margin-top:12px">색상</div><div id="palSeg"></div>
  <div class="ph"></div><button class="btn" id="ruOpen" type="button" style="width:100%">필지 색 구분 (면적·공시지가)</button>
  <div class="ph">지도 위 글자 크기 (지번)</div><div class="fsq" id="lsSeg"></div>
+ <div class="ph">지번 글자 선명도 (위성 위에서 더 또렷하게)</div><div id="jbcSeg"><button data-j="auto" type="button">자동</button><button data-j="off" type="button">보통</button><button data-j="on" type="button">진하게</button></div>
+ <details id="opDet" style="margin-top:12px"><summary class="ph" style="cursor:pointer">레이어 투명도 한곳에서 조절</summary><div id="opBox"></div></details>
  <div class="ph">지도 어둡게 (일반·백지도)</div><div id="tdSeg"><button data-t="auto" type="button">자동</button><button data-t="on" type="button">켬</button><button data-t="off" type="button">끔</button></div>
  <div class="ph">야외 모드 (진한 글자·굵은 테두리)</div><div id="outSeg"><button data-o="0" type="button">끔</button><button data-o="1" type="button">켬</button></div>
  <div class="ph">오른쪽 메뉴 글자</div><div id="rlSeg"><button data-r="s" type="button">작게</button><button data-r="m" type="button">크게</button><button data-r="x" type="button">숨김</button></div>
@@ -1528,7 +1557,7 @@ body.hasbar #ruLg,body:has(.sheet:not([hidden]):not(#info)) #ruLg{display:none}
  <div class="dcols" id="dCols"></div>
  <input id="dText" placeholder="지도에 넣을 글 (눌러서 위치 지정)" hidden>
  <div id="dInfo" class="sub" style="margin:4px 0 6px"></div>
- <div class="mb"><button class="btn" id="dUndo">되돌리기</button><button class="btn" id="dFin">마침</button><button class="btn" id="dAgg">구역 집계</button><button class="btn" id="dAll">모두 지우기</button><button class="btn on" id="dDone">끝내기</button></div></div>
+ <div class="mb"><button class="btn" id="dUndo">되돌리기</button><button class="btn" id="dFin">마침</button><button class="btn" id="dAgg">구역 집계</button><button class="btn" id="dFit">구역에 맞춰 보기</button><button class="btn" id="dAll">모두 지우기</button><button class="btn on" id="dDone">끝내기</button></div></div>
 <div class="sheet" id="layers" hidden><button class="btn x" data-close>닫기</button><h3 style="font-size:14px;margin:0 0 4px">레이어 <span style="font-weight:400;color:var(--mut);font-size:12px">줄을 꾹 눌러 끌면 순서 변경 · 위쪽이 지도 위</span></h3><div class="chips" id="chips"></div>
 <div class="sl"><button class="btn" id="bShp" style="flex:1;padding:6px 10px;font-size:13px">파일 올리기 (SHP·DXF·지번 목록)</button><input type="file" id="fShp" multiple hidden></div><div id="shpMsg" class="sub" style="margin:2px 0 0" hidden></div>
 
@@ -1552,13 +1581,15 @@ body.hasbar #ruLg,body:has(.sheet:not([hidden]):not(#info)) #ruLg{display:none}
  <div id="memInfo" class="sub" style="margin-top:6px"></div>
 </div></div>
 <div id="cmpBar" hidden><i></i><span class="l"></span><span class="r"></span></div>
-<div id="cmpPanel" hidden><div class="ch"><b>지도 비교</b><button id="cmpX" type="button">닫기</button></div>
+<div id="cmpPanel" hidden><div class="ch"><b>지도 비교</b><span class="chb"><button id="cmpMin" type="button">접기</button><button id="cmpX" type="button">닫기</button></span></div>
  <div class="cm" id="cmpL" style="min-height:0"></div>
  <div><small>오른쪽 화면</small><div id="cmpSeg"><button data-m="past" type="button">과거 항공사진</button><button data-m="Satellite" type="button">위성</button><button data-m="Base" type="button">일반</button></div></div>
  <div id="cmpPastRow"><small>촬영(보관) 시점</small><div id="cmpDate">—</div><div class="cs"><button id="cmpPrev" type="button">◀</button><input type="range" id="cmpRng" min="0" max="0" value="0"><button id="cmpNext" type="button">▶</button></div><div id="cmpYrs"></div></div>
  <div class="cm" id="cmpMsg"></div>
  <div><small>화면 나누기 — 나란히: 왼쪽 화면과 같은 범위를 오른쪽에 과거로 보여 줍니다</small><div id="cmpSplit"><button data-s="sbs" type="button">나란히 (같은 범위)</button><button data-s="50" type="button">가운데 선 비교</button><button data-s="0" type="button">오른쪽만 전체</button></div></div>
+ <div><button class="btn2" id="cmpFit" type="button">구역에 맞추기 (지구단위계획구역·그린 면)</button></div>
  <div id="cmpOvRow" hidden><small>오른쪽(과거) 화면에 표시</small><div id="cmpOv"><button data-o="cad" type="button">지적선</button><button data-o="jb" type="button">지번</button><button data-o="ov" type="button">용도지역 등</button></div></div>
+ <div><small>선택 필지 이용 변화 (색으로 본 참고용 · 정확한 판독 아님)</small><button class="btn2" id="cmpUseGo" type="button">선택한 필지 연도별 분석</button><div class="cm" id="cmpUseMsg"></div><div id="cmpUse"></div></div>
  <div><small>위치 맞추기 (사진마다 수십 m 어긋나 있어 자동으로 보정합니다)</small><div id="cmpAl"><button id="alAuto" type="button">자동 맞추기</button><button id="alOn" type="button">직접 끌어 맞추기</button><button id="alRs" type="button">원래대로</button></div><div class="cm" id="alTx"></div></div></div>
 <div id="quick"><button data-q="tMeas" aria-label="측정"></button><button data-q="tSel" aria-label="필지 선택"></button><button data-q="tDrw" aria-label="그리기"></button><button data-q="tRad" aria-label="반경 분석"></button><button id="qMore" type="button" aria-label="도구 펼치기"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-2.5-.5-.5-2.5z"/></svg></button><div class="qp"><button class="qt" id="qJk" type="button" aria-label="지적선 켜기/끄기">지적</button><button class="qt" id="qJb" type="button" aria-label="지번 켜기/끄기">지번</button></div><button id="qCam" type="button" aria-label="사진 바로 찍기"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-2.5h6L17 8h3a1 1 0 011 1v9a1 1 0 01-1 1H4a1 1 0 01-1-1V9a1 1 0 011-1z"/><circle cx="12" cy="13" r="3.6"/></svg></button><button id="qShot" type="button" aria-label="화면 그대로 캡처"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9V5h4M20 9V5h-4M4 15v4h4M20 15v4h-4"/><circle cx="12" cy="12" r="2.2"/></svg></button><button id="qTog" type="button" aria-label="도구 버튼 접기"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 15l6-6 6 6"/></svg></button></div>
 <div class="modal" id="exModal" hidden><div class="box"><h3 style="margin:0 0 6px">CAD·GIS로 저장</h3><div id="exInfo" class="sub" style="margin:0 0 8px"></div>
@@ -14119,7 +14150,7 @@ var LS=window.localStorage;function g(k,d){try{var v=LS.getItem(k);return v==nul
  if(o.m!=null){var mm={};o.m.split(',').forEach(function(i){if(i)mm[i]=true});s('muniOn',mm)}
  history.replaceState(null,'',location.pathname+location.search)}catch(e){}})();
 var KEY=g('key',''),DOM=g('dom',location.hostname||'localhost');
-var BUILD="2611100153";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
+var BUILD="2611101659";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
 applyTheme(THEME);
 var BASE=g('base','Base');if(['Base','Satellite','SatLabel','white','none'].indexOf(BASE)<0)BASE='Base';
 // 레이어: id, 이름, 표시 WMS 이름, 조회용 data 코드
@@ -14199,6 +14230,7 @@ var RN={};['cad','own','fac','hl','dist','bld'].forEach(function(id){if(!map.get
 var CADRT=0,CADTM=0,cadG=L.layerGroup(),vecG=L.layerGroup(),ownG=L.layerGroup(),vecTimer=null,vecSeq=0,OWN={},stEl=null;
 var stTm=0;function status(t){if(!stEl){stEl=document.createElement('div');stEl.className='toast';document.body.appendChild(stEl)}
  stEl.textContent=t||'';stEl.style.display=t?'block':'none';if(t){var bt=0;['layers','legend','info','selBar','drwBar','measBar'].forEach(function(i){var e=document.getElementById(i);if(e&&!e.hidden){var r=e.getBoundingClientRect();if(r.height)bt=Math.max(bt,innerHeight-r.top)}});stEl.style.bottom=bt?(bt+10)+'px':''}clearTimeout(stTm);if(t)stTm=setTimeout(function(){stEl.style.display='none'},5000)}
+var _st0=status;status=function(t){_st0(t);try{if(stEl)stEl.classList.toggle('ld',/불러|조회 중|다시 시도|재시도/.test(t||''))}catch(e){}};
 var LST={};function lst(id,tx){LST[id]=tx||'';try{window.__updVW&&window.__updVW()}catch(e){}var e=document.querySelector('#chips .lr[data-id="'+id+'"] .st');if(e){e.textContent=LST[id];e.className='st'+(/실패|재시도/.test(LST[id])?' w':'')}try{window.__ld&&window.__ld()}catch(x){}}
 function lay(id){return LAYERS.find(function(l){return l.id===id})}
 function refreshVec(){clearTimeout(vecTimer);vecTimer=setTimeout(doVec,250)}
@@ -14467,8 +14499,15 @@ function capSec(S){if(!S.zones||!S.zones.length)return '';var o=ordOf(S.addr),ro
  if(!n)return '';
  var nt=(o?o[2]:'지자체 조례로 더 낮을 수 있어 해당 시·군 조례 확인 필요 · ')+(fb?'* 이 조례에 따로 정한 값이 없어 시행령 상한 · ':'')+'지구단위계획·경관지구 등은 그 기준이 우선';
  return '<div class="sec"><small>건폐율·용적률 상한 <em class="sub" style="font-style:normal;font-weight:400">· '+(o?o[1]:'시행령 상한')+'</em></small><div class="cap2"><span></span><span class="h">건폐율</span><span class="h">용적률</span>'+rows+'</div><p class="sub" style="margin:2px 0 0;font-size:12px">'+nt+'</p></div>'}
+function sumL(S){var c=[],seen={};function add(l,k,sec){if(!l||seen[l])return;seen[l]=1;c.push('<button type="button" class="sc '+k+'" data-sec="'+sec+'">'+esc(l)+'</button>')}
+ (S.zones||[]).slice(0,2).forEach(function(z){add(String(z).replace(/\(.*$/,''),'z','용도지역')});
+ (S.gbs||[]).forEach(function(x){add(String(x).replace(/\(.*$/,''),'g','개발제한')});
+ if(distNames(S).length)add('지구단위계획구역','d','지구단위계획구역');
+ (S.spec||[]).filter(function(x){return !/지구단위/.test(x)}).forEach(function(x){add(String(x).replace(/\(.*$/,''),'',' 기타'.trim())});
+ var fa=dedupFac(S.fac||[]);fa.slice(0,3).forEach(function(x){add(String(x).replace(/\(.*$/,''),'f','시설')});if(fa.length>3)add('시설 외 '+(fa.length-3),'f','시설');
+ return '<div class="sumL"><b>해당 사항</b>'+(c.length?c.join(''):'<span class="none">표시할 지역·지구·시설이 없습니다</span>')+'</div>'}
 function distCard(S,pnu){var a=distNames(S);if(!a.length)return '';
- return '<div class="sec dcard"><small>지구단위계획구역</small><div>'+a.map(function(x){return '<span class="tag">'+esc(x)+'</span>'}).join('')+'</div><p class="sub" style="margin:2px 0 0;font-size:12px">세부 기준은 구역별 계획이 우선합니다. 토지이음에서 계획도서를 열람하세요.</p>'+(pnu?'<a class="xl" target="_blank" rel="noopener" href="https://www.eum.go.kr/web/ar/lu/luLandDet.jsp?isNoScr=script&mode=search&pnu='+encodeURIComponent(pnu)+'" style="display:inline-block;margin-top:6px">토지이음 바로가기</a>':'')+'</div>'}
+ return '<div class="sec dcard"><small>지구단위계획구역</small><div>'+a.map(function(x){return '<span class="tag">'+esc(x)+'</span>'}).join('')+'</div><p class="sub" style="margin:2px 0 0;font-size:12px">세부 기준은 구역별 계획이 우선합니다. 토지이음에서 계획도서를 열람하세요.</p>'+(pnu?'<a class="xl" target="_blank" rel="noopener" href="https://www.eum.go.kr/web/ar/lu/luLandDet.jsp?isNoScr=script&mode=search&pnu='+encodeURIComponent(pnu)+'" style="display:inline-block;margin-top:6px">토지이음 바로가기</a> <button type="button" class="xl" data-fitz="1" style="display:inline-block;margin-top:6px;margin-left:4px">구역 보기 · 과거와 나란히</button>':'')+'</div>'}
 function distNames(S){var a=[];(S.dist||[]).concat((S.spec||[]).filter(function(x){return /지구단위/.test(x)})).forEach(function(x){if(a.indexOf(x)<0)a.push(x)});return a}
 function render(S,pnu,partial){
  var won=function(n){return n?Number(n).toLocaleString('ko-KR')+'원/㎡':''},ow=owner(S.own);
@@ -14476,7 +14515,7 @@ function render(S,pnu,partial){
  var h='<div class="ih"><h3>'+esc(S.addr||S.jibun)+'</h3><div class="ihs">'+esc(S.jibun)+'</div></div>'+
   '<div class="stats"><div class="st"><small>지목 · 면적</small><b>'+esc(S.jimok||'—')+(S.area?'<em>'+Number(S.area).toLocaleString('ko-KR')+'㎡</em>':'')+'</b></div>'+
   '<div class="st"><small>소유</small><b>'+(S.own?'<span class="tag own-'+ow+'">'+ow+'</span>':'—')+(S.own&&S.own!==ow?'<em>'+esc(S.own)+'</em>':'')+'</b></div>'+
-  '<div class="st wide"><small>공시지가'+(S.gy?' · '+esc(S.gy)+'년':'')+'</small><b>'+(S.jiga?won(S.jiga):'—')+'</b>'+(S.jiga?'<div class="sub" style="margin:2px 0 0">평당 약 '+man(S.jiga*3.3058)+(S.area?' · 총액(추정) 약 '+man(S.jiga*S.area):'')+'</div>':'')+'</div></div>'+
+  '<div class="st wide"><small>공시지가'+(S.gy?' · '+esc(S.gy)+'년':'')+'</small><b>'+(S.jiga?won(S.jiga):'—')+'</b>'+(S.jiga?'<div class="sub" style="margin:2px 0 0">평당 약 '+man(S.jiga*3.3058)+(S.area?' · 총액(추정) 약 '+man(S.jiga*S.area):'')+'</div>':'')+'</div></div>'+sumL(S)+
   sec('용도지역',tags(S.zones))+capSec(S)+distCard(S,pnu)+sec('개발제한',tags(S.gbs,1))+sec('기타',tags(S.spec.filter(function(x){return !/지구단위/.test(x)})))+sec('시설',tags(dedupFac(S.fac)))+sec('토지이용',tags(S.use))+(S.bld&&S.bld.length?sec('건축물',bldHtml(S.bld,S.area)):'')+ratioSec(S)+shpRows(S.shp)+
   (S.ll?sec('바로가기',extLinks(S.ll[0],S.ll[1],S.addr,pnu)):'')+(partial?'<p class="sub sk-t">세부 정보를 불러오는 중…</p>':'<p class="sub">PNU '+esc(pnu)+' · 켜 둔 레이어만 조회됩니다.</p>');
  document.getElementById('infoBody').innerHTML=h;try{foldSecs()}catch(e){}}
@@ -15641,7 +15680,7 @@ window.__fld={parseLL:parseLL};
   var di=$('dirIn');if(di){di.innerHTML=dirInner();bindDir()}
   if(ln){var T=window.__tgt;if(on&&last&&T)ln.setLatLngs([last,T]);else ln.setLatLngs([])}
   $('bGps').classList.toggle('on',on)}
- var _r=render;render=function(S,pnu,partial){_r(S,pnu,partial);var di=$('dirIn');if(di)bindDir()};
+ var _r=render;render=function(S,pnu,partial){window.__lastS=S;_r(S,pnu,partial);var di=$('dirIn');if(di)bindDir()};
  function onPos(p){var c=p.coords;last=[c.latitude,c.longitude];acc=c.accuracy||0;spd=c.speed||0;
   if(c.heading!=null&&!isNaN(c.heading)&&spd>0.7&&!oriOn){hdg=c.heading;if(window.__onHeading)window.__onHeading(hdg,last)}
   if(oriOn&&aOn&&smH!=null&&c.heading!=null&&!isNaN(c.heading)&&spd>1.0&&acc<=30){var dd=ad(c.heading-hOff,smH);if(aN<4||Math.abs(ad(dd,aOffD()))<60){aX=aX*.92+Math.cos(dd*Math.PI/180);aY=aY*.92+Math.sin(dd*Math.PI/180);aN=Math.min(aN+1,60);s('hAX',aX);s('hAY',aY);s('hAN',aN);reH()}}
@@ -15845,6 +15884,62 @@ window.__fld={parseLL:parseLL};
   BR.addEventListener('pointerdown',function(e){if(sbs){e.preventDefault();e.stopPropagation();return}dr=true;try{BR.setPointerCapture(e.pointerId)}catch(x){}e.preventDefault();e.stopPropagation()});
   BR.addEventListener('pointermove',mv);BR.addEventListener('pointerup',function(){dr=false});BR.addEventListener('pointercancel',function(){dr=false})})();
  var _sb2=setBase;setBase=function(b){_sb2(b);if(cmpOn)labels()};
+ /* ---- 비교 창: 끌어 옮기기 · 접기 ---- */
+ (function(){var ch=P.querySelector('.ch'),pos=g('cmpPos',null),mn=g('cmpMin',false),sx=0,sy=0,ox=0,oy=0,dg=false;
+  function put(x,y){var w=P.offsetWidth,h=P.offsetHeight;x=Math.max(4,Math.min(innerWidth-w-4,x));y=Math.max(4,Math.min(innerHeight-h-4,y));P.style.left=x+'px';P.style.top=y+'px';P.style.bottom='auto';P.style.transform='none';P.classList.add('mv');return [x,y]}
+  window.__cmpPlace=function(){P.classList.toggle('mini',!!mn);$('cmpMin').textContent=mn?'펼치기':'접기';if(pos&&!P.hidden){put(pos[0],pos[1])}};
+  ch.addEventListener('pointerdown',function(e){if(e.target.closest('button'))return;dg=true;P.classList.add('drg');var r=P.getBoundingClientRect();sx=e.clientX;sy=e.clientY;ox=r.left;oy=r.top;try{ch.setPointerCapture(e.pointerId)}catch(x){}e.preventDefault()});
+  ch.addEventListener('pointermove',function(e){if(!dg)return;pos=put(ox+e.clientX-sx,oy+e.clientY-sy)});
+  function up(){if(!dg)return;dg=false;P.classList.remove('drg');if(pos)s('cmpPos',pos)}ch.addEventListener('pointerup',up);ch.addEventListener('pointercancel',up);
+  $('cmpMin').onclick=function(){mn=!mn;s('cmpMin',mn);window.__cmpPlace()};
+  window.addEventListener('resize',function(){if(pos&&!P.hidden)pos=put(pos[0],pos[1])});
+  var _o=open;open=function(){_o();window.__cmpPlace()};$('cmpOpen').onclick=open})();
+ /* ---- 구역에 맞춰 보기 ---- */
+ var lastB=null;function fitB(b){if(!b||!b.isValid())return;lastB=b;var W=map.getSize().x,rt=sbs?W/2+30:30;map.fitBounds(b,{paddingTopLeft:[30,70],paddingBottomRight:[rt,30],maxZoom:20,animate:false})}
+ window.__fitZone=function(ll,polyOnly,thenCmp){var pl=window.__drwPoly&&window.__drwPoly();
+  if(pl&&pl.length>=3){fitB(L.latLngBounds(pl));status('그린 면에 화면을 맞췄습니다');if(thenCmp)cmpSbs();return}
+  if(polyOnly){status('먼저 “면”으로 구역을 그려 주세요 (점 3개 이상)');return}
+  var c=ll||window.__tgt||[map.getCenter().lat,map.getCenter().lng];status('지구단위계획구역을 찾는 중…');
+  dataQ('LT_C_UPISUQ161',c[1],c[0],true,function(fs){if(!fs||!fs.length){status(fs?'이 위치에는 지구단위계획구역이 없습니다 (그린 면이 있으면 그 범위로 맞춥니다)':'구역 조회에 실패했습니다');return}
+   var b=null;fs.forEach(function(f){try{var bb=L.geoJSON(f.geometry).getBounds();b=b?b.extend(bb):bb}catch(e){}});if(!b){status('구역 모양을 읽지 못했습니다');return}
+   fitB(b);status('지구단위계획구역에 화면을 맞췄습니다');if(thenCmp)cmpSbs()})};
+ function cmpSbs(){if(!cmpOn)open();setTimeout(function(){sbsOn();showSplit();ovShow();place();fitAgain()},300)}
+ function fitAgain(){if(lastB)fitB(lastB)}
+ $('cmpFit').onclick=function(){window.__fitZone(null,false,false)};
+ $('dFit').onclick=function(){window.__fitZone(null,true,false)};
+ document.getElementById('infoBody').addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-fitz]');if(!b)return;var S=window.__lastS;window.__fitZone(S&&S.ll?S.ll:null,false,true)});
+ /* ---- 선택 필지 이용 변화 (색으로 본 참고용) ---- */
+ var UC=[['veg','녹지','#3c9d4a'],['bare','나대지','#c9a26b'],['bld','건물·포장','#8f98a3'],['etc','기타','#d8d8d8']],uRun=0;
+ function tx(lng,z){return (lng+180)/360*Math.pow(2,z)}
+ function ty(lat,z){var r=lat*Math.PI/180;return (1-Math.log(Math.tan(r)+1/Math.cos(r))/Math.PI)/2*Math.pow(2,z)}
+ function classify(d,m){var n={veg:0,bare:0,bld:0,etc:0},tot=0;for(var i=0;i<d.length;i+=4){if(m[i+3]<128)continue;tot++;var r=d[i],g2=d[i+1],b=d[i+2],mx=Math.max(r,g2,b),mn=Math.min(r,g2,b),sat=mx?(mx-mn)/mx:0,v=mx/255,exg=2*g2-r-b;
+   if(exg>14&&g2>=b)n.veg++;else if(v<.16)n.etc++;else if(b>r*1.12&&b>g2*1.02)n.bld++;else if(sat<.17&&v>.3)n.bld++;else if(r>=g2*.93&&r>b*1.08&&sat>=.12)n.bare++;else n.etc++}
+  return {n:n,tot:tot}}
+ function useYear(gj,w,done){var b=L.geoJSON(gj).getBounds(),z=19,x0,x1,y0,y1;
+  for(;z>=14;z--){x0=Math.floor(tx(b.getWest(),z));x1=Math.floor(tx(b.getEast(),z));y0=Math.floor(ty(b.getNorth(),z));y1=Math.floor(ty(b.getSouth(),z));if((x1-x0+1)*(y1-y0+1)<=9)break}
+  var W=(x1-x0+1)*256,H=(y1-y0+1)*256,cv=document.createElement('canvas');cv.width=W;cv.height=H;var cx=cv.getContext('2d');cx.fillStyle='#808080';cx.fillRect(0,0,W,H);
+  var tpl=wbUrl(w),jobs=[];for(var yy=y0;yy<=y1;yy++)for(var xx=x0;xx<=x1;xx++)(function(xx,yy){jobs.push(ldImg(tpl.replace('{z}',z).replace('{x}',xx).replace('{y}',yy)).then(function(im){if(im)cx.drawImage(im,(xx-x0)*256,(yy-y0)*256,256,256);return !!im}))})(xx,yy);
+  Promise.all(jobs).then(function(a){var ok=a.filter(Boolean).length;if(!ok)return done({err:'tiles'});
+   var mk=document.createElement('canvas');mk.width=W;mk.height=H;var mc=mk.getContext('2d');mc.fillStyle='#fff';mc.beginPath();
+   polysOf(gj).forEach(function(poly){poly.forEach(function(ring){ring.forEach(function(c,i){var px=(tx(c[0],z)-x0)*256,py=(ty(c[1],z)-y0)*256;if(i)mc.lineTo(px,py);else mc.moveTo(px,py)});mc.closePath()})});mc.fill('evenodd');
+   var d,m;try{d=cx.getImageData(0,0,W,H).data;m=mc.getImageData(0,0,W,H).data}catch(e){return done({err:'cors'})}
+   var r=classify(d,m);r.part=ok<a.length;done(r)})}
+ function useGo(){var el=$('cmpUse'),ms=$('cmpUseMsg');ms.className='cm';
+  var gj=null;try{gj=hi&&hi.getLayers()[0].toGeoJSON().geometry}catch(e){}
+  if(!gj){ms.className='cm w';ms.textContent='먼저 지도에서 필지를 눌러 선택하세요.';return}
+  var my=++uRun;ms.textContent='과거 영상 목록을 가져오는 중…';el.innerHTML='';
+  wbLoad(function(a){if(!a){ms.className='cm w';ms.textContent='과거 영상 서버에 연결하지 못했습니다.';return}
+   var last={},yrs=[];a.forEach(function(w,i){var y=w.d.slice(0,4);if(last[y]==null)yrs.push(y);last[y]=i});yrs=yrs.slice(-14);var rows=[],k=0;
+   el.innerHTML='<div class="ul">'+UC.map(function(c){return '<span><i style="background:'+c[2]+'"></i>'+c[1]+'</span>'}).join('')+'</div>';
+   (function nx(){if(my!==uRun)return;if(k>=yrs.length){ms.className='cm';ms.textContent='색만으로 나눈 값이라 그림자·계절·사진 어긋남에 따라 틀릴 수 있습니다. 변화의 흐름을 보는 참고용입니다. 줄을 누르면 그 해 사진을 봅니다.';return}
+    ms.textContent='분석 중… '+yrs[k]+' ('+(k+1)+'/'+yrs.length+')';var y=yrs[k],wi=last[y];k++;
+    useYear(gj,a[wi],function(r){if(my!==uRun)return;var h;if(r.err==='cors'){ms.className='cm w';ms.textContent='이 브라우저에서는 사진의 색을 읽을 수 없어 분석하지 못했습니다.';return}
+     if(r.err||!r.tot){h='<div class="uy"><span>'+y+'</span><span class="sub">자료 없음</span><span></span></div>'}
+     else{var pc=function(q){return Math.round(r.n[q]/r.tot*100)};var bar=UC.map(function(c){return '<i style="width:'+(r.n[c[0]]/r.tot*100).toFixed(1)+'%;background:'+c[2]+'"></i>'}).join('');
+      h='<div class="uy" data-i="'+wi+'"><span><b>'+y+'</b></span><div class="ub">'+bar+'</div><span>녹'+pc('veg')+' 나'+pc('bare')+' 건'+pc('bld')+'</span></div>'}
+     el.insertAdjacentHTML('beforeend',h);var rw=el.lastElementChild;if(rw&&rw.dataset.i)rw.onclick=function(){setMode('past');setDate(+rw.dataset.i)};nx()})})()})}
+ $('cmpUseGo').onclick=useGo;
+
  window.__cmp={open:open,close:close,m2:function(){return m2},sbs:function(){return sbs}};
 })();
 /* v13: 지도 돌리기(진행 방향 위) · 방위 표시 */
@@ -16397,6 +16492,7 @@ function lines(){var base=$('bjBase').value.trim(),a=[];$('bjTx').value.split(/\
 /* v17: 업데이트 내용 · 저장 공간 */
 (function(){var $=function(i){return document.getElementById(i)};
  var LOGV='2026-11-10r',CH=[
+  ['2026.11.10 (정보창·비교 정리)',['지도 비교 창을 끌어서 옮기고 “접기”로 작게 만들 수 있습니다 (위치 기억)','“구역에 맞추기”: 지구단위계획구역 또는 그린 면 전체가 화면에 맞게 이동합니다. 정보창 지구단위계획구역의 “구역 보기 · 과거와 나란히”와 그리기의 “구역에 맞춰 보기”도 같은 기능','“선택한 필지 연도별 분석”: 과거 사진의 색으로 녹지·나대지·건물(포장) 비율을 연도별로 보여 줍니다 (참고용)','필지 정보 맨 위에 “해당 사항” 한 줄 요약 (눌러서 해당 항목으로 이동), 지목·면적·소유·공시지가를 한 덩어리로 정리','같은 내용의 로딩 안내가 위아래에 겹쳐 뜨지 않게 정리','설정 > 보기: 지번 글자 선명도(위성 위 자동), 레이어 투명도 한곳에서 조절']],
   ['2026.11.10 (지도 비교 · 나란히 보기)',['지도 비교에 “나란히 (같은 범위)” 추가 — 왼쪽 화면에 보이는 범위가 오른쪽에 과거 영상으로 똑같이 펼쳐집니다 (가운데 선으로 가리는 방식이 아님)','오른쪽 화면을 끌거나 확대해도 왼쪽과 함께 움직이고, 오른쪽을 눌러도 필지가 선택됩니다','오른쪽(과거) 화면에 지적선·지번·용도지역 등을 따로 켜고 끌 수 있습니다 (왼쪽 설정은 그대로)','왼쪽에서 필지를 조회해 옆 창이 열려도 가운데 선과 오른쪽 화면이 밀리지 않도록 수정','조회한 필지의 초록 표시가 오른쪽에도 같이 나옵니다']],
   ['2026.11.10 (도로구역 법령)',['기타 항목의 “도로구역”을 누르면 도로법 제25조로 바로 연결']],
   ['2026.11.10 (기타 항목 · 법령 바로가기)',['용도지구와 기타를 합쳐 “기타” 한 줄로 정리 (딸깍 박스의 기타 지역·지구와 같은 묶음)','정보창의 용도지역·개발제한·지구단위계획구역·기타·시설 항목을 누르면 관련 법령(국가법령정보센터)이 열림 (하천구역→하천법 등, 딸깍 박스와 같은 연결표)']],
@@ -16749,6 +16845,23 @@ function lines(){var base=$('bjBase').value.trim(),a=[];$('bjTx').value.split(/\
  var pn=$('ovPanel');if(pn){var hd=pn.firstElementChild,b1=document.createElement('button'),b2=document.createElement('button');b1.className='btn sm';b2.className='btn sm';b1.type=b2.type='button';
   function ap(){pn.classList.toggle('top',g('ovTop',false));pn.classList.toggle('mini',g('ovMini',false));b1.textContent=g('ovTop',false)?'아래로':'위로';b2.textContent=g('ovMini',false)?'펼치기':'작게'}
   b1.onclick=function(){s('ovTop',!g('ovTop',false));ap()};b2.onclick=function(){s('ovMini',!g('ovMini',false));ap()};hd.insertBefore(b2,hd.lastElementChild);hd.insertBefore(b1,b2);ap()}
+})();
+
+/* v14: 요약 칩 이동 · 지번 선명도 · 투명도 한곳 */
+(function(){var $=function(i){return document.getElementById(i)},ib=$('infoBody');
+ ib.addEventListener('click',function(e){var c=e.target.closest&&e.target.closest('.sumL .sc');if(!c)return;var k=c.dataset.sec,hit=null;
+  [].forEach.call(ib.querySelectorAll('.sec'),function(el){var h=el.children[0];if(!hit&&h&&(h.textContent||'').replace(/\s+/g,' ').trim().indexOf(k)===0)hit=el});
+  if(!hit)return;hit.classList.remove('closed');try{hit.scrollIntoView({behavior:'smooth',block:'nearest'})}catch(x){hit.scrollIntoView()}hit.style.transition='box-shadow .3s';hit.style.boxShadow='0 0 0 2px var(--acc)';setTimeout(function(){hit.style.boxShadow=''},1200)});
+ var JBC=g('jbc','auto');
+ function apJbc(){var on=JBC==='on'||(JBC==='auto'&&/^Sat/.test(BASE));document.documentElement.setAttribute('data-jbc',on?'1':'0');[].forEach.call($('jbcSeg').children,function(b){b.classList.toggle('on',b.dataset.j===JBC)})}
+ [].forEach.call($('jbcSeg').children,function(b){b.onclick=function(){JBC=b.dataset.j;s('jbc',JBC);apJbc()}});
+ var _sb3=setBase;setBase=function(b){_sb3(b);apJbc()};apJbc();
+ var OPK={cad:'opacity',own:'fillOpacity',dist:'fillOpacity',bld:'fillOpacity',fac:'fillOpacity'};
+ function opFill(){var bx=$('opBox');bx.innerHTML='';var n=0;LAYERS.forEach(function(l){if(!l.on)return;var k=OPK[l.id]||'opacity',v=S_(l.id)[k];if(v==null)return;n++;
+   var r=document.createElement('div');r.className='orow';var nm=document.createElement('span');nm.textContent=l.n;var i=document.createElement('input');i.type='range';i.min=5;i.max=100;i.step=5;i.value=Math.round(v*100);var vl=document.createElement('span');vl.textContent=i.value+'%';
+   i.oninput=function(){vl.textContent=i.value+'%';setSty(l.id,k,i.value/100);reAny(l.id)};r.appendChild(nm);r.appendChild(i);r.appendChild(vl);bx.appendChild(r)});
+  if(!n)bx.innerHTML='<p class="sub">켜 둔 레이어가 없습니다.</p>'}
+ $('opDet').addEventListener('toggle',function(){if(this.open)opFill()});
 })();
 })();
 
