@@ -1400,7 +1400,7 @@ body:has(.modal:not([hidden])) .rtip,body:has(.modal:not([hidden])) #railTip{opa
  #info:not(.min){left:0!important;top:0!important;bottom:0!important;right:auto!important;width:440px!important;max-height:none!important;height:100dvh!important;border-radius:0!important;box-shadow:3px 0 18px #0002!important;border-right:1px solid var(--line)!important;padding-top:14px!important}
  body:has(#info:not([hidden]):not(.min)) #map{left:440px}
  body:has(#info:not([hidden]):not(.min)) .bar{left:440px}
- body:has(#info:not([hidden]):not(.min)) :is(#quick,#rose,#lgrp,#trkPill,#gpsPill){translate:440px 0}
+ body:has(#info:not([hidden]):not(.min)) :is(#quick,#lgrp,#trkPill,#gpsPill){translate:440px 0}
 }
 #dropHint{position:fixed;inset:0;z-index:3000;display:flex;align-items:center;justify-content:center;background:color-mix(in srgb,var(--acc) 22%,transparent);backdrop-filter:blur(2px);pointer-events:none}
 #dropHint>div{padding:26px 40px;border:3px dashed var(--acc);border-radius:20px;background:var(--card);color:var(--fg);font-size:20px;font-weight:800;text-align:center}#dropHint small{display:block;margin-top:6px;font-size:13px;font-weight:500;color:var(--mut)}
@@ -14057,7 +14057,7 @@ var LS=window.localStorage;function g(k,d){try{var v=LS.getItem(k);return v==nul
  if(o.m!=null){var mm={};o.m.split(',').forEach(function(i){if(i)mm[i]=true});s('muniOn',mm)}
  history.replaceState(null,'',location.pathname+location.search)}catch(e){}})();
 var KEY=g('key',''),DOM=g('dom',location.hostname||'localhost');
-var BUILD="2611092039";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
+var BUILD="2611092042";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
 applyTheme(THEME);
 var BASE=g('base','Base');if(['Base','Satellite','SatLabel','white','none'].indexOf(BASE)<0)BASE='Base';
 // 레이어: id, 이름, 표시 WMS 이름, 조회용 data 코드
@@ -14340,7 +14340,7 @@ function foldSecs(){try{orderSecs()}catch(e){}var op=g('secOpen',[]);if(!Array.i
   var n=el.querySelectorAll('.tag').length;if(n>1){var e=document.createElement('em');e.className='cnt';e.textContent=n;h.appendChild(e)}
   if(op.indexOf(k)<0)el.classList.add('closed');
   h.onclick=function(){var c=el.classList.toggle('closed'),a=g('secOpen',[]);if(!Array.isArray(a))a=[];var i=a.indexOf(k);if(!c&&i<0)a.push(k);if(c&&i>=0)a.splice(i,1);s('secOpen',a)}});try{secDrag()}catch(e){}}
-function openInfo(h){document.getElementById('infoBody').innerHTML=h;try{foldSecs()}catch(e){}document.getElementById('info').hidden=false;document.getElementById('layers').hidden=true;document.getElementById('legend').hidden=true}
+function openInfo(h){document.getElementById('infoBody').innerHTML=h;try{foldSecs()}catch(e){}document.getElementById('info').hidden=false;if(window.innerWidth<1000){document.getElementById('layers').hidden=true;document.getElementById('legend').hidden=true}}
 /* 필지 안 면적 비율 (표본 점 방식, 약 1% 오차) */
 function polysOf(g){var o=[];if(!g)return o;if(g.type==='Polygon')o.push(g.coordinates);else if(g.type==='MultiPolygon')g.coordinates.forEach(function(p){o.push(p)});return o}
 function pipP(poly,x,y){var ins=false;poly.forEach(function(r){for(var i=0,j=r.length-1;i<r.length;j=i++){var xi=r[i][0],yi=r[i][1],xj=r[j][0],yj=r[j][1];if(((yi>y)!==(yj>y))&&(x<(xj-xi)*(y-yi)/(yj-yi)+xi))ins=!ins}});return ins}
@@ -14571,8 +14571,8 @@ renderLayerUI();applyZ();upInit();
 document.querySelectorAll('[data-b]').forEach(function(e){e.onclick=function(){setBase(e.dataset.b)}});
 function closeSheet(el){if(el.id==='legend'){HL='';hlG.clearLayers()}el.hidden=true;if(hf){map.removeLayer(hf);hf=null}if(hi){map.removeLayer(hi);hi=null}if(pin){map.removeLayer(pin);pin=null}}
 document.querySelectorAll('[data-close]').forEach(function(e){e.onclick=function(){closeSheet(e.closest('.sheet'))}});
-document.getElementById('bLayers').onclick=function(){var el=document.getElementById('layers');el.hidden=!el.hidden;document.getElementById('info').hidden=true};
-document.getElementById('bLeg').onclick=function(){var el=document.getElementById('legend');el.hidden=!el.hidden;document.getElementById('info').hidden=true;renderLeg()};
+document.getElementById('bLayers').onclick=function(){var el=document.getElementById('layers');el.hidden=!el.hidden;if(window.innerWidth<1000)document.getElementById('info').hidden=true};
+document.getElementById('bLeg').onclick=function(){var el=document.getElementById('legend');el.hidden=!el.hidden;if(window.innerWidth<1000)document.getElementById('info').hidden=true;renderLeg()};
 document.getElementById('bRef').onclick=function(){var b=this;b.classList.add('spin');setTimeout(function(){b.classList.remove('spin')},900);FC={};PEND={};CADRT=0;if(typeof OWN!=='undefined'){try{for(var k in OWN)delete OWN[k]}catch(e){}}status('지적·소유구분·시설을 새로 조회합니다');doVec()};
 function showKey(){document.getElementById('kKey').value=KEY;document.getElementById('kDom').value=DOM;var first=!KEY;document.getElementById('kIntro').hidden=!first;document.getElementById('keyModal').classList.toggle('first',first);document.getElementById('kDomShow').textContent=DOM||location.hostname||'(웹 주소)';document.getElementById('kMsg').textContent='';document.getElementById('keyModal').hidden=false;document.getElementById('dbg').textContent=LOG.join('\n')||'(아직 응답 없음)'}
 document.getElementById('bKey').onclick=showKey;
@@ -15172,8 +15172,8 @@ function clamp(v,a,b){return Math.max(a,Math.min(b,v))}
  el.appendChild(gr);el.appendChild(pz);el.appendChild(rz);
  function apply(){var bsm=vw()<=600;el.classList.toggle('bs',bsm);if(bsm){['width','height','left','top'].forEach(function(k){el.style[k]=''});pz.style.zoom=1;return}var r=W[id]||{};var w=r.w||Math.min(BW,vw()-72),h=r.h||(k?Math.round(vh()*0.45):Math.min(Math.round(vh()*0.62),500));
   w=clamp(w,MINW,Math.min(MAXW,vw()));h=clamp(h,MINH,Math.min(MAXH(),vh()));
-  var x=r.x!=null?r.x:8,y=r.y!=null?r.y:(k?vh()-h-12:Math.round(document.querySelector('.seg').getBoundingClientRect().bottom)+6);
-  x=clamp(x,0,vw()-w);y=clamp(y,0,vh()-h);
+  var inf=document.getElementById('info'),dk=vw()>=1000&&inf&&!inf.hidden&&!inf.classList.contains('min')?448:0;var x=r.x!=null?r.x:(vw()>=1000?vw()-w-84:8),y=r.y!=null?r.y:(k?vh()-h-12:Math.round(document.querySelector('.seg').getBoundingClientRect().bottom)+6);
+  x=clamp(x,dk,vw()-w);y=clamp(y,0,vh()-h);
   el.style.width=w+'px';el.style.height=h+'px';el.style.left=x+'px';el.style.top=y+'px';
   pz.style.zoom=zm(w);}
  function save(){var b=el.getBoundingClientRect();W[id]={x:Math.round(b.left),y:Math.round(b.top),w:Math.round(b.width),h:Math.round(b.height)};s('win',W)}
@@ -15183,7 +15183,8 @@ function clamp(v,a,b){return Math.max(a,Math.min(b,v))}
  drag(gr,function(b,dx,dy){W[id]=W[id]||{};el.style.left=clamp(b.left+dx,0,vw()-b.width)+'px';el.style.top=clamp(b.top+dy,0,vh()-b.height)+'px'});
  drag(rz,function(b,dx,dy){var w=clamp(b.width+dx,MINW,Math.min(MAXW,vw()-b.left)),h=clamp(b.height+dy,MINH,Math.min(MAXH(),vh()-b.top));el.style.width=w+'px';el.style.height=h+'px';pz.style.zoom=zm(w)});
  new MutationObserver(function(){if(!el.hidden)apply()}).observe(el,{attributes:true,attributeFilter:['hidden']});
- window.addEventListener('resize',function(){if(!el.hidden)apply()});apply();});
+ window.addEventListener('resize',function(){if(!el.hidden)apply()});(window.__flAp=window.__flAp||[]).push(function(){if(!el.hidden)apply()});apply();});
+var _inf=document.getElementById('info');if(_inf)new MutationObserver(function(){(window.__flAp||[]).forEach(function(f){f()})}).observe(_inf,{attributes:true,attributeFilter:['hidden','class']});
 })();
 /* ---- v7: 현장 기록 ---- */
 (function(){
@@ -16041,7 +16042,8 @@ function lines(){var base=$('bjBase').value.trim(),a=[];$('bjTx').value.split(/\
  window.__diag=diag})();
 /* v17: 업데이트 내용 · 저장 공간 */
 (function(){var $=function(i){return document.getElementById(i)};
- var LOGV='2026-11-10d',CH=[
+ var LOGV='2026-11-10e',CH=[
+  ['2026.11.10 (PC 정보 + 레이어 동시 보기)',['PC에서 정보창(옆 패널)과 레이어·시설 창을 함께 볼 수 있음(레이어 창은 기본으로 오른쪽, 옆 패널과 겹치지 않게 비켜 줌)','옆 패널이 열릴 때 방위 표시가 옆으로 밀리던 문제 수정']],
   ['2026.11.10 (PC 화면 바로잡기)',['PC에서 옆 패널이 열릴 때 왼쪽 버튼 줄이 위로 밀려 검색창과 겹치던 문제 수정']],
   ['2026.11.10 (PC 편의 기능)',['파일 끌어다 놓기: SHP(5174)·DXF·지번 목록(txt·csv·xlsx)을 지도 위에 놓으면 바로 처리(DXF는 좌표계 선택, 지번 목록은 일괄 표시로 연결)','마우스 우클릭 메뉴: 필지 조회·좌표 복사(위경도/5186)·메모 추가·카카오 로드뷰','PC에서는 정보창이 왼쪽 옆 패널로 고정되고 지도가 그 옆으로 맞춰짐','마우스를 필지에 올리면 주소·지번, 잠시 뒤 용도지역 말풍선']],
   ['2026.11.10 (지번 일괄 · 핀 이동 · 메모 검색)',['도구 → 지번 목록 일괄 표시: 편입토지조서·엑셀의 지번을 붙여넣으면 필지를 찾아 색칠, 못 찾은 줄과 다른 필지일 수 있는 줄을 따로 알려줌(기본 주소 지정 가능)','메모를 열면 “위치 옮기기”: 핀을 끌거나 지도를 눌러 새 위치로 저장','현장 기록 → 메모에 검색칸 추가(내용·번호·체크 항목)']],
