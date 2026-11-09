@@ -1160,6 +1160,12 @@ details.vg{border-bottom:1px solid var(--line);padding:2px 0 10px;margin-bottom:
 details.vg>summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;font-weight:800;font-size:14px;padding:8px 2px;color:var(--fg)}
 details.vg>summary::-webkit-details-marker{display:none}details.vg>summary:after{content:"";width:8px;height:8px;border-right:2px solid var(--mut);border-bottom:2px solid var(--mut);transform:rotate(45deg);transition:transform .15s;margin-right:4px}
 details.vg[open]>summary:after{transform:rotate(-135deg)}
+/* ===== 인증키 창 묶음 정리 ===== */
+#keyModal .kgrp{margin-top:12px;border-top:1px solid var(--line);padding-top:4px}
+#keyModal details.vg{padding:0 0 4px;margin-bottom:2px}
+#keyModal details.vg>summary{font-size:13.5px}
+#keyModal details.vg>*:not(summary){margin-top:4px}
+#keyModal .kbd{display:inline-block;min-width:18px;padding:1px 7px;border-radius:999px;background:var(--warn);color:#fff;font-size:11px;font-weight:800;text-align:center;margin-left:6px}
 #viewPop details.vg>.ph:first-of-type{margin-top:2px}
 #chkOut .cr2{display:flex;gap:8px;align-items:flex-start;padding:6px 0;border-bottom:1px solid var(--line);font-size:13px}#chkOut .cr2 .ci{flex:0 0 20px;text-align:center;font-weight:800}
 #chkOut .cr2 small{display:block;color:var(--mut);font-size:11.5px;margin-top:1px;word-break:break-all}#chkOut .cr2.ok .ci{color:#1e9e5a}#chkOut .cr2.ng .ci{color:#d63a2b}#chkOut .cr2.wn .ci{color:#e09a12}
@@ -1479,11 +1485,19 @@ body.lpdrag{user-select:none;-webkit-user-select:none;-webkit-touch-callout:none
  <label>인증키</label><input id="kKey" autocomplete="off" autocapitalize="off" spellcheck="false">
  <label>도메인 (키 발급 때 등록한 서비스 URL의 주소부분, 예: example.github.io)</label><input id="kDom" autocomplete="off" autocapitalize="off">
  <div style="display:flex;gap:8px;justify-content:flex-end"><button class="btn" id="kPaste" type="button" style="margin-right:auto">붙여넣기</button><button class="btn" id="kCancel">취소</button><button class="btn on" id="kSave">저장</button></div><div id="kMsg" class="sub" style="margin:6px 0 0"></div>
- <div class="adv"><label>최근 V-World 응답 (문제가 있으면 이 내용을 알려주세요)</label><pre id="dbg" style="font-size:11px;white-space:pre-wrap;word-break:break-all;margin:4px 0 8px;max-height:140px;overflow:auto;background:var(--bg);padding:6px;border-radius:6px"></pre><p class="sub">키는 이 폰의 브라우저에만 저장되고 다른 곳으로 보내지지 않습니다.</p></div>
- <div class="adv" style="margin-top:10px;padding-top:10px;border-top:1px solid var(--line)"><button class="btn" id="chkNet" type="button" style="width:100%">연결 상태 확인</button><div id="chkSum" class="sub" style="margin:8px 0 4px;font-weight:700"></div><div id="chkOut"></div></div>
- <div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--line);display:flex;align-items:center;gap:8px"><div style="flex:1;min-width:0"><div style="font-weight:700;font-size:13px">메뉴 이름 보기</div><div class="sub" style="margin:2px 0 0;font-size:12px">오른쪽 메뉴 아이콘의 이름을 잠깐 보여줍니다. 평소엔 아이콘을 길게 누르면 나옵니다.</div></div><button class="btn" id="railTipBtn" type="button">보기</button></div>
- <div id="accSec" hidden style="margin-top:10px;padding-top:10px;border-top:1px solid var(--line)"><div style="font-weight:700;font-size:13px;margin-bottom:6px">접속 승인 (관리자)</div><div id="accList"></div></div>
- <div class="adv" style="display:flex;align-items:center;gap:8px;margin-top:10px;padding-top:10px;border-top:1px solid var(--line)"><div style="flex:1;min-width:0"><div style="font-weight:700;font-size:13px">앱 버전</div><div class="sub" style="margin:0">빌드 <span id="verLbl"></span> <span id="verMsg"></span></div></div><button class="btn" id="verChk">업데이트 확인</button></div></div></div>
+ <div class="kgrp">
+ <details class="vg adv" id="accSec" data-k="acc" hidden><summary>접속 승인 (관리자) <span id="accBadge" class="kbd" hidden></span></summary><div id="accList"></div></details>
+ <details class="vg adv" data-k="menu"><summary>화면·메뉴</summary>
+ <div style="display:flex;align-items:center;gap:8px"><div style="flex:1;min-width:0"><div style="font-weight:700;font-size:13px">메뉴 이름 보기</div><div class="sub" style="margin:2px 0 0;font-size:12px">오른쪽 메뉴 아이콘의 이름을 잠깐 보여줍니다. 평소엔 아이콘을 길게 누르면 나옵니다.</div></div><button class="btn" id="railTipBtn" type="button">보기</button></div>
+ </details>
+ <details class="vg adv" data-k="diag" id="kDiag"><summary>연결 진단</summary>
+ <button class="btn" id="chkNet" type="button" style="width:100%">연결 상태 확인</button><div id="chkSum" class="sub" style="margin:8px 0 4px;font-weight:700"></div><div id="chkOut"></div>
+ <label style="margin-top:10px">최근 V-World 응답 (문제가 있으면 이 내용을 알려주세요)</label><pre id="dbg" style="font-size:11px;white-space:pre-wrap;word-break:break-all;margin:4px 0 8px;max-height:140px;overflow:auto;background:var(--bg);padding:6px;border-radius:6px"></pre><p class="sub">키는 이 폰의 브라우저에만 저장되고 다른 곳으로 보내지지 않습니다.</p>
+ </details>
+ <details class="vg adv" data-k="app"><summary>앱 정보</summary>
+ <div style="display:flex;align-items:center;gap:8px"><div style="flex:1;min-width:0"><div style="font-weight:700;font-size:13px">앱 버전</div><div class="sub" style="margin:0">빌드 <span id="verLbl"></span> <span id="verMsg"></span></div></div><button class="btn" id="verChk">업데이트 확인</button></div>
+ </details>
+ </div></div></div>
 <script>/* @preserve
  * Leaflet 1.9.4, a JS library for interactive maps. https://leafletjs.com
  * (c) 2010-2023 Vladimir Agafonkin, (c) 2010-2011 CloudMade
@@ -13941,7 +13955,7 @@ var LS=window.localStorage;function g(k,d){try{var v=LS.getItem(k);return v==nul
  if(o.m!=null){var mm={};o.m.split(',').forEach(function(i){if(i)mm[i]=true});s('muniOn',mm)}
  history.replaceState(null,'',location.pathname+location.search)}catch(e){}})();
 var KEY=g('key',''),DOM=g('dom',location.hostname||'localhost');
-var BUILD="2611091833";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
+var BUILD="2611091921";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
 applyTheme(THEME);
 var BASE=g('base','Base');if(['Base','Satellite','SatLabel','white','none'].indexOf(BASE)<0)BASE='Base';
 // 레이어: id, 이름, 표시 WMS 이름, 조회용 data 코드
@@ -14879,6 +14893,7 @@ function render(list,err){var bx=$('accList');if(!bx)return;
   $('accK2o').onclick=function(){var k=$('accK2').value.trim();if(k)adminLogin(k,function(ok){if(ok)refresh();else render(null,'관리자 키가 맞지 않거나 연결하지 못했습니다')})};return}
  if(list==null){bx.innerHTML='<div class="sub">'+esc(err||'')+'</div><button class="btn" id="accRf" type="button">다시 불러오기</button>';$('accRf').onclick=refresh;return}
  var pend=list.filter(function(x){return x.s==='p'}).length;
+ try{var bg=$('accBadge');if(bg){bg.textContent=pend;bg.hidden=!pend}}catch(e){}
  var h='<div class="sub">'+(err?esc(err)+' · ':'')+'승인 대기 <b>'+pend+'</b>건 · 승인 <b>'+list.filter(function(x){return x.s==='ok'}).length+'</b>대</div>';
  if(!list.length)h+='<div class="sub">아직 요청이 없습니다</div>';
  var cnt={all:list.length,p:pend,ok:list.filter(function(x){return x.s==='ok'}).length,no:list.filter(function(x){return x.s==='no'}).length};
@@ -15695,6 +15710,7 @@ window.__fld={parseLL:parseLL};
  /* 지도 글자 크기 세 단계 */
  var w=mkFsSeg();while(w.firstChild)$('lsSeg').appendChild(w.firstChild);markFsq();
  /* 설정 그룹 접힘 기억 */
+(function(){var K=g('kg',{});[].forEach.call(document.querySelectorAll('#keyModal details.vg'),function(d){var k=d.dataset.k;d.open=!!K[k];d.addEventListener('toggle',function(){K[k]=d.open?1:0;s('kg',K)})})})();
  var VG=g('vg',{fav:1});if(VG.fav===undefined)VG.fav=1;[].forEach.call(document.querySelectorAll('#viewPop details.vg'),function(d){var k=d.dataset.g;d.open=!!VG[k];d.addEventListener('toggle',function(){VG[k]=d.open?1:0;s('vg',VG)})});
  /* 시작할 때 내 위치로 */
  var SL=g('sl',1);function slMark(){[].forEach.call($('slSeg').children,function(b){b.classList.toggle('on',(b.dataset.l==='1')===!!SL)})}
@@ -15740,7 +15756,7 @@ window.__fld={parseLL:parseLL};
   var t4=Date.now();tmo(fetch('https://s3-us-west-2.amazonaws.com/config.maptiles.arcgis.com/waybackconfig.json',{cache:'no-store'}).then(function(r){return r.json()}),9000).then(function(j){done('wb',true,'영상 '+Object.keys(j).length+'개 목록 수신',Date.now()-t4);try{var ks=Object.keys(j),e=j[ks[ks.length-1]],u=String(e.itemURL||'').replace('{level}','0').replace('{row}','0').replace('{col}','0');if(u)reach('wbt',u);else done('wbt',null,'타일 주소를 알 수 없어 확인하지 못했습니다')}catch(x){done('wbt',null,'타일 주소를 알 수 없어 확인하지 못했습니다')}},function(){done('wb',false,'목록 못 받음 · 이 망에서 차단되었을 수 있습니다',Date.now()-t4);done('wbt',null,'목록을 못 받아 확인하지 못했습니다')});
   }
  $('chkNet').onclick=net;
- $('chkOpen').onclick=function(){$('viewPop').hidden=true;try{$('bView').classList.remove('on')}catch(e){}showKey();$('keyModal').hidden=false;net()};
+ $('chkOpen').onclick=function(){$('viewPop').hidden=true;try{$('bView').classList.remove('on')}catch(e){}showKey();$('keyModal').hidden=false;try{$('kDiag').open=true}catch(e){}net()};
  window.__net=net;
 })();
 /* v16: 불러오기 실패 원인 설명 */
@@ -15761,7 +15777,8 @@ window.__fld={parseLL:parseLL};
  window.__diag=diag})();
 /* v17: 업데이트 내용 · 저장 공간 */
 (function(){var $=function(i){return document.getElementById(i)};
- var LOGV='2026-11-09s',CH=[
+ var LOGV='2026-11-09t',CH=[
+  ['2026.11.09 (설정 화면 정리)',['인증키 창의 항목을 묶음별로 접어서 정리: 접속 승인(관리자)·화면·메뉴·연결 진단·앱 정보','접속 승인 묶음에는 대기 중인 요청 수가 붙어서, 접어 둬도 새 요청을 알 수 있음','펼침 상태는 기억']],
   ['2026.11.09 (씨:리얼 안내 수정)',['씨:리얼은 주소를 링크로 받지 않아 “주소 복사” 버튼으로 표시(열고 붙여넣기)']],
   ['2026.11.09 (씨:리얼 바로가기)',['바로가기에 “씨:리얼(건축물)” 추가: 누르면 LH 씨:리얼 지도가 열리고 이 필지 주소가 복사됨(검색창에 붙여넣기)']],
   ['2026.11.09 (펼침 표시)',['접힌 항목은 ＋ 원, 펼친 항목은 － 색 원과 강조된 제목·왼쪽 선으로 구분(동별 건물 포함)']],
