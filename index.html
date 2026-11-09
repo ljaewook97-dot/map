@@ -1437,6 +1437,12 @@ body.hasbar #ruLg,body:has(.sheet:not([hidden]):not(#info)) #ruLg{display:none}
 #info .btn.x{padding:6px 10px;font-size:12.5px}
 .histT{width:100%;border-collapse:collapse;font-size:13px}.histT th,.histT td{padding:5px 6px;border-bottom:1px solid var(--line);text-align:right}.histT th:first-child,.histT td:first-child{text-align:left}.histT th{color:var(--mut);font-weight:600;font-size:12px}.histR{margin:6px 0;padding:6px 0;border-top:1px dashed var(--line)}.histR small{color:var(--mut)}
 .histN{margin-top:10px;padding:10px;border-radius:10px;background:var(--acc2);font-size:12.5px}.histN p{margin:4px 0}.histN ul{margin:4px 0 8px;padding-left:18px}.histN li{margin:2px 0}
+
+.dtools{grid-template-columns:repeat(5,1fr)!important}#snapD.sn1,#snapM.sn1{background:var(--acc2)!important;border-color:var(--acc)!important;color:var(--acc)!important}
+#agModal .mh{display:flex;align-items:center;justify-content:space-between;gap:8px}#agModal .mh .btn{width:36px;height:36px;padding:0;border-radius:50%;line-height:1}
+#agBody .ph{margin:14px 0 4px;font-weight:700;font-size:13px}#agBody .big{font-size:15px;font-weight:800}#agBody .histT{margin:2px 0}#agBody .nt{font-size:12px;color:var(--mut);margin-top:10px}
+#agBody .lst{max-height:220px;overflow:auto;border:1px solid var(--line);border-radius:10px}
+#infoBody .sec.dcard{background:none!important;border-left:0!important;border-radius:0!important;padding:0!important;margin:0!important;border-top:1px solid var(--line)!important}#infoBody .sec.dcard>small,#infoBody .dcard>small{color:inherit!important}#infoBody .sec.dcard:not(.closed)>div{padding:0 2px 12px}#histBox #histOut:empty{display:none}
 </style></head><body>
 <div id="map"></div>
 <div class="bar">
@@ -1514,14 +1520,14 @@ body.hasbar #ruLg,body:has(.sheet:not([hidden]):not(#info)) #ruLg{display:none}
 </div>
 <div id="sRes" hidden></div>
 <div class="mbar" id="radBar" hidden><div id="radTx">지도를 눌러 기준점을 정하세요</div><div class="rchips" id="radChips"></div><div class="radIn"><input id="radNum" type="number" inputmode="numeric" min="1" step="1" placeholder="직접 입력"><span>m</span><small>동그라미 끝의 손잡이를 끌어 늘리고 줄여요</small></div><div class="mb"><button class="btn" id="radMulti">여러 겹</button><button class="btn on" id="radQ">이 반경 안 조회</button><button class="btn" id="radMe">내 위치 기준</button><button class="btn" id="radClr">지우기</button><button class="btn on" id="radDone">끝내기</button></div></div>
-<div id="measBar" hidden><div id="measTxt"></div><div class="mb"><button class="btn" id="mUndo">되돌리기</button><button class="btn" id="mClr">지우기</button><button class="btn" id="mSave">저장</button><button class="btn on" id="mDone">끝내기</button></div></div>
+<div id="measBar" hidden><div id="measTxt"></div><div class="mb"><button class="btn" id="mUndo">되돌리기</button><button class="btn" id="snapM" type="button">붙이기</button><button class="btn" id="mClr">지우기</button><button class="btn" id="mSave">저장</button><button class="btn on" id="mDone">끝내기</button></div></div>
 <div class="mbar" id="selBar" hidden><div id="selTxt"></div><div class="mb"><button class="btn" id="sUndo">되돌리기</button><button class="btn" id="sClr">지우기</button><button class="btn" id="sCopy">복사</button><button class="btn" id="sCsv">CSV</button><button class="btn" id="sCad">CAD·GIS</button><button class="btn" id="sMark">표시</button><button class="btn on" id="sDone">끝내기</button></div></div>
 <div class="mbar" id="drwBar" hidden>
- <div class="dtools"><button data-dt="line">선</button><button data-dt="poly">면</button><button data-dt="text">글</button><button data-dt="erase">지우개</button></div>
+ <div class="dtools"><button data-dt="line">선</button><button data-dt="poly">면</button><button data-dt="text">글</button><button data-dt="erase">지우개</button><button id="snapD" type="button" title="지적선·필지 모서리에 붙이기">붙이기</button></div>
  <div class="dcols" id="dCols"></div>
  <input id="dText" placeholder="지도에 넣을 글 (눌러서 위치 지정)" hidden>
  <div id="dInfo" class="sub" style="margin:4px 0 6px"></div>
- <div class="mb"><button class="btn" id="dUndo">되돌리기</button><button class="btn" id="dFin">마침</button><button class="btn" id="dAll">모두 지우기</button><button class="btn on" id="dDone">끝내기</button></div></div>
+ <div class="mb"><button class="btn" id="dUndo">되돌리기</button><button class="btn" id="dFin">마침</button><button class="btn" id="dAgg">구역 집계</button><button class="btn" id="dAll">모두 지우기</button><button class="btn on" id="dDone">끝내기</button></div></div>
 <div class="sheet" id="layers" hidden><button class="btn x" data-close>닫기</button><h3 style="font-size:14px;margin:0 0 4px">레이어 <span style="font-weight:400;color:var(--mut);font-size:12px">줄을 꾹 눌러 끌면 순서 변경 · 위쪽이 지도 위</span></h3><div class="chips" id="chips"></div>
 <div class="sl"><button class="btn" id="bShp" style="flex:1;padding:6px 10px;font-size:13px">파일 올리기 (SHP·DXF·지번 목록)</button><input type="file" id="fShp" multiple hidden></div><div id="shpMsg" class="sub" style="margin:2px 0 0" hidden></div>
 
@@ -1596,6 +1602,11 @@ body.hasbar #ruLg,body:has(.sheet:not([hidden]):not(#info)) #ruLg{display:none}
  <div id="ruPv" style="margin-top:10px"></div>
  <div style="display:flex;gap:6px;align-items:center;margin-top:12px"><button class="btn" id="ruRs" type="button">기본 구간으로</button><span style="flex:1"></span><button class="btn on" id="ruOk" type="button">적용</button></div>
  <div id="ruSt" class="sub" style="margin:8px 0 0"></div>
+</div></div>
+<div class="modal" id="agModal" hidden><div class="box" style="max-height:92%;overflow:auto">
+ <div class="mh"><h3 style="margin:0">구역 안 집계</h3><button class="btn" id="agX" type="button" aria-label="닫기">✕</button></div>
+ <div id="agBody" style="margin-top:6px"></div>
+ <div style="display:flex;gap:6px;justify-content:flex-end;margin-top:10px" id="agBt" hidden><button class="btn" id="agCp" type="button">복사 (엑셀에 붙여넣기)</button><button class="btn" id="agCsv" type="button">CSV 저장</button></div>
 </div></div>
 <div class="modal" id="vsModal" hidden><div class="box" style="max-height:88%;overflow:auto">
  <div class="mh"><h3 style="margin:0">방문 순서 정하기</h3><button class="btn" id="vsX" type="button" aria-label="닫기">✕</button></div>
@@ -14106,7 +14117,7 @@ var LS=window.localStorage;function g(k,d){try{var v=LS.getItem(k);return v==nul
  if(o.m!=null){var mm={};o.m.split(',').forEach(function(i){if(i)mm[i]=true});s('muniOn',mm)}
  history.replaceState(null,'',location.pathname+location.search)}catch(e){}})();
 var KEY=g('key',''),DOM=g('dom',location.hostname||'localhost');
-var BUILD="2611092142";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
+var BUILD="2611092149";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
 applyTheme(THEME);
 var BASE=g('base','Base');if(['Base','Satellite','SatLabel','white','none'].indexOf(BASE)<0)BASE='Base';
 // 레이어: id, 이름, 표시 WMS 이름, 조회용 data 코드
@@ -15137,7 +15148,7 @@ if(!adm()&&!lg('accOk')){var pre=function(){if(!gate&&document.body)showGate()};
  document.getElementById('dFin').onclick=fin;
  var allT=0;document.getElementById('dAll').onclick=function(){var b=this;if(!allT){allT=setTimeout(function(){allT=0;b.textContent='모두 지우기'},3000);b.textContent='정말 지우기';return}clearTimeout(allT);allT=0;b.textContent='모두 지우기';if(DR.length)U('그리기 모두 지우기');DR=[];cur=[];save();renderD();prev()};
  function set(v){on=v;bar.hidden=!v;document.getElementById('tDrw').classList.toggle('on',v);document.getElementById('map').style.cursor=v?'crosshair':'';cur=[];if(v)ui();else{pv.clearLayers();renderD()}window.__tp&&window.__tp()}
- document.getElementById('dDone').onclick=function(){set(false)};window.__M=window.__M||{};window.__M.drw=set;renderD()})();
+ document.getElementById('dDone').onclick=function(){set(false)};window.__M=window.__M||{};window.__M.drw=set;window.__drwPoly=function(){if(tool==='poly'&&cur.length>=3)return cur.slice();for(var i=DR.length-1;i>=0;i--)if(DR[i].t==='poly')return DR[i].p.slice();return null};renderD()})();
 
 /* tools menu + share */
 (function(){var b=document.getElementById('bTool'),pp=document.getElementById('toolPop'),act='';
@@ -16170,10 +16181,11 @@ function lines(){var base=$('bjBase').value.trim(),a=[];$('bjTx').value.split(/\
  function E(t){return String(t==null?'':t).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
  var KN={ladMvmnPrvonshCodeNm:'토지이동 사유',ladMvmnDe:'토지이동 일자',ladMvmnYmd:'토지이동 일자',ownshipChgPrvonshCodeNm:'소유권 변동 원인',ownshipChgDe:'소유권 변동 일자',lastUpdtDt:'데이터 기준일',lndcgrCodeNm:'지목',lndpclAr:'면적(㎡)',posesnSeCodeNm:'소유구분',ldCodeNm:'법정동',mnnmSlno:'지번'};
  function ymd(v){v=String(v||'');return /^\d{8}$/.test(v)?v.slice(0,4)+'-'+v.slice(4,6)+'-'+v.slice(6):v}
- function inject(){if(!ib.querySelector('.stats')||ib.querySelector('#histBox'))return;var d=document.createElement('div');d.id='histBox';d.innerHTML='<button class="btn" id="histGo" type="button" style="width:100%;margin-top:10px">필지 변경 이력 보기 (공시지가·토지이동)</button><div id="histOut"></div>';ib.appendChild(d)}
+ function inject(){if(!ib.querySelector('.stats')||ib.querySelector('#histBox'))return;var K='필지 변경 이력',op=g('secOpen',[]);if(!Array.isArray(op))op=[];var d=document.createElement('div');d.id='histBox';d.className='sec fdc'+(op.indexOf(K)<0?' closed':'');d.innerHTML='<small>'+K+' <span class="sub" style="font-weight:400;font-size:12px">· 공시지가·토지이동</span></small><div><button class="btn" id="histGo" type="button" style="width:100%;margin-top:4px">불러오기</button><div id="histOut"></div></div>';ib.appendChild(d);
+  d.children[0].onclick=function(){var c=d.classList.toggle('closed'),a=g('secOpen',[]);if(!Array.isArray(a))a=[];var i=a.indexOf(K);if(!c&&i<0)a.push(K);if(c&&i>=0)a.splice(i,1);s('secOpen',a);if(!c&&!d.dataset.ld&&window.__pkPnu)$('histGo').click()}}
  new MutationObserver(function(){inject()}).observe(ib,{childList:true,subtree:false});
  ib.addEventListener('click',function(e){if(!e.target.closest||!e.target.closest('#histGo'))return;var pn=window.__pkPnu,out=$('histOut');if(!pn){out.innerHTML='<p class="sub">필지 조회가 끝난 뒤 눌러 주세요.</p>';return}
-  var b=e.target.closest('#histGo');b.disabled=true;b.textContent='불러오는 중…';out.innerHTML='';
+  var b=e.target.closest('#histGo');var bx=$('histBox');if(bx)bx.dataset.ld=pn;b.disabled=true;b.textContent='불러오는 중…';out.innerHTML='';
   var Y=new Date().getFullYear(),yrs=[],pr={},pend=0,rows=null,fin=false;
   for(var y=Y;y>=Y-9;y--)yrs.push(y);
   function done(){if(--pend>0)return;fin=true;show()}
@@ -16191,6 +16203,83 @@ function lines(){var base=$('bjBase').value.trim(),a=[];$('bjTx').value.split(/\
    out.innerHTML=h}
   pend++;ned('ladfrlList',pn,function(d){try{var a=d.ladfrlVOList.ladfrlVOList;rows=Array.isArray(a)?a:(a?[a]:[])}catch(x){rows=null}done()});
   yrs.forEach(function(y){pend++;ned('getIndvdLandPriceAttr',pn,function(d){try{var a=d.indvdLandPrices.field;if(!Array.isArray(a))a=a?[a]:[];a.forEach(function(r){if(r&&r.pblntfPclnd&&String(r.stdrYear||y)===String(y))pr[y]=r.pblntfPclnd})}catch(x){}done()},'&stdrYear='+y)})});
+})();
+(function(){var $=function(i){return document.getElementById(i)};
+ /* ===== 모서리 붙이기 ===== */
+ var SN=g('snap',1),ring=null;
+ function sync(){['snapD','snapM'].forEach(function(i){var b=$(i);if(!b)return;b.classList.toggle('sn1',!!SN);b.textContent=SN?'붙이기 켬':'붙이기 끔';b.setAttribute('aria-pressed',SN?'true':'false')})}
+ function tog(){SN=SN?0:1;s('snap',SN);sync();if(!SN&&ring){map.removeLayer(ring);ring=null}var c=FC['LP_PA_CBND_BUBUN'];status(SN?(c&&c.feats&&c.feats.length?'모서리 붙이기 켬 · Alt를 누른 채 찍으면 이번 점만 붙지 않습니다':'모서리 붙이기 켬 · 지적선 레이어를 켜고 크게 확대하면 붙습니다'):'모서리 붙이기 끔')}
+ $('snapD').onclick=tog;$('snapM').onclick=tog;sync();
+ function snapAt(ll){var c=FC['LP_PA_CBND_BUBUN'],fs=c&&c.feats;if(!fs||!fs.length)return null;var p=map.latLngToContainerPoint(ll),a=map.containerPointToLatLng(p.subtract([22,22])),b=map.containerPointToLatLng(p.add([22,22])),
+   x0=Math.min(a.lng,b.lng),x1=Math.max(a.lng,b.lng),y0=Math.min(a.lat,b.lat),y1=Math.max(a.lat,b.lat),bv=null,bvd=15,be=null,bed=11;
+  for(var i=0;i<fs.length;i++){var f=fs[i];if(!f.geometry)continue;var bb=fbb(f);if(bb[2]<x0||bb[0]>x1||bb[3]<y0||bb[1]>y1)continue;
+   polysOf(f.geometry).forEach(function(pl){pl.forEach(function(rg){var pv=null;for(var j=0;j<rg.length;j++){var q=map.latLngToContainerPoint([rg[j][1],rg[j][0]]),d=q.distanceTo(p);if(d<bvd){bvd=d;bv=[rg[j][1],rg[j][0]]}
+     if(pv){var dx=q.x-pv.x,dy=q.y-pv.y,l2=dx*dx+dy*dy;if(l2>0){var t=((p.x-pv.x)*dx+(p.y-pv.y)*dy)/l2;t=Math.max(0,Math.min(1,t));var cx=pv.x+t*dx,cy=pv.y+t*dy,e=Math.hypot(p.x-cx,p.y-cy);if(e<bed){bed=e;be=map.containerPointToLatLng(L.point(cx,cy))}}}
+     pv=q}})})}
+  if(bv)return L.latLng(bv[0],bv[1]);return be}
+ function wrap(e){if(!SN||!e||!e.latlng)return e;if(e.originalEvent&&e.originalEvent.altKey)return e;var r=snapAt(e.latlng);if(!r)return e;var o={};for(var k in e)o[k]=e[k];o.latlng=r;flash(r);return o}
+ function flash(ll){if(ring)map.removeLayer(ring);ring=L.circleMarker(ll,{radius:8,color:'#00c853',weight:3,fill:false,interactive:false}).addTo(map);setTimeout(function(){if(ring){map.removeLayer(ring);ring=null}},650)}
+ ['__drw','__meas'].forEach(function(k){var o=window[k];if(o)window[k]=function(e){return o(wrap(e))}});
+ var raf=0,hv=null;
+ map.on('mousemove',function(e){if(!SN||!($('tDrw').classList.contains('on')||$('tMeas').classList.contains('on')))return;if(raf)return;var oe=e.originalEvent;raf=requestAnimationFrame(function(){raf=0;if(oe&&oe.altKey){if(hv){map.removeLayer(hv);hv=null}return}var r=snapAt(e.latlng);if(r){if(!hv)hv=L.circleMarker(r,{radius:7,color:'#00c853',weight:3,fill:false,interactive:false}).addTo(map);else hv.setLatLng(r)}else if(hv){map.removeLayer(hv);hv=null}})});
+ map.on('mouseout',function(){if(hv){map.removeLayer(hv);hv=null}});
+ /* ===== 구역 안 집계 ===== */
+ function E(t){return String(t==null?'':t).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+ function gA(gm){var polys=polysOf(gm),tot=0;polys.forEach(function(pl){pl.forEach(function(r,k){var la=r.reduce(function(a,c){return a+c[1]},0)/r.length,kx=111320*Math.cos(la*Math.PI/180),ky=110540,a=0;for(var i=0;i<r.length;i++){var p=r[i],q=r[(i+1)%r.length];a+=(p[0]*kx)*(q[1]*ky)-(q[0]*kx)*(p[1]*ky)}a=Math.abs(a)/2;tot+=k?-a:a})});return tot}
+ function fa(n){return Math.round(n).toLocaleString('ko-KR')}
+ var rows=[],lastTx='';
+ function runAgg(ptsLL){var body=$('agBody');$('agBt').hidden=true;$('agModal').hidden=false;body.innerHTML='<p class="sub">구역 안 필지를 불러오는 중…</p>';
+  if(!KEY){body.innerHTML='<p>인증키가 필요합니다.</p>';return}
+  var P=[ptsLL.map(function(c){return [c[1],c[0]]})],polys=[P],bb=[1e9,1e9,-1e9,-1e9];P[0].forEach(function(c){if(c[0]<bb[0])bb[0]=c[0];if(c[1]<bb[1])bb[1]=c[1];if(c[0]>bb[2])bb[2]=c[0];if(c[1]>bb[3])bb[3]=c[1]});
+  var Pa=gA({type:'Polygon',coordinates:P}),w=bb[2]-bb[0],h=bb[3]-bb[1];
+  if(Pa<20){body.innerHTML='<p>구역이 너무 작습니다.</p>';return}
+  if(Pa>4e6){body.innerHTML='<p>구역이 너무 큽니다 (약 '+fa(Pa/1e6)+'㎢). 4㎢ 이하로 그려 주세요.</p>';return}
+  ALIVEF=null;
+  boxAll('LP_PA_CBND_BUBUN',1000,bb.slice(),6,function(fs,tr){
+   if(!fs){body.innerHTML='<p>필지를 불러오지 못했습니다. 인증키·인터넷을 확인하고 다시 눌러 주세요.</p>';return}
+   var parc=[];
+   fs.forEach(function(f){if(!f.geometry)return;var b=fbb(f);if(b[2]<bb[0]||b[0]>bb[2]||b[3]<bb[1]||b[1]>bb[3])return;var pp=polysOf(f.geometry),N=36,inP=0,inF=0,dx=(b[2]-b[0])/N,dy=(b[3]-b[1])/N;
+    for(var i=0;i<N;i++)for(var j=0;j<N;j++){var x=b[0]+(i+.5)*dx,y=b[1]+(j+.5)*dy;if(!pipA(pp,x,y))continue;inF++;if(x>=bb[0]&&x<=bb[2]&&y>=bb[1]&&y<=bb[3]&&pipA(polys,x,y))inP++}
+    if(!inF){var gc=gcen(f.geometry);if(pipA(polys,gc[1],gc[0])){inF=1;inP=1}}
+    if(!inF||!inP)return;var r=inP/inF,ga=gA(f.geometry);if(r<.01)return;var pr=f.properties||{};
+    parc.push({pnu:pr.pnu,jibun:pr.jibun||'',addr:pr.addr||'',r:r,full:r>=.985,ga:ga,ina:r*ga,jiga:+pr.jiga||0,jimok:'',area:0,own:OWN[pr.pnu]||''})});
+   parc.sort(function(a,b){return b.ina-a.ina});
+   var cap=80,look=parc.slice(0,cap),qi=0,done=0;
+   function after(){stage2()}
+   function nextQ(){var x=look[qi++];if(!x){if(done>=look.length)after();return}ned('ladfrlList',x.pnu,function(d){try{var v=d.ladfrlVOList.ladfrlVOList;v=Array.isArray(v)?v[0]:v;x.jimok=v.lndcgrCodeNm||'';x.area=+v.lndpclAr||0;var o=owner(v.posesnSeCodeNm);if(o){x.own=o;OWN[x.pnu]=o}}catch(e){}done++;body.innerHTML='<p class="sub">필지 정보 조회 '+done+'/'+look.length+'</p>';if(done>=look.length)after();else nextQ()})}
+   if(!look.length){after()}else{for(var k=0;k<Math.min(4,look.length);k++)nextQ()}
+   function stage2(){body.innerHTML='<p class="sub">용도지역 등 겹침 계산 중…</p>';
+    var np=Math.max(8,Math.min(110,Math.ceil(Math.sqrt(6000*w/h)))),ny=Math.max(8,Math.min(110,Math.ceil(6000/np))),pts=[];
+    for(var i=0;i<np;i++)for(var j=0;j<ny;j++){var x=bb[0]+(i+.5)*w/np,y=bb[1]+(j+.5)*h/ny;if(pipA(polys,x,y))pts.push([x,y])}
+    var G=[['zone','용도지역'],['spec','용도지구'],['dist','지구단위계획구역'],['gb','개발제한구역']].filter(function(g2){var l=lay(g2[0]);return l&&l.data&&pts.length>=10}),left=0,got=G.map(function(){return []}),fin=false;
+    function end(){if(fin)return;fin=true;var zs=[];G.forEach(function(g2,gi){var cnt={},nm2=[];got[gi].forEach(function(f){var pp=polysOf(f.geometry);if(!pp.length)return;var n=(f.properties&&(f.properties.uname||fnm(f.properties)||nm(f.properties)))||'';if(!n)return;nm2.push([n,pp,fbb(f)])});
+      pts.forEach(function(pt){var seen={};nm2.forEach(function(e){if(seen[e[0]])return;var b=e[2];if(pt[0]<b[0]||pt[0]>b[2]||pt[1]<b[1]||pt[1]>b[3])return;if(pipA(e[1],pt[0],pt[1])){seen[e[0]]=1;cnt[e[0]]=(cnt[e[0]]||0)+1}})});
+      var it=Object.keys(cnt).map(function(k){return [k,cnt[k]/pts.length*Pa]}).filter(function(a){return a[1]/Pa>=.005}).sort(function(a,b){return b[1]-a[1]});if(it.length)zs.push({g:g2[1],items:it})});
+     show(zs)}
+    if(!G.length){end();return}
+    var pad=Math.max(w,h)*.02,pb=[bb[0]-pad,bb[1]-pad,bb[2]+pad,bb[3]+pad];
+    G.forEach(function(g2,gi){lay(g2[0]).data.forEach(function(code){left++;boxAll(code,300,pb.slice(),3,function(f){if(f)got[gi]=got[gi].concat(f.filter(function(x){return x.geometry}));if(--left===0)end()})})});setTimeout(end,15000)}
+   function show(zs){
+    var tbl=[],h2='';function T(name,items,tot,unit){if(!items.length)return;h2+='<div class="ph">'+name+'</div><table class="histT"><tr><th>구분</th><th>면적(㎡)</th><th>비율</th></tr>'+items.map(function(a){tbl.push([name,a[0],Math.round(a[1]),(a[1]/tot*100).toFixed(1)+'%']);return '<tr><td>'+E(a[0])+'</td><td>'+fa(a[1])+'</td><td>'+(a[1]/tot*100).toFixed(1)+'%</td></tr>'}).join('')+'</table>'}
+    var tin=0,own={},jm={},price=0,pa=0,miss=0,full=0;
+    parc.forEach(function(x){var ia=x.area?x.r*x.area:x.ina;x.ia=ia;tin+=ia;if(x.full)full++;var o=x.own||(look.indexOf(x)>=0?'소유 미확인':'미조회');own[o]=(own[o]||0)+ia;var j=x.jimok||'미조회';jm[j]=(jm[j]||0)+ia;if(x.jiga){price+=x.jiga*ia;pa+=ia}else miss++});
+    var sumL=function(o){return Object.keys(o).map(function(k){return [k,o[k]]}).sort(function(a,b){return b[1]-a[1]})};
+    h2+='<div class="big">구역 면적 '+fa(Pa)+' ㎡ <span class="sub">('+fa(Pa/3.3058)+'평)</span></div>';
+    h2+='<div style="margin-top:4px">걸치는 필지 <b>'+parc.length+'</b>개 (전체 포함 '+full+' · 일부 걸침 '+(parc.length-full)+')'+(tr?' <span class="sub">· 필지 수가 많아 일부만 불러왔을 수 있음</span>':'')+'</div><div>필지 면적 합계(구역 안) <b>'+fa(tin)+' ㎡</b>'+(Math.abs(tin-Pa)/Pa>.03?' <span class="sub">· 구역 면적과 차이가 나는 부분은 지적에 없는 땅(하천·미등록)이거나 오차입니다</span>':'')+'</div>';
+    if(pa)h2+='<div>공시지가 합계(추정) <b>약 '+man(price)+'</b> <span class="sub">· 평균 '+fa(price/pa)+'원/㎡'+(miss?' · '+miss+'필지 가격 없음':'')+'</span></div>';
+    T('소유구분별',sumL(own),tin);T('지목별',sumL(jm),tin);zs.forEach(function(z){T(z.g+'별',z.items,Pa)});
+    h2+='<div class="ph">필지 목록 (구역 안 면적 큰 순)</div><div class="lst"><table class="histT"><tr><th>지번</th><th>지목</th><th>구역 안(㎡)</th><th>포함</th><th>소유</th><th>공시지가</th></tr>'+parc.map(function(x){var jb=(x.addr||x.jibun).replace(/^\S+\s+\S+\s+\S+\s*/,'')||x.jibun;tbl.push(['필지',x.addr||x.jibun,x.jimok,Math.round(x.ia),Math.round(x.r*100)+'%',x.own,x.jiga]);return '<tr><td>'+E(jb)+'</td><td>'+E(x.jimok)+'</td><td>'+fa(x.ia)+'</td><td>'+Math.round(x.r*100)+'%</td><td>'+E(x.own)+'</td><td>'+(x.jiga?fa(x.jiga):'-')+'</td></tr>'}).join('')+'</table></div>';
+    if(parc.length>cap)h2+='<div class="nt">필지가 많아 면적 큰 순 '+cap+'필지만 지목·소유를 조회했습니다. 나머지는 “미조회”입니다.</div>';
+    h2+='<div class="nt">격자 계산이라 ±1~2% 오차가 있고, 필지의 구역 안 면적은 대장 면적에 겹침 비율을 곱한 값입니다. 보고서에는 CAD로 확인한 값을 쓰세요.</div>';
+    body.innerHTML=h2;$('agBt').hidden=false;
+    rows=[['구역 면적(㎡)',Math.round(Pa)],['필지 수',parc.length],['필지 합계(구역 안,㎡)',Math.round(tin)]].concat([[]]).concat(tbl);
+    lastTx=rows.map(function(r){return r.join('\t')}).join('\n')}
+  })}
+ window.__agg=runAgg;
+ $('agX').onclick=function(){$('agModal').hidden=true};
+ $('agCp').onclick=function(){try{navigator.clipboard.writeText(lastTx).then(function(){status('복사했습니다 · 엑셀에 붙여넣으세요')},function(){status('복사하지 못했습니다')})}catch(e){status('복사하지 못했습니다')}};
+ $('agCsv').onclick=function(){var t='﻿'+rows.map(function(r){return r.map(function(c){c=String(c==null?'':c);return /[",\n]/.test(c)?'"'+c.replace(/"/g,'""')+'"':c}).join(',')}).join('\r\n');var u=URL.createObjectURL(new Blob([t],{type:'text/csv;charset=utf-8'})),a=document.createElement('a');a.href=u;a.download='구역집계_'+new Date().toISOString().slice(0,10)+'.csv';document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(u);a.remove()},500)};
+ $('dAgg').onclick=function(){var p=window.__drwPoly&&window.__drwPoly();if(!p){status('먼저 “면”으로 구역을 그려 주세요 (점 3개 이상)');return}runAgg(p)};
 })();
  var VG=g('vg',{fav:1});if(VG.fav===undefined)VG.fav=1;[].forEach.call(document.querySelectorAll('#viewPop details.vg'),function(d){var k=d.dataset.g;d.open=!!VG[k];d.addEventListener('toggle',function(){VG[k]=d.open?1:0;s('vg',VG)})});
  /* 시작할 때 내 위치로 */
@@ -16258,7 +16347,9 @@ function lines(){var base=$('bjBase').value.trim(),a=[];$('bjTx').value.split(/\
  window.__diag=diag})();
 /* v17: 업데이트 내용 · 저장 공간 */
 (function(){var $=function(i){return document.getElementById(i)};
- var LOGV='2026-11-10k',CH=[
+ var LOGV='2026-11-10m',CH=[
+  ['2026.11.10 (정보창 정리)',['지구단위계획구역 줄이 혼자 분홍색 상자로 튀던 것을 다른 줄과 같은 모양으로 통일','필지 변경 이력을 다른 줄처럼 접고 펼 수 있게 (펼친 상태 기억, 처음 펼치면 자동으로 불러옴)']],
+  ['2026.11.10 (구역 집계 · 모서리 붙이기)',['그리기 → 면으로 구역을 그리고 “구역 집계”: 구역 안 필지 수·면적, 소유구분·지목·용도지역·용도지구별 면적과 비율, 공시지가 합계, 필지 목록 (복사·CSV 저장)','그리기·측정할 때 지적선 모서리·선에 점이 자동으로 붙음 (초록 동그라미로 미리 표시). “붙이기 켬/끔” 버튼으로 켜고 끔, PC는 Alt를 누른 채 찍으면 그 점만 붙지 않음']],
   ['2026.11.10 (필지 변경 이력)',['필지 조회 창 아래 “필지 변경 이력 보기”: 최근 10년 개별공시지가 변동(전년 대비 %)과 대장에 있는 토지이동·소유권 변동 기록을 표시']],
   ['2026.11.10 (변경 이력)',['설정 → 앱 정보 → “이번에 바뀐 점 보기”에서 언제든 다시 볼 수 있음 (새 소식이 있으면 “새 소식” 표시, 열어 보면 사라짐)']],
   ['2026.11.10 (필지 표시 · 색 구분)',['필지 표시 지정: 정보창·선택 막대의 “표시” → 글자(A구간·편입 등)와 색을 붙임, 글자를 누르면 수정, 프로젝트 저장에 포함','필지 색 구분: 화면 → 보기 → 면적(㎡) 또는 공시지가 구간별 자동 채색, 구간 경계 직접 지정, 지도 아래 범례','검색 후보: ↑↓·Enter 선택(PC), 입력 글자 강조, 지도 가운데에서 가까운 순, 도로명 주소 후보 추가','딸깍 박스 연동 준비: 주소 뒤에 #bj=(지번 목록) 링크로 열면 지번 일괄 표시 창에 채워짐']],
