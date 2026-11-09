@@ -1443,6 +1443,7 @@ body.hasbar #ruLg,body:has(.sheet:not([hidden]):not(#info)) #ruLg{display:none}
 #agBody .ph{margin:14px 0 4px;font-weight:700;font-size:13px}#agBody .big{font-size:15px;font-weight:800}#agBody .histT{margin:2px 0}#agBody .nt{font-size:12px;color:var(--mut);margin-top:10px}
 #agBody .lst{max-height:220px;overflow:auto;border:1px solid var(--line);border-radius:10px}
 #infoBody .sec.dcard{background:none!important;border-left:0!important;border-radius:0!important;padding:0!important;margin:0!important;border-top:1px solid var(--line)!important}#infoBody .sec.dcard>small,#infoBody .dcard>small{color:inherit!important}#infoBody .sec.dcard:not(.closed)>div{padding:0 2px 12px}#histBox #histOut:empty{display:none}
+#infoBody .tag.lw{cursor:pointer}#infoBody .tag.lw:after{content:' ↗';font-size:10px;opacity:.55}#infoBody .tag.lw:hover{filter:brightness(1.15);text-decoration:underline}
 </style></head><body>
 <div id="map"></div>
 <div class="bar">
@@ -14117,7 +14118,7 @@ var LS=window.localStorage;function g(k,d){try{var v=LS.getItem(k);return v==nul
  if(o.m!=null){var mm={};o.m.split(',').forEach(function(i){if(i)mm[i]=true});s('muniOn',mm)}
  history.replaceState(null,'',location.pathname+location.search)}catch(e){}})();
 var KEY=g('key',''),DOM=g('dom',location.hostname||'localhost');
-var BUILD="2611092156";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
+var BUILD="2611092202";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
 applyTheme(THEME);
 var BASE=g('base','Base');if(['Base','Satellite','SatLabel','white','none'].indexOf(BASE)<0)BASE='Base';
 // 레이어: id, 이름, 표시 WMS 이름, 조회용 data 코드
@@ -14388,8 +14389,8 @@ function nm(p){var m=bad(p.mls_nam)?'':p.mls_nam,l=bad(p.lcl_nam)?'':p.lcl_nam;i
 function row(k,v){return v?'<div class="row"><b>'+k+'</b><span>'+v+'</span></div>':''}
 function dedupFac(a){var out=[];a.forEach(function(x){var b=x.replace(/\(.*$/,'');var i=out.findIndex(function(y){return y.replace(/\(.*$/,'')===b});if(i<0)out.push(x);else if(x.indexOf('(')>=0&&out[i].indexOf('(')<0)out[i]=x});return out}
 function tags(a,gb){return a.length?a.map(function(x){return '<span class="tag'+(gb?' gb':'')+'">'+esc(x)+'</span>'}).join(''):''}
-var FDEF=['용도지구','기타','시설','토지이용','이 필지 안 면적 비율'];
-var DEFK=['내 위치에서 이 필지까지','용도지역','건폐율','지구단위계획구역','개발제한','용도지구','기타','시설','토지이용','건축물','이 필지 안 면적 비율','바로가기'];
+var FDEF=['기타','시설','토지이용','이 필지 안 면적 비율'];
+var DEFK=['내 위치에서 이 필지까지','용도지역','건폐율','지구단위계획구역','개발제한','기타','시설','토지이용','건축물','이 필지 안 면적 비율','바로가기'];
 function secKey(el){var h=el.children[0];return (h&&h.tagName==='SMALL')?h.textContent.split('·')[0].replace(/\s+/g,' ').replace(/\d+$/,'').trim():''}
 function secOrd(){var o=g('secOrder',null);if(!Array.isArray(o))o=[];DEFK.forEach(function(k){if(o.indexOf(k)<0)o.push(k)});return o}
 function orderSecs(){var box=document.getElementById('infoBody'),secs=[].filter.call(box.children,function(e){return e.classList&&e.classList.contains('sec')&&secKey(e)});if(secs.length<2)return;var o=secOrd(),mk=secs.map(function(e){var m=document.createComment('');box.insertBefore(m,e);return m});
@@ -14432,7 +14433,7 @@ function pick(lat,lng){
   render(S,pnu,true);var ow0=0;
   pend++;ned('ladfrlList',pnu,function(d){try{var v=d.ladfrlVOList.ladfrlVOList[0];S.jimok=v.lndcgrCodeNm||'';S.area=v.lndpclAr||'';S.own=v.posesnSeCodeNm||'';var c={'국유지':'#2f7bff','공유지':'#3fb53f','사유지':'#ff9f1a'}[owner(S.own)];if(c&&hi)hi.setStyle({color:c,fillColor:c})}catch(e){}done()});
   pend++;ned('getLandUseAttr',pnu,function(d){try{var a=d.landUses.field;if(!Array.isArray(a))a=[a];a.forEach(function(it){var n=it.prposAreaDstrcCodeNm,c=String(it.prposAreaDstrcCode||'');if(!n)return;var cn=(it.cnflcAtNm||'').trim();
-   if(/^UQ[ABCD]/.test(c)){if(S.zones.indexOf(n)<0)S.zones.push(n)}else if(/^UQ[STUVWXY]/.test(c)){var t=cn?n+'('+cn+')':n;if(S.fac.indexOf(t)<0)S.fac.push(t)}else if(/^UQ/.test(c)){if(S.spec.indexOf(n)<0)S.spec.push(n)}else{S.etc=S.etc||[];if(S.etc.indexOf(n)<0)S.etc.push(n)}})}catch(e){}done()});
+   if(/^UQ[ABCD]/.test(c)){if(S.zones.indexOf(n)<0)S.zones.push(n)}else if(/^UQ[STUVWXY]/.test(c)){var t=cn?n+'('+cn+')':n;if(S.fac.indexOf(t)<0)S.fac.push(t)}else{if(S.spec.indexOf(n)<0)S.spec.push(n)}})}catch(e){}done()});
   pend++;(function(){var Y=new Date().getFullYear(),k=0;function tryY(){if(k>=5){done();return}var y=Y-k;k++;
    ned('getIndvdLandPriceAttr',pnu,function(d){var a=null;try{a=d.indvdLandPrices.field;if(!Array.isArray(a))a=a?[a]:[];a=a.filter(function(r){return r&&r.pblntfPclnd&&String(r.stdrYear||y)===String(y)}).sort(function(x,y2){return (y2.stdrYear||0)-(x.stdrYear||0)})[0]}catch(e){a=null}
     if(a){S.jiga=a.pblntfPclnd;S.gy=a.stdrYear||y;done()}else tryY()},'&stdrYear='+y)}tryY()})();
@@ -14467,7 +14468,7 @@ function capSec(S){if(!S.zones||!S.zones.length)return '';var o=ordOf(S.addr),ro
  return '<div class="sec"><small>건폐율·용적률 상한 <em class="sub" style="font-style:normal;font-weight:400">· '+(o?o[1]:'시행령 상한')+'</em></small><div class="cap2"><span></span><span class="h">건폐율</span><span class="h">용적률</span>'+rows+'</div><p class="sub" style="margin:2px 0 0;font-size:12px">'+nt+'</p></div>'}
 function distCard(S,pnu){var a=distNames(S);if(!a.length)return '';
  return '<div class="sec dcard"><small>지구단위계획구역</small><div>'+a.map(function(x){return '<span class="tag">'+esc(x)+'</span>'}).join('')+'</div><p class="sub" style="margin:2px 0 0;font-size:12px">세부 기준은 구역별 계획이 우선합니다. 토지이음에서 계획도서를 열람하세요.</p>'+(pnu?'<a class="xl" target="_blank" rel="noopener" href="https://www.eum.go.kr/web/ar/lu/luLandDet.jsp?isNoScr=script&mode=search&pnu='+encodeURIComponent(pnu)+'" style="display:inline-block;margin-top:6px">토지이음 바로가기</a>':'')+'</div>'}
-function distNames(S){var a=[];(S.dist||[]).concat((S.spec||[]).concat(S.etc||[]).filter(function(x){return /지구단위/.test(x)})).forEach(function(x){if(a.indexOf(x)<0)a.push(x)});return a}
+function distNames(S){var a=[];(S.dist||[]).concat((S.spec||[]).filter(function(x){return /지구단위/.test(x)})).forEach(function(x){if(a.indexOf(x)<0)a.push(x)});return a}
 function render(S,pnu,partial){
  var won=function(n){return n?Number(n).toLocaleString('ko-KR')+'원/㎡':''},ow=owner(S.own);
  function sec(l,v){return v?'<div class="sec"><small>'+l+'</small><div>'+v+'</div></div>':''}
@@ -14475,7 +14476,7 @@ function render(S,pnu,partial){
   '<div class="stats"><div class="st"><small>지목 · 면적</small><b>'+esc(S.jimok||'—')+(S.area?'<em>'+Number(S.area).toLocaleString('ko-KR')+'㎡</em>':'')+'</b></div>'+
   '<div class="st"><small>소유</small><b>'+(S.own?'<span class="tag own-'+ow+'">'+ow+'</span>':'—')+(S.own&&S.own!==ow?'<em>'+esc(S.own)+'</em>':'')+'</b></div>'+
   '<div class="st wide"><small>공시지가'+(S.gy?' · '+esc(S.gy)+'년':'')+'</small><b>'+(S.jiga?won(S.jiga):'—')+'</b>'+(S.jiga?'<div class="sub" style="margin:2px 0 0">평당 약 '+man(S.jiga*3.3058)+(S.area?' · 총액(추정) 약 '+man(S.jiga*S.area):'')+'</div>':'')+'</div></div>'+
-  sec('용도지역',tags(S.zones))+capSec(S)+distCard(S,pnu)+sec('개발제한',tags(S.gbs,1))+sec('용도지구',tags(S.spec.filter(function(x){return !/지구단위/.test(x)})))+sec('기타',tags((S.etc||[]).filter(function(x){return !/지구단위/.test(x)})))+sec('시설',tags(dedupFac(S.fac)))+sec('토지이용',tags(S.use))+(S.bld&&S.bld.length?sec('건축물',bldHtml(S.bld,S.area)):'')+ratioSec(S)+shpRows(S.shp)+
+  sec('용도지역',tags(S.zones))+capSec(S)+distCard(S,pnu)+sec('개발제한',tags(S.gbs,1))+sec('기타',tags(S.spec.filter(function(x){return !/지구단위/.test(x)})))+sec('시설',tags(dedupFac(S.fac)))+sec('토지이용',tags(S.use))+(S.bld&&S.bld.length?sec('건축물',bldHtml(S.bld,S.area)):'')+ratioSec(S)+shpRows(S.shp)+
   (S.ll?sec('바로가기',extLinks(S.ll[0],S.ll[1],S.addr,pnu)):'')+(partial?'<p class="sub sk-t">세부 정보를 불러오는 중…</p>':'<p class="sub">PNU '+esc(pnu)+' · 켜 둔 레이어만 조회됩니다.</p>');
  document.getElementById('infoBody').innerHTML=h;try{foldSecs()}catch(e){}}
 var _ck=0,_ckN=0,_ckT=0;map.on('click',function(e){var oe=e.originalEvent,tch=Date.now()-(window.__lastTouch||0)<700||(oe&&oe.pointerType==='touch');if(tch){if(_ck){clearTimeout(_ck);_ck=0;return}var n0=window.__dtN||0;_ck=setTimeout(function(){_ck=0;if((window.__dtN||0)!==n0)return;clickMap(e)},300);return}clickMap(e)});
@@ -16281,6 +16282,20 @@ function lines(){var base=$('bjBase').value.trim(),a=[];$('bjTx').value.split(/\
  $('agCsv').onclick=function(){var t='﻿'+rows.map(function(r){return r.map(function(c){c=String(c==null?'':c);return /[",\n]/.test(c)?'"'+c.replace(/"/g,'""')+'"':c}).join(',')}).join('\r\n');var u=URL.createObjectURL(new Blob([t],{type:'text/csv;charset=utf-8'})),a=document.createElement('a');a.href=u;a.download='구역집계_'+new Date().toISOString().slice(0,10)+'.csv';document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(u);a.remove()},500)};
  $('dAgg').onclick=function(){var p=window.__drwPoly&&window.__drwPoly();if(!p){status('먼저 “면”으로 구역을 그려 주세요 (점 3개 이상)');return}runAgg(p)};
 })();
+(function(){var ib=document.getElementById('infoBody');
+ var R=[['개발제한','개발제한구역의지정및관리에관한특별조치법',''],['특별대책지역','환경정책기본법','제38조'],['공장설립승인','산업집적활성화및공장설립에관한법률','제13조'],['자연보전권역','수도권정비계획법','제6조'],['과밀억제권역','수도권정비계획법','제6조'],['성장관리권역','수도권정비계획법','제6조'],['배출시설설치제한','물환경보전법','제33조'],['토지거래','부동산거래신고등에관한법률','제10조'],['가축사육제한','가축분뇨의관리및이용에관한법률','제8조'],['농업진흥','농지법','제32조'],['농업보호','농지법','제32조'],['상수원보호','수도법','제7조'],['수변구역','한강수계상수원수질개선및주민지원등에관한법률','제4조'],['군사시설보호','군사기지및군사시설보호법','제4조'],['비행안전','군사기지및군사시설보호법','제4조'],['대공방어','군사기지및군사시설보호법','제4조'],['문화재','문화유산의보존및활용에관한법률','제13조'],['접도구역','도로법','제40조'],['지구단위계획','국토의계획및이용에관한법률','제49조'],['산업단지','산업입지및개발에관한법률',''],['교육환경','교육환경보호에관한법률','제8조'],['상대보호','교육환경보호에관한법률','제9조'],['절대보호','교육환경보호에관한법률','제9조'],['공원','도시공원및녹지등에관한법률',''],['하천','하천법','제12조'],['산지','산지관리법','제12조'],['보전산지','산지관리법','제12조'],['환경영향','환경영향평가법',''],['도시계획시설','국토의계획및이용에관한법률','제43조']];
+ var ZW=['주거지역','상업지역','공업지역','녹지지역','관리지역','농림지역','자연환경보전지역'];
+ function lawUrl(name,sec){var n=String(name||'').replace(/\s+/g,'').replace(/\(.*$/,'');
+  if(ZW.some(function(w){return n.indexOf(w)>=0}))return ['국토계획법 시행령 제71조','https://www.law.go.kr/'+encodeURI('법령/국토의계획및이용에관한법률시행령/제71조')];
+  for(var i=0;i<R.length;i++)if(n.indexOf(R[i][0])>=0)return [R[i][1]+(R[i][2]?' '+R[i][2]:''),'https://www.law.go.kr/'+encodeURI('법령/'+R[i][1]+(R[i][2]?'/'+R[i][2]:''))];
+  if(sec==='시설')return ['국토계획법 제43조','https://www.law.go.kr/'+encodeURI('법령/국토의계획및이용에관한법률/제43조')];
+  return ['법령 검색','https://www.law.go.kr/lsSc.do?menuId=1&subMenuId=15&tabMenuId=81&query='+encodeURIComponent(name||'')]}
+ var KEYS={'용도지역':1,'개발제한':1,'지구단위계획구역':1,'기타':1,'시설':1};
+ function secOf(t){var el=t.closest('.sec');if(!el||!el.children[0])return '';var h=el.children[0],tx=(h.textContent||'').split('·')[0].replace(/\s+/g,' ').replace(/\d+$/,'').trim();return KEYS[tx]?tx:''}
+ ib.addEventListener('click',function(e){var t=e.target.closest&&e.target.closest('.tag');if(!t||!ib.contains(t))return;var k=secOf(t);if(!k)return;var nm=t.textContent.trim(),r=lawUrl(nm,k);status(nm+' — '+r[0]+'을(를) 새 탭으로 엽니다 (국가법령정보센터)');window.open(r[1],'_blank','noopener')});
+ var _mo=function(){[].forEach.call(ib.querySelectorAll('.sec .tag'),function(t){if(t.dataset.lw)return;t.dataset.lw='1';if(secOf(t)){t.classList.add('lw');t.title='누르면 관련 법령 보기'}})};
+ new MutationObserver(function(){_mo()}).observe(ib,{childList:true,subtree:true});
+})();
  var VG=g('vg',{fav:1});if(VG.fav===undefined)VG.fav=1;[].forEach.call(document.querySelectorAll('#viewPop details.vg'),function(d){var k=d.dataset.g;d.open=!!VG[k];d.addEventListener('toggle',function(){VG[k]=d.open?1:0;s('vg',VG)})});
  /* 시작할 때 내 위치로 */
  var SL=g('sl',1);function slMark(){[].forEach.call($('slSeg').children,function(b){b.classList.toggle('on',(b.dataset.l==='1')===!!SL)})}
@@ -16347,7 +16362,8 @@ function lines(){var base=$('bjBase').value.trim(),a=[];$('bjTx').value.split(/\
  window.__diag=diag})();
 /* v17: 업데이트 내용 · 저장 공간 */
 (function(){var $=function(i){return document.getElementById(i)};
- var LOGV='2026-11-10n',CH=[
+ var LOGV='2026-11-10o',CH=[
+  ['2026.11.10 (기타 항목 · 법령 바로가기)',['용도지구와 기타를 합쳐 “기타” 한 줄로 정리 (딸깍 박스의 기타 지역·지구와 같은 묶음)','정보창의 용도지역·개발제한·지구단위계획구역·기타·시설 항목을 누르면 관련 법령(국가법령정보센터)이 열림 (하천구역→하천법 등, 딸깍 박스와 같은 연결표)']],
   ['2026.11.10 (조회 항목 정리)',['용도지구에서 국토계획법상 용도지구가 아닌 항목(타 법령 구역 등)을 “기타” 줄로 분리','“내 위치에서 이 필지까지” 줄 삭제 (내 위치 표시와 방향·거리 안내는 그대로)','지구단위계획구역 줄에 “토지이음 바로가기” 버튼']],
   ['2026.11.10 (정보창 정리)',['지구단위계획구역 줄이 혼자 분홍색 상자로 튀던 것을 다른 줄과 같은 모양으로 통일','필지 변경 이력을 다른 줄처럼 접고 펼 수 있게 (펼친 상태 기억, 처음 펼치면 자동으로 불러옴)']],
   ['2026.11.10 (구역 집계 · 모서리 붙이기)',['그리기 → 면으로 구역을 그리고 “구역 집계”: 구역 안 필지 수·면적, 소유구분·지목·용도지역·용도지구별 면적과 비율, 공시지가 합계, 필지 목록 (복사·CSV 저장)','그리기·측정할 때 지적선 모서리·선에 점이 자동으로 붙음 (초록 동그라미로 미리 표시). “붙이기 켬/끔” 버튼으로 켜고 끔, PC는 Alt를 누른 채 찍으면 그 점만 붙지 않음']],
