@@ -1363,6 +1363,25 @@ html #quick .qp button{width:46px!important;min-width:0;height:36px!important;pa
 html #quick .qp button+button{border-left:0;border-top:1px solid var(--line)}
 @media (max-width:600px){html #quick .qp{width:38px;height:auto;border-radius:19px}html #quick .qp button{width:38px!important;height:32px!important}}
 @media (min-width:1000px){html #quick .qp{width:50px}html #quick .qp button{width:50px!important}}
+
+/* ===== 방문 순서 · 지적선 ===== */
+#vsModal .mh{display:flex;align-items:center;justify-content:space-between;gap:8px}
+#vsModal .mh .btn{width:36px;height:36px;padding:0;border-radius:50%;line-height:1}
+#vsPick{max-height:32vh;overflow:auto;border:1px solid var(--line);border-radius:10px}
+#vsPick .vp{display:flex;align-items:center;gap:8px;padding:8px 10px;border-bottom:1px solid var(--line);font-size:13.5px}
+#vsPick .vp:last-child{border-bottom:0}#vsPick .vp input{width:18px;height:18px;margin:0;flex:0 0 auto}
+#vsPick .vp span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}#vsPick .vp small{color:var(--mut);flex:0 0 auto}
+#vsPick .ve{padding:14px 10px;color:var(--mut);font-size:13px}
+#vsSt{grid-template-columns:repeat(3,1fr)}
+#vsRes .vsr{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--line)}
+#vsRes .vsr>b{flex:0 0 26px;height:26px;border-radius:50%;background:var(--acc);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12.5px}
+#vsRes .vsr .tx{flex:1;min-width:0}#vsRes .vsr .tx b{display:block;font-size:13.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}#vsRes .vsr .tx small{color:var(--mut);font-size:12px}
+#vsRes .vsr.s>b{background:var(--mut)}
+.vsn{display:flex;align-items:center;justify-content:center;width:26px;height:26px;margin:-13px 0 0 -13px;border-radius:50%;background:var(--acc,#0f7a5a);color:#fff;font:800 13px/1 system-ui;border:2px solid #fff;box-shadow:0 1px 4px #0006}
+
+/* ===== 지번 글자 선명하게: 번지는 그림자 대신 얇은 외곽선 ===== */
+.jbi span,.jb{text-shadow:none!important;-webkit-text-stroke:2px var(--jbsc,#000);paint-order:stroke fill;text-rendering:geometricPrecision;-webkit-font-smoothing:antialiased;letter-spacing:.2px}
+html[data-bright="sun"] .jbi span{-webkit-text-stroke:2.6px var(--jbsc,#000)}
 </style></head><body>
 <div id="map"></div>
 <div class="bar">
@@ -1421,6 +1440,7 @@ html #quick .qp button+button{border-left:0;border-top:1px solid var(--line)}
  <div class="opts3 o4" style="display:none"><button id="tMeas"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17L17 3l4 4L7 21z"/><path d="M7 13l2 2M10 10l2 2M13 7l2 2"/></svg><b>측정</b></button><button id="tRad"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2"/><path d="M12 12l6.4-6.4"/></svg><b>반경</b></button><button id="tSel"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4z"/><path d="M14 17l2 2 4-4"/></svg><b>필지선택</b></button><button id="tDrw"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg><b>그리기</b></button></div>
  <div class="ph">기록</div>
  <div class="opts3"><button id="tMem"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg><b>메모 핀</b></button><button id="tTrk"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="18" r="2"/><circle cx="18" cy="6" r="2"/><path d="M8 18h6a3 3 0 0 0 0-6h-4a3 3 0 0 1 0-6h6"/></svg><b>경로 기록</b></button><button id="tRec"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/></svg><b>현장 기록</b></button></div>
+ <button class="btn" id="vsOpen" type="button" style="width:100%;margin-top:6px">방문 순서 정하기</button>
  <div style="display:none">
  <div class="ph" style="margin-top:14px">지도 그림으로 저장</div>
  <div class="sub" style="margin:0 0 6px">지금 보는 범위를 정북이 위인 그림(PNG)으로 저장합니다. 배경지도·지적선·지번·번호 핀·시야가 합쳐져 보고서 현황도에 바로 쓸 수 있습니다.</div>
@@ -1481,6 +1501,15 @@ html #quick .qp button+button{border-left:0;border-top:1px solid var(--line)}
 <div class="sub" style="margin:6px 0 0;font-size:12px">둘 다 고르면 zip 한 개로 저장됩니다. 지도 경계는 참고용(측량 성과 아님)입니다.</div>
 <div style="display:flex;justify-content:flex-end;gap:6px;margin-top:12px"><button class="btn" id="exNo" type="button">취소</button><button class="btn on" id="exOk" type="button">저장</button></div></div></div>
 <div class="modal" id="svModal" hidden><div class="box"><h3 style="margin:0 0 6px">측정 저장</h3><input id="svName" style="width:100%;box-sizing:border-box;font:inherit;padding:9px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--fg)" placeholder="이름 (예: 진입도로 폭)"><div id="svInfo" class="sub" style="margin:6px 0 0"></div><div style="display:flex;justify-content:flex-end;gap:6px;margin-top:10px"><button class="btn" id="svNo" type="button">취소</button><button class="btn on" id="svOk" type="button">저장</button></div></div></div>
+<div class="modal" id="vsModal" hidden><div class="box" style="max-height:88%;overflow:auto">
+ <div class="mh"><h3 style="margin:0">방문 순서 정하기</h3><button class="btn" id="vsX" type="button" aria-label="닫기">✕</button></div>
+ <p class="sub" style="margin:4px 0 8px">갈 곳을 고르면 가까운 순서로 정렬합니다. 직선거리 기준이라 실제 도로 거리와 다를 수 있습니다.</p>
+ <div id="vsPick"></div>
+ <div class="sub" style="margin:10px 0 4px;font-weight:700">출발점</div>
+ <div id="vsSt" class="opts3"><button type="button" data-s="gps"><b>내 위치</b></button><button type="button" data-s="ctr"><b>지도 가운데</b></button><button type="button" data-s="first"><b>첫 번째 곳</b></button></div>
+ <button class="btn on" id="vsGo" type="button" style="width:100%;margin-top:10px">순서 정하기</button>
+ <div id="vsRes"></div>
+</div></div>
 <div class="modal" id="logModal" hidden><div class="box"><h3 style="margin:0 0 6px">업데이트 내용</h3><div id="logBody"></div><div style="display:flex;justify-content:flex-end;margin-top:10px"><button class="btn on" id="logX" type="button">닫기</button></div></div></div>
 <div class="modal" id="tourModal" hidden><div class="box tour"><div class="tk" id="tkIc"></div><h3 id="tkT"></h3><p id="tkP"></p><div class="tdots" id="tkD"></div><div style="display:flex;gap:8px"><button class="btn" id="tkPrev">이전</button><span style="flex:1"></span><button class="btn" id="tkSkip">건너뛰기</button><button class="btn on" id="tkNext">다음</button></div></div></div>
 <div class="modal" id="prjModal" hidden><div class="box" style="max-height:88%;overflow:auto">
@@ -13977,7 +14006,7 @@ var LS=window.localStorage;function g(k,d){try{var v=LS.getItem(k);return v==nul
  if(o.m!=null){var mm={};o.m.split(',').forEach(function(i){if(i)mm[i]=true});s('muniOn',mm)}
  history.replaceState(null,'',location.pathname+location.search)}catch(e){}})();
 var KEY=g('key',''),DOM=g('dom',location.hostname||'localhost');
-var BUILD="2611091951";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
+var BUILD="2611092011";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
 applyTheme(THEME);
 var BASE=g('base','Base');if(['Base','Satellite','SatLabel','white','none'].indexOf(BASE)<0)BASE='Base';
 // 레이어: id, 이름, 표시 WMS 이름, 조회용 data 코드
@@ -14081,7 +14110,7 @@ function isDk(){return THEME==='dark'||(THEME==='auto'&&(window.__brTheme?window
 function autoCad(){return (BASE==='Satellite'||BASE==='SatLabel'||(BASE==='none'&&isDk()))?'#ffe14d':'#c2185b'}
 function S_(id){var d=DEF[id]||DEF.wms,o={},k;for(k in d)o[k]=d[k];var u=STY[id]||{};for(k in u)o[k]=u[k];if(id==='cad'&&!u.color)o.color=autoCad();return o}
 function setSty(id,k,v){(STY[id]=STY[id]||{})[k]=v;s('sty',STY)}
-function rootVars(){var c=S_('cad'),st=document.documentElement.style;st.setProperty('--jbfs',c.fs+'px');st.setProperty('--jbfc',c.fc)}
+function rootVars(){var c=S_('cad'),st=document.documentElement.style;st.setProperty('--jbfs',c.fs+'px');st.setProperty('--jbfc',c.fc);var h=String(c.fc||'#fff').replace('#','');if(h.length===3)h=h.replace(/./g,'$&$&');var lum=0;if(/^[0-9a-f]{6}$/i.test(h))lum=(parseInt(h.slice(0,2),16)*.299+parseInt(h.slice(2,4),16)*.587+parseInt(h.slice(4,6),16)*.114)/255;else lum=1;st.setProperty('--jbsc',lum>.55?'#000':'#fff')}
 var GG={bld:L.layerGroup().addTo(map),dist:L.layerGroup().addTo(map),cad:L.layerGroup().addTo(map),txt:L.layerGroup().addTo(map),fac:L.layerGroup().addTo(map),own:L.layerGroup().addTo(map)};
 function swapG(k,ng){var o=GG[k];ng.addTo(map);GG[k]=ng;if(o)map.removeLayer(o);if(k==='fac')applyHL()}
 var FC={};
@@ -14106,7 +14135,7 @@ function doCad(seq){var z=map.getZoom(),cs=S_('cad');
     var ang=ang0,sp=labelSpot(it.rg,lw,lh,ang);if(!sp&&ang!==0){ang=0;sp=labelSpot(it.rg,lw,lh,0)}if(!sp)continue;
     var box=rectPts(sp,lw+5,lh+3,ang).slice(0,4),ov=false;for(var j=0;j<placed.length;j++){if(obbHit(box,placed[j])){ov=true;break}}if(ov)continue;hit={sp:sp,ang:ang,box:box,kk:kk}}
    if(!hit)return;placed.push(hit.box);var ll=map.containerPointToLatLng(L.point(hit.sp[0],hit.sp[1]));
-   L.marker(ll,{interactive:false,keyboard:false,icon:L.divIcon({className:'jbi',html:'<span data-a="'+(hit.ang*180/Math.PI).toFixed(1)+'" style="font-size:'+(11*hit.kk).toFixed(1)+'px;line-height:1.2;transform:translate(-50%,-50%) rotate('+(hit.ang*180/Math.PI).toFixed(1)+'deg)">'+esc(txt)+'</span>',iconSize:[0,0]})}).addTo(tg)}
+   L.marker(ll,{interactive:false,keyboard:false,icon:L.divIcon({className:'jbi',html:'<span data-a="'+(hit.ang*180/Math.PI).toFixed(1)+'" style="font-size:'+Math.max(8,Math.round(11*hit.kk))+'px;line-height:1.2;transform:translate(-50%,-50%) rotate('+(hit.ang*180/Math.PI).toFixed(1)+'deg)">'+esc(txt)+'</span>',iconSize:[0,0]})}).addTo(tg)}
   (function step(){if(seq!==vecSeq)return;var t0=Date.now();while(i<items.length&&Date.now()-t0<10)place(items[i++]);if(i<items.length)setTimeout(step,0);else{swapG('txt',tg);try{window.__lblRot&&window.__lblRot()}catch(e){}}})()})}
 function doFac(seq){var z=map.getZoom();
  if(!lay('fac').on||!KEY||z<15){lst('fac',lay('fac').on&&KEY?'확대 필요':'');swapG('fac',L.layerGroup());LEG={};renderLeg();if(lay('fac').on&&KEY)status('시설은 지도를 더 확대하면 표시됩니다');return}
@@ -15103,6 +15132,7 @@ function mIcon(m,cnt){var n=NO[m.id]||'M';return L.divIcon({className:'mmp',html
 function dst(ll,m,b){var a=b*Math.PI/180,la=ll[0]*Math.PI/180,d=m/6371008.8,la2=Math.asin(Math.sin(la)*Math.cos(d)+Math.cos(la)*Math.sin(d)*Math.cos(a)),lo2=ll[1]*Math.PI/180+Math.atan2(Math.sin(a)*Math.sin(d)*Math.cos(la),Math.cos(d)-Math.sin(la)*Math.sin(la2));return [la2*180/Math.PI,lo2*180/Math.PI]}
 function fan(m){var cc=pcv(m);var pts=[[m.lat,m.lng]];for(var k=-25;k<=25;k+=5)pts.push(dst([m.lat,m.lng],30,m.az+k));return L.polygon(pts,{interactive:false,color:cc,weight:1.5,fillColor:cc,fillOpacity:.3})}
 function eyeB(m){var h=HID.indexOf(m.id)>=0;return '<button type="button" class="eye'+(h?'':' on')+'" data-eye="'+m.id+'" aria-label="'+NO[m.id]+'번 핀 '+(h?'켜기':'끄기')+'">'+(h?'숨김':'표시')+'</button>'}
+window.__vsData=function(){return {mem:MEM,fav:FAV}};
 window.__memReset=function(k){if(k==='hid'){HID=[];s('memHid',HID)}else{MEM.forEach(function(m){if(m.col){delete m.col;dbPut('memo',m)}})}drawMem();try{if(!$('fieldSheet').hidden)refresh()}catch(e){}status(k==='hid'?'숨긴 메모 핀을 모두 표시합니다':'핀 색을 모두 기본으로 되돌렸습니다')};
 function eyeAll(on){HID=on?[]:MEM.map(function(m){return m.id});s('memHid',HID);drawMem();try{if(!$('fieldSheet').hidden)refresh()}catch(e){}status(on?'모든 메모 핀을 표시합니다':'모든 메모 핀을 숨겼습니다')}
 document.addEventListener('click',function(e){var t=e.target.closest&&e.target.closest('[data-eye],[data-eyeall]');if(!t)return;e.stopPropagation();if(t.dataset.eyeall){eyeAll(t.dataset.eyeall==='1');return}var i=HID.indexOf(t.dataset.eye);if(i>=0)HID.splice(i,1);else HID.push(t.dataset.eye);s('memHid',HID);drawMem();try{if(!$('fieldSheet').hidden)refresh()}catch(x){}var P=$('memPick');if(P)P.remove();status(NO[t.dataset.eye]+'번 핀을 '+(i>=0?'표시':'숨김')+'합니다')},true);
@@ -15748,6 +15778,41 @@ window.__fld={parseLL:parseLL};
  if(sh.length){var x=sh[sh.length-1].querySelector('[data-close]');if(x){e.preventDefault();x.click();return}}
  var a=document.activeElement;if(a&&/^(INPUT|TEXTAREA)$/.test(a.tagName)&&a.id!=='q'){a.blur()}
 })})();
+(function(){var $=function(i){return document.getElementById(i)};var vsg=L.layerGroup().addTo(map),sel={},stm='',res=null;
+ function items(){var d=window.__vsData?window.__vsData():{mem:[],fav:[]},a=[];(d.mem||[]).slice().sort(function(x,y){return (x.no||1e9)-(y.no||1e9)}).forEach(function(m){a.push({k:'m'+m.id,n:(m.no?'#'+m.no+' ':'')+String(m.text||'메모').replace(/\s+/g,' ').slice(0,22),lat:m.lat,lng:m.lng,t:'핀'})});(d.fav||[]).forEach(function(f,i){a.push({k:'f'+i,n:f.n,lat:f.lat,lng:f.lng,t:'즐겨찾기'})});return a}
+ function hv(a,b){var t=Math.PI/180,dl=(b[0]-a[0])*t,dg=(b[1]-a[1])*t,x=Math.sin(dl/2)*Math.sin(dl/2)+Math.cos(a[0]*t)*Math.cos(b[0]*t)*Math.sin(dg/2)*Math.sin(dg/2);return 12742000*Math.asin(Math.sqrt(x))}
+ function fD(m){return m>=1000?(m/1000).toFixed(1)+'km':Math.round(m)+'m'}
+ function route(N){var n=N.length,p=[0],rest=[],i;for(i=1;i<n;i++)rest.push(i);
+  while(rest.length){var c=N[p[p.length-1]],bi=0,bd=1e18;rest.forEach(function(ix,j){var d=hv(c,N[ix]);if(d<bd){bd=d;bi=j}});p.push(rest.splice(bi,1)[0])}
+  function D(a,b){return hv(N[p[a]],N[p[b]])}
+  for(var pass=0,imp=true;imp&&pass<50;pass++){imp=false;for(i=1;i<n-1;i++)for(var j=i+1;j<n;j++){var dl=D(i-1,j)+(j<n-1?D(i,j+1):0)-D(i-1,i)-(j<n-1?D(j,j+1):0);if(dl<-1){var seg=p.slice(i,j+1).reverse();for(var q=0;q<seg.length;q++)p[i+q]=seg[q];imp=true}}}
+  return p}
+ function gps(){var G=window.__gps&&window.__gps();return G&&G.on&&G.last?[G.last[0],G.last[1]]:null}
+ function drawPick(){var a=items(),h='';if(!a.length)h='<div class="ve">저장된 메모 핀이나 즐겨찾기가 없습니다. 도구 → 현장 기록으로 핀을 찍거나 즐겨찾기를 저장하세요.</div>';
+  a.forEach(function(x){h+='<label class="vp"><input type="checkbox" data-k="'+esc(x.k)+'"'+(sel[x.k]?' checked':'')+'><span>'+esc(x.n)+'</span><small>'+x.t+'</small></label>'});$('vsPick').innerHTML=h}
+ function setSt(v){stm=v;[].forEach.call($('vsSt').children,function(b){b.classList.toggle('on',b.dataset.s===v)})}
+ function open(){res=null;$('vsRes').innerHTML='';sel={};drawPick();setSt(gps()?'gps':'ctr');$('toolPop').hidden=true;try{$('bTool').setAttribute('aria-expanded','false');$('bTool').classList.remove('on')}catch(e){}$('vsModal').hidden=false}
+ function go(){var a=items().filter(function(x){return sel[x.k]});if(a.length<1){status('갈 곳을 하나 이상 고르세요');return}
+  var st=null,stn='';if(stm==='gps'){st=gps();stn='내 위치';if(!st){status('내 위치를 아직 못 받아 지도 가운데에서 출발합니다');stm='ctr';setSt('ctr')}}
+  if(stm==='ctr'){var c=map.getCenter();st=[c.lat,c.lng];stn='지도 가운데'}
+  var N=[],names=[];if(st){N.push(st);names.push(stn)}a.forEach(function(x){N.push([x.lat,x.lng]);names.push(x.n)});
+  var items0=[];if(!st){/* 첫 번째 곳이 출발 */}
+  var p=route(N),legs=[],tot=0,i;for(i=1;i<p.length;i++){var d=hv(N[p[i-1]],N[p[i]]);legs.push(d);tot+=d}
+  res={N:N,p:p,names:names,hasSt:!!st,legs:legs,tot:tot};show()}
+ function kk(nm,ll){return encodeURIComponent(nm)+','+ll[0].toFixed(6)+','+ll[1].toFixed(6)}
+ function show(){var r=res,h='',k=0;r.p.forEach(function(ix,i){var isS=i===0&&r.hasSt;if(!isS)k++;
+   var sub=isS?'출발':(i>0?'앞 곳에서 '+fD(r.legs[i-1]):'출발');var lk='';
+   if(i>0){var f=r.p[i-1];lk='<a class="xl" target="_blank" rel="noopener" href="https://map.kakao.com/link/by/car/'+kk(r.names[f],r.N[f])+'/'+kk(r.names[ix],r.N[ix])+'">길찾기</a>'}
+   h+='<div class="vsr'+(isS?' s':'')+'"><b>'+(isS?'출':k)+'</b><div class="tx"><b>'+esc(r.names[ix])+'</b><small>'+sub+'</small></div>'+lk+'</div>'});
+  h='<div class="sub" style="margin:12px 0 2px;font-weight:700">순서 · 전체 약 '+fD(r.tot)+' (직선 기준)</div>'+h+'<div class="sub" style="margin:6px 0">카카오맵 길찾기는 두 곳씩 열립니다. 각 줄의 “길찾기”는 앞 곳에서 이 곳까지입니다.</div><div style="display:flex;gap:6px;flex-wrap:wrap"><button class="btn on" id="vsMap" type="button">지도에 표시</button><button class="btn" id="vsCp" type="button">순서 복사</button>'+(vsg.getLayers().length?'<button class="btn" id="vsClr" type="button">표시 지우기</button>':'')+'</div>';$('vsRes').innerHTML=h}
+ function draw(){var r=res;vsg.clearLayers();var ll=r.p.map(function(ix){return r.N[ix]});L.polyline(ll,{color:'#0b57ff',weight:3,opacity:.85,dashArray:'8 6',interactive:false}).addTo(vsg);var k=0;r.p.forEach(function(ix,i){var isS=i===0&&r.hasSt;if(isS){L.circleMarker(r.N[ix],{radius:7,color:'#fff',weight:2,fillColor:'#0b57ff',fillOpacity:1,interactive:false}).addTo(vsg);return}k++;L.marker(r.N[ix],{icon:L.divIcon({className:'',html:'<div class="vsn">'+k+'</div>',iconSize:[0,0]}),interactive:false,keyboard:false}).addTo(vsg)});
+  try{map.fitBounds(L.latLngBounds(ll).pad(.25),{maxZoom:18})}catch(e){}$('vsModal').hidden=true;status('방문 순서를 지도에 표시했습니다 · 지우려면 도구 → 방문 순서 정하기')}
+ function cp(){var r=res,k=0,t=r.p.map(function(ix,i){var isS=i===0&&r.hasSt;if(isS)return '출발 '+r.names[ix];k++;return k+'. '+r.names[ix]}).join('\n');try{navigator.clipboard.writeText(t).then(function(){status('방문 순서를 복사했습니다')},function(){status('복사하지 못했습니다')})}catch(e){status('복사하지 못했습니다')}}
+ $('vsOpen').onclick=open;$('vsX').onclick=function(){$('vsModal').hidden=true};$('vsGo').onclick=go;
+ $('vsPick').addEventListener('change',function(e){var t=e.target;if(t.dataset&&t.dataset.k)sel[t.dataset.k]=t.checked});
+ $('vsSt').onclick=function(e){var b=e.target.closest('button');if(b)setSt(b.dataset.s)};
+ $('vsRes').addEventListener('click',function(e){var t=e.target;if(t.id==='vsMap')draw();else if(t.id==='vsCp')cp();else if(t.id==='vsClr'){vsg.clearLayers();show()}});
+})();
  var VG=g('vg',{fav:1});if(VG.fav===undefined)VG.fav=1;[].forEach.call(document.querySelectorAll('#viewPop details.vg'),function(d){var k=d.dataset.g;d.open=!!VG[k];d.addEventListener('toggle',function(){VG[k]=d.open?1:0;s('vg',VG)})});
  /* 시작할 때 내 위치로 */
  var SL=g('sl',1);function slMark(){[].forEach.call($('slSeg').children,function(b){b.classList.toggle('on',(b.dataset.l==='1')===!!SL)})}
@@ -15814,7 +15879,9 @@ window.__fld={parseLL:parseLL};
  window.__diag=diag})();
 /* v17: 업데이트 내용 · 저장 공간 */
 (function(){var $=function(i){return document.getElementById(i)};
- var LOGV='2026-11-09w',CH=[
+ var LOGV='2026-11-09y',CH=[
+  ['2026.11.09 (지번 글자 선명하게)',['지번 글자의 번지는 그림자를 얇은 외곽선으로 바꾸고 글자 크기를 정수 단위로 맞춰 또렷하게 표시','지적선은 이전 방식으로 되돌림']],
+  ['2026.11.09 (방문 순서 · 지적선)',['도구 → 방문 순서 정하기: 메모 핀·즐겨찾기 중 갈 곳을 고르면 가까운 순서로 정렬(출발점: 내 위치/지도 가운데/첫 번째 곳), 지도에 번호로 표시, 순서 복사, 카카오맵 길찾기(두 곳씩)','지적선은 원래 방식 유지']],
   ['2026.11.09 (조례 건폐율·용적률 전국)',['건폐율·용적률 상한에 딸깍 박스와 같은 조례 DB(시·군 160여 곳, 국가법령정보센터 자치법규 기준)를 반영','조례에 따로 정한 값이 없으면 시행령 상한을 쓰고 * 로 표시','지구단위계획 등은 그 기준이 우선하므로 사업 전 조문 확인 필요']],
   ['2026.11.09 (화면 정리 · Esc)',['컴퓨터에서 Esc 키로 열린 창·팝업·시트를 닫음(가장 위에 있는 것부터)','프로젝트 창의 닫기를 오른쪽 위 ✕로 이동','화면 설정: 자주 쓰는 설정에는 밝기·글자 크기·한 손 조작만 두고 야외 모드·메뉴 글자는 “보기”로 이동','팝업이 열려 있으면 알림이 팝업을 가리지 않도록 아래로 이동','왼쪽 아래 지적/지번 버튼을 세로 한 줄로 맞춤']],
   ['2026.11.09 (도구 창 정리)',['도구 창을 기록·현재 화면 공유·다른 지도로·오프라인 미리 받기 묶음으로 나눠 접어서, 길게 이어지던 화면을 정리','펼침 상태는 기억']],
