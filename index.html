@@ -1394,6 +1394,21 @@ body:has(.modal:not([hidden])) .rtip,body:has(.modal:not([hidden])) #railTip{opa
 #pmBar{position:absolute;z-index:1300;left:50%;transform:translateX(-50%);bottom:calc(max(14px,env(safe-area-inset-bottom)) + 12px);display:flex;align-items:center;gap:8px;background:var(--card);color:var(--fg);border-radius:14px;padding:8px 10px;box-shadow:0 4px 16px #0004;max-width:calc(100vw - 24px);font-size:13px;font-weight:600}
 #pmBar span{flex:1;min-width:0}#pmBar .btn{padding:7px 10px;font-size:13px;flex:0 0 auto}
 .frow.mq{margin:0 0 8px}.frow.mq input{width:100%;box-sizing:border-box}
+
+/* ===== PC: 옆 패널 · 끌어다 놓기 · 우클릭 · 호버 말풍선 ===== */
+@media (min-width:1000px){
+ #info:not(.min){left:0!important;top:0!important;bottom:0!important;right:auto!important;width:440px!important;max-height:none!important;height:100dvh!important;border-radius:0!important;box-shadow:3px 0 18px #0002!important;border-right:1px solid var(--line)!important;padding-top:14px!important}
+ body:has(#info:not([hidden]):not(.min)) #map{left:440px}
+ body:has(#info:not([hidden]):not(.min)) .bar{left:440px}
+ body:has(#info:not([hidden]):not(.min)) :is(#quick,#rose,#lgrp,#trkPill,#gpsPill){translate:440px 0}
+}
+#dropHint{position:fixed;inset:0;z-index:3000;display:flex;align-items:center;justify-content:center;background:color-mix(in srgb,var(--acc) 22%,transparent);backdrop-filter:blur(2px);pointer-events:none}
+#dropHint>div{padding:26px 40px;border:3px dashed var(--acc);border-radius:20px;background:var(--card);color:var(--fg);font-size:20px;font-weight:800;text-align:center}#dropHint small{display:block;margin-top:6px;font-size:13px;font-weight:500;color:var(--mut)}
+#dxModal .mh{display:flex;align-items:center;justify-content:space-between;gap:8px}#dxModal .mh .btn{width:36px;height:36px;padding:0;border-radius:50%;line-height:1}
+#ctxMenu{position:fixed;z-index:3100;min-width:190px;background:var(--card);color:var(--fg);border-radius:12px;padding:5px;box-shadow:0 8px 28px #0004,0 0 0 1px #0000001a}
+#ctxMenu button{display:block;width:100%;text-align:left;border:0;background:none;color:inherit;font:inherit;font-size:13.5px;font-weight:600;padding:8px 12px;border-radius:8px;cursor:pointer}#ctxMenu button:hover{background:var(--acc2);color:var(--acc)}
+#ctxMenu hr{border:0;border-top:1px solid var(--line);margin:4px 6px}
+#hvTip{position:fixed;z-index:2900;pointer-events:none;background:var(--card);color:var(--fg);border-radius:9px;padding:6px 10px;font-size:12.5px;font-weight:600;box-shadow:0 3px 12px #0004,0 0 0 1px #0000001a;max-width:320px;line-height:1.4}#hvTip small{display:block;color:var(--mut);font-weight:500;font-size:12px}
 </style></head><body>
 <div id="map"></div>
 <div class="bar">
@@ -1478,7 +1493,7 @@ body:has(.modal:not([hidden])) .rtip,body:has(.modal:not([hidden])) #railTip{opa
  <div id="dInfo" class="sub" style="margin:4px 0 6px"></div>
  <div class="mb"><button class="btn" id="dUndo">되돌리기</button><button class="btn" id="dFin">마침</button><button class="btn" id="dAll">모두 지우기</button><button class="btn on" id="dDone">끝내기</button></div></div>
 <div class="sheet" id="layers" hidden><button class="btn x" data-close>닫기</button><h3 style="font-size:14px;margin:0 0 4px">레이어 <span style="font-weight:400;color:var(--mut);font-size:12px">줄을 꾹 눌러 끌면 순서 변경 · 위쪽이 지도 위</span></h3><div class="chips" id="chips"></div>
-<div class="sl"><button class="btn" id="bShp" style="flex:1;padding:6px 10px;font-size:13px">SHP 올리기 (EPSG:5174)</button><input type="file" id="fShp" multiple hidden></div><div id="shpMsg" class="sub" style="margin:2px 0 0" hidden></div>
+<div class="sl"><button class="btn" id="bShp" style="flex:1;padding:6px 10px;font-size:13px">파일 올리기 (SHP·DXF·지번 목록)</button><input type="file" id="fShp" multiple hidden></div><div id="shpMsg" class="sub" style="margin:2px 0 0" hidden></div>
 
 <p class="sub" style="margin:4px 0 0">파랑 국유지 · 보라 공유지 · 사유지 색 없음 (17단계 이상)</p></div>
 <div class="sheet" id="legend" hidden><button class="btn x" data-close>닫기</button><h3 style="font-size:14px;margin:0 0 4px">이 화면의 시설 <span style="font-weight:400;color:var(--mut);font-size:12px">누르면 지도에서 강조</span></h3><div id="legBody" class="lgs"></div>
@@ -1515,6 +1530,18 @@ body:has(.modal:not([hidden])) .rtip,body:has(.modal:not([hidden])) #railTip{opa
 <div style="display:flex;justify-content:flex-end;gap:6px;margin-top:12px"><button class="btn" id="exNo" type="button">취소</button><button class="btn on" id="exOk" type="button">저장</button></div></div></div>
 <div class="modal" id="svModal" hidden><div class="box"><h3 style="margin:0 0 6px">측정 저장</h3><input id="svName" style="width:100%;box-sizing:border-box;font:inherit;padding:9px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--fg)" placeholder="이름 (예: 진입도로 폭)"><div id="svInfo" class="sub" style="margin:6px 0 0"></div><div style="display:flex;justify-content:flex-end;gap:6px;margin-top:10px"><button class="btn" id="svNo" type="button">취소</button><button class="btn on" id="svOk" type="button">저장</button></div></div></div>
 <div id="pmBar" hidden><span>핀을 끌거나 옮길 곳을 눌러 위치를 정하세요</span><button class="btn" id="pmNo" type="button">취소</button><button class="btn on" id="pmOk" type="button">여기로 저장</button></div>
+<div id="dropHint" hidden><div>여기에 놓으세요<small>SHP(5174) · DXF · 지번 목록(txt·csv·xlsx)</small></div></div>
+<div id="ctxMenu" hidden></div>
+<div id="hvTip" hidden></div>
+<div class="modal" id="dxModal" hidden><div class="box">
+ <div class="mh"><h3 style="margin:0">DXF 불러오기</h3><button class="btn" id="dxX" type="button" aria-label="닫기">✕</button></div>
+ <p class="sub" style="margin:6px 0 8px" id="dxInfo"></p>
+ <label class="sub" style="display:block;margin:0 0 3px">도면 좌표계</label>
+ <select id="dxCrs" style="width:100%;box-sizing:border-box;font:inherit;font-size:13px;padding:9px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--fg)"><option value="5186">5186 · 중부원점 GRS80 (현행)</option><option value="5174">5174 · 구 중부원점 Bessel (기존 도면)</option><option value="5179">5179 · UTM-K</option><option value="4326">4326 · 위경도</option></select>
+ <p class="sub" style="margin:6px 0 0;font-size:12px">모르면 5186으로 먼저 불러 보고, 위치가 어긋나면 5174로 다시 불러 보세요. 선·폴리라인·원·호·점을 읽고 글자·블록은 건너뜁니다. 레이어 이름이 속성으로 들어갑니다.</p>
+ <div id="dxMsg" class="sub" style="margin:8px 0 0;color:var(--warn)"></div>
+ <div style="display:flex;justify-content:flex-end;gap:6px;margin-top:10px"><button class="btn" id="dxNo" type="button">취소</button><button class="btn on" id="dxOk" type="button">불러오기</button></div>
+</div></div>
 <div class="modal" id="bjModal" hidden><div class="box" style="max-height:90%;overflow:auto">
  <div class="mh"><h3 style="margin:0">지번 목록 일괄 표시</h3><button class="btn" id="bjX" type="button" aria-label="닫기">✕</button></div>
  <p class="sub" style="margin:4px 0 8px">편입토지조서나 엑셀의 지번을 한 줄에 하나씩 붙여넣으세요. 번지만 있는 줄(예: 123-4, 산 12)은 아래 기본 주소를 앞에 붙여 찾습니다.</p>
@@ -14030,7 +14057,7 @@ var LS=window.localStorage;function g(k,d){try{var v=LS.getItem(k);return v==nul
  if(o.m!=null){var mm={};o.m.split(',').forEach(function(i){if(i)mm[i]=true});s('muniOn',mm)}
  history.replaceState(null,'',location.pathname+location.search)}catch(e){}})();
 var KEY=g('key',''),DOM=g('dom',location.hostname||'localhost');
-var BUILD="2611092026";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
+var BUILD="2611092031";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
 applyTheme(THEME);
 var BASE=g('base','Base');if(['Base','Satellite','SatLabel','white','none'].indexOf(BASE)<0)BASE='Base';
 // 레이어: id, 이름, 표시 WMS 이름, 조회용 data 코드
@@ -14465,6 +14492,45 @@ function addUp(name,shpBuf,dbfBuf,cpgTxt){var geoms=shp.parseShp(shpBuf,P5174);v
  var bb=gbbox(gj);if(!(bb[1]>32&&bb[3]<40&&bb[0]>123&&bb[2]<133))throw new Error('변환 결과가 한국 밖입니다. 좌표가 5174가 맞는지 확인하세요');
  var id='u'+Date.now()+Math.floor(Math.random()*90+10);var u={id:id,name:name,color:UPC[UP.length%UPC.length],on:true,gj:gj,bbox:bb};UP.push(u);ORDER.unshift(id);s('ord',ORDER);upSave(u);upApply(u);renderLayerUI();return u}
 function readBuf(f){return new Promise(function(res,rej){var r=new FileReader();r.onload=function(){res(r.result)};r.onerror=function(){rej(r.error)};r.readAsArrayBuffer(f)})}
+function addGj(name,gj){var bb=gbbox(gj);var id='u'+Date.now()+Math.floor(Math.random()*90+10);var u={id:id,name:name,color:UPC[UP.length%UPC.length],on:true,gj:gj,bbox:bb};UP.push(u);ORDER.unshift(id);s('ord',ORDER);upSave(u);upApply(u);renderLayerUI();return u}
+function dxfParse(txt){var L=txt.split(/\r?\n/),pairs=[],i;for(i=0;i+1<L.length;i+=2){var c=parseInt(L[i].trim(),10);if(isNaN(c)){i--;continue}pairs.push([c,L[i+1].trim()])}
+ var feats=[],inEnt=false,k=0,n=pairs.length,pl=null;
+ function lay(e){return e.lay||'0'}
+ function push(geom,lay0){feats.push({type:'Feature',properties:{layer:lay0},geometry:geom})}
+ for(k=0;k<n;k++){var c=pairs[k][0],v=pairs[k][1];if(c===0&&v==='SECTION'){var nm=pairs[k+1]&&pairs[k+1][0]===2?pairs[k+1][1]:'';inEnt=nm==='ENTITIES';continue}if(c===0&&v==='ENDSEC'){inEnt=false;continue}if(!inEnt||c!==0)continue;
+  var e={t:v,pts:[],lay:'0',f:0},j=k+1,cur=null;
+  while(j<n&&pairs[j][0]!==0){var cc=pairs[j][0],vv=pairs[j][1];if(cc===8)e.lay=vv;else if(cc===70)e.f=parseInt(vv,10)||0;else if(cc===10){cur=[parseFloat(vv),0];e.pts.push(cur)}else if(cc===20&&cur)cur[1]=parseFloat(vv);else if(cc===11){e.x2=parseFloat(vv)}else if(cc===21){e.y2=parseFloat(vv)}else if(cc===40)e.r=parseFloat(vv);else if(cc===50)e.a0=parseFloat(vv);else if(cc===51)e.a1=parseFloat(vv);j++}
+  k=j-1;
+  if(e.t==='LINE'&&e.pts.length&&e.x2!=null)push({type:'LineString',coordinates:[e.pts[0],[e.x2,e.y2]]},lay(e));
+  else if(e.t==='LWPOLYLINE'&&e.pts.length>1){var cs=e.pts.slice();if(e.f&1)cs.push(cs[0]);push({type:'LineString',coordinates:cs},lay(e))}
+  else if(e.t==='POLYLINE'){var vs=[];while(k+1<n&&!(pairs[k+1][0]===0&&pairs[k+1][1]==='SEQEND')){k++;if(pairs[k][0]===0&&pairs[k][1]==='VERTEX'){var pt=[0,0],q=k+1;while(q<n&&pairs[q][0]!==0){if(pairs[q][0]===10)pt[0]=parseFloat(pairs[q][1]);else if(pairs[q][0]===20)pt[1]=parseFloat(pairs[q][1]);q++}vs.push(pt);k=q-1}}if(vs.length>1){if(e.f&1)vs.push(vs[0]);push({type:'LineString',coordinates:vs},lay(e))}}
+  else if(e.t==='CIRCLE'&&e.pts.length&&e.r>0){var ring=[];for(var a=0;a<=48;a++){var t=a/48*2*Math.PI;ring.push([e.pts[0][0]+e.r*Math.cos(t),e.pts[0][1]+e.r*Math.sin(t)])}push({type:'LineString',coordinates:ring},lay(e))}
+  else if(e.t==='ARC'&&e.pts.length&&e.r>0){var a0=(e.a0||0)*Math.PI/180,a1=(e.a1||0)*Math.PI/180;if(a1<=a0)a1+=2*Math.PI;var ar=[],m2=Math.max(6,Math.ceil((a1-a0)/(Math.PI/24)));for(var b=0;b<=m2;b++){var t2=a0+(a1-a0)*b/m2;ar.push([e.pts[0][0]+e.r*Math.cos(t2),e.pts[0][1]+e.r*Math.sin(t2)])}push({type:'LineString',coordinates:ar},lay(e))}
+  else if(e.t==='POINT'&&e.pts.length)push({type:'Point',coordinates:e.pts[0]},lay(e))}
+ return feats}
+var DXDEF={'5186':'+proj=tmerc +lat_0=38 +lon_0=127 +k=1 +x_0=200000 +y_0=600000 +ellps=GRS80 +units=m +no_defs','5179':'+proj=tmerc +lat_0=38 +lon_0=127.5 +k=0.9996 +x_0=1000000 +y_0=2000000 +ellps=GRS80 +units=m +no_defs','5174':P5174};
+function dxfLoad(name,txt){var $=function(i){return document.getElementById(i)};var feats=dxfParse(txt);if(!feats.length){shpMsg(name+': 읽을 수 있는 도형이 없습니다 (ASCII DXF인지 확인하세요)',true);return}
+ $('dxInfo').textContent=name+' · 도형 '+feats.length.toLocaleString('ko-KR')+'개';$('dxMsg').textContent='';$('dxModal').hidden=false;
+ $('dxOk').onclick=function(){var code=$('dxCrs').value,fw;try{fw=code==='4326'?function(c){return [c[0],c[1]]}:function(c){return proj4(DXDEF[code],'EPSG:4326',[c[0],c[1]])}}catch(e){$('dxMsg').textContent='좌표 변환을 준비하지 못했습니다';return}
+  var out=[];feats.forEach(function(f){var g=f.geometry,cv=function(c){var r=fw(c);return [r[0],r[1]]};try{if(g.type==='Point')out.push({type:'Feature',properties:f.properties,geometry:{type:'Point',coordinates:cv(g.coordinates)}});else out.push({type:'Feature',properties:f.properties,geometry:{type:'LineString',coordinates:g.coordinates.map(cv)}})}catch(e){}});
+  var gj={type:'FeatureCollection',features:out},bb=gbbox(gj);if(!(bb[1]>32&&bb[3]<40&&bb[0]>123&&bb[2]<133)){$('dxMsg').textContent='변환 결과가 한국 밖입니다. 좌표계를 바꿔서 다시 불러 보세요.';return}
+  try{var u=addGj(name.replace(/\.dxf$/i,''),gj);$('dxModal').hidden=true;map.fitBounds([[u.bbox[1],u.bbox[0]],[u.bbox[3],u.bbox[2]]],{maxZoom:19,padding:[30,30]});shpMsg('DXF 레이어를 추가했습니다 ('+out.length.toLocaleString('ko-KR')+'개 도형)')}catch(e){$('dxMsg').textContent='불러오지 못했습니다: '+e.message}};
+ $('dxNo').onclick=$('dxX').onclick=function(){$('dxModal').hidden=true}}
+function readTxt(f){return readBuf(f).then(function(b){try{return new TextDecoder('utf-8',{fatal:true}).decode(b)}catch(e){try{return new TextDecoder('euc-kr').decode(b)}catch(e2){return new TextDecoder('utf-8').decode(b)}}})}
+function xlsxRows(buf){return JSZip.loadAsync(buf).then(function(z){var names=Object.keys(z.files).filter(function(n){return /^xl\/worksheets\/sheet\d+\.xml$/.test(n)}).sort(function(a,b){return parseInt(a.match(/(\d+)\.xml/)[1])-parseInt(b.match(/(\d+)\.xml/)[1])});if(!names.length)throw new Error('시트를 찾지 못했습니다');
+  var ss=z.file('xl/sharedStrings.xml')?z.file('xl/sharedStrings.xml').async('string'):Promise.resolve('');return Promise.all([ss,z.file(names[0]).async('string')])}).then(function(r){var P=new DOMParser(),strs=[];if(r[0]){var d0=P.parseFromString(r[0],'application/xml');[].forEach.call(d0.getElementsByTagName('si'),function(si){strs.push([].map.call(si.getElementsByTagName('t'),function(t){return t.textContent}).join(''))})}
+  var d=P.parseFromString(r[1],'application/xml'),rows=[];[].forEach.call(d.getElementsByTagName('row'),function(row){var cells=[];[].forEach.call(row.getElementsByTagName('c'),function(c){var ref=c.getAttribute('r')||'',col=0,m=ref.match(/^([A-Z]+)/);if(m)for(var i=0;i<m[1].length;i++)col=col*26+(m[1].charCodeAt(i)-64);col=col?col-1:cells.length;var t=c.getAttribute('t'),v='',ve=c.getElementsByTagName('v')[0];
+   if(t==='s'&&ve)v=strs[parseInt(ve.textContent,10)]||'';else if(t==='inlineStr')v=[].map.call(c.getElementsByTagName('t'),function(x){return x.textContent}).join('');else if(ve)v=ve.textContent;cells[col]=String(v).trim()});rows.push(cells.map(function(x){return x||''}))});return rows})}
+function routeFiles(fl){var shpF=[],dxf=[],lst=[],bad=[];fl.forEach(function(f){var m=f.name.match(/\.([^.]+)$/),e=m?m[1].toLowerCase():'';if(['shp','dbf','cpg','shx','prj','zip'].indexOf(e)>=0)shpF.push(f);else if(e==='dxf')dxf.push(f);else if(['txt','csv','tsv','xlsx'].indexOf(e)>=0)lst.push(f);else bad.push(f.name)});
+ if(shpF.length)handleFiles(shpF).catch(function(er){shpMsg('불러오기 실패: '+er.message,true)});
+ if(dxf.length){readTxt(dxf[0]).then(function(t){dxfLoad(dxf[0].name,t)}).catch(function(){shpMsg('DXF를 읽지 못했습니다',true)});if(dxf.length>1)status('DXF는 한 번에 한 파일씩 불러옵니다 · 첫 파일만 처리했습니다')}
+ if(lst.length){var f0=lst[0],isx=/\.xlsx$/i.test(f0.name);(isx?readBuf(f0).then(xlsxRows):readTxt(f0).then(function(t){return t.split(/\r?\n/).map(function(l){return /\t/.test(l)?l.split('\t'):(l.indexOf(',')>=0?l.split(','):[l])})})).then(function(rows){if(window.__bjLoad)window.__bjLoad(rows,f0.name)}).catch(function(e){status('지번 목록을 읽지 못했습니다: '+e.message)})}
+ if(bad.length&&!shpF.length&&!dxf.length&&!lst.length)status('지원하지 않는 파일입니다: '+bad.slice(0,3).join(', ')+' · SHP, DXF, txt/csv/xlsx만 올릴 수 있습니다')}
+(function(){var dh=document.getElementById('dropHint'),dc=0;function hasF(e){var t=e.dataTransfer&&e.dataTransfer.types;return t&&[].indexOf.call(t,'Files')>=0}
+ document.addEventListener('dragenter',function(e){if(!hasF(e))return;e.preventDefault();dc++;dh.hidden=false});
+ document.addEventListener('dragover',function(e){if(!hasF(e))return;e.preventDefault();e.dataTransfer.dropEffect='copy'});
+ document.addEventListener('dragleave',function(e){if(!hasF(e))return;dc=Math.max(0,dc-1);if(!dc)dh.hidden=true});
+ document.addEventListener('drop',function(e){if(!hasF(e))return;e.preventDefault();dc=0;dh.hidden=true;var fl=[].slice.call(e.dataTransfer.files||[]);if(fl.length)routeFiles(fl)})})();
 async function handleFiles(files){var sets={};shpMsg('SHP 읽는 중…');
  function put(base,ext,buf){base=base.replace(/^.*[\/]/,'');var k=base.toLowerCase();(sets[k]=sets[k]||{name:base})[ext]=buf}
  for(var i=0;i<files.length;i++){var f=files[i],m=f.name.match(/^(.*)\.([^.]+)$/);if(!m)continue;var ext=m[2].toLowerCase();
@@ -14482,7 +14548,7 @@ function upHits(ll){var pt=map.latLngToContainerPoint(ll),out=[];UP.forEach(func
   if(hit)out.push({n:u.name,p:f.properties||{}})})});return out}
 function shpRows(h){return (h||[]).map(function(x){var ks=Object.keys(x.p).filter(function(k){return x.p[k]!==null&&x.p[k]!==''}).slice(0,10);return '<div class="row"><b style="flex-basis:74px;word-break:break-all">'+esc(x.n)+'</b><span>'+(ks.length?ks.map(function(k){return esc(k)+': '+esc(String(x.p[k]).slice(0,60))}).join('<br>'):'(속성 없음)')+'</span></div>'}).join('')}
 document.getElementById('bShp').onclick=function(){document.getElementById('fShp').click()};
-document.getElementById('fShp').onchange=function(e){var fl=[].slice.call(e.target.files);e.target.value='';if(fl.length)handleFiles(fl).catch(function(er){shpMsg('불러오기 실패: '+er.message,1)})};
+document.getElementById('fShp').onchange=function(e){var fl=[].slice.call(e.target.files);e.target.value='';if(fl.length)routeFiles(fl)};
 function upInit(){idb(function(db){if(!db)return;try{var rq=db.transaction('shp').objectStore('shp').getAll();rq.onsuccess=function(){(rq.result||[]).forEach(function(u){UP.push(u);if(ORDER.indexOf(u.id)<0)ORDER.unshift(u.id);upApply(u)});ORDER=ORDER.filter(function(i){return !/^u\d+$/.test(i)||upl(i)});s('ord',ORDER);renderLayerUI();applyZ()}}catch(e){}})}
 // 쌓이는 순서 (목록 위가 지도에서도 위)
 var ORDER=g('ord',null);(function(){var d=['cad','own','fac','zone','spec','dist','gb','use','bld'];if(!Array.isArray(ORDER))ORDER=d.slice();ORDER=ORDER.filter(function(i){return d.indexOf(i)>=0||/^u\d+$/.test(i)});d.forEach(function(i){if(ORDER.indexOf(i)<0)ORDER.push(i)})})();
@@ -15260,6 +15326,7 @@ $('memAz').oninput=function(){var v=parseFloat(this.value);curAz=isFinite(v)?((v
 $('memAzX').onclick=function(){curAz=null;renderAz()};
 $('memAzC').onclick=function(){var h=window.__gps&&window.__gps().hdg;if(h==null||!isFinite(h)){$('memInfo').textContent='폰 방향 값이 없습니다 (내 위치를 켜고 폰을 움직인 뒤 다시)';return}curAz=((h%360)+360)%360;renderAz()};
 function openMemo(m,ll){cur=m||{id:'m'+Date.now(),t:Date.now(),lat:ll[0],lng:ll[1],text:'',photos:[],isNew:true};curPh=(cur.photos||[]).slice();curPo=curPh.map(function(_,i){return (cur.po||[])[i]||null});curChk=(cur.chk||[]).slice();curAz=cur.az==null?null:cur.az;curCol=cur.col||null;renderCol();$('memNo').value=cur.no||'';$('memNo').placeholder=String(nextNo());if(cur.isNew&&curAz==null){var G0=window.__gps&&window.__gps();if(G0&&G0.hdg!=null&&isFinite(G0.hdg))curAz=((G0.hdg%360)+360)%360}renderChk();renderAz();$('memText').value=cur.text||'';$('memTitle').textContent=cur.isNew?'새 메모':'메모 · '+fmtT(cur.t);$('memDel').hidden=!!cur.isNew;$('memMv').hidden=!!cur.isNew;$('memInfo').textContent='위치 '+cur.lat.toFixed(6)+', '+cur.lng.toFixed(6);renderPh();$('memModal').hidden=false}
+window.__memAt=function(lat,lng){openMemo(null,[+lat.toFixed(7),+lng.toFixed(7)])};
 var pmM=null,pmMk=null;
 function pmEnd(){if(pmMk){try{map.removeLayer(pmMk)}catch(e){}pmMk=null}if(pmM){delete pmM._mv;pmM=null}$('pmBar').hidden=true;drawMem()}
 $('memMv').onclick=function(){if(!cur||cur.isNew)return;pmM=cur;pmM._mv=1;$('memModal').hidden=true;drawMem();pmMk=L.marker([pmM.lat,pmM.lng],{icon:mIcon(pmM,1),draggable:true,zIndexOffset:2000,keyboard:false}).addTo(map);try{map.panTo([pmM.lat,pmM.lng])}catch(e){}$('pmBar').hidden=false};
@@ -15849,7 +15916,12 @@ window.__fld={parseLL:parseLL};
 })();
 (function(){var sm=document.querySelector('#keyModal details[data-k="app"] summary');if(!sm)return;var n=0,t=0;sm.addEventListener('click',function(){var now=Date.now();if(now-t>3000)n=0;t=now;if(++n>=5){n=0;var a=document.getElementById('accSec');if(a){a.hidden=false;a.open=true;status('관리자 항목을 표시했습니다')}}})})();
 (function(){var $=function(i){return document.getElementById(i)};var bg=L.layerGroup().addTo(map),run=0,BB=null;
- function lines(){var base=$('bjBase').value.trim(),a=[];$('bjTx').value.split(/\r?\n/).forEach(function(l){l=l.replace(/\t+/g,' ').replace(/\s+/g,' ').trim();if(!l)return;if(/^\d+[.)]?\s+/.test(l)&&/[가-힣]/.test(l.replace(/^\d+[.)]?\s+/,'')))l=l.replace(/^\d+[.)]?\s+/,'');var only=/^(산\s*)?\d+(-\d+)?$/.test(l);a.push({raw:l,q:only?(base?base+' '+l:''):l,only:only})});return a}
+ function rowLine(cells){cells=cells.map(function(c){return String(c==null?'':c).trim()}).filter(Boolean);if(!cells.length)return '';var jr=/^(산\s*)?\d+(-\d+)?(번지)?$/,ad=/(특별시|광역시|특별자치|도|시|군|구|읍|면|동|리|가)$/,idx=-1,i;
+  for(i=1;i<cells.length;i++){if(jr.test(cells[i])&&cells.slice(0,i).some(function(c){return ad.test(c)})){idx=i;break}}
+  if(idx>0){var pre=cells.slice(0,idx).filter(function(c){return ad.test(c)||/\s/.test(c)&&/[가-힣]/.test(c)&&ad.test(c.split(/\s+/).pop())}),jb=cells[idx].replace(/번지$/,'').replace(/^산(\d)/,'산 $1');return pre.join(' ')+' '+jb}
+  for(i=0;i<cells.length;i++){if(/[가-힣]/.test(cells[i])&&/\d/.test(cells[i])&&ad.test(cells[i].replace(/\s*\d[\d-]*\s*(번지)?\s*[가-힣]?$/,'').trim()||cells[i]))return cells[i]}
+  return cells.join(' ')}
+function lines(){var base=$('bjBase').value.trim(),a=[];$('bjTx').value.split(/\r?\n/).forEach(function(l){if(l.indexOf('\t')>=0)l=rowLine(l.split('\t'));l=l.replace(/\t+/g,' ').replace(/\s+/g,' ').trim();if(!l)return;if(/^\d+[.)]?\s+/.test(l)&&/[가-힣]/.test(l.replace(/^\d+[.)]?\s+/,'')))l=l.replace(/^\d+[.)]?\s+/,'');var only=/^(산\s*)?\d+(-\d+)?$/.test(l);a.push({raw:l,q:only?(base?base+' '+l:''):l,only:only})});return a}
  function jb(t){var m=String(t||'').match(/(산\s*)?\d+(-\d+)?(?=\D*$)/);return m?m[0].replace(/\s+/g,''):''}
  function go(){if(!KEY){showKey();return}var a=lines();if(!a.length){$('bjSt').textContent='지번을 붙여넣어 주세요';return}try{localStorage.setItem('bjBase',$('bjBase').value.trim())}catch(e){}
   bg.clearLayers();BB=null;var id=++run,col=$('bjCol').value||'#ff8a00',nf=[],warn=[],ok=[],done=0,i=0;$('bjRes').innerHTML='';$('bjGo').textContent='중지';
@@ -15871,12 +15943,38 @@ window.__fld={parseLL:parseLL};
      end()})})}
   for(var w=0;w<3;w++)one()}
  function view(bb){$('bjModal').hidden=true;try{map.fitBounds([[bb[0],bb[1]],[bb[2],bb[3]]],{maxZoom:19,padding:[40,40]})}catch(e){}}
+ window.__bjLoad=function(rows,name){var out=rows.map(function(r){return rowLine(r)}).filter(Boolean);if(!out.length){status('지번을 찾지 못했습니다');return}$('bjTx').value=out.join('\n');try{$('bjBase').value=localStorage.getItem('bjBase')||$('bjBase').value}catch(e){}$('toolPop').hidden=true;$('bjModal').hidden=false;$('bjSt').textContent=(name||'파일')+' · '+out.length+'줄을 읽었습니다 · 확인 후 “찾아서 표시”를 누르세요'};
  $('bjOpen').onclick=function(){$('toolPop').hidden=true;try{$('bTool').setAttribute('aria-expanded','false');$('bTool').classList.remove('on')}catch(e){}try{$('bjBase').value=localStorage.getItem('bjBase')||''}catch(e){}$('bjModal').hidden=false};
  $('bjX').onclick=function(){$('bjModal').hidden=true};
  $('bjGo').onclick=function(){if($('bjGo').textContent==='중지'){run++;$('bjGo').textContent='찾아서 표시';$('bjSt').textContent='중지했습니다';return}go()};
  $('bjClr').onclick=function(){run++;bg.clearLayers();BB=null;$('bjRes').innerHTML='';$('bjSt').textContent='표시를 지웠습니다';$('bjGo').textContent='찾아서 표시'};
  $('bjRes').addEventListener('click',function(e){var t=e.target,r=t.closest&&t.closest('.bi.ok');if(t.id==='bjView'&&BB){view(BB);return}if(t.id==='bjCp'){try{navigator.clipboard.writeText(window.__bjNf||'').then(function(){status('못 찾은 목록을 복사했습니다')})}catch(x){}return}if(r&&r.dataset.b){view(r.dataset.b.split(',').map(Number))}});
 })();
+(function(){var $=function(i){return document.getElementById(i)};if(!(window.matchMedia&&matchMedia('(hover:hover) and (pointer:fine)').matches))return;
+ var M=$('ctxMenu'),ll=null,T=$('hvTip'),lastMv=0,hit=null,dw=0,zc={},P5186='+proj=tmerc +lat_0=38 +lon_0=127 +k=1 +x_0=200000 +y_0=600000 +ellps=GRS80 +units=m +no_defs';
+ function hideM(){M.hidden=true}function hideT(){T.hidden=true;hit=null;clearTimeout(dw)}
+ function cp(t,m){try{navigator.clipboard.writeText(t).then(function(){status(m+' 복사: '+t)},function(){status('복사하지 못했습니다')})}catch(e){status('복사하지 못했습니다')}}
+ map.on('contextmenu',function(e){try{e.originalEvent.preventDefault()}catch(x){}hideT();ll=e.latlng;var oe=e.originalEvent;
+  M.innerHTML='<button data-a="pick">이 위치 필지 조회</button><hr><button data-a="c84">좌표 복사 (위도, 경도)</button><button data-a="c86">좌표 복사 (5186, X Y)</button><hr><button data-a="memo">여기에 메모 추가</button><button data-a="rv">카카오 로드뷰 열기</button>';
+  M.hidden=false;var w=M.offsetWidth,h=M.offsetHeight,x=Math.min(oe.clientX,innerWidth-w-8),y=Math.min(oe.clientY,innerHeight-h-8);M.style.left=Math.max(4,x)+'px';M.style.top=Math.max(4,y)+'px'});
+ M.addEventListener('click',function(e){var b=e.target.closest('button');if(!b||!ll)return;var a=b.dataset.a,p=ll;hideM();
+  if(a==='pick')pick(p.lat,p.lng);
+  else if(a==='c84')cp(p.lat.toFixed(6)+', '+p.lng.toFixed(6),'위경도');
+  else if(a==='c86'){try{var r=proj4('EPSG:4326',P5186,[p.lng,p.lat]);cp(r[0].toFixed(3)+' '+r[1].toFixed(3),'5186 좌표')}catch(x){status('좌표를 변환하지 못했습니다')}}
+  else if(a==='memo'){if(window.__memAt)window.__memAt(p.lat,p.lng)}
+  else if(a==='rv')window.open('https://map.kakao.com/link/roadview/'+p.lat.toFixed(6)+','+p.lng.toFixed(6),'_blank','noopener')});
+ document.addEventListener('mousedown',function(e){if(!M.hidden&&!M.contains(e.target))hideM()},true);document.addEventListener('keydown',function(e){if(e.key==='Escape')hideM()});
+ map.on('movestart zoomstart',function(){hideM();hideT()});window.addEventListener('blur',function(){hideM();hideT()});
+ function zoneOf(f,cb){var pnu=(f.properties||{}).pnu||'';if(zc[pnu]!==undefined)return cb(zc[pnu]);var out=[],n=0,codes=['LT_C_UQ111','LT_C_UQ112','LT_C_UQ113','LT_C_UQ114'],c=hit;codes.forEach(function(cd){dataQ(cd,c.lng,c.lat,false,function(fs){(fs||[]).forEach(function(x){var pr=x.properties||{},nm0=pr.uname||(typeof nm==='function'?nm(pr):'')||'';if(nm0&&out.indexOf(nm0)<0)out.push(nm0)});if(++n===codes.length){zc[pnu]=out.join(' · ');cb(zc[pnu])}})})}
+ map.on('mousemove',function(e){var now=Date.now();if(now-lastMv<70)return;lastMv=now;var oe=e.originalEvent;if(oe&&oe.buttons)return hideT();
+  var c=FC['LP_PA_CBND_BUBUN'];if(!c||!c.feats||!c.feats.length)return hideT();var x=e.latlng.lng,y=e.latlng.lat,f=null;
+  for(var i=0;i<c.feats.length;i++){var g=c.feats[i],b=fbb(g);if(x<b[0]||x>b[2]||y<b[1]||y>b[3])continue;var ps=polysOf(g.geometry),ok=false;for(var k=0;k<ps.length;k++)if(pipP(ps[k],x,y)){ok=true;break}if(ok){f=g;break}}
+  if(!f)return hideT();var p=f.properties||{},id=p.pnu||p.addr||'',same=hit&&hit.id===id;hit={id:id,lat:y,lng:x,f:f};
+  var addr=p.addr||p.jibun||'';T.innerHTML=esc(addr)+(p.jibun&&p.addr?'<small>지번 '+esc(p.jibun)+'</small>':'')+(zc[p.pnu||'']?'<small>'+esc(zc[p.pnu||''])+'</small>':'');T.hidden=false;T.style.left=Math.min(oe.clientX+16,innerWidth-T.offsetWidth-8)+'px';T.style.top=Math.min(oe.clientY+18,innerHeight-T.offsetHeight-8)+'px';
+  if(!same){clearTimeout(dw);dw=setTimeout(function(){if(!hit||hit.id!==id||T.hidden||!KEY)return;zoneOf(f,function(z){if(hit&&hit.id===id&&z)T.innerHTML=esc(addr)+(p.jibun&&p.addr?'<small>지번 '+esc(p.jibun)+'</small>':'')+'<small>'+esc(z)+'</small>'})},550)}});
+ map.getContainer().addEventListener('mouseleave',hideT);map.on('click',hideT);
+})();
+(function(){var I=document.getElementById('info');if(!I||!window.MutationObserver)return;var tm=0;new MutationObserver(function(){clearTimeout(tm);tm=setTimeout(function(){try{map.invalidateSize({pan:false})}catch(e){}},60)}).observe(I,{attributes:true,attributeFilter:['hidden','class']})})();
  var VG=g('vg',{fav:1});if(VG.fav===undefined)VG.fav=1;[].forEach.call(document.querySelectorAll('#viewPop details.vg'),function(d){var k=d.dataset.g;d.open=!!VG[k];d.addEventListener('toggle',function(){VG[k]=d.open?1:0;s('vg',VG)})});
  /* 시작할 때 내 위치로 */
  var SL=g('sl',1);function slMark(){[].forEach.call($('slSeg').children,function(b){b.classList.toggle('on',(b.dataset.l==='1')===!!SL)})}
@@ -15943,7 +16041,8 @@ window.__fld={parseLL:parseLL};
  window.__diag=diag})();
 /* v17: 업데이트 내용 · 저장 공간 */
 (function(){var $=function(i){return document.getElementById(i)};
- var LOGV='2026-11-10b',CH=[
+ var LOGV='2026-11-10c',CH=[
+  ['2026.11.10 (PC 편의 기능)',['파일 끌어다 놓기: SHP(5174)·DXF·지번 목록(txt·csv·xlsx)을 지도 위에 놓으면 바로 처리(DXF는 좌표계 선택, 지번 목록은 일괄 표시로 연결)','마우스 우클릭 메뉴: 필지 조회·좌표 복사(위경도/5186)·메모 추가·카카오 로드뷰','PC에서는 정보창이 왼쪽 옆 패널로 고정되고 지도가 그 옆으로 맞춰짐','마우스를 필지에 올리면 주소·지번, 잠시 뒤 용도지역 말풍선']],
   ['2026.11.10 (지번 일괄 · 핀 이동 · 메모 검색)',['도구 → 지번 목록 일괄 표시: 편입토지조서·엑셀의 지번을 붙여넣으면 필지를 찾아 색칠, 못 찾은 줄과 다른 필지일 수 있는 줄을 따로 알려줌(기본 주소 지정 가능)','메모를 열면 “위치 옮기기”: 핀을 끌거나 지도를 눌러 새 위치로 저장','현장 기록 → 메모에 검색칸 추가(내용·번호·체크 항목)']],
   ['2026.11.10 (이름표·방문 순서·관리자 항목)',['창이 열려 있으면 오른쪽 메뉴 이름표를 숨겨 창 위에 겹치지 않게 함','방문 순서: 전체 선택·해제, 지도 가운데에서 가까운 N곳 고르기 추가','인증키 창의 접속 승인(관리자)은 관리자로 로그인한 기기에만 보임 · 일반 사용자는 “앱 정보”를 5번 연속 누르면 표시']],
   ['2026.11.09 (지번 외곽선 연하게)',['지번 글자 외곽선을 더 얇고 연하게 조정(햇빛 모드에서만 조금 진하게)']],
