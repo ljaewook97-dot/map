@@ -1435,6 +1435,7 @@ body.hasbar #ruLg,body:has(.sheet:not([hidden]):not(#info)) #ruLg{display:none}
 @media (min-width:1000px){body:has(#info:not([hidden]):not(.min)) #ruLg{margin-left:calc(var(--dk,440px)/2)}#ruLg{bottom:14px}}
 #sRes>div.sel{background:var(--acc2)}#sRes mark{background:none;color:var(--acc);font-weight:800}
 #info .btn.x{padding:6px 10px;font-size:12.5px}
+.histT{width:100%;border-collapse:collapse;font-size:13px}.histT th,.histT td{padding:5px 6px;border-bottom:1px solid var(--line);text-align:right}.histT th:first-child,.histT td:first-child{text-align:left}.histT th{color:var(--mut);font-weight:600;font-size:12px}.histR{margin:6px 0;padding:6px 0;border-top:1px dashed var(--line)}.histR small{color:var(--mut)}
 </style></head><body>
 <div id="map"></div>
 <div class="bar">
@@ -1606,7 +1607,7 @@ body.hasbar #ruLg,body:has(.sheet:not([hidden]):not(#info)) #ruLg{display:none}
  <button class="btn on" id="vsGo" type="button" style="width:100%;margin-top:10px">순서 정하기</button>
  <div id="vsRes"></div>
 </div></div>
-<div class="modal" id="logModal" hidden><div class="box"><h3 style="margin:0 0 6px">업데이트 내용</h3><div id="logBody"></div><div style="display:flex;justify-content:flex-end;margin-top:10px"><button class="btn on" id="logX" type="button">닫기</button></div></div></div>
+<div class="modal" id="logModal" hidden><div class="box"><h3 style="margin:0 0 6px">이번에 바뀐 점 <small id="logVer" class="sub" style="font-weight:400;margin-left:4px"></small></h3><div id="logBody"></div><div style="display:flex;justify-content:flex-end;margin-top:10px"><button class="btn on" id="logX" type="button">닫기</button></div></div></div>
 <div class="modal" id="tourModal" hidden><div class="box tour"><div class="tk" id="tkIc"></div><h3 id="tkT"></h3><p id="tkP"></p><div class="tdots" id="tkD"></div><div style="display:flex;gap:8px"><button class="btn" id="tkPrev">이전</button><span style="flex:1"></span><button class="btn" id="tkSkip">건너뛰기</button><button class="btn on" id="tkNext">다음</button></div></div></div>
 <div class="modal" id="prjModal" hidden><div class="box" style="max-height:88%;overflow:auto">
  <div class="mh"><h3 style="margin:0">프로젝트</h3><button class="btn" id="pClose" type="button" aria-label="닫기">✕</button></div><p class="sub" style="margin:0 0 8px">지도 위치·배경·레이어 켜기/순서·스타일·올린 SHP를 이름 붙여 저장하고, 나중에 불러옵니다. 이 기기·브라우저에 저장됩니다.</p>
@@ -1641,7 +1642,8 @@ body.hasbar #ruLg,body:has(.sheet:not([hidden]):not(#info)) #ruLg{display:none}
  <button class="btn" id="chkNet" type="button" style="width:100%">연결 상태 확인</button><div id="chkSum" class="sub" style="margin:8px 0 4px;font-weight:700"></div><div id="chkOut"></div>
  <label style="margin-top:10px">최근 V-World 응답 (문제가 있으면 이 내용을 알려주세요)</label><pre id="dbg" style="font-size:11px;white-space:pre-wrap;word-break:break-all;margin:4px 0 8px;max-height:140px;overflow:auto;background:var(--bg);padding:6px;border-radius:6px"></pre><p class="sub">키는 이 폰의 브라우저에만 저장되고 다른 곳으로 보내지지 않습니다.</p>
  </details>
- <details class="vg adv" data-k="app"><summary>앱 정보</summary>
+ <details class="vg adv" data-k="app"><summary>앱 정보 <span id="logDot" class="kbd" hidden>새 소식</span></summary>
+  <button class="btn" id="logOpen2" type="button" style="width:100%;margin:0 0 8px">이번에 바뀐 점 보기</button>
  <div style="display:flex;align-items:center;gap:8px"><div style="flex:1;min-width:0"><div style="font-weight:700;font-size:13px">앱 버전</div><div class="sub" style="margin:0">빌드 <span id="verLbl"></span> <span id="verMsg"></span></div></div><button class="btn" id="verChk">업데이트 확인</button></div>
  </details>
  </div></div></div>
@@ -14103,7 +14105,7 @@ var LS=window.localStorage;function g(k,d){try{var v=LS.getItem(k);return v==nul
  if(o.m!=null){var mm={};o.m.split(',').forEach(function(i){if(i)mm[i]=true});s('muniOn',mm)}
  history.replaceState(null,'',location.pathname+location.search)}catch(e){}})();
 var KEY=g('key',''),DOM=g('dom',location.hostname||'localhost');
-var BUILD="2611092116";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
+var BUILD="2611092138";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
 applyTheme(THEME);
 var BASE=g('base','Base');if(['Base','Satellite','SatLabel','white','none'].indexOf(BASE)<0)BASE='Base';
 // 레이어: id, 이름, 표시 WMS 이름, 조회용 data 코드
@@ -16163,6 +16165,32 @@ function lines(){var base=$('bjBase').value.trim(),a=[];$('bjTx').value.split(/\
  /* 딸깍 박스에서 보낸 지번 목록 (#bj=...) */
  if(window.__inBj){var tx=window.__inBj,nm=window.__inBjN;setTimeout(function(){$('bjOpen').click();$('bjTx').value=tx;if(nm){try{$('bjBase').value=nm}catch(e){}}status('딸깍 박스에서 보낸 지번 목록을 불러왔습니다 · "찾아서 표시"를 누르세요')},1200)}
 })();
+(function(){var $=function(i){return document.getElementById(i)},ib=$('infoBody');
+ function E(t){return String(t==null?'':t).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+ var KN={ladMvmnPrvonshCodeNm:'토지이동 사유',ladMvmnDe:'토지이동 일자',ladMvmnYmd:'토지이동 일자',ownshipChgPrvonshCodeNm:'소유권 변동 원인',ownshipChgDe:'소유권 변동 일자',lastUpdtDt:'데이터 기준일',lndcgrCodeNm:'지목',lndpclAr:'면적(㎡)',posesnSeCodeNm:'소유구분',ldCodeNm:'법정동',mnnmSlno:'지번'};
+ function ymd(v){v=String(v||'');return /^\d{8}$/.test(v)?v.slice(0,4)+'-'+v.slice(4,6)+'-'+v.slice(6):v}
+ function inject(){if(!ib.querySelector('.stats')||ib.querySelector('#histBox'))return;var d=document.createElement('div');d.id='histBox';d.innerHTML='<button class="btn" id="histGo" type="button" style="width:100%;margin-top:10px">필지 변경 이력 보기 (공시지가·토지이동)</button><div id="histOut"></div>';ib.appendChild(d)}
+ new MutationObserver(function(){inject()}).observe(ib,{childList:true,subtree:false});
+ ib.addEventListener('click',function(e){if(!e.target.closest||!e.target.closest('#histGo'))return;var pn=window.__pkPnu,out=$('histOut');if(!pn){out.innerHTML='<p class="sub">필지 조회가 끝난 뒤 눌러 주세요.</p>';return}
+  var b=e.target.closest('#histGo');b.disabled=true;b.textContent='불러오는 중…';out.innerHTML='';
+  var Y=new Date().getFullYear(),yrs=[],pr={},pend=0,rows=null,fin=false;
+  for(var y=Y;y>=Y-9;y--)yrs.push(y);
+  function done(){if(--pend>0)return;fin=true;show()}
+  function show(){b.disabled=false;b.textContent='다시 불러오기';var h='';
+   var ys=Object.keys(pr).sort(function(a,c){return c-a});
+   h+='<div class="ph" style="margin-top:12px">개별공시지가 변동</div>';
+   if(!ys.length)h+='<p class="sub">조회된 공시지가가 없습니다 (신규 필지이거나 응답이 없음).</p>';
+   else{h+='<table class="histT"><tr><th>기준연도</th><th>원/㎡</th><th>전년 대비</th></tr>';ys.forEach(function(y){var v=+pr[y],pv=+pr[y-1],ch=pv?((v-pv)/pv*100):null;h+='<tr><td>'+y+'</td><td>'+v.toLocaleString('ko-KR')+'</td><td>'+(ch==null?'-':'<span style="color:'+(ch>=0?'#d33':'#37c')+'">'+(ch>=0?'+':'')+ch.toFixed(1)+'%</span>')+'</td></tr>'});h+='</table>'}
+   h+='<div class="ph" style="margin-top:12px">토지이동·대장 기록</div>';
+   if(!rows||!rows.length)h+='<p class="sub">대장 기록을 받지 못했습니다.</p>';
+   else{rows.forEach(function(r,i){var m='';Object.keys(KN).forEach(function(k){if(r[k]!=null&&r[k]!=='')m+='<div class="row"><b>'+KN[k]+'</b><span>'+E(/De$|Ymd$|Dt$/.test(k)?ymd(r[k]):r[k])+'</span></div>'});
+     Object.keys(r).forEach(function(k){if(KN[k]||r[k]==null||r[k]===''||!/mvmn|chg|chang|cause|prvonsh|de$|ymd/i.test(k))return;m+='<div class="row"><b>'+E(k)+'</b><span>'+E(r[k])+'</span></div>'});
+     if(m)h+='<div class="histR">'+(rows.length>1?'<small>기록 '+(i+1)+'</small>':'')+m+'</div>'});}
+   h+='<p class="sub" style="margin-top:8px;font-size:12px">분할·합병·지목 변경의 전체 연혁은 토지(임야)대장의 “토지이동 연혁” 칸에 있습니다. 여기서는 V-World가 제공하는 값만 보여 주며, 정확한 증빙은 대장 열람본을 확인하세요.</p>';
+   out.innerHTML=h}
+  pend++;ned('ladfrlList',pn,function(d){try{var a=d.ladfrlVOList.ladfrlVOList;rows=Array.isArray(a)?a:(a?[a]:[])}catch(x){rows=null}done()});
+  yrs.forEach(function(y){pend++;ned('getIndvdLandPriceAttr',pn,function(d){try{var a=d.indvdLandPrices.field;if(!Array.isArray(a))a=a?[a]:[];a.forEach(function(r){if(r&&r.pblntfPclnd&&String(r.stdrYear||y)===String(y))pr[y]=r.pblntfPclnd})}catch(x){}done()},'&stdrYear='+y)})});
+})();
  var VG=g('vg',{fav:1});if(VG.fav===undefined)VG.fav=1;[].forEach.call(document.querySelectorAll('#viewPop details.vg'),function(d){var k=d.dataset.g;d.open=!!VG[k];d.addEventListener('toggle',function(){VG[k]=d.open?1:0;s('vg',VG)})});
  /* 시작할 때 내 위치로 */
  var SL=g('sl',1);function slMark(){[].forEach.call($('slSeg').children,function(b){b.classList.toggle('on',(b.dataset.l==='1')===!!SL)})}
@@ -16229,7 +16257,9 @@ function lines(){var base=$('bjBase').value.trim(),a=[];$('bjTx').value.split(/\
  window.__diag=diag})();
 /* v17: 업데이트 내용 · 저장 공간 */
 (function(){var $=function(i){return document.getElementById(i)};
- var LOGV='2026-11-10h',CH=[
+ var LOGV='2026-11-10j',CH=[
+  ['2026.11.10 (필지 변경 이력)',['필지 조회 창 아래 “필지 변경 이력 보기”: 최근 10년 개별공시지가 변동(전년 대비 %)과 대장에 있는 토지이동·소유권 변동 기록을 표시']],
+  ['2026.11.10 (변경 이력)',['설정 → 앱 정보 → “이번에 바뀐 점 보기”에서 언제든 다시 볼 수 있음 (새 소식이 있으면 “새 소식” 표시, 열어 보면 사라짐)']],
   ['2026.11.10 (필지 표시 · 색 구분)',['필지 표시 지정: 정보창·선택 막대의 “표시” → 글자(A구간·편입 등)와 색을 붙임, 글자를 누르면 수정, 프로젝트 저장에 포함','필지 색 구분: 화면 → 보기 → 면적(㎡) 또는 공시지가 구간별 자동 채색, 구간 경계 직접 지정, 지도 아래 범례','검색 후보: ↑↓·Enter 선택(PC), 입력 글자 강조, 지도 가운데에서 가까운 순, 도로명 주소 후보 추가','딸깍 박스 연동 준비: 주소 뒤에 #bj=(지번 목록) 링크로 열면 지번 일괄 표시 창에 채워짐']],
   ['2026.11.10 (모바일 보강)',['내 위치 버튼: 한 번 더 누르면 따라가기(지도 끌면 해제), 따라가기 중엔 버튼에 테두리 표시','폰 가로 화면: 정보창이 아래 시트 대신 왼쪽 옆 패널로','지도를 아래로 끌다 앱이 새로고침되는 문제 방지','화면 꺼짐 방지 설정 (화면 → 조작): 끔 / 내 위치 켠 동안 / 항상','정보창의 “위치 공유”와 PC 우클릭 메뉴: 위치 링크를 카카오톡 등으로 보내면 받은 사람이 누르면 같은 지점의 필지를 조회']],
   ['2026.11.10 (PC 패널 · 단축키)',['옆 패널 경계를 끌어 폭 조절(더블클릭=기본 폭, 기억함)','옆 패널 열릴 때 검색창·버튼 간격 정리','레이어·시설 창이 새로 열거나 누르면 맨 위로, 기본 위치도 서로 겹치지 않게','단축키: M 측정 · S 필지 선택 · D 그리기 · R 반경 · L 레이어 · V 시설 목록 · Ctrl+F 검색 · Ctrl+Z 되돌리기 · ? 도움말']],
@@ -16303,9 +16333,9 @@ function lines(){var base=$('bjBase').value.trim(),a=[];$('bjTx').value.split(/\
   ['2026.11.05 (낮)',['필지를 누르면 용도지역·시설 면적 비율 표시','왼쪽 아래 빠른 도구 버튼(측정·필지 선택·그리기)','글자 크기 선택, 처음 쓰는 사람용 안내']],
   ['이전',['메모 핀(사진 포함), 경로 기록, 즐겨찾기·최근, 좌표 붙여넣기 이동','오프라인 저장, 홈 화면 설치, 새로고침 버튼, 색상 테마, 지구단위계획구역 표시','지적 불완전 로딩 수정, 지적 범위 1km']]];
  $('logBody').innerHTML=CH.map(function(c){return '<h4>'+esc(c[0])+'</h4><ul>'+c[1].map(function(x){return '<li>'+esc(x)+'</li>'}).join('')+'</ul>'}).join('');
- function openLog(){$('viewPop').hidden=true;try{$('bView').classList.remove('on')}catch(e){}$('logModal').hidden=false;s('logSeen',LOGV)}
- $('logOpen').onclick=openLog;$('logX').onclick=function(){$('logModal').hidden=true};
- if(g('tour',0)&&g('logSeen','')!==LOGV&&KEY)setTimeout(function(){if($('keyModal').hidden&&$('tourModal').hidden){status('새 기능이 있어요 · 화면 → 도움말 → 업데이트 내용');s('logSeen',LOGV)}},3500);
+ function openLog(){$('keyModal').hidden=true;$('viewPop').hidden=true;try{$('bView').classList.remove('on')}catch(e){}$('logModal').hidden=false;s('logSeen',LOGV)}
+ $('logVer').textContent=LOGV;function dot(){$('logDot').hidden=g('logSeen','')===LOGV}$('logOpen').onclick=openLog;$('logOpen2').onclick=function(){openLog();dot()};$('logX').onclick=function(){$('logModal').hidden=true;dot()};dot();
+ if(g('tour',0)&&g('logSeen','')!==LOGV&&KEY)setTimeout(function(){if($('keyModal').hidden&&$('tourModal').hidden){status('새 기능이 있어요 · 설정 → 앱 정보 → 이번에 바뀐 점 보기')}},3500);
  /* 저장 공간 */
  var TC='ddm-tiles-v1';
  function mb(b){return (b/1048576).toFixed(b>1e8?0:1)+'MB'}
