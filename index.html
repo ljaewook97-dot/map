@@ -14118,7 +14118,7 @@ var LS=window.localStorage;function g(k,d){try{var v=LS.getItem(k);return v==nul
  if(o.m!=null){var mm={};o.m.split(',').forEach(function(i){if(i)mm[i]=true});s('muniOn',mm)}
  history.replaceState(null,'',location.pathname+location.search)}catch(e){}})();
 var KEY=g('key',''),DOM=g('dom',location.hostname||'localhost');
-var BUILD="2611092224";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
+var BUILD="2611092230";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
 applyTheme(THEME);
 var BASE=g('base','Base');if(['Base','Satellite','SatLabel','white','none'].indexOf(BASE)<0)BASE='Base';
 // 레이어: id, 이름, 표시 WMS 이름, 조회용 data 코드
@@ -16283,7 +16283,7 @@ function lines(){var base=$('bjBase').value.trim(),a=[];$('bjTx').value.split(/\
  $('dAgg').onclick=function(){var p=window.__drwPoly&&window.__drwPoly();if(!p){status('먼저 “면”으로 구역을 그려 주세요 (점 3개 이상)');return}runAgg(p)};
 })();
 (function(){var ib=document.getElementById('infoBody');
- var R=[['개발제한','개발제한구역의지정및관리에관한특별조치법',''],['특별대책지역','환경정책기본법','제38조'],['공장설립승인','산업집적활성화및공장설립에관한법률','제13조'],['자연보전권역','수도권정비계획법','제6조'],['과밀억제권역','수도권정비계획법','제6조'],['성장관리권역','수도권정비계획법','제6조'],['배출시설설치제한','물환경보전법','제33조'],['토지거래','부동산거래신고등에관한법률','제10조'],['가축사육제한','가축분뇨의관리및이용에관한법률','제8조'],['농업진흥','농지법','제32조'],['농업보호','농지법','제32조'],['상수원보호','수도법','제7조'],['수변구역','한강수계상수원수질개선및주민지원등에관한법률','제4조'],['군사시설보호','군사기지및군사시설보호법','제4조'],['비행안전','군사기지및군사시설보호법','제4조'],['대공방어','군사기지및군사시설보호법','제4조'],['문화재','문화유산의보존및활용에관한법률','제13조'],['접도구역','도로법','제40조'],['지구단위계획','국토의계획및이용에관한법률','제49조'],['산업단지','산업입지및개발에관한법률',''],['교육환경','교육환경보호에관한법률','제8조'],['상대보호','교육환경보호에관한법률','제9조'],['절대보호','교육환경보호에관한법률','제9조'],['공원','도시공원및녹지등에관한법률',''],['하천','하천법','제12조'],['산지','산지관리법','제12조'],['보전산지','산지관리법','제12조'],['환경영향','환경영향평가법',''],['도시계획시설','국토의계획및이용에관한법률','제43조']];
+ var R=[['개발제한','개발제한구역의지정및관리에관한특별조치법',''],['특별대책지역','환경정책기본법','제38조'],['공장설립승인','산업집적활성화및공장설립에관한법률','제13조'],['자연보전권역','수도권정비계획법','제6조'],['과밀억제권역','수도권정비계획법','제6조'],['성장관리권역','수도권정비계획법','제6조'],['배출시설설치제한','물환경보전법','제33조'],['토지거래','부동산거래신고등에관한법률','제10조'],['가축사육제한','가축분뇨의관리및이용에관한법률','제8조'],['농업진흥','농지법','제32조'],['농업보호','농지법','제32조'],['상수원보호','수도법','제7조'],['수변구역','한강수계상수원수질개선및주민지원등에관한법률','제4조'],['군사시설보호','군사기지및군사시설보호법','제4조'],['비행안전','군사기지및군사시설보호법','제4조'],['대공방어','군사기지및군사시설보호법','제4조'],['문화재','문화유산의보존및활용에관한법률','제13조'],['접도구역','도로법','제40조'],['도로구역','도로법','제25조'],['지구단위계획','국토의계획및이용에관한법률','제49조'],['산업단지','산업입지및개발에관한법률',''],['교육환경','교육환경보호에관한법률','제8조'],['상대보호','교육환경보호에관한법률','제9조'],['절대보호','교육환경보호에관한법률','제9조'],['공원','도시공원및녹지등에관한법률',''],['하천','하천법','제12조'],['산지','산지관리법','제12조'],['보전산지','산지관리법','제12조'],['환경영향','환경영향평가법',''],['도시계획시설','국토의계획및이용에관한법률','제43조']];
  var ZW=['주거지역','상업지역','공업지역','녹지지역','관리지역','농림지역','자연환경보전지역'];
  function lawUrl(name,sec){var n=String(name||'').replace(/\s+/g,'').replace(/\(.*$/,'');
   if(ZW.some(function(w){return n.indexOf(w)>=0}))return ['국토계획법 시행령 제71조','https://www.law.go.kr/'+encodeURI('법령/국토의계획및이용에관한법률시행령/제71조')];
@@ -16362,7 +16362,8 @@ function lines(){var base=$('bjBase').value.trim(),a=[];$('bjTx').value.split(/\
  window.__diag=diag})();
 /* v17: 업데이트 내용 · 저장 공간 */
 (function(){var $=function(i){return document.getElementById(i)};
- var LOGV='2026-11-10o',CH=[
+ var LOGV='2026-11-10p',CH=[
+  ['2026.11.10 (도로구역 법령)',['기타 항목의 “도로구역”을 누르면 도로법 제25조로 바로 연결']],
   ['2026.11.10 (기타 항목 · 법령 바로가기)',['용도지구와 기타를 합쳐 “기타” 한 줄로 정리 (딸깍 박스의 기타 지역·지구와 같은 묶음)','정보창의 용도지역·개발제한·지구단위계획구역·기타·시설 항목을 누르면 관련 법령(국가법령정보센터)이 열림 (하천구역→하천법 등, 딸깍 박스와 같은 연결표)']],
   ['2026.11.10 (조회 항목 정리)',['용도지구에서 국토계획법상 용도지구가 아닌 항목(타 법령 구역 등)을 “기타” 줄로 분리','“내 위치에서 이 필지까지” 줄 삭제 (내 위치 표시와 방향·거리 안내는 그대로)','지구단위계획구역 줄에 “토지이음 바로가기” 버튼']],
   ['2026.11.10 (정보창 정리)',['지구단위계획구역 줄이 혼자 분홍색 상자로 튀던 것을 다른 줄과 같은 모양으로 통일','필지 변경 이력을 다른 줄처럼 접고 펼 수 있게 (펼친 상태 기억, 처음 펼치면 자동으로 불러옴)']],
