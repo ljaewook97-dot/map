@@ -1397,10 +1397,13 @@ body:has(.modal:not([hidden])) .rtip,body:has(.modal:not([hidden])) #railTip{opa
 
 /* ===== PC: 옆 패널 · 끌어다 놓기 · 우클릭 · 호버 말풍선 ===== */
 @media (min-width:1000px){
- #info:not(.min){left:0!important;top:0!important;bottom:0!important;right:auto!important;width:440px!important;max-height:none!important;height:100dvh!important;border-radius:0!important;box-shadow:3px 0 18px #0002!important;border-right:1px solid var(--line)!important;padding-top:14px!important}
- body:has(#info:not([hidden]):not(.min)) #map{left:440px}
- body:has(#info:not([hidden]):not(.min)) .bar{left:440px}
- body:has(#info:not([hidden]):not(.min)) :is(#quick,#lgrp,#trkPill,#gpsPill){translate:440px 0}
+ #info:not(.min){left:0!important;top:0!important;bottom:0!important;right:auto!important;width:var(--dk,440px)!important;max-height:none!important;height:100dvh!important;border-radius:0!important;box-shadow:3px 0 18px #0002!important;border-right:1px solid var(--line)!important;padding-top:14px!important}
+ body:has(#info:not([hidden]):not(.min)) #map{left:var(--dk,440px)}
+ body:has(#info:not([hidden]):not(.min)) .bar{left:calc(var(--dk,440px) + 8px);padding-left:12px}
+ body:has(#info:not([hidden]):not(.min)) :is(#quick,#lgrp,#trkPill,#gpsPill){translate:calc(var(--dk,440px) + 8px) 0}
+ body:has(#info:not([hidden]):not(.min)) #dkRz{display:block}
+ #dkRz{display:none;position:fixed;top:0;bottom:0;left:calc(var(--dk,440px) - 4px);width:9px;z-index:1010;cursor:ew-resize;touch-action:none}
+ #dkRz:hover,#dkRz.on{background:linear-gradient(90deg,transparent 3px,var(--acc) 3px,var(--acc) 6px,transparent 6px)}
 }
 #dropHint{position:fixed;inset:0;z-index:3000;display:flex;align-items:center;justify-content:center;background:color-mix(in srgb,var(--acc) 22%,transparent);backdrop-filter:blur(2px);pointer-events:none}
 #dropHint>div{padding:26px 40px;border:3px dashed var(--acc);border-radius:20px;background:var(--card);color:var(--fg);font-size:20px;font-weight:800;text-align:center}#dropHint small{display:block;margin-top:6px;font-size:13px;font-weight:500;color:var(--mut)}
@@ -14057,7 +14060,7 @@ var LS=window.localStorage;function g(k,d){try{var v=LS.getItem(k);return v==nul
  if(o.m!=null){var mm={};o.m.split(',').forEach(function(i){if(i)mm[i]=true});s('muniOn',mm)}
  history.replaceState(null,'',location.pathname+location.search)}catch(e){}})();
 var KEY=g('key',''),DOM=g('dom',location.hostname||'localhost');
-var BUILD="2611092042";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
+var BUILD="2611092100";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
 applyTheme(THEME);
 var BASE=g('base','Base');if(['Base','Satellite','SatLabel','white','none'].indexOf(BASE)<0)BASE='Base';
 // 레이어: id, 이름, 표시 WMS 이름, 조회용 data 코드
@@ -15172,7 +15175,7 @@ function clamp(v,a,b){return Math.max(a,Math.min(b,v))}
  el.appendChild(gr);el.appendChild(pz);el.appendChild(rz);
  function apply(){var bsm=vw()<=600;el.classList.toggle('bs',bsm);if(bsm){['width','height','left','top'].forEach(function(k){el.style[k]=''});pz.style.zoom=1;return}var r=W[id]||{};var w=r.w||Math.min(BW,vw()-72),h=r.h||(k?Math.round(vh()*0.45):Math.min(Math.round(vh()*0.62),500));
   w=clamp(w,MINW,Math.min(MAXW,vw()));h=clamp(h,MINH,Math.min(MAXH(),vh()));
-  var inf=document.getElementById('info'),dk=vw()>=1000&&inf&&!inf.hidden&&!inf.classList.contains('min')?448:0;var x=r.x!=null?r.x:(vw()>=1000?vw()-w-84:8),y=r.y!=null?r.y:(k?vh()-h-12:Math.round(document.querySelector('.seg').getBoundingClientRect().bottom)+6);
+  var inf=document.getElementById('info'),dk=vw()>=1000&&inf&&!inf.hidden&&!inf.classList.contains('min')?(parseInt(getComputedStyle(document.documentElement).getPropertyValue('--dk'))||440)+8:0;var x=r.x!=null?r.x:(vw()>=1000?vw()-w-84-(k?w+12:0):8),y=r.y!=null?r.y:(k?vh()-h-12:Math.round(document.querySelector('.seg').getBoundingClientRect().bottom)+6);
   x=clamp(x,dk,vw()-w);y=clamp(y,0,vh()-h);
   el.style.width=w+'px';el.style.height=h+'px';el.style.left=x+'px';el.style.top=y+'px';
   pz.style.zoom=zm(w);}
@@ -15183,7 +15186,7 @@ function clamp(v,a,b){return Math.max(a,Math.min(b,v))}
  drag(gr,function(b,dx,dy){W[id]=W[id]||{};el.style.left=clamp(b.left+dx,0,vw()-b.width)+'px';el.style.top=clamp(b.top+dy,0,vh()-b.height)+'px'});
  drag(rz,function(b,dx,dy){var w=clamp(b.width+dx,MINW,Math.min(MAXW,vw()-b.left)),h=clamp(b.height+dy,MINH,Math.min(MAXH(),vh()-b.top));el.style.width=w+'px';el.style.height=h+'px';pz.style.zoom=zm(w)});
  new MutationObserver(function(){if(!el.hidden)apply()}).observe(el,{attributes:true,attributeFilter:['hidden']});
- window.addEventListener('resize',function(){if(!el.hidden)apply()});(window.__flAp=window.__flAp||[]).push(function(){if(!el.hidden)apply()});apply();});
+ window.addEventListener('resize',function(){if(!el.hidden)apply()});var zup=function(){window.__zT=(window.__zT||1001)+1;if(window.__zT>1170)window.__zT=1170;el.style.zIndex=window.__zT};el.addEventListener('pointerdown',zup,true);new MutationObserver(function(){if(!el.hidden)zup()}).observe(el,{attributes:true,attributeFilter:['hidden']});(window.__flAp=window.__flAp||[]).push(function(){if(!el.hidden)apply()});apply();});
 var _inf=document.getElementById('info');if(_inf)new MutationObserver(function(){(window.__flAp||[]).forEach(function(f){f()})}).observe(_inf,{attributes:true,attributeFilter:['hidden','class']});
 })();
 /* ---- v7: 현장 기록 ---- */
@@ -15976,6 +15979,31 @@ function lines(){var base=$('bjBase').value.trim(),a=[];$('bjTx').value.split(/\
  map.getContainer().addEventListener('mouseleave',hideT);map.on('click',hideT);
 })();
 (function(){var I=document.getElementById('info');if(!I||!window.MutationObserver)return;var tm=0;new MutationObserver(function(){clearTimeout(tm);tm=setTimeout(function(){try{map.invalidateSize({pan:false})}catch(e){}},60)}).observe(I,{attributes:true,attributeFilter:['hidden','class']})})();
+(function(){var $=function(i){return document.getElementById(i)},R=document.documentElement,h=document.createElement('div');h.id='dkRz';h.title='끌어서 폭 조절 · 더블클릭: 기본 폭';document.body.appendChild(h);
+ function cl(w){return Math.max(340,Math.min(w,Math.min(760,window.innerWidth-420)))}
+ function set(w){R.style.setProperty('--dk',cl(w)+'px')}
+ var sv=g('dkw',440);set(sv);window.addEventListener('resize',function(){set(g('dkw',440))});
+ function inv(){try{map.invalidateSize({pan:false})}catch(e){}}
+ h.addEventListener('pointerdown',function(e){e.preventDefault();h.setPointerCapture(e.pointerId);h.classList.add('on');var tm=0;
+  function mv(ev){set(ev.clientX);clearTimeout(tm);tm=setTimeout(inv,40);if(window.__flAp)window.__flAp.forEach(function(f){f()})}
+  function up(){h.classList.remove('on');h.removeEventListener('pointermove',mv);h.removeEventListener('pointerup',up);h.removeEventListener('pointercancel',up);s('dkw',parseInt(R.style.getPropertyValue('--dk'))||440);inv()}
+  h.addEventListener('pointermove',mv);h.addEventListener('pointerup',up);h.addEventListener('pointercancel',up)});
+ h.addEventListener('dblclick',function(){set(440);s('dkw',440);inv()});
+ /* 단축키 */
+ var KM={m:'tMeas',s:'tSel',d:'tDrw',r:'tRad'};
+ document.addEventListener('keydown',function(e){if(e.isComposing||e.defaultPrevented)return;var t=e.target,tg=t&&t.tagName;
+  var typing=tg==='INPUT'||tg==='TEXTAREA'||tg==='SELECT'||(t&&t.isContentEditable);
+  var k=(e.key||'').toLowerCase();
+  if((e.ctrlKey||e.metaKey)&&!e.altKey){
+   if(k==='f'&&!document.querySelector('.modal:not([hidden])')){var q=$('sQ');if(q){e.preventDefault();q.focus();q.select()}return}
+   if(k==='z'&&!typing&&!e.shiftKey){var u=$('bUndo');if(u&&u.offsetParent!==null&&!u.disabled){e.preventDefault();u.click()}}
+   return}
+  if(typing||e.altKey||e.shiftKey&&k!=='?'||document.querySelector('.modal:not([hidden])'))return;
+  if(KM[k]){var b=$(KM[k]);if(b){e.preventDefault();b.click()}return}
+  if(k==='l'){e.preventDefault();$('bLayers').click();return}
+  if(k==='v'){e.preventDefault();$('bLeg').click();return}
+  if(k==='?'||k==='/'&&e.shiftKey){e.preventDefault();status('단축키  M 측정 · S 필지 선택 · D 그리기 · R 반경 · L 레이어 · V 시설 목록 · Ctrl+F 검색 · Ctrl+Z 되돌리기 · Esc 닫기')}
+ })})();
  var VG=g('vg',{fav:1});if(VG.fav===undefined)VG.fav=1;[].forEach.call(document.querySelectorAll('#viewPop details.vg'),function(d){var k=d.dataset.g;d.open=!!VG[k];d.addEventListener('toggle',function(){VG[k]=d.open?1:0;s('vg',VG)})});
  /* 시작할 때 내 위치로 */
  var SL=g('sl',1);function slMark(){[].forEach.call($('slSeg').children,function(b){b.classList.toggle('on',(b.dataset.l==='1')===!!SL)})}
@@ -16042,7 +16070,8 @@ function lines(){var base=$('bjBase').value.trim(),a=[];$('bjTx').value.split(/\
  window.__diag=diag})();
 /* v17: 업데이트 내용 · 저장 공간 */
 (function(){var $=function(i){return document.getElementById(i)};
- var LOGV='2026-11-10e',CH=[
+ var LOGV='2026-11-10f',CH=[
+  ['2026.11.10 (PC 패널 · 단축키)',['옆 패널 경계를 끌어 폭 조절(더블클릭=기본 폭, 기억함)','옆 패널 열릴 때 검색창·버튼 간격 정리','레이어·시설 창이 새로 열거나 누르면 맨 위로, 기본 위치도 서로 겹치지 않게','단축키: M 측정 · S 필지 선택 · D 그리기 · R 반경 · L 레이어 · V 시설 목록 · Ctrl+F 검색 · Ctrl+Z 되돌리기 · ? 도움말']],
   ['2026.11.10 (PC 정보 + 레이어 동시 보기)',['PC에서 정보창(옆 패널)과 레이어·시설 창을 함께 볼 수 있음(레이어 창은 기본으로 오른쪽, 옆 패널과 겹치지 않게 비켜 줌)','옆 패널이 열릴 때 방위 표시가 옆으로 밀리던 문제 수정']],
   ['2026.11.10 (PC 화면 바로잡기)',['PC에서 옆 패널이 열릴 때 왼쪽 버튼 줄이 위로 밀려 검색창과 겹치던 문제 수정']],
   ['2026.11.10 (PC 편의 기능)',['파일 끌어다 놓기: SHP(5174)·DXF·지번 목록(txt·csv·xlsx)을 지도 위에 놓으면 바로 처리(DXF는 좌표계 선택, 지번 목록은 일괄 표시로 연결)','마우스 우클릭 메뉴: 필지 조회·좌표 복사(위경도/5186)·메모 추가·카카오 로드뷰','PC에서는 정보창이 왼쪽 옆 패널로 고정되고 지도가 그 옆으로 맞춰짐','마우스를 필지에 올리면 주소·지번, 잠시 뒤 용도지역 말풍선']],
