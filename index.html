@@ -1608,14 +1608,15 @@ html[data-fs="1.12"] #legend .lgs,html[data-fs="1.25"] #legend .lgs{columns:1}
 #legend .lg b{flex:none;min-width:2ch;text-align:right;font-variant-numeric:tabular-nums}
 #legend .lgs>.sub{margin:0;padding:12px;font-size:12.5px}
 #stkBar .in{overflow-x:auto;max-width:100%}#stkBar .sc{flex:none;max-width:none;overflow:visible;padding-right:12px}
-#infoBody .sec:not(.dcard){border:1px solid var(--line)!important;border-radius:14px;background:var(--bg);margin:8px 0!important;padding:0 10px!important;overflow:hidden}
-#infoBody .sec:not(.dcard)>small{padding:0 2px!important}
+#infoBody .sec{border:1px solid var(--line)!important;border-radius:14px;background:var(--bg);margin:8px 0!important;padding:0 10px!important;overflow:hidden}
+#infoBody .sec>small{padding:0 2px!important}
 #infoBody .sec.fdc:not(.closed)>small{background:none;border-radius:0;border-bottom:1px solid var(--line);margin:0 -10px!important;padding:0 12px 0 12px!important}
 #infoBody .sec.fdc:not(.closed)>div{border-left:0;margin:0;padding:8px 0 12px}
 #infoBody .sec.fdc:not(.closed)>p,#infoBody .sec.fdc:not(.closed)>.cap2{margin-left:0}
-#infoBody .sec:not(.dcard):hover{background:var(--card)}
-#infoBody .sec:not(.dcard) .use2{background:var(--card)}
+#infoBody .sec:hover{background:var(--card)}
+#infoBody .sec .use2{background:var(--card)}
 #stkBar.on::before{content:'';position:absolute;left:-14px;right:-14px;top:0;height:21px;background:var(--card);z-index:0}#stkBar .in{z-index:1}
+#infoBody .sec.dcard{margin:8px 0!important;padding:0 10px!important;width:auto!important;box-sizing:border-box}#infoBody .sec.dcard>small{padding:0 2px!important;font-size:13.5px!important;font-weight:700!important;margin:0!important}#infoBody .sec.dcard>small .dh.sh{margin:0 4px 0 -4px}
 </style>
 </head><body>
 <div id="map"></div>
@@ -14304,7 +14305,7 @@ var LS=window.localStorage;function g(k,d){try{var v=LS.getItem(k);return v==nul
  if(o.m!=null){var mm={};o.m.split(',').forEach(function(i){if(i)mm[i]=true});s('muniOn',mm)}
  history.replaceState(null,'',location.pathname+location.search)}catch(e){}})();
 var KEY=g('key',''),DOM=g('dom',location.hostname||'localhost');
-var BUILD="2611102020";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
+var BUILD="2611102026";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
 applyTheme(THEME);
 var BASE=g('base','Base');if(['Base','Satellite','SatLabel','white','none'].indexOf(BASE)<0)BASE='Base';
 // 레이어: id, 이름, 표시 WMS 이름, 조회용 data 코드
@@ -16712,7 +16713,8 @@ function lines(){var base=$('bjBase').value.trim(),a=[];$('bjTx').value.split(/\
  window.__diag=diag})();
 /* v17: 업데이트 내용 · 저장 공간 */
 (function(){var $=function(i){return document.getElementById(i)};
- var LOGV='2026-11-11o',CH=[
+ var LOGV='2026-11-11p',CH=[
+ ['2026.11.11 (정보창 마무리)',['지구단위계획구역과 필지 변경 이력 칸도 다른 칸과 같은 카드 모양으로 맞췄고, 변경 이력에는 색 띠와 아이콘을 넣었습니다.']],
  ['2026.11.11 (정보창 색 띠)',['건폐율·용적률 상한, 허용 용도·높이, 이 필지 안 면적 비율, 바로가기 칸에도 용도지역·시설처럼 색 띠와 아이콘을 넣었습니다.']],
  ['2026.11.11 (정보창 카드 통일)',['건폐율·용적률 상한, 용도지역, 시설, 바로가기, 기타, 면적 비율, 허용 용도·높이 등 정보창의 각 칸을 위쪽 요약 카드와 같은 둥근 테두리 카드로 맞췄습니다. 펼치면 제목 아래에 구분선이 생깁니다.']],
  ['2026.11.11 (범례 창·깜빡임 수정)',['정보창 위쪽 고정 바(제목·칩)가 계속 다시 그려지며 깜빡이던 문제를 고쳤습니다.','범례 창을 레이어 창·설정 패널과 같은 카드·구분선 모양으로 맞추고, 글자 크기를 키우면 한 줄 목록으로 바뀌어 잘리지 않게 했습니다.']],
@@ -17125,6 +17127,7 @@ function lines(){var base=$('bjBase').value.trim(),a=[];$('bjTx').value.split(/\
   '허용용도':['#2fb59a','<path d="M5 12l4 4 10-10"/><path d="M5 20h14"/>'],
   '이필지안면적비율':['#38a8c8','<path d="M12 3v9h9"/><path d="M20.5 15A9 9 0 1 1 9 3.5"/>'],
   '바로가기':['#8a94a6','<path d="M14 4h6v6"/><path d="M20 4l-9 9"/><path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/>'],
+  '필지변경이력':['#9a7fd1','<path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/><path d="M12 8v4l3 2"/>'],
   '건축물':['#8d6e63','<path d="M4 21V8l8-5 8 5v13"/><path d="M9 21v-7h6v7"/>']};
  function keyOf(sm){var tx=(sm.textContent||'').split('·')[0].replace(/\s+/g,'').replace(/\d+$/,'').replace(/^≡/,'');return K[tx]?tx:null}
  var busy=false;function post(){if(busy)return;busy=true;try{
