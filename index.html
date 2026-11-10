@@ -1617,6 +1617,11 @@ html[data-fs="1.12"] #legend .lgs,html[data-fs="1.25"] #legend .lgs{columns:1}
 #infoBody .sec .use2{background:var(--card)}
 #stkBar.on::before{content:'';position:absolute;left:-14px;right:-14px;top:0;height:21px;background:var(--card);z-index:0}#stkBar .in{z-index:1}
 #infoBody .sec.dcard{margin:8px 0!important;padding:0 10px!important;width:auto!important;box-sizing:border-box}#infoBody .sec.dcard>small{padding:0 2px!important;font-size:13.5px!important;font-weight:700!important;margin:0!important}#infoBody .sec.dcard>small .dh.sh{margin:0 4px 0 -4px}
+#infoBody .sec.lessH{display:none!important}
+#moreBtn{all:unset;box-sizing:border-box;display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:44px;margin:8px 0;border:1px dashed var(--line);border-radius:14px;color:var(--mut);font-size:13.5px;font-weight:600;cursor:pointer;text-align:center;-webkit-tap-highlight-color:transparent}
+#moreBtn:hover,#moreBtn:focus-visible{background:var(--card);color:var(--fg);border-color:var(--mut)}
+#moreBtn::after{content:'';width:7px;height:7px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(45deg) translateY(-2px);transition:transform .15s}
+#moreBtn.o::after{transform:rotate(-135deg) translateY(-2px)}
 </style>
 </head><body>
 <div id="map"></div>
@@ -14305,7 +14310,7 @@ var LS=window.localStorage;function g(k,d){try{var v=LS.getItem(k);return v==nul
  if(o.m!=null){var mm={};o.m.split(',').forEach(function(i){if(i)mm[i]=true});s('muniOn',mm)}
  history.replaceState(null,'',location.pathname+location.search)}catch(e){}})();
 var KEY=g('key',''),DOM=g('dom',location.hostname||'localhost');
-var BUILD="2611102026";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
+var BUILD="2611111704";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
 applyTheme(THEME);
 var BASE=g('base','Base');if(['Base','Satellite','SatLabel','white','none'].indexOf(BASE)<0)BASE='Base';
 // 레이어: id, 이름, 표시 WMS 이름, 조회용 data 코드
@@ -16713,7 +16718,8 @@ function lines(){var base=$('bjBase').value.trim(),a=[];$('bjTx').value.split(/\
  window.__diag=diag})();
 /* v17: 업데이트 내용 · 저장 공간 */
 (function(){var $=function(i){return document.getElementById(i)};
- var LOGV='2026-11-11p',CH=[
+ var LOGV='2026-11-11q',CH=[
+ ['2026.11.11 (정보창 더 보기)',['정보창 아래쪽의 자주 안 쓰는 칸(면적 비율, 바로가기, 필지 변경 이력, 건축물, 토지이용, 기타)을 "더 보기" 한 줄로 묶었습니다. 누르면 펼쳐지고 선택은 기억합니다. 위쪽 "해당 사항" 칩을 누르면 해당 칸이 자동으로 펼쳐집니다.']],
  ['2026.11.11 (정보창 마무리)',['지구단위계획구역과 필지 변경 이력 칸도 다른 칸과 같은 카드 모양으로 맞췄고, 변경 이력에는 색 띠와 아이콘을 넣었습니다.']],
  ['2026.11.11 (정보창 색 띠)',['건폐율·용적률 상한, 허용 용도·높이, 이 필지 안 면적 비율, 바로가기 칸에도 용도지역·시설처럼 색 띠와 아이콘을 넣었습니다.']],
  ['2026.11.11 (정보창 카드 통일)',['건폐율·용적률 상한, 용도지역, 시설, 바로가기, 기타, 면적 비율, 허용 용도·높이 등 정보창의 각 칸을 위쪽 요약 카드와 같은 둥근 테두리 카드로 맞췄습니다. 펼치면 제목 아래에 구분선이 생깁니다.']],
@@ -17228,6 +17234,25 @@ function lines(){var base=$('bjBase').value.trim(),a=[];$('bjTx').value.split(/\
  gr.addEventListener('dblclick',function(){H=0;s('infoH',0);apply()});
  gr.addEventListener('keydown',function(e){if(e.key!=='ArrowUp'&&e.key!=='ArrowDown')return;e.preventDefault();var c=inf.getBoundingClientRect().height;H=lim(c+(e.key==='ArrowUp'?40:-40))/vh();apply();s('infoH',+H.toFixed(4))});
  new MutationObserver(apply).observe(inf,{attributes:true,attributeFilter:['class']});window.addEventListener('resize',apply);apply();
+})();
+
+/* 정보창: 자주 안 쓰는 칸은 "더 보기"로 묶기 */
+(function(){
+ var ib=document.getElementById('infoBody'),MORE=['이 필지 안 면적 비율','바로가기','필지 변경 이력','건축물','토지이용','기타'],busy=false,tm=0;
+ function isOpen(){return g('moreOpen',false)===true}
+ function apply(){if(busy)return;busy=true;try{
+  var secs=[].filter.call(ib.children,function(e){return e.classList&&e.classList.contains('sec')&&secKey(e)}),less=secs.filter(function(e){return MORE.indexOf(secKey(e))>=0}),btn=document.getElementById('moreBtn');
+  if(secs.length<4||less.length<2){less.forEach(function(e){e.classList.remove('lessH')});if(btn)btn.remove();return}
+  var o=isOpen();less.forEach(function(e){e.classList.toggle('lessH',!o)});
+  if(!btn){btn=document.createElement('button');btn.type='button';btn.id='moreBtn';btn.onclick=function(){s('moreOpen',!isOpen());apply()}}
+  var last=secs[secs.length-1];if(btn.previousElementSibling!==last||btn.parentNode!==ib)last.after(btn);
+  btn.classList.toggle('o',o);btn.setAttribute('aria-expanded',o?'true':'false');
+  var tx=o?'간략히 보기':'더 보기 · '+less.length+'개 항목';if(btn.textContent!==tx)btn.textContent=tx;
+ }finally{busy=false}}
+ new MutationObserver(function(){clearTimeout(tm);tm=setTimeout(function(){try{apply()}catch(e){console.log("MOREERR "+e.message)}},60)}).observe(ib,{childList:true});
+ ib.addEventListener('click',function(e){var c=e.target.closest&&e.target.closest('.sumL .sc');if(!c||isOpen())return;var k=c.dataset.sec;
+  var hit=[].filter.call(ib.querySelectorAll('.sec.lessH'),function(el){var h=el.children[0];return h&&(h.textContent||'').replace(/\s+/g,' ').trim().indexOf(k)===0})[0];
+  if(hit){s('moreOpen',true);apply()}},true);
 })();
 })();
 
