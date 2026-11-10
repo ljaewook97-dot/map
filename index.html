@@ -14255,7 +14255,7 @@ var LS=window.localStorage;function g(k,d){try{var v=LS.getItem(k);return v==nul
  if(o.m!=null){var mm={};o.m.split(',').forEach(function(i){if(i)mm[i]=true});s('muniOn',mm)}
  history.replaceState(null,'',location.pathname+location.search)}catch(e){}})();
 var KEY=g('key',''),DOM=g('dom',location.hostname||'localhost');
-var BUILD="2611101816";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
+var BUILD="2611101822";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
 applyTheme(THEME);
 var BASE=g('base','Base');if(['Base','Satellite','SatLabel','white','none'].indexOf(BASE)<0)BASE='Base';
 // 레이어: id, 이름, 표시 WMS 이름, 조회용 data 코드
@@ -14275,7 +14275,7 @@ var JB=g('jb',true);window.__jbGet=function(){return JB};window.__cadChk=functio
 var st=g('layers',{});LAYERS.forEach(function(l){if(st[l.id]!=null)l.on=!!st[l.id]});
 var map=L.map('map',{zoomControl:false,center:g('c',[37.5665,126.9780]),zoom:g('z',17),maxZoom:22,tap:true});
 map.on('moveend',function(){var c=map.getCenter();s('c',[c.lat,c.lng]);s('z',map.getZoom())});
-var baseL=null,hyb=null,wmsL={},hi=null,pin=null,hf=null;window.__hiB=function(){return hi?hi.getBounds():null};
+var baseL=null,hyb=null,wmsL={},hi=null,pin=null,hf=null,hfF=null;window.__hiB=function(){return hi?hi.getBounds():null};
 function tileUrl(t,ext){return 'https://api.vworld.kr/req/wmts/1.0.0/'+KEY+'/'+t+'/{z}/{y}/{x}.'+ext}
 window.__baseL=function(){return baseL};window.__hybL=function(){return hyb};window.__baseKind=function(){return /^Sat/.test(BASE)?'sat':'png'};
 function setBase(b){BASE=b;s('base',b);if(baseL)map.removeLayer(baseL);if(hyb){map.removeLayer(hyb);hyb=null}
@@ -14570,7 +14570,7 @@ function ratios(geom,S,cb){var polys=polysOf(geom);if(!polys.length){cb();return
 function gcen(g){var xs=[],ys=[];polysOf(g).forEach(function(pl){pl[0].forEach(function(c){xs.push(c[0]);ys.push(c[1])})});return [(Math.min.apply(0,ys)+Math.max.apply(0,ys))/2,(Math.min.apply(0,xs)+Math.max.apply(0,xs))/2]}
 function pick(lat,lng){
  if(!KEY){showKey();return}
- if(hf){map.removeLayer(hf);hf=null}hf=L.layerGroup().addTo(map);if(pin)map.removeLayer(pin);pin=L.circleMarker([lat,lng],{radius:5,color:'#fff',weight:2,fillColor:'#e74c3c',fillOpacity:1}).addTo(map);
+ if(hf){map.removeLayer(hf);hf=null}hf=L.layerGroup().addTo(map);if(hfF)map.removeLayer(hfF);hfF=L.layerGroup();window.__hfF=hfF;if(pin)map.removeLayer(pin);pin=L.circleMarker([lat,lng],{radius:5,color:'#fff',weight:2,fillColor:'#e74c3c',fillOpacity:1}).addTo(map);
  openInfo('<div class="ih"><h3>조회 중…</h3></div><div class="stats"><div class="st sk"></div><div class="st sk"></div><div class="st wide sk"></div></div>');var SHPH=upHits(L.latLng(lat,lng));
  dataQ('LP_PA_CBND_BUBUN',lng,lat,true,function(fs){
   if(fs===null){openInfo(emptyCard('err','조회에 실패했습니다','V-World 응답이 없습니다. 인증키와 도메인 등록을 확인하세요.<br><span class="sub">도메인: '+esc(DOM)+'</span>',[['retry','다시 시도'],['key','인증키 확인']],lat,lng)+shpRows(SHPH));return}
@@ -14589,7 +14589,7 @@ function pick(lat,lng){
   pend++;ratios(f.geometry,S,function(){done()});pend++;try{roadInfo(f.geometry,S,pnu,function(){done()})}catch(e){done()}
   LAYERS.forEach(function(l){if(!l.data||!l.on)return;l.data.forEach(function(code){pend++;dataQ(code,lng,lat,l.id==='fac',function(r){
    (r||[]).forEach(function(x){var n=l.id==='fac'?fnm(x.properties||{}):nm(x.properties||{});if(!n)return;
-    if(l.id==='fac'&&x.geometry){try{L.geoJSON(x.geometry,{style:{color:'#ff9800',weight:3,dashArray:'6 4',fillColor:'#ff9800',fillOpacity:.18}}).addTo(hf)}catch(e){}}
+    if(l.id==='fac'&&x.geometry){try{L.geoJSON(x.geometry,{style:{color:'#ff9800',weight:3,dashArray:'6 4',fillColor:'#ff9800',fillOpacity:.18}}).addTo(hfF)}catch(e){}}
     var arr=l.id==='zone'?S.zones:l.id==='fac'?S.fac:l.id==='gb'?S.gbs:l.id==='dist'?S.dist:l.id==='spec'?S.spec:S.use;if(arr.indexOf(n)<0)arr.push(n)});done()})})});
   if(lay('bld')&&lay('bld').on){pend++;S.bld=[];bPoint(lng,lat,pnu,f.geometry,function(a){S.bld=a;done()})}
   done()})}
@@ -14828,7 +14828,7 @@ function renderLayerUI(){var box=document.getElementById('chips');box.innerHTML=
  lpSort(rows,function(r){return r},function(a,b){moveTo(ORDER,a,b);s('ord',ORDER);applyZ();renderLayerUI()},function(r){var c=r.querySelector('.nm');return c?c.textContent:''});try{window.__qjUpd&&window.__qjUpd()}catch(e){}}
 renderLayerUI();applyZ();upInit();
 document.querySelectorAll('[data-b]').forEach(function(e){e.onclick=function(){setBase(e.dataset.b)}});
-function closeSheet(el){if(el.id==='legend'){HL='';hlG.clearLayers()}el.hidden=true;if(hf){map.removeLayer(hf);hf=null}if(hi){map.removeLayer(hi);hi=null}if(pin){map.removeLayer(pin);pin=null}}
+function closeSheet(el){if(el.id==='legend'){HL='';hlG.clearLayers()}el.hidden=true;if(hf){map.removeLayer(hf);hf=null}if(hfF){map.removeLayer(hfF);hfF=null}if(hi){map.removeLayer(hi);hi=null}if(pin){map.removeLayer(pin);pin=null}}
 document.querySelectorAll('[data-close]').forEach(function(e){e.onclick=function(){closeSheet(e.closest('.sheet'))}});
 document.getElementById('bLayers').onclick=function(){var el=document.getElementById('layers');el.hidden=!el.hidden;if(window.innerWidth<1000)document.getElementById('info').hidden=true};
 document.getElementById('bLeg').onclick=function(){var el=document.getElementById('legend');el.hidden=!el.hidden;if(window.innerWidth<1000)document.getElementById('info').hidden=true;renderLeg()};
@@ -16661,7 +16661,8 @@ function lines(){var base=$('bjBase').value.trim(),a=[];$('bjTx').value.split(/\
  window.__diag=diag})();
 /* v17: 업데이트 내용 · 저장 공간 */
 (function(){var $=function(i){return document.getElementById(i)};
- var LOGV='2026-11-11d',CH=[
+ var LOGV='2026-11-11e',CH=[
+ ['2026.11.11 (시설 경계선 표시)',['필지를 눌러도 시설(도시계획시설) 주황 점선이 지도에 바로 나오지 않습니다. 정보창의 "시설" 칸을 펼쳤을 때만 그려지고, 접으면 사라집니다.']],
  ['2026.11.11 (칸 펼치기 수정)',['정보창의 "내리기" 버튼 누르는 범위가 칸 제목 위까지 넓어져 칸이 눌리지 않던 문제를 고쳤습니다.']],
  ['2026.11.11 (정보창 기본 펼침)',['처음 쓰거나 펼침 설정을 바꾸지 않았다면 용도지역·접한 도로·건폐율·개발제한·지구단위계획구역 칸이 펼쳐진 채 열립니다. 주의 띠가 붙은 칸(걸침·개발제한·접도 없음)은 필지를 조회할 때마다 자동으로 펼쳐집니다.']],
  ['2026.11.11 (화면 다듬기 2)',['요약 줄에 "2곳 걸침", "도로 접함", "접도 없음" 칩을 올렸습니다. 누르면 해당 칸이 열립니다.','주의할 칸(개발제한·걸침·접도 없음)은 주황 띠, 참고용 칸은 회색으로 낮췄습니다.','면적·비율 숫자를 같은 폭 숫자와 오른쪽 맞춤으로 정리했습니다.','왼쪽 아래 축척·가로폭·범례를 카드 한 덩어리로 묶었습니다.','선택한 필지 위에 지번·면적 말풍선이 붙습니다.','오른쪽 메뉴에서 열려 있는 항목에 흰 막대가 붙습니다.','"필지 없음"·"조회 실패" 화면에 아이콘과 "다시 시도"·"인증키 확인" 버튼을 넣었습니다.','작은 버튼의 누르는 범위를 넓히고 정보창 글자 크기를 12 / 13.5 두 단계로 정리했습니다.']],
@@ -17121,6 +17122,8 @@ function lines(){var base=$('bjBase').value.trim(),a=[];$('bjTx').value.split(/\
 (function(){var $=function(i){return document.getElementById(i)},ib=$('infoBody');
  var _r3=render;render=function(S,pnu,partial){var r=_r3.apply(this,arguments);try{if(hi&&S&&S.jibun){var a=Number(S.area)||0,tx=String(S.jibun)+(a?' · '+a.toLocaleString('ko-KR')+'㎡':'');if(hi._tt!==tx){hi._tt=tx;try{hi.unbindTooltip()}catch(e){}hi.bindTooltip(tx,{permanent:true,direction:'top',className:'selTip',offset:[0,-4],interactive:false})}}}catch(e){}return r};
  ib.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act]');if(!b)return;var w=b.parentNode.dataset.ll||'',ll=w.split(',').map(Number),a=b.dataset.act;if(a==='retry'&&isFinite(ll[0])&&isFinite(ll[1]))pick(ll[0],ll[1]);else if(a==='key')showKey()});
+ var hs=0;function facSync(){var on=false;[].forEach.call(ib.querySelectorAll('.sec'),function(el){var h=el.children[0];if(h&&h.tagName==='SMALL'&&h.textContent.split('·')[0].replace(/\s+/g,'').replace(/\d+$/,'')==='시설'&&!el.classList.contains('closed'))on=true});if(!hfF)return;var has=map.hasLayer(hfF);if(on&&!has&&hfF.getLayers().length)hfF.addTo(map);else if(!on&&has)map.removeLayer(hfF)}
+ new MutationObserver(function(){clearTimeout(hs);hs=setTimeout(facSync,50)}).observe(ib,{childList:true,subtree:true,attributes:true,attributeFilter:['class']});
  var WK={'개발제한':1},RF={'바로가기':1,'건축물':1,'토지이용':1,'기타':1,'시설':1};
  function sev(){[].forEach.call(ib.querySelectorAll('.sec'),function(el){var h=el.children[0];if(!h||h.tagName!=='SMALL')return;var k=h.textContent.split('·')[0].replace(/\s+/g,' ').replace(/\d+$/,'').trim();
    var warn=(WK[k]&&el.querySelector('.tag'))||el.querySelector('.zsp')||(k==='접한 도로'&&/찾지 못했/.test(el.textContent));
