@@ -1599,6 +1599,15 @@ body.cmp #info{display:none}
 #viewPop details.vg .ph{margin-top:12px}#viewPop details.vg .ph:first-of-type{margin-top:4px}
 #keyModal details.vg{border:1px solid var(--line)!important;border-radius:14px;padding:0 12px 8px!important;margin:0 0 8px!important;background:var(--bg)}#keyModal details.vg>summary{padding:10px 0 8px}
 #infoGrip{position:sticky;top:0;z-index:5;width:132px;height:22px;margin:-10px auto -2px;display:flex;align-items:center;justify-content:center;cursor:ns-resize;touch-action:none;background:var(--card);border-radius:0 0 12px 12px;outline:none;-webkit-tap-highlight-color:transparent}#infoGrip i{width:42px;height:5px;border-radius:3px;background:var(--line);transition:background .12s,width .12s}#infoGrip:hover i,#infoGrip:focus-visible i,#infoGrip.drg i{background:var(--acc);width:54px}#info.min #infoGrip{display:none}@media (max-width:999px){html #info::before{display:none!important}}#stkBar .in{top:20px!important}
+#legend h3{display:flex;align-items:baseline;flex-wrap:wrap;gap:2px 8px;padding-bottom:8px;margin:0 0 8px!important;border-bottom:1px solid var(--line)}
+#legend .lgs{columns:1;border:1px solid var(--line);border-radius:14px;background:var(--bg);padding:2px 0;overflow:hidden}
+@media (min-width:420px){#legend .lgs{columns:2;column-gap:0}}
+html[data-fs="1.12"] #legend .lgs,html[data-fs="1.25"] #legend .lgs{columns:1}
+#legend .lg{border-radius:0;padding:7px 12px;gap:10px;border-bottom:1px solid var(--line);min-height:34px;overflow-wrap:anywhere}
+#legend .lg:last-child{border-bottom:0}#legend .lg:hover{background:var(--acc2)}#legend .lg.on{outline:0;background:var(--acc2);box-shadow:inset 3px 0 0 var(--acc)}
+#legend .lg b{flex:none;min-width:2ch;text-align:right;font-variant-numeric:tabular-nums}
+#legend .lgs>.sub{margin:0;padding:12px;font-size:12.5px}
+#stkBar .in{overflow-x:auto;max-width:100%}#stkBar .sc{flex:none;max-width:none;overflow:visible;padding-right:12px}
 </style>
 </head><body>
 <div id="map"></div>
@@ -14287,7 +14296,7 @@ var LS=window.localStorage;function g(k,d){try{var v=LS.getItem(k);return v==nul
  if(o.m!=null){var mm={};o.m.split(',').forEach(function(i){if(i)mm[i]=true});s('muniOn',mm)}
  history.replaceState(null,'',location.pathname+location.search)}catch(e){}})();
 var KEY=g('key',''),DOM=g('dom',location.hostname||'localhost');
-var BUILD="2611101948";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
+var BUILD="2611101958";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
 applyTheme(THEME);
 var BASE=g('base','Base');if(['Base','Satellite','SatLabel','white','none'].indexOf(BASE)<0)BASE='Base';
 // 레이어: id, 이름, 표시 WMS 이름, 조회용 data 코드
@@ -16695,7 +16704,8 @@ function lines(){var base=$('bjBase').value.trim(),a=[];$('bjTx').value.split(/\
  window.__diag=diag})();
 /* v17: 업데이트 내용 · 저장 공간 */
 (function(){var $=function(i){return document.getElementById(i)};
- var LOGV='2026-11-11l',CH=[
+ var LOGV='2026-11-11m',CH=[
+ ['2026.11.11 (범례 창·깜빡임 수정)',['정보창 위쪽 고정 바(제목·칩)가 계속 다시 그려지며 깜빡이던 문제를 고쳤습니다.','범례 창을 레이어 창·설정 패널과 같은 카드·구분선 모양으로 맞추고, 글자 크기를 키우면 한 줄 목록으로 바뀌어 잘리지 않게 했습니다.']],
  ['2026.11.11 (설정·레이어 창 정리)',['정보창 맨 위 손잡이를 끌어 높이를 조절할 수 있고 마지막 높이를 기억합니다. 두 번 누르면 원래 높이로 돌아갑니다.','레이어 창의 켜기 스위치를 한 줄로 정렬하고 줄 위에 마우스를 올리면 강조되도록 바꿨습니다. 설정 패널의 묶음을 카드로 나누어 구분이 잘 보이게 했습니다.','정보창의 "허용 용도·높이"에 빠졌던 용도지역을 채웠고, 남양주시·서울특별시 조례 별표도 대조해 표시합니다.']],
  ['2026.11.11 (허용 용도·높이)',['정보창에 "허용 용도·높이" 칸을 추가했습니다. 용도지역별로 건축 가능한 용도, 조례로 정하는 용도, 층수와 일조 높이 제한을 국토계획법 시행령 별표 기준으로 요약하고 해당 시 조례 원문 링크를 붙였습니다.','빠졌던 용도지역(중심·유통상업, 전용공업, 보전·생산관리, 농림, 자연환경보전)을 채웠습니다. 고양시·남양주시·서울특별시는 도시계획 조례의 주거·상업·공업·녹지·계획관리 별표를 대조해 그 내용도 함께 표시합니다(일부 용도지역은 제외). 부산광역시는 주거지역 별표를 대조했고, 인천·대구·대전·수원은 조례에 용도지역별 별표가 없다는 안내가 나옵니다. 다른 지자체는 조례가 더 좁을 수 있다는 안내만 나옵니다.']],
  ['2026.11.11 (현장 사진 위치 기록)',['메모·사진에 필지 주소와 지번을 자동으로 붙입니다. 메모 창, 현장 기록 목록, 내보내기 표(CSV)·지도 파일(GeoJSON)에 들어갑니다.','새로 찍거나 올린 사진 아래에 주소·지번·좌표·시각 글자를 새겨 넣습니다 (설정 > 현장 기록 표시에서 끄기). 이미 있던 사진은 그대로입니다.']],
@@ -17177,10 +17187,12 @@ function lines(){var base=$('bjBase').value.trim(),a=[];$('bjTx').value.split(/\
  function bar(){var b=$('stkBar');if(!ib.querySelector('.stats')){if(b)b.remove();return}
   var h=ib.querySelector('.ih h3'),j=ib.querySelector('.ih .ihs');if(!h)return;
   if(!b){b=document.createElement('div');b.id='stkBar';b.innerHTML='<div class="in"><div class="t"></div><div class="sumL stkc" data-cl="1"></div></div>';ib.insertBefore(b,ib.firstChild)}
+  var src=[].filter.call(ib.querySelectorAll('.sumL:not(.stkc) .sc:not(.more)'),function(x){return !(x.hidden&&!x.dataset.cl)}),sig=(h.textContent||'').trim()+'|'+(j&&j.textContent||'').trim()+'|'+src.map(function(x){return x.className+':'+x.dataset.sec+':'+x.textContent}).join('/');
+  if(b.dataset.sig===sig)return;b.dataset.sig=sig;
   var t=b.querySelector('.t');t.innerHTML='';t.appendChild(document.createTextNode((h.textContent||'').trim()));var sm=document.createElement('small');sm.textContent=(j&&j.textContent||'').trim();t.appendChild(sm);
-  var c=b.querySelector('.stkc');c.innerHTML='';[].forEach.call(ib.querySelectorAll('.sumL:not(.stkc) .sc:not(.more)'),function(x){if(x.hidden&&!x.dataset.cl)return;var y=document.createElement('button');y.type='button';y.className=x.className;y.dataset.sec=x.dataset.sec;y.textContent=x.textContent;c.appendChild(y)});
+  var c=b.querySelector('.stkc');c.innerHTML='';src.forEach(function(x){var y=document.createElement('button');y.type='button';y.className=x.className;y.dataset.sec=x.dataset.sec;y.textContent=x.textContent;c.appendChild(y)});
   if(!c.children.length)c.style.display='none';else c.style.display=''}
- var bt=0;new MutationObserver(function(){clearTimeout(bt);bt=setTimeout(function(){try{bar();lab()}catch(e){}},90)}).observe(ib,{childList:true,subtree:true,attributes:true,attributeFilter:['class']});
+ var bt=0;new MutationObserver(function(ms){if(ms.every(function(m){var n=m.target;return n.nodeType===1&&n.closest&&n.closest('#stkBar')}))return;clearTimeout(bt);bt=setTimeout(function(){try{bar();lab()}catch(e){}},90)}).observe(ib,{childList:true,subtree:true,attributes:true,attributeFilter:['class']});
  function onS(){var b=$('stkBar');if(!b)return;var st=inf.scrollTop,hh=(ib.querySelector('.stats')||{}).offsetTop||120;b.classList.toggle('on',st>hh+20&&!inf.classList.contains('min'))}
  inf.addEventListener('scroll',onS,{passive:true});
 })();
