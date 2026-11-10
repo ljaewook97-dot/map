@@ -1549,8 +1549,9 @@ html.shot #blCard .vw,html.shot #lgMini{display:none!important}html.shot #blCard
 .emp{display:flex;flex-direction:column;align-items:center;text-align:center;gap:6px;padding:18px 8px 10px}.emp .ei{width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--acc2);color:var(--acc)}.emp.err .ei{background:var(--wbg);color:var(--wtx)}
 .emp h3{margin:4px 0 0;font-size:16px}.emp p{margin:0;font-size:13.5px;color:var(--mut);line-height:1.5}.emp .eb{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:8px}.emp .eb .btn{min-height:44px;padding:0 16px}
 /* 터치 영역 (보이는 크기는 그대로, 누르는 범위만 넓힘) */
-.sumL .sc,#infoBody .xl,#infoTb button,#infoBody .tag,#infoBody .more,.sumL .more{position:relative}
-.sumL .sc::after,#infoBody .xl::after,#infoTb button::after,#infoBody .more::after,.sumL .more::after{content:'';position:absolute;inset:-6px -3px}
+.sumL .sc,#infoBody .xl,#infoBody .more,.sumL .more{position:relative!important}
+.sumL .sc::after,#infoBody .xl::after,#infoBody .more::after,.sumL .more::after{content:'';position:absolute;inset:-6px -3px}
+@media (pointer:coarse),(max-width:600px){#infoTb button{min-height:44px}}
 @media (pointer:coarse),(max-width:600px){.sumL .sc::after{inset:-9px -3px}.sumL{row-gap:10px!important}#sRes>div{min-height:44px;display:flex;align-items:center}#infoBody .xl{min-height:36px}}
 </style>
 <style id="v16">
@@ -14254,7 +14255,7 @@ var LS=window.localStorage;function g(k,d){try{var v=LS.getItem(k);return v==nul
  if(o.m!=null){var mm={};o.m.split(',').forEach(function(i){if(i)mm[i]=true});s('muniOn',mm)}
  history.replaceState(null,'',location.pathname+location.search)}catch(e){}})();
 var KEY=g('key',''),DOM=g('dom',location.hostname||'localhost');
-var BUILD="2611101811";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
+var BUILD="2611101816";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
 applyTheme(THEME);
 var BASE=g('base','Base');if(['Base','Satellite','SatLabel','white','none'].indexOf(BASE)<0)BASE='Base';
 // 레이어: id, 이름, 표시 WMS 이름, 조회용 data 코드
@@ -16660,7 +16661,8 @@ function lines(){var base=$('bjBase').value.trim(),a=[];$('bjTx').value.split(/\
  window.__diag=diag})();
 /* v17: 업데이트 내용 · 저장 공간 */
 (function(){var $=function(i){return document.getElementById(i)};
- var LOGV='2026-11-11c',CH=[
+ var LOGV='2026-11-11d',CH=[
+ ['2026.11.11 (칸 펼치기 수정)',['정보창의 "내리기" 버튼 누르는 범위가 칸 제목 위까지 넓어져 칸이 눌리지 않던 문제를 고쳤습니다.']],
  ['2026.11.11 (정보창 기본 펼침)',['처음 쓰거나 펼침 설정을 바꾸지 않았다면 용도지역·접한 도로·건폐율·개발제한·지구단위계획구역 칸이 펼쳐진 채 열립니다. 주의 띠가 붙은 칸(걸침·개발제한·접도 없음)은 필지를 조회할 때마다 자동으로 펼쳐집니다.']],
  ['2026.11.11 (화면 다듬기 2)',['요약 줄에 "2곳 걸침", "도로 접함", "접도 없음" 칩을 올렸습니다. 누르면 해당 칸이 열립니다.','주의할 칸(개발제한·걸침·접도 없음)은 주황 띠, 참고용 칸은 회색으로 낮췄습니다.','면적·비율 숫자를 같은 폭 숫자와 오른쪽 맞춤으로 정리했습니다.','왼쪽 아래 축척·가로폭·범례를 카드 한 덩어리로 묶었습니다.','선택한 필지 위에 지번·면적 말풍선이 붙습니다.','오른쪽 메뉴에서 열려 있는 항목에 흰 막대가 붙습니다.','"필지 없음"·"조회 실패" 화면에 아이콘과 "다시 시도"·"인증키 확인" 버튼을 넣었습니다.','작은 버튼의 누르는 범위를 넓히고 정보창 글자 크기를 12 / 13.5 두 단계로 정리했습니다.']],
  ['2026.11.11 (범례·링크·용도지역 걸침·접도)',['지도 왼쪽 아래에 켜 둔 레이어의 색 설명을 작게 띄웁니다 (누르면 펼침, 설정에서 끄기).','도구 > 현재 화면 링크 공유: 위치·확대·배경지도·켠 레이어를 담은 링크를 만들고, 필지 정보창이 열려 있으면 그 필지도 함께 엽니다. 위치 공유 링크에도 배경지도와 레이어가 들어갑니다.','필지가 용도지역 2곳 이상에 걸치면 각각의 면적과 비율을 용도지역 칸에 보여 줍니다.','"접한 도로" 칸 추가: 접한 도시계획도로와 지적상 도로(지목 도) 필지의 접한 길이·추정 폭을 보여 줍니다.']],
