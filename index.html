@@ -1748,6 +1748,14 @@ html[data-fs="1.12"] #legend .lgs,html[data-fs="1.25"] #legend .lgs{columns:1}
 #viewPop #vMore>summary::after{content:'▾';font-size:11px}
 #viewPop #vMore[open]>summary::after{content:'▴'}
 #viewPop #vMore .vMb{border-top:1px dashed var(--line)}
+
+#keyModal #kAdv{margin-top:12px;border-top:1px solid var(--line)}
+#keyModal #kAdv>summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:8px;padding:13px 2px 11px;font-size:13.5px;font-weight:700;color:var(--acc)}
+#keyModal #kAdv>summary::-webkit-details-marker{display:none}
+#keyModal #kAdv>summary small{flex:1;min-width:0;font-weight:400;color:var(--mut);font-size:11.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#keyModal #kAdv>summary::after{content:'▾';font-size:11px;margin-left:auto}
+#keyModal #kAdv[open]>summary::after{content:'▴'}
+#fmCnt:empty{display:none}
 </style>
 </head><body>
 <div id="map"></div>
@@ -1760,6 +1768,7 @@ html[data-fs="1.12"] #legend .lgs,html[data-fs="1.25"] #legend .lgs{columns:1}
   <button class="tool" id="bGps"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><circle cx="12" cy="12" r="8"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg><span>내 위치</span></button><button class="tool" id="bRef"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 4v7h-7"/></svg><span>새로고침</span></button>
   <button class="tool" id="bView" aria-haspopup="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a9 9 0 1 0 0 18c1.2 0 2-.8 2-1.8 0-1-.6-1.4-.6-2.3 0-.9.7-1.6 1.6-1.6H17a4 4 0 0 0 4-4C21 6.7 17 3 12 3z"/><circle cx="7.5" cy="11" r="1"/><circle cx="10" cy="7.5" r="1"/><circle cx="14.5" cy="7.5" r="1"/></svg><span>화면</span></button>
   <button class="tool" id="bTool" aria-haspopup="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-2.5-.5-.5-2.5z"/></svg><span>도구</span></button>
+  <button class="tool" id="bFav"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/></svg><span>즐겨찾기</span></button>
   <button class="tool" id="bPrj"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3h11l3 3v15H5z"/><path d="M8 3v6h7V3M8 21v-7h8v7"/></svg><span>프로젝트</span></button>
   <button class="tool" id="bKey"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg><span>설정</span></button>
  </div>
@@ -1963,6 +1972,7 @@ html[data-fs="1.12"] #legend .lgs,html[data-fs="1.25"] #legend .lgs{columns:1}
   <div id="p2Msg" class="sub" style="margin-top:6px"></div></div>
  <div id="pMsg" class="sub" style="margin-top:6px"></div>
 </div></div>
+<div class="modal" id="favModal" hidden><div class="box" style="max-height:88%;overflow:auto"><div class="mh" style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px"><h3 style="margin:0">즐겨찾기 <span id="fmCnt" class="kbd"></span></h3><button class="btn" id="favX" type="button" aria-label="닫기">✕</button></div><div id="fmDet"><div id="fmBox"></div></div></div></div>
 <div class="modal" id="keyModal" hidden><div class="box">
  <h3 style="margin:0 0 8px">V-World 인증키</h3>
  <div id="kIntro" hidden><p style="margin:0 0 6px;font-weight:700">처음 한 번만 설정하면 됩니다</p>
@@ -1978,7 +1988,6 @@ html[data-fs="1.12"] #legend .lgs,html[data-fs="1.25"] #legend .lgs{columns:1}
  <details class="vg adv" data-k="menu"><summary>화면·메뉴</summary>
  <div style="display:flex;align-items:center;gap:8px"><div style="flex:1;min-width:0"><div style="font-weight:700;font-size:13px">메뉴 이름 보기</div><div class="sub" style="margin:2px 0 0;font-size:12px">오른쪽 메뉴 아이콘의 이름을 잠깐 보여줍니다. 평소엔 아이콘을 길게 누르면 나옵니다.</div></div><button class="btn" id="railTipBtn" type="button">보기</button></div>
  </details>
- <details class="vg adv" data-k="favm" id="fmDet"><summary>즐겨찾기·별명 관리 <span id="fmCnt" class="kbd"></span></summary><div id="fmBox"></div></details>
  <details class="vg adv" data-k="bak"><summary>설정 백업·복원</summary>
  <div class="sub" style="margin:0 0 8px">색·레이어 순서·시설 범례 색·화면 테마 같은 보기 설정을 파일 하나로 저장해, 다른 기기에서 똑같이 적용합니다. 인증키, 내 SHP, 메모는 들어가지 않습니다.</div>
  <div style="display:flex;gap:8px"><button class="btn" id="bkOut" type="button" style="flex:1">설정 파일로 저장</button><button class="btn" id="bkIn" type="button" style="flex:1">파일에서 불러오기</button></div>
@@ -14459,7 +14468,7 @@ var LS=window.localStorage;function g(k,d){try{var v=LS.getItem(k);return v==nul
  if(o.m!=null){var mm={};o.m.split(',').forEach(function(i){if(i)mm[i]=true});s('muniOn',mm)}
  history.replaceState(null,'',location.pathname+location.search)}catch(e){}})();
 var KEY=g('key',''),DOM=g('dom',location.hostname||'localhost');
-var BUILD="2611121745";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
+var BUILD="2611121756";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
 applyTheme(THEME);
 var BASE=g('base','Base');if(['Base','Satellite','SatLabel','white','none'].indexOf(BASE)<0)BASE='Base';
 // 레이어: id, 이름, 표시 WMS 이름, 조회용 data 코드
@@ -15562,7 +15571,7 @@ if(!adm()&&!lg('accOk')){var pre=function(){if(!gate&&document.body)showGate()};
    for(i=0;i<8;i++)h[i]=(h[i]+a[i])|0}
   return h.map(function(x){return('00000000'+(x>>>0).toString(16)).slice(-8)}).join('')}
  var det=$('fmDet'),bxm=$('fmBox');if(!det||!bxm)return;
- var box=document.createElement('div');box.id='fmSync';det.insertBefore(box,bxm);
+ var box=document.createElement('div');box.id='fmSync';det.appendChild(box);
  var on=lg('favSync')==='1',busy=0,last=0,lastEnc='',msgT=lg('favSyncMsg')||'';
  var F=function(){return window.__fav?window.__fav():[]};
  function keyOf(){var k='';try{k=JSON.parse(lg('key')||'""')}catch(e){}return k||''}
@@ -15582,7 +15591,7 @@ if(!adm()&&!lg('accOk')){var pre=function(){if(!gate&&document.body)showGate()};
  function setMsg(t){msgT=t;ls('favSyncMsg',t);draw()}
  function draw(){var srv=true;
   box.innerHTML='<div class="fmSr"><div><b>기기 간 공유</b><div class="sub" style="margin:2px 0 0;font-size:12px">같은 인증키를 쓰는 기기끼리 즐겨찾기·별명을 자동으로 맞춥니다.</div></div><button type="button" class="btn'+(on?' on':'')+'" id="fsTog">'+(on?'켜짐':'꺼짐')+'</button></div>'+
-   (on?'<div class="sub" id="fsTx" style="margin:6px 0 0">'+esc(msgT||'아직 동기화 전입니다')+'</div><button type="button" class="btn" id="fsNow" style="margin-top:6px;height:32px">지금 동기화</button>':'<div class="sub" style="margin:6px 0 0;font-size:11.5px">켜면 이름·주소·좌표가 승인 서버(Google Apps Script)에 저장됩니다. 인증키 자체는 올리지 않고 해시값으로만 구분합니다. 같은 인증키를 아는 사람은 같은 목록을 볼 수 있습니다.</div>');
+   (on?'<div class="sub" id="fsTx" style="margin:6px 0 0">'+esc(msgT||'아직 동기화 전입니다')+'</div><button type="button" class="btn" id="fsNow" style="margin-top:6px;height:32px">지금 동기화</button>':'<div class="sub" style="margin:6px 0 0;font-size:11.5px">켜면 즐겨찾기가 승인 서버에 저장되어, 같은 인증키를 쓰는 기기와 공유됩니다.</div>');
   var t=$('fsTog');if(t)t.onclick=function(){on=!on;ls('favSync',on?'1':'0');if(on){msgT='';sync(true)}draw()};
   var n=$('fsNow');if(n)n.onclick=function(){sync(true)}}
  function get(w,i,n,acc,done,fail){if(i>=n)return done(acc.join(''));jp({a:'fg',id:ID,k:adm(),h:H,w:w,i:i},function(d){if(d.e||d.d==null)return fail(d.e==='stale'?'stale':'read');acc.push(d.d);get(w,i+1,n,acc,done,fail)},function(){fail('net')})}
@@ -16544,7 +16553,7 @@ window.__fld={parseLL:parseLL};
  var w=mkFsSeg();while(w.firstChild)$('lsSeg').appendChild(w.firstChild);markFsq();
  /* 설정 그룹 접힘 기억 */
 (function(){var K=g('kg',{});[].forEach.call(document.querySelectorAll('#keyModal details.vg'),function(d){var k=d.dataset.k;d.open=!!K[k];d.addEventListener('toggle',function(){K[k]=d.open?1:0;s('kg',K)})})})();
-(function(){var P=document.getElementById('toolPop');if(!P)return;var T=g('tg',{});if(T['기록']===undefined)T['기록']=1;if(T['자료·순서']===undefined)T['자료·순서']=1;if(T['화면 맞추기']===undefined)T['화면 맞추기']=1;var busy=0;
+(function(){var P=document.getElementById('toolPop');if(!P)return;var T=g('tg',{});if(T['기록']===undefined)T['기록']=1;if(T['자료·순서']===undefined)T['자료·순서']=1;if(T['화면 맞추기']===undefined)T['화면 맞추기']=0;var busy=0;
  function grp(){if(busy)return;busy=1;try{var cur=null;[].slice.call(P.children).forEach(function(n){
   if(n.tagName==='DETAILS'&&n.classList.contains('tg')){cur=n;return}
   if(n.style&&n.style.display==='none')return;
@@ -16994,7 +17003,8 @@ function lines(){var base=$('bjBase').value.trim(),a=[];$('bjTx').value.split(/\
  window.__diag=diag})();
 /* v17: 업데이트 내용 · 저장 공간 */
 (function(){var $=function(i){return document.getElementById(i)};
- var LOGV='2026-11-12y',CH=[
+ var LOGV='2026-11-12z',CH=[
+ ['2026.11.12 (즐겨찾기 따로·설정 정리)',['오른쪽 메뉴에 "즐겨찾기" 버튼이 생겼습니다. 별명·즐겨찾기 목록, 선택 삭제·이름 바꾸기, 기기 간 공유가 이 창에 모여 있습니다. 설정(톱니) 창에는 인증키·도메인만 위에 두고, 접속 승인·백업·진단·앱 정보는 "관리·고급" 한 곳으로 묶었습니다(승인 요청이나 새 소식이 있으면 표시). 도구 메뉴의 "화면 맞추기"는 처음에 접혀 있습니다.']],
  ['2026.11.12 (화면 설정 더 단순하게)',['화면 메뉴 맨 위에는 화면 테마·글자 크기·밝기 자동 조절·한 손 조작·지도 비교만 남겼습니다. 나머지(색상, 지번 글자, 필지 면 채우기, 고급 설정, 조작, 현장 기록, 도움말)는 맨 아래 "자세한 설정"을 눌러야 보입니다.']],
  ['2026.11.12 (화면 설정 단순화)',['화면 메뉴를 "설정 이름 · 오른쪽에 선택" 한 줄씩으로 다시 짰습니다. 상자 속 상자를 없애고 구분선만 남겼으며, 긴 설명은 이름 아래 작은 글씨로 옮겼습니다. 색상 견본은 작게 줄였습니다.']],
  ['2026.11.12 (즐겨찾기·별명 기기 간 공유)',['설정 > 즐겨찾기·별명 관리 > "기기 간 공유"를 켜면 같은 인증키를 쓰는 기기끼리 즐겨찾기와 별명이 자동으로 맞춰집니다(켤 때, 바꿀 때, 앱을 다시 볼 때, 5분마다). 한쪽에서 지우거나 이름을 바꾼 것도 반영됩니다. 이름·주소·좌표가 승인 서버(Google Apps Script)에 인증키 해시 이름으로 저장되며, 서버(access_server.gs)를 새 버전으로 다시 배포해야 작동합니다. 승인된 기기만 쓸 수 있습니다.']],
@@ -17690,8 +17700,8 @@ b.onclick=function(){try{localStorage.setItem('rdr',JSON.stringify(cur==='canvas
  function render(){var all=F(),nA=all.filter(function(f){return f.al}).length,v=view();
   document.getElementById('fmCnt').textContent=all.length?all.length+'개':'';
   sel=sel.filter(function(f){return all.indexOf(f)>=0});
-  var h='<div class="sub" style="margin:0 0 8px">필지 카드의 ☆로 붙인 별명과, 즐겨찾기 탭에 저장한 위치를 한곳에서 정리합니다. 검색창에 이름을 치면 바로 이동합니다.</div>';
-  if(!all.length){bx.innerHTML=h+'<div class="sub">저장된 즐겨찾기가 없습니다. 필지를 눌러 정보 카드의 “☆ 별명 저장”을 눌러 보세요.</div>';return}
+  var h='';
+  if(!all.length){bx.innerHTML=h+'<div class="sub" style="margin:0 0 4px">저장된 즐겨찾기가 없습니다. 필지를 눌러 정보 카드의 “☆ 별명 저장”을 누르면 여기에 모입니다. 검색창에 별명을 치면 바로 이동합니다.</div>';return}
   h+='<input id="fmQ" type="search" placeholder="이름·주소로 찾기" value="'+esc(qq)+'" style="width:100%;box-sizing:border-box;font:inherit;font-size:14px;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--fg)">';
   h+='<div class="fmF">'+[['all','전체 '+all.length],['al','필지 별명 '+nA],['pos','위치 '+(all.length-nA)]].map(function(x){return '<button type="button" class="btn'+(flt===x[0]?' on':'')+'" data-fl="'+x[0]+'">'+x[1]+'</button>'}).join('')+'<button type="button" class="btn" data-so="1">'+(sort==='name'?'이름순':'저장순')+'</button></div>';
   h+='<div class="fmA"><button type="button" class="btn" data-a="all">'+(v.length&&v.every(function(o){return sel.indexOf(o.f)>=0})?'선택 해제':'모두 선택')+'</button><button type="button" class="btn'+(sel.length?'':' dis')+'" data-a="del">'+(del&&sel.length?sel.length+'개 삭제 확인':'선택 삭제'+(sel.length?' ('+sel.length+')':''))+'</button><button type="button" class="btn'+(sel.length?'':' dis')+'" data-a="top">맨 위로</button></div>';
@@ -17710,9 +17720,10 @@ b.onclick=function(){try{localStorage.setItem('rdr',JSON.stringify(cur==='canvas
   if(t.dataset.no){edit=null;render();return}
   if(t.dataset.ok!==undefined){var f2=all[+t.dataset.ok],inp=bx.querySelector('.fmE'),n2=(inp.value||'').trim();if(!n2){status('이름을 입력하세요');return}
    if(all.some(function(x){return x!==f2&&nk(x.n)===nk(n2)})){status('이미 같은 이름이 있습니다');return}f2.n=n2;edit=null;save();render();status('이름을 바꿨습니다');return}
-  if(t.dataset.go!==undefined){var f3=all[+t.dataset.go];document.getElementById('keyModal').hidden=true;map.setView([f3.lat,f3.lng],f3.z||19);if(f3.al)setTimeout(function(){pick(f3.lat,f3.lng)},700)}});
- det.addEventListener('toggle',function(){if(det.open){del=0;edit=null;render()}});
- var kb=document.getElementById('bKey');window.__fmRender=render;if(kb)kb.addEventListener('click',function(){setTimeout(function(){if(det.open)render();else document.getElementById('fmCnt').textContent=F().length?F().length+'개':''},0)});
+  if(t.dataset.go!==undefined){var f3=all[+t.dataset.go];document.getElementById('favModal').hidden=true;map.setView([f3.lat,f3.lng],f3.z||19);if(f3.al)setTimeout(function(){pick(f3.lat,f3.lng)},700)}});
+ function openFav(){del=0;edit=null;render();document.getElementById('favModal').hidden=false}
+ var bf=document.getElementById('bFav');if(bf)bf.onclick=openFav;var fx=document.getElementById('favX');if(fx)fx.onclick=function(){document.getElementById('favModal').hidden=true};
+ var fmd=document.getElementById('favModal');fmd.addEventListener('click',function(e){if(e.target===fmd)fmd.hidden=true});window.__fmRender=render;render();
 })();
 
 /* ---- 화면 설정 팝업: 한 줄 한 설정으로 정리 ---- */
@@ -17736,6 +17747,14 @@ b.onclick=function(){try{localStorage.setItem('rdr',JSON.stringify(cur==='canvas
  [].slice.call(vp.querySelectorAll(':scope>details.vg')).forEach(function(d){if(d.dataset.g==='fav'&&!d.querySelector('.vr,.btn,button'))return d.remove();body.appendChild(d)});
  vp.appendChild(more);
  var fv=vp.querySelector('details.vg[data-g=fav]');if(fv){fv.querySelector('summary').textContent='그 밖의 자주 쓰는 설정'}
+})();
+
+/* ---- 설정 창: 인증키만 위에, 나머지는 '관리·고급' 한 곳 ---- */
+(function(){var g0=document.querySelector('#keyModal .kgrp');if(!g0||document.getElementById('kAdv'))return;
+ var d=document.createElement('details');d.id='kAdv';d.className='kAdv';d.innerHTML='<summary>관리 · 고급 <small>접속 승인 · 백업 · 진단 · 앱 정보</small> <span id="kAdvDot" class="kbd" hidden>확인 필요</span></summary>';
+ g0.parentNode.insertBefore(d,g0);d.appendChild(g0);
+ function upd(){var b=document.getElementById('accBadge'),n=document.getElementById('logDot'),ap=b&&!b.hidden,lg=n&&!n.hidden;var dot=document.getElementById('kAdvDot');dot.hidden=!(ap||lg);dot.textContent=ap?'승인 요청 '+((b&&b.textContent)||''):'새 소식';if(ap)d.open=true}
+ var kb=document.getElementById('bKey');if(kb)kb.addEventListener('click',function(){setTimeout(upd,50)});upd()
 })();
 })();
 
