@@ -1599,6 +1599,7 @@ button.xl[data-fitz]{display:inline-flex;align-items:center;height:30px;padding:
 #lawM .joXe{border:1px solid var(--line);border-radius:10px;margin-top:10px;padding:0 10px;background:var(--card)}#lawM .joXe summary{list-style:none;display:flex;justify-content:space-between;align-items:center;color:var(--fg);padding:10px 0}#lawM .joXe summary::-webkit-details-marker{display:none}#lawM .joXe summary::after{content:'▾';color:var(--mut)}#lawM .joXe[open] summary::after{content:'▴'}#lawM .joXe[open]{padding-bottom:8px}
 #lawM .joXc+.joXc{border-top:1px solid var(--line);padding-top:6px}@media (min-width:900px){#lawM .joXc+.joXc{border-top:0;padding-top:0;border-left:1px solid var(--line);padding-left:14px}}
 #stkBar .t{white-space:normal;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;overflow:hidden;text-overflow:ellipsis;line-height:1.35;word-break:keep-all;overflow-wrap:anywhere}#stkBar .t small{display:inline;margin-left:6px}
+.p2Ask,#p2Ask{border:1px solid var(--acc);border-radius:12px;padding:10px 12px;margin:8px 0;background:var(--card)}
 </style>
 <style id="v19">.use2{margin:6px 0 10px;padding:8px 10px;border:1px solid var(--line);border-radius:10px;background:var(--card)}.use2>b{display:block;font-size:13px;margin-bottom:4px}.use2 .u{font-size:12.5px;line-height:1.5;margin:3px 0;color:var(--fg)}.use2 .u i{display:inline-block;font-style:normal;font-weight:700;font-size:11.5px;color:var(--acc);margin-right:6px}.use2 .u.gy{color:var(--mut)}#layers .lr .chip .nm{flex:1 1 auto!important;min-width:0}#layers .lr .chip .st{flex:0 1 auto!important;max-width:44%;font-size:10.5px!important;padding:2px 8px;border-radius:999px;background:var(--acc2);color:var(--mut);text-align:center!important}#layers .lr .chip .st.w{color:var(--wtx,#b25a00);background:var(--wbg,#fff3e0)}
 #layers .lr{padding:0;margin:0 0 2px;border-radius:12px;display:flex;align-items:center;gap:2px}#layers .lr:hover{background:var(--acc2)}#layers .lr .chip,#layers .lr .chip.on{border-bottom:0!important;flex:1;min-width:0;background:none!important;height:42px}
@@ -14365,7 +14366,7 @@ var LS=window.localStorage;function g(k,d){try{var v=LS.getItem(k);return v==nul
  if(o.m!=null){var mm={};o.m.split(',').forEach(function(i){if(i)mm[i]=true});s('muniOn',mm)}
  history.replaceState(null,'',location.pathname+location.search)}catch(e){}})();
 var KEY=g('key',''),DOM=g('dom',location.hostname||'localhost');
-var BUILD="2611112013";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
+var BUILD="2611112144";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
 applyTheme(THEME);
 var BASE=g('base','Base');if(['Base','Satellite','SatLabel','white','none'].indexOf(BASE)<0)BASE='Base';
 // 레이어: id, 이름, 표시 WMS 이름, 조회용 data 코드
@@ -15011,7 +15012,7 @@ function render(){all(function(a){LST.innerHTML='';if(!a.length){LST.innerHTML='
   B('파일로 저장 (사진·도면 포함)',function(){exp(p)});
   var dl=false;B('삭제',function(e){if(!dl){dl=true;e.target.textContent='한 번 더 누르면 삭제';return}del(p.name,render)});
  LST.appendChild(r)})})}
-window.__p2put=put;window.__p2render=render;
+window.__p2put=put;window.__p2render=render;window.__p2load=load;
 document.getElementById('bPrj').onclick=function(){M.hidden=false;msg('');render()};
 document.getElementById('pClose').onclick=function(){M.hidden=true};
 document.getElementById('pNew').onclick=function(){document.getElementById('pNewBox').hidden=false;this.hidden=true};
@@ -15078,6 +15079,12 @@ $('p2Scan').onclick=function(){if(!navigator.mediaDevices||!navigator.mediaDevic
   var cv=document.createElement('canvas'),cx=cv.getContext('2d',{willReadFrequently:true});
   (function tick(){if(!scanSt)return;if(v.readyState>=2&&v.videoWidth){var w=Math.min(480,v.videoWidth),h=Math.round(w*v.videoHeight/v.videoWidth);cv.width=w;cv.height=h;cx.drawImage(v,0,0,w,h);var r=jsQR(cx.getImageData(0,0,w,h).data,w,h,{inversionAttempts:'dontInvert'});if(r&&/^ddm:\d{6}$/.test(r.data)){var c=r.data.slice(4);scanStop();$('p2Num').value=c;$('p2Go').click();return}}scanRaf=requestAnimationFrame(tick)})()}).catch(function(){pm('카메라 권한이 필요합니다. 설정에서 허용하거나 코드를 직접 입력하세요')})};
 $('p2Cam').querySelector('button').onclick=function(){scanStop();pm('보내는 기기의 코드를 입력하세요')};
+function askLoad(p,ns,n){var old=document.getElementById('p2Ask');if(old)old.remove();var d=document.createElement('div');d.id='p2Ask';d.setAttribute('role','alertdialog');
+ d.innerHTML='<b>받았습니다: '+esc(p.name)+'</b><div class="sub" style="margin:4px 0 8px">SHP '+ns+'개'+(n?' · 메모·사진·도면 '+n+'개':'')+'. 받은 지도 상태(위치·레이어·SHP)를 지금 적용할까요? 적용하면 이 기기에 올려 둔 SHP와 레이어 설정이 받은 것으로 바뀝니다.</div><div style="display:flex;gap:8px"><button class="btn" id="p2AskY" type="button" style="flex:1;font-weight:700">지금 적용</button><button class="btn" id="p2AskN" type="button" style="flex:1">나중에</button></div>';
+ var m=$('p2Msg');m.parentNode.insertBefore(d,m.nextSibling);pm('받은 프로젝트를 목록에 저장했습니다');
+ $('p2AskY').onclick=function(){d.remove();pm('적용하는 중…');window.__p2load(p)};
+ $('p2AskN').onclick=function(){d.remove();pm('목록에 저장되어 있습니다. 아래에서 불러오기를 누르면 SHP와 레이어가 적용됩니다'+(n?' (메모·사진은 새로고침 후 보입니다)':''))}}
+window.__p2ask=askLoad;
 $('p2Go').onclick=function(){var code=$('p2Num').value.replace(/\D/g,'');if(code.length!==6){pm('6자리 숫자를 입력하세요');return}
  var buf=[],meta=null,got=0,done=false;try{if(peer)peer.destroy()}catch(e){}pm('연결 중…');peer=mk();
  var to=setTimeout(function(){if(!done){pm('연결하지 못했습니다. 코드가 맞는지, 보내는 기기가 기다리는 중인지 확인하세요. 안 되면 폰을 LTE로 해 보세요.');stop()}},25000);
@@ -15085,7 +15092,7 @@ $('p2Go').onclick=function(){var code=$('p2Num').value.replace(/\D/g,'');if(code
   c.on('open',function(){pm('받는 중… 0%');clearTimeout(to)});
   c.on('data',function(m){if(m.t==='meta'){clearTimeout(to);meta=m;buf=new Array(m.n)}else if(m.t==='c'&&meta){buf[m.i]=m.d;got++;pm('받는 중… '+Math.round(100*got/meta.n)+'%');
     if(got>=meta.n){done=true;clearTimeout(to);try{c.send({t:'ok'})}catch(e){}try{var p=JSON.parse(buf.join(''));if(!p||!p.name||!p.layers)throw 0;p.name=p.name+' (받음)';var X=p.extra;delete p.extra;
-      window.__p2put(p,function(){if(X){window.__prjImport(X,null,function(n){pm('받았습니다: "'+p.name+'" + 메모·사진·도면 '+n+'개 (새로고침합니다)');stop();setTimeout(function(){location.reload()},1500)})}else{pm('받았습니다: "'+p.name+'" — 아래 목록에서 불러오기를 누르세요');stop();window.__p2render()}})}catch(e){pm('받은 데이터가 올바르지 않습니다')}}}});
+      window.__p2put(p,function(){function ask(n){var ns=(p.shp||[]).length;stop();window.__p2render();askLoad(p,ns,n)}if(X){window.__prjImport(X,null,function(n){ask(n)})}else ask(0)})}catch(e){pm('받은 데이터가 올바르지 않습니다')}}}});
   c.on('error',function(e){pm('연결 오류: '+(e&&e.message||e))})});
  peer.on('error',function(e){clearTimeout(to);pm('연결 오류: '+(e&&e.type||e)+(e&&e.type==='peer-unavailable'?' — 코드가 틀렸거나 보내는 쪽이 아직 준비되지 않았습니다':' (회사 네트워크가 막았을 수 있습니다)'))})};
 $('pClose').addEventListener('click',stop);
@@ -16792,7 +16799,8 @@ function lines(){var base=$('bjBase').value.trim(),a=[];$('bjTx').value.split(/\
  window.__diag=diag})();
 /* v17: 업데이트 내용 · 저장 공간 */
 (function(){var $=function(i){return document.getElementById(i)};
- var LOGV='2026-11-12b',CH=[
+ var LOGV='2026-11-12c',CH=[
+ ['2026.11.11 (PC→폰 전송 후 SHP가 안 보이던 문제)',['PC에서 폰으로 지도를 보낸 뒤 받는 기기에서 SHP·레이어가 바로 적용되지 않던 문제를 고쳤습니다. 받은 뒤 "지금 적용 / 나중에"를 물어보고, 지금 적용을 누르면 받은 SHP·레이어·위치가 바로 열립니다.','전에는 받은 프로젝트가 목록에만 저장되어 "불러오기"를 따로 눌러야 SHP가 보였습니다.']],
  ['2026.11.11 (건축물 레이어 없이 조회)',['"건축물" 레이어를 꺼 두어도 필지를 누르면 건축물 정보(용도·층수·용적률·건폐율·사용승인일)를 조회해 보여 줍니다. 레이어를 켜면 지도 위에 건물 외곽과 층수가 추가로 표시되는 것은 그대로입니다.']],
  ['2026.11.11 (전국 조례 조문 본문)',['조문 창의 "이 지역 조례"에서 전국 시·군 160여 곳의 용도지역 안 건폐율·용적률 조문 본문을 볼 수 있습니다. 내 필지 용도지역 호가 강조됩니다. 모두 2026.11.11 국가법령정보센터 기준입니다.','옥천군 제1종일반주거지역 값(건폐율 60·용적률 200)을 원문에 맞춰 채웠고, 하동·청송·고성(경남)·정읍·군산 조례 시행일과 파주시 조례명을 현행으로 고쳤습니다.','창원·울산은 조문이 별표로 되어 있어 원문 문장만 실었습니다. 과천시는 조례의 해당 조문이 삭제되어 본문이 없습니다. 완화·강화 조항은 고양·남양주·서울만 실었습니다.']],
  ['2026.11.11 (조례 값 확인 기준 표시)',['조례 값 표 아래에 "값 확인 기준"(조례 시행일)을 작게 표시합니다. 앱에 넣어 둔 값이라 이후 개정은 반영되지 않았을 수 있다는 안내가 함께 나옵니다.']],
