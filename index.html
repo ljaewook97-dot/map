@@ -1736,6 +1736,18 @@ html[data-fs="1.12"] #legend .lgs,html[data-fs="1.25"] #legend .lgs{columns:1}
 #viewPop details.vg>.ph:empty{display:none}
 #viewPop details.vg details#advDet{border:0;margin-top:6px;padding-top:0}
 #viewPop details.vg details#advDet>summary.ph{background:none;border:1px dashed var(--line);font-weight:600;font-size:13px}
+
+/* 화면 팝업: 심플 */
+#viewPop #vTop .vH{font-size:15px;font-weight:800;padding:8px 0 4px;color:var(--fg)}
+#viewPop #vTop .vr{padding:10px 0}
+#viewPop #vTop>.btn{margin:8px 0 2px;display:flex;align-items:center;justify-content:space-between;width:100%;height:42px;padding:0 12px;text-align:left;font-size:13.5px}
+#viewPop #vTop>.btn::after{content:'›';color:var(--mut);font-size:16px}
+#viewPop #vMore{margin-top:10px;border-top:1px solid var(--line)}
+#viewPop #vMore>summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;padding:13px 2px 11px;font-size:13.5px;font-weight:700;color:var(--acc)}
+#viewPop #vMore>summary::-webkit-details-marker{display:none}
+#viewPop #vMore>summary::after{content:'▾';font-size:11px}
+#viewPop #vMore[open]>summary::after{content:'▴'}
+#viewPop #vMore .vMb{border-top:1px dashed var(--line)}
 </style>
 </head><body>
 <div id="map"></div>
@@ -14447,7 +14459,7 @@ var LS=window.localStorage;function g(k,d){try{var v=LS.getItem(k);return v==nul
  if(o.m!=null){var mm={};o.m.split(',').forEach(function(i){if(i)mm[i]=true});s('muniOn',mm)}
  history.replaceState(null,'',location.pathname+location.search)}catch(e){}})();
 var KEY=g('key',''),DOM=g('dom',location.hostname||'localhost');
-var BUILD="2611121739";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
+var BUILD="2611121745";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
 applyTheme(THEME);
 var BASE=g('base','Base');if(['Base','Satellite','SatLabel','white','none'].indexOf(BASE)<0)BASE='Base';
 // 레이어: id, 이름, 표시 WMS 이름, 조회용 data 코드
@@ -16982,7 +16994,8 @@ function lines(){var base=$('bjBase').value.trim(),a=[];$('bjTx').value.split(/\
  window.__diag=diag})();
 /* v17: 업데이트 내용 · 저장 공간 */
 (function(){var $=function(i){return document.getElementById(i)};
- var LOGV='2026-11-12x',CH=[
+ var LOGV='2026-11-12y',CH=[
+ ['2026.11.12 (화면 설정 더 단순하게)',['화면 메뉴 맨 위에는 화면 테마·글자 크기·밝기 자동 조절·한 손 조작·지도 비교만 남겼습니다. 나머지(색상, 지번 글자, 필지 면 채우기, 고급 설정, 조작, 현장 기록, 도움말)는 맨 아래 "자세한 설정"을 눌러야 보입니다.']],
  ['2026.11.12 (화면 설정 단순화)',['화면 메뉴를 "설정 이름 · 오른쪽에 선택" 한 줄씩으로 다시 짰습니다. 상자 속 상자를 없애고 구분선만 남겼으며, 긴 설명은 이름 아래 작은 글씨로 옮겼습니다. 색상 견본은 작게 줄였습니다.']],
  ['2026.11.12 (즐겨찾기·별명 기기 간 공유)',['설정 > 즐겨찾기·별명 관리 > "기기 간 공유"를 켜면 같은 인증키를 쓰는 기기끼리 즐겨찾기와 별명이 자동으로 맞춰집니다(켤 때, 바꿀 때, 앱을 다시 볼 때, 5분마다). 한쪽에서 지우거나 이름을 바꾼 것도 반영됩니다. 이름·주소·좌표가 승인 서버(Google Apps Script)에 인증키 해시 이름으로 저장되며, 서버(access_server.gs)를 새 버전으로 다시 배포해야 작동합니다. 승인된 기기만 쓸 수 있습니다.']],
  ['2026.11.12 (화면 설정 정리 · 즐겨찾기 일괄 관리)',['화면 > 보기의 고급 설정 안쪽 항목들이 한 줄 제목처럼만 보여 눌러 열린다는 걸 알기 어려웠습니다. 이제 제목마다 테두리와 ▾ 표시가 붙고, 열면 안쪽 내용이 왼쪽 선으로 구분됩니다. 정보창 항목·"더 보기" 체크 목록은 글자가 잘리지 않게 한 줄씩 보입니다.','설정(톱니) > "즐겨찾기·별명 관리" 신설: 이름·주소 검색, 필지 별명/위치 구분, 모두 선택, 선택 삭제(한 번 더 확인), 맨 위로, 이름 바꾸기(✎), 지도에서 보기(↗), 이름순/저장순 정렬.']],
@@ -17710,6 +17723,19 @@ b.onclick=function(){try{localStorage.setItem('rdr',JSON.stringify(cur==='canvas
  [].forEach.call(vp.querySelectorAll('details.vg'),go);var a=document.getElementById('advDet');if(a)go(a);
  var oh=document.querySelector('#ohSeg [data-o="1"]');if(oh)oh.textContent='켬';
  var ol=document.querySelector('#ohSeg');if(ol&&ol.parentNode.classList.contains('vr')){var sm=ol.parentNode.querySelector('.vl small');if(!sm){sm=document.createElement('small');ol.parentNode.querySelector('.vl').appendChild(sm)}sm.textContent='버튼을 화면 아래로'}
+})();
+
+/* ---- 화면 설정: 꼭 필요한 것만 위에, 나머지는 '자세한 설정' 한 곳으로 ---- */
+(function(){var vp=document.getElementById('viewPop');if(!vp||document.getElementById('vTop'))return;
+ var top=document.createElement('div');top.id='vTop';
+ var h=document.createElement('div');h.className='vH';h.textContent='화면 설정';top.appendChild(h);
+ ['themeSeg','fsSeg','briSeg','ohSeg'].forEach(function(id){var e=document.getElementById(id);if(!e)return;var r=e.closest('.vr');if(!r)return;top.appendChild(r);if(id==='briSeg'){var t=document.getElementById('briTx');if(t)r.querySelector('.vl').appendChild(t)}});
+ var cmp=document.getElementById('cmpOpen');if(cmp)top.appendChild(cmp);
+ vp.insertBefore(top,vp.firstChild);
+ var more=document.createElement('details');more.id='vMore';more.innerHTML='<summary>자세한 설정</summary>';var body=document.createElement('div');body.className='vMb';more.appendChild(body);
+ [].slice.call(vp.querySelectorAll(':scope>details.vg')).forEach(function(d){if(d.dataset.g==='fav'&&!d.querySelector('.vr,.btn,button'))return d.remove();body.appendChild(d)});
+ vp.appendChild(more);
+ var fv=vp.querySelector('details.vg[data-g=fav]');if(fv){fv.querySelector('summary').textContent='그 밖의 자주 쓰는 설정'}
 })();
 })();
 
