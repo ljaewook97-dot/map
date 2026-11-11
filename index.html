@@ -1918,7 +1918,7 @@ html[data-fs="1.12"] #legend .lgs,html[data-fs="1.25"] #legend .lgs{columns:1}
  <div id="bkBox" class="sub" style="margin:8px 0 0" aria-live="polite"></div>
  </details>
  <details class="vg adv" data-k="diag" id="kDiag"><summary>연결 진단</summary>
- <button class="btn" id="clrDiag" type="button" style="width:100%;margin:0 0 8px">색 표시 진단 (선 색이 다르게 보일 때)</button><div id="clrOut" hidden></div>
+ <button class="btn" id="clrDiag" type="button" style="width:100%;margin:0 0 8px">색 표시 진단 (선 색이 다르게 보일 때)</button><div id="clrOut" hidden></div><button class="btn" id="rdrBtn" type="button" style="width:100%;margin:0 0 8px"></button>
  <button class="btn" id="chkNet" type="button" style="width:100%">연결 상태 확인</button><div id="chkSum" class="sub" style="margin:8px 0 4px;font-weight:700"></div><div id="chkOut"></div>
  <label style="margin-top:10px">최근 V-World 응답 (문제가 있으면 이 내용을 알려주세요)</label><pre id="dbg" style="font-size:11px;white-space:pre-wrap;word-break:break-all;margin:4px 0 8px;max-height:140px;overflow:auto;background:var(--bg);padding:6px;border-radius:6px"></pre><p class="sub">키는 이 폰의 브라우저에만 저장되고 다른 곳으로 보내지지 않습니다.</p>
  </details>
@@ -14391,7 +14391,7 @@ var LS=window.localStorage;function g(k,d){try{var v=LS.getItem(k);return v==nul
  if(o.m!=null){var mm={};o.m.split(',').forEach(function(i){if(i)mm[i]=true});s('muniOn',mm)}
  history.replaceState(null,'',location.pathname+location.search)}catch(e){}})();
 var KEY=g('key',''),DOM=g('dom',location.hostname||'localhost');
-var BUILD="2611120046";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
+var BUILD="2611120121";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
 applyTheme(THEME);
 var BASE=g('base','Base');if(['Base','Satellite','SatLabel','white','none'].indexOf(BASE)<0)BASE='Base';
 // 레이어: id, 이름, 표시 WMS 이름, 조회용 data 코드
@@ -14482,10 +14482,12 @@ document.getElementById('legBody').addEventListener('click',function(e){var b=e.
  if(e.target.closest('.lgE')){EDK=(EDK===k)?'':k;renderLeg();return}
  HL=(HL===k)?'':k;renderLeg()});
 var OWN_MAX=1200,QML={"LT_C_UPISUQ151": {"노외주차장": ["#898989", "#FF0000"], "주차장": ["#898989", "#FF0000"], "기타주차장시설": ["#898989", "#FF0000"], "공영차고지": ["#898989", "#FF0000"], "__default__": ["none", "#FF0000"]}, "LT_C_UPISUQ152": {"노외주차장": ["#898989", "#FF0000"], "주차장": ["#898989", "#FF0000"], "기타주차장시설": ["#898989", "#FF0000"], "공영차고지": ["#898989", "#FF0000"], "__default__": ["none", "#FF0000"]}, "LT_C_UPISUQ153": {"경관광장": ["#009F00", "#FF0000"], "공원": ["#009F00", "#FF0000"], "광장": ["#009F00", "#FF0000"], "교차점광장": ["#009F00", "#FF0000"], "교통광장": ["#009F00", "#FF0000"], "근린공원": ["#009F00", "#FF0000"], "근린광장": ["#009F00", "#FF0000"], "기타공원시설": ["#009F00", "#FF0000"], "기타광장시설": ["#009F00", "#FF0000"], "기타도시공간시설": ["#009F00", "#FF0000"], "도시자연공원구역": ["#009F00", "#FF0000"], "도시자연공원": ["#009F00", "#FF0000"], "묘지공원": ["#009F00", "#FF0000"], "소공원": ["#009F00", "#FF0000"], "어린이공원": ["#009F00", "#FF0000"], "역전광장": ["#009F00", "#FF0000"], "일반광장": ["#009F00", "#FF0000"], "중심대광장": ["#009F00", "#FF0000"], "체육공원": ["#009F00", "#FF0000"], "문화공원": ["#009F00", "#FF0000"], "경관녹지": ["#C0FF7F", "#FF0000"], "기타녹지시설": ["#C0FF7F", "#FF0000"], "녹지": ["#C0FF7F", "#FF0000"], "연결녹지": ["#C0FF7F", "#FF0000"], "완충녹지": ["#C0FF7F", "#FF0000"], "유원지": ["#C0FF7F", "#FF0000"], "__default__": ["none", "#FF0000"]}, "LT_C_UPISUQ154": {"__default__": ["none", "#FF0000"]}, "LT_C_UPISUQ155": {"__default__": ["none", "#FF0000"]}, "LT_C_UPISUQ156": {"__default__": ["none", "#FF0000"]}, "LT_C_UPISUQ157": {"__default__": ["none", "#FF0000"]}, "LT_C_UPISUQ158": {"__default__": ["none", "#FF0000"]}, "LT_C_UPISUQ159": {"__default__": ["none", "#FF0000"]}},HC={'국유지':'#0b57ff','공유지':'#a020c8'};LAYERS.forEach(function(l){if(!map.getPane('p_'+l.id)){map.createPane('p_'+l.id);map.getPane('p_'+l.id).style.pointerEvents='none'}});
-var RN={};['cad','own','fac','hl','dist','bld'].forEach(function(id){if(!map.getPane('p_'+id)){map.createPane('p_'+id);map.getPane('p_'+id).style.pointerEvents='none'}RN[id]=L.svg({pane:'p_'+id,padding:.25}).addTo(map)});var rend=RN.fac;
-(function(){var sv=RN.own._container,ns='http://www.w3.org/2000/svg',d=document.createElementNS(ns,'defs');
+var CVS=g('rdr','canvas')!=='svg';function mkRd(pane,pad){return (CVS?L.canvas:L.svg)({pane:pane,padding:pad})}
+var _hp=null;function hlgPat(){if(_hp)return _hp;try{var d=Math.max(1,Math.round(window.devicePixelRatio||1)),n=7*d,c=document.createElement('canvas');c.width=c.height=n;var x=c.getContext('2d');x.fillStyle='#C0FF7F';x.fillRect(0,0,n,n);x.strokeStyle='rgba(26,26,26,.75)';x.lineWidth=d;x.beginPath();x.moveTo(0,n);x.lineTo(n,0);x.moveTo(-n/2,n/2);x.lineTo(n/2,-n/2);x.moveTo(n/2,n*1.5);x.lineTo(n*1.5,n/2);x.stroke();_hp=x.createPattern(c,'repeat');if(d>1&&_hp.setTransform)_hp.setTransform(new DOMMatrix([1/d,0,0,1/d,0,0]))}catch(e){_hp='#C0FF7F'}return _hp}
+var RN={};['cad','own','fac','hl','dist','bld'].forEach(function(id){if(!map.getPane('p_'+id)){map.createPane('p_'+id);map.getPane('p_'+id).style.pointerEvents='none'}RN[id]=(id==='hl'?L.svg:mkRd.bind(null,null))===L.svg?L.svg({pane:'p_'+id,padding:.25}).addTo(map):mkRd('p_'+id,.25).addTo(map)});var rend=RN.fac;
+(function(){if(CVS)return;var sv=RN.own._container,ns='http://www.w3.org/2000/svg',d=document.createElementNS(ns,'defs');
  [['hN','#0b57ff'],['hG','#a020c8']].forEach(function(p){var pt=document.createElementNS(ns,'pattern');pt.setAttribute('id',p[0]);pt.setAttribute('width','7');pt.setAttribute('height','7');pt.setAttribute('patternUnits','userSpaceOnUse');pt.setAttribute('patternTransform','rotate(-45)');var ln=document.createElementNS(ns,'line');ln.setAttribute('x1','0');ln.setAttribute('y1','0');ln.setAttribute('x2','0');ln.setAttribute('y2','7');ln.setAttribute('stroke',p[1]);ln.setAttribute('stroke-width','2.6');ln.setAttribute('stroke-opacity','.8');pt.appendChild(ln);d.appendChild(pt)});sv.insertBefore(d,sv.firstChild)})();
-(function(){var sv=RN.fac._container,ns='http://www.w3.org/2000/svg',d=document.createElementNS(ns,'defs');sv.insertBefore(d,sv.firstChild);
+(function(){if(CVS)return;var sv=RN.fac._container,ns='http://www.w3.org/2000/svg',d=document.createElementNS(ns,'defs');sv.insertBefore(d,sv.firstChild);
  var pt=document.createElementNS(ns,'pattern');pt.setAttribute('id','hLG');pt.setAttribute('width','7');pt.setAttribute('height','7');pt.setAttribute('patternUnits','userSpaceOnUse');pt.setAttribute('patternTransform','rotate(45)');
  var rc=document.createElementNS(ns,'rect');rc.setAttribute('width','7');rc.setAttribute('height','7');rc.setAttribute('fill','#C0FF7F');pt.appendChild(rc);
  var ln=document.createElementNS(ns,'line');ln.setAttribute('x1','0');ln.setAttribute('y1','0');ln.setAttribute('x2','0');ln.setAttribute('y2','7');ln.setAttribute('stroke','#1a1a1a');ln.setAttribute('stroke-width','1');ln.setAttribute('stroke-opacity','.75');pt.appendChild(ln);d.appendChild(pt)})();
@@ -14568,7 +14570,7 @@ function doFac(seq){var z=map.getZoom();
   var ng=L.layerGroup(),LG={},seen={},got=0,sf=S_('fac');
   res.forEach(function(pr){var c=pr[0],st=QML[c]||{};pr[1].forEach(function(x){var p=x.properties||{},n=fnm(p);if(!n&&!bad(p.mls_nam)&&!bad(p.lcl_nam))return;var id=c+'|'+(p.gid||p.ntfc_sn||'')+'|'+fbb(x).join(',');if(seen[id])return;seen[id]=1;
    var v=fOv(n||'기타',st[p.mls_nam]||st.__single__||st.__default__||['#CCCCCC','#666666']),has=v[0]!=='none',hat=has&&v[0].toUpperCase()==='#C0FF7F';
-   var gj=L.geoJSON(x.geometry,{interactive:false,renderer:rend,style:{color:(FSTY[n||'기타']&&FSTY[n||'기타'].l)||sf.line||v[1],weight:(FSTY[n||'기타']&&FSTY[n||'기타'].w)||sf.weight,opacity:sf.opacity,fill:has,fillColor:has?(hat?'url(#hLG)':v[0]):'#000',fillOpacity:has?(hat?Math.max(sf.fillOpacity,.6):sf.fillOpacity):0}});
+   var gj=L.geoJSON(x.geometry,{interactive:false,renderer:rend,style:{color:(FSTY[n||'기타']&&FSTY[n||'기타'].l)||sf.line||v[1],weight:(FSTY[n||'기타']&&FSTY[n||'기타'].w)||sf.weight,opacity:sf.opacity,fill:has,fillColor:has?(hat?(CVS?hlgPat():'url(#hLG)'):v[0]):'#000',fillOpacity:has?(hat?Math.max(sf.fillOpacity,.6):sf.fillOpacity):0}});
    gj._fill=has;gj._hat=hat;gj._ln=v[1];gj._ol=FSTY[n||'기타']&&FSTY[n||'기타'].l||'';gj._ow=FSTY[n||'기타']&&FSTY[n||'기타'].w||0;gj._key=n||'기타';gj.addTo(ng);got++;var lk=n||'기타',e=LG[lk]||(LG[lk]={f:v[0],l:v[1],h:hat,c:0});e.c++})});
   swapG('fac',ng);LEG=LG;renderLeg();if(!got)status('이 화면에는 시설이 없습니다 · 지도를 옮기거나 축소해 보세요')})})}
 function doOwn(seq){var z=map.getZoom();
@@ -14891,7 +14893,7 @@ function upStyleFn(u){var st=stOf(u);return function(f){var t=f&&f.geometry&&f.g
 function restyle(u){if(UPG[u.id])UPG[u.id].setStyle(upStyleFn(u))}
 function upApply(u){if(UPG[u.id]){map.removeLayer(UPG[u.id]);delete UPG[u.id]}
  if(!map.getPane('p_'+u.id)){map.createPane('p_'+u.id);map.getPane('p_'+u.id).style.pointerEvents='none'}
- if(!u.on)return;var rd=L.svg({pane:'p_'+u.id,padding:.5});
+ if(!u.on)return;var rd=mkRd('p_'+u.id,.5);
  UPG[u.id]=L.geoJSON(u.gj,{interactive:false,renderer:rd,style:upStyleFn(u),pointToLayer:function(f,ll){return L.circleMarker(ll,{radius:stOf(u).radius,renderer:rd,color:'#fff',weight:1,fillColor:stOf(u).color,fillOpacity:.95,interactive:false})}}).addTo(map);applyZ()}
 function gbbox(gj){var b=[1e9,1e9,-1e9,-1e9];(function w(c){if(typeof c[0]==='number'){if(c[0]<b[0])b[0]=c[0];if(c[1]<b[1])b[1]=c[1];if(c[0]>b[2])b[2]=c[0];if(c[1]>b[3])b[3]=c[1]}else c.forEach(w)})(gj.features.map(function(f){return f.geometry?f.geometry.coordinates:[]}));return b}
 function shpMsg(t,bad){var e=document.getElementById('shpMsg');e.textContent=t||'';e.hidden=!t;e.style.color=bad?'var(--warn)':'var(--mut)'}
@@ -16861,7 +16863,8 @@ function lines(){var base=$('bjBase').value.trim(),a=[];$('bjTx').value.split(/\
  window.__diag=diag})();
 /* v17: 업데이트 내용 · 저장 공간 */
 (function(){var $=function(i){return document.getElementById(i)};
- var LOGV='2026-11-12p',CH=[
+ var LOGV='2026-11-12q',CH=[
+ ['2026.11.11 (선 색 연하게 나오는 문제 수정)',['폰 진단 결과, 기기가 SVG로 그린 선만 연하게 바꾸고 있었습니다. 지도 선(지적·시설·소유구분·지구단위·건축물·내 SHP)을 캔버스 방식으로 그리도록 바꿨습니다. 캔버스는 색이 바뀌지 않고, 선이 많은 곳에서 더 가볍습니다. 문제가 생기면 인증키 창 → 연결 진단에서 SVG로 되돌릴 수 있습니다.']],
  ['2026.11.11 (색 표시 진단)',['인증키 창 → 연결 진단 → "색 표시 진단": 폰에서 선 색이 다르게 보일 때, 기기가 어떤 그리기 방식의 색을 바꾸는지 확인합니다.']],
  ['2026.11.11 (창 글자·줄 높이 줄임)',['레이어·범례 창의 제목과 안내 문구를 줄이고, 레이어 창의 줄 높이를 42px에서 약 34px로 줄여 한 화면에 더 많이 보이게 했습니다.']],
  ['2026.11.11 (범례 글자 줄임)',['시설 범례의 글자(11px)·줄 간격·색 칸을 레이어 창에 맞게 더 줄였고, 설정에서 글자 크기를 키워 둔 경우에도 범례만은 과하게 커지지 않게 했습니다.']],
@@ -17500,6 +17503,11 @@ b.onclick=function(){var ua=navigator.userAgent||'',wv=/; wv\)|WebView|Version\/
  function row(bg,label){return '<div class="cdR" style="background:'+bg+'"><b>'+label+'</b><span class="cdS" style="background:#000"></span><svg width="46" height="18" aria-hidden="true"><line x1="2" y1="9" x2="44" y2="9" stroke="#000" stroke-width="3"/></svg><canvas width="46" height="18" data-c="#000"></canvas><span class="cdS" style="background:#00f"></span><svg width="46" height="18" aria-hidden="true"><line x1="2" y1="9" x2="44" y2="9" stroke="#00f" stroke-width="3"/></svg><canvas width="46" height="18" data-c="#00f"></canvas></div>'}
  o.innerHTML='<div class="sub" style="margin:0 0 6px">실행 환경: <b>'+kind+'</b> · 시스템 화면 '+pcs+' · 강제 색상 '+fc+'</div><div class="cdH"><span></span><span>검정 칸</span><span>검정 선</span><span>검정 캔버스</span><span>파랑 칸</span><span>파랑 선</span><span>파랑 캔버스</span></div>'+row('#d9d9d9','밝은 배경')+row('#3a4a3a','어두운 배경')+'<div class="sub" style="margin:6px 0 0">두 배경에서 각각 6개 모두 같은 색(검정·파랑)으로 보여야 정상입니다. 어느 줄·어느 칸만 회색이나 연한 색이면 그 방식으로 그릴 때 기기가 색을 바꾸는 것이므로, 화면을 캡처해서 알려 주세요.</div>';
  [].forEach.call(o.querySelectorAll('canvas'),function(c){var x=c.getContext('2d');x.strokeStyle=c.getAttribute('data-c');x.lineWidth=3;x.beginPath();x.moveTo(2,9);x.lineTo(44,9);x.stroke()});o.hidden=false}})();
+
+/* 지도 선 그리기 방식 */
+(function(){var b=document.getElementById('rdrBtn');if(!b)return;var cur='canvas';try{cur=JSON.parse(localStorage.getItem('rdr'))==='svg'?'svg':'canvas'}catch(e){}
+b.textContent='지도 선 그리기: '+(cur==='canvas'?'캔버스 (기본) → SVG로 바꾸기':'SVG → 캔버스로 바꾸기');
+b.onclick=function(){try{localStorage.setItem('rdr',JSON.stringify(cur==='canvas'?'svg':'canvas'))}catch(e){}location.reload()}})();
 })();
 
 </script></body></html>
