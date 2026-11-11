@@ -1709,6 +1709,33 @@ html[data-fs="1.12"] #legend .lgs,html[data-fs="1.25"] #legend .lgs{columns:1}
 #fmBox .fmI{width:32px;height:32px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--fg);flex:none;cursor:pointer}
 #fmBox .fmE{width:100%;box-sizing:border-box;font:inherit;font-size:14px;padding:6px 8px;border:1px solid var(--acc);border-radius:8px;background:var(--bg);color:var(--fg)}#fmBox .fmEb{display:flex;gap:6px;margin-top:6px}#fmBox .fmEb .btn{height:30px;padding:0 12px;font-size:12.5px}
 #fmSync{margin:0 0 10px;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--card)}#fmSync .fmSr{display:flex;align-items:center;gap:10px}#fmSync .fmSr>div{flex:1;min-width:0}#fmSync .btn{height:34px;padding:0 14px}
+
+/* 화면 팝업 단순화 */
+#viewPop .ph:before{display:none!important}
+#viewPop{padding:6px 14px 10px}
+#viewPop details.vg{border:0!important;border-radius:0!important;background:none!important;padding:0!important;margin:0!important;border-bottom:1px solid var(--line)!important}
+#viewPop details.vg:last-child{border-bottom:0!important}
+#viewPop details.vg>summary{display:flex;align-items:center;justify-content:space-between;padding:13px 0 11px!important;font-size:12px!important;font-weight:800;letter-spacing:.06em;color:var(--mut);list-style:none;cursor:pointer;text-transform:none}
+#viewPop details.vg>summary::-webkit-details-marker{display:none}
+#viewPop details.vg>summary::after{content:'▾'!important;width:auto!important;height:auto!important;border:0!important;transform:none!important;margin:0!important;font-size:11px}
+#viewPop details.vg[open]>summary::after{content:'▴'!important}
+#viewPop details.vg[open]>summary{border-bottom:0!important;margin-bottom:0!important}
+#viewPop details.vg[open]{padding-bottom:8px!important}
+#viewPop .vr{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:6px 12px;padding:8px 0;min-height:44px}
+#viewPop .vr+.vr{border-top:1px solid color-mix(in srgb,var(--line) 55%,transparent)}
+#viewPop .vl{flex:1 1 96px;min-width:0}
+#viewPop .vl b{display:block;font-size:13.5px;font-weight:600;color:var(--fg);line-height:1.3}
+#viewPop .vl small{display:block;font-size:11.5px;color:var(--mut);line-height:1.35;margin-top:1px}
+#viewPop .vr>div[id$=Seg],#viewPop .vr>.fsq{display:flex!important;flex:0 1 auto;width:auto;margin:0!important;gap:0}
+#viewPop .vr>div[id$=Seg]:not(#palSeg) button{height:32px;padding:0 11px;font-size:12.5px}
+#viewPop #palSeg button{padding:4px 4px 5px!important;gap:4px!important;border-radius:10px!important;font-size:11px!important}#viewPop #palSeg button i{height:14px!important}
+#viewPop .vr>#palSeg{display:grid!important;grid-template-columns:repeat(4,1fr);gap:7px!important;flex:1 1 100%;width:100%}
+#viewPop .vr>div[id$=Seg]:not(#palSeg) button{white-space:nowrap}
+#viewPop details.vg>.btn{display:flex;align-items:center;justify-content:space-between;width:100%;height:40px;margin:2px 0;padding:0 12px;text-align:left;font-size:13.5px;font-weight:500}
+#viewPop details.vg>.btn::after{content:'›';color:var(--mut);font-size:16px}
+#viewPop details.vg>.ph:empty{display:none}
+#viewPop details.vg details#advDet{border:0;margin-top:6px;padding-top:0}
+#viewPop details.vg details#advDet>summary.ph{background:none;border:1px dashed var(--line);font-weight:600;font-size:13px}
 </style>
 </head><body>
 <div id="map"></div>
@@ -14420,7 +14447,7 @@ var LS=window.localStorage;function g(k,d){try{var v=LS.getItem(k);return v==nul
  if(o.m!=null){var mm={};o.m.split(',').forEach(function(i){if(i)mm[i]=true});s('muniOn',mm)}
  history.replaceState(null,'',location.pathname+location.search)}catch(e){}})();
 var KEY=g('key',''),DOM=g('dom',location.hostname||'localhost');
-var BUILD="2611121731";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
+var BUILD="2611121739";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
 applyTheme(THEME);
 var BASE=g('base','Base');if(['Base','Satellite','SatLabel','white','none'].indexOf(BASE)<0)BASE='Base';
 // 레이어: id, 이름, 표시 WMS 이름, 조회용 data 코드
@@ -16955,7 +16982,8 @@ function lines(){var base=$('bjBase').value.trim(),a=[];$('bjTx').value.split(/\
  window.__diag=diag})();
 /* v17: 업데이트 내용 · 저장 공간 */
 (function(){var $=function(i){return document.getElementById(i)};
- var LOGV='2026-11-12w',CH=[
+ var LOGV='2026-11-12x',CH=[
+ ['2026.11.12 (화면 설정 단순화)',['화면 메뉴를 "설정 이름 · 오른쪽에 선택" 한 줄씩으로 다시 짰습니다. 상자 속 상자를 없애고 구분선만 남겼으며, 긴 설명은 이름 아래 작은 글씨로 옮겼습니다. 색상 견본은 작게 줄였습니다.']],
  ['2026.11.12 (즐겨찾기·별명 기기 간 공유)',['설정 > 즐겨찾기·별명 관리 > "기기 간 공유"를 켜면 같은 인증키를 쓰는 기기끼리 즐겨찾기와 별명이 자동으로 맞춰집니다(켤 때, 바꿀 때, 앱을 다시 볼 때, 5분마다). 한쪽에서 지우거나 이름을 바꾼 것도 반영됩니다. 이름·주소·좌표가 승인 서버(Google Apps Script)에 인증키 해시 이름으로 저장되며, 서버(access_server.gs)를 새 버전으로 다시 배포해야 작동합니다. 승인된 기기만 쓸 수 있습니다.']],
  ['2026.11.12 (화면 설정 정리 · 즐겨찾기 일괄 관리)',['화면 > 보기의 고급 설정 안쪽 항목들이 한 줄 제목처럼만 보여 눌러 열린다는 걸 알기 어려웠습니다. 이제 제목마다 테두리와 ▾ 표시가 붙고, 열면 안쪽 내용이 왼쪽 선으로 구분됩니다. 정보창 항목·"더 보기" 체크 목록은 글자가 잘리지 않게 한 줄씩 보입니다.','설정(톱니) > "즐겨찾기·별명 관리" 신설: 이름·주소 검색, 필지 별명/위치 구분, 모두 선택, 선택 삭제(한 번 더 확인), 맨 위로, 이름 바꾸기(✎), 지도에서 보기(↗), 이름순/저장순 정렬.']],
  ['2026.11.12 (지번 별명 저장·검색 이동)',['필지를 눌러 나오는 정보 카드의 "☆ 별명 저장"으로 그 필지에 별명(예: 우리집, 마곡 현장)을 붙입니다. 검색창에 별명을 입력하거나 앞글자만 쳐도 목록에 뜨고, 엔터를 누르면 그 필지로 이동해 정보창까지 열립니다. 검색창을 비워 두고 누르면 저장한 별명이 먼저 보입니다. 별명은 즐겨찾기 목록에도 같이 들어가고, 설정 백업에 포함됩니다. 별명 이름 바꾸기·삭제는 카드의 ★ 버튼에서 합니다.']],
@@ -17672,6 +17700,16 @@ b.onclick=function(){try{localStorage.setItem('rdr',JSON.stringify(cur==='canvas
   if(t.dataset.go!==undefined){var f3=all[+t.dataset.go];document.getElementById('keyModal').hidden=true;map.setView([f3.lat,f3.lng],f3.z||19);if(f3.al)setTimeout(function(){pick(f3.lat,f3.lng)},700)}});
  det.addEventListener('toggle',function(){if(det.open){del=0;edit=null;render()}});
  var kb=document.getElementById('bKey');window.__fmRender=render;if(kb)kb.addEventListener('click',function(){setTimeout(function(){if(det.open)render();else document.getElementById('fmCnt').textContent=F().length?F().length+'개':''},0)});
+})();
+
+/* ---- 화면 설정 팝업: 한 줄 한 설정으로 정리 ---- */
+(function(){var vp=document.getElementById('viewPop');if(!vp)return;
+ function split(t){var m=/^(.*?)\s*\((.*)\)\s*$/.exec(t);return m?[m[1],m[2]]:[t,'']}
+ function row(ph,ct){var t=split(ph.textContent.trim()),r=document.createElement('div');r.className='vr';var l=document.createElement('div');l.className='vl';l.innerHTML='<b>'+esc(t[0])+'</b>'+(t[1]?'<small>'+esc(t[1])+'</small>':'');ph.parentNode.insertBefore(r,ph);r.appendChild(l);r.appendChild(ct);ph.remove()}
+ function go(root){[].slice.call(root.children).forEach(function(ph){if(!ph.classList||!ph.classList.contains('ph'))return;var tx=ph.textContent.trim();if(!tx)return;var ct=ph.nextElementSibling;if(!ct||!(/Seg$/.test(ct.id)||ct.classList.contains('fsq')))return;row(ph,ct)})}
+ [].forEach.call(vp.querySelectorAll('details.vg'),go);var a=document.getElementById('advDet');if(a)go(a);
+ var oh=document.querySelector('#ohSeg [data-o="1"]');if(oh)oh.textContent='켬';
+ var ol=document.querySelector('#ohSeg');if(ol&&ol.parentNode.classList.contains('vr')){var sm=ol.parentNode.querySelector('.vl small');if(!sm){sm=document.createElement('small');ol.parentNode.querySelector('.vl').appendChild(sm)}sm.textContent='버튼을 화면 아래로'}
 })();
 })();
 
