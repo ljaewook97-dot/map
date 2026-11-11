@@ -14369,7 +14369,7 @@ var LS=window.localStorage;function g(k,d){try{var v=LS.getItem(k);return v==nul
  if(o.m!=null){var mm={};o.m.split(',').forEach(function(i){if(i)mm[i]=true});s('muniOn',mm)}
  history.replaceState(null,'',location.pathname+location.search)}catch(e){}})();
 var KEY=g('key',''),DOM=g('dom',location.hostname||'localhost');
-var BUILD="2611112204";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
+var BUILD="2611112232";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
 applyTheme(THEME);
 var BASE=g('base','Base');if(['Base','Satellite','SatLabel','white','none'].indexOf(BASE)<0)BASE='Base';
 // 레이어: id, 이름, 표시 WMS 이름, 조회용 data 코드
@@ -14442,12 +14442,13 @@ function fSave(){s('facSty',FSTY)}
 function fLive(k){var o=FSTY[k]||{},f=S_('fac');GG.fac.eachLayer(function(l){if(l._key!==k)return;var st={};if(o.l){l._ol=o.l;st.color=o.l}if(o.f==='none'){l._fill=false;l._hat=false;st.fill=false;st.fillOpacity=0}else if(o.f){l._fill=true;l._hat=false;st.fill=true;st.fillColor=o.f;st.fillOpacity=f.fillOpacity}l.setStyle(st)});
  if(LEG[k]){if(o.f)LEG[k].f=o.f;if(o.l)LEG[k].l=o.l;if(o.f)LEG[k].h=false}}
 function fSw(k){var e=LEG[k];if(!e)return;var row=document.querySelector('#legBody .lg[data-k="'+k.replace(/"/g,'\\"')+'"] i');if(row){row.style.background=e.f==='none'?'transparent':e.f;row.style.borderColor=e.l}}
-document.getElementById('legBody').addEventListener('input',function(e){var ed=e.target.closest('.lgEd');if(!ed)return;var k=ed.getAttribute('data-k'),o=FSTY[k]||(FSTY[k]={});
+function lgIn(e){var ed=e.target.closest('.lgEd');if(!ed)return;var k=ed.getAttribute('data-k'),o=FSTY[k]||(FSTY[k]={});
  if(e.target.hasAttribute('data-f')){o.f=e.target.value;var cb=ed.querySelector('[data-fn]');if(cb)cb.checked=false}
  else if(e.target.hasAttribute('data-l'))o.l=e.target.value;
  else if(e.target.hasAttribute('data-fn')){if(e.target.checked)o.f='none';else o.f=ed.querySelector('[data-f]').value}
- fSave();fLive(k);fSw(k)});
-document.getElementById('legBody').addEventListener('change',function(e){if(e.target.closest('.lgEd'))renderLeg()});
+ fSave();fLive(k);fSw(k)}
+document.getElementById('legBody').addEventListener('input',lgIn);
+document.getElementById('legBody').addEventListener('change',function(e){if(e.target.closest('.lgEd')){lgIn(e);renderLeg()}});
 document.getElementById('legBody').addEventListener('click',function(e){var b=e.target.closest('button');
  if(b&&b.id==='lgRsAll'){FSTY={};fSave();EDK='';renderLeg();refreshVec();return}
  if(b&&b.hasAttribute('data-rs')){var k0=b.parentNode.getAttribute('data-k');delete FSTY[k0];fSave();renderLeg();refreshVec();return}
@@ -14602,7 +14603,7 @@ function builtinPanel(id){var p=document.createElement('div');p.className='sty';
  function line(lab,el){var d=document.createElement('div');d.className='sr';var l=document.createElement('label');l.textContent=lab;d.appendChild(l);d.appendChild(el);p.appendChild(d)}
  function rng(k,min,max,step,fmt,after){var w=document.createElement('div');w.className='rg';var i=document.createElement('input');i.type='range';i.min=min;i.max=max;i.step=step;i.value=id==='x'?0:(function(){var v=S_(id)[k];return /opacity|fillOpacity/i.test(k)?Math.round(v*100):v})();var b=document.createElement('b');var cv=function(v){return /opacity|fillOpacity/i.test(k)?v/100:+v};b.textContent=fmt(i.value);
   i.oninput=function(){b.textContent=fmt(i.value);setSty(id,k,cv(i.value));reAny(id);if(k==='fs'||k==='fc')rootVars()};i.onchange=function(){if(after)after()};w.appendChild(i);w.appendChild(b);return w}
- function colr(k){var c=document.createElement('input');c.type='color';var v=S_(id)[k];c.value=/^#[0-9a-f]{6}$/i.test(v)?v:'#ff0000';c.oninput=function(){setSty(id,k,c.value);reAny(id);if(k==='fc')rootVars()};return c}
+ function colr(k){var c=document.createElement('input');c.type='color';var v=S_(id)[k];c.value=/^#[0-9a-f]{6}$/i.test(v)?v:'#ff0000';c.oninput=c.onchange=function(){setSty(id,k,c.value);reAny(id);if(k==='fc')rootVars()};return c}
  var pct=function(v){return v+'%'},px=function(v){return v+'px'};
  if(id==='cad'){line('색',colr('color'));line('선 두께',rng('weight',0.5,4,0.5,px));line('선 투명도',rng('opacity',10,100,5,pct));
   var sel=document.createElement('select');Object.keys(DASH).forEach(function(k){var o=document.createElement('option');o.textContent=k;o.value=DASH[k];if(DASH[k]===(st.dash||''))o.selected=true;sel.appendChild(o)});sel.onchange=function(){setSty('cad','dash',sel.value);reCad()};line('선 종류',sel);
@@ -15496,8 +15497,8 @@ if(!adm()&&!lg('accOk')){var pre=function(){if(!gate&&document.body)showGate()};
 /* scale + view width */
 (function(){L.control.scale({metric:true,imperial:false,position:'bottomleft',maxWidth:96}).addTo(map);
  var C=L.control({position:'bottomleft'});C.onAdd=function(){var d=L.DomUtil.create('div','vw');L.DomEvent.disableClickPropagation(d);return d};C.addTo(map);
- function upd(){var el=document.querySelector('.vw');if(!el)return;var w=viewW(),over=w>VLIM&&(lay('cad').on||lay('own').on);el.innerHTML='가로 약 '+(w>=1000?(w/1000).toFixed(1)+'km':Math.round(w/10)*10+'m')+(over?' <b>· 지적 범위 밖</b>':'');el.className='vw'+(over?' w':'')}
- map.on('move zoom moveend',upd);upd();window.__updVW=upd})();
+ function upd(){var el=document.querySelector('.vw');if(!el)return;var w=viewW(),over=w>VLIM&&(lay('cad').on||lay('own').on);var t='가로 약 '+(w>=1000?(w/1000).toFixed(1)+'km':Math.round(w/10)*10+'m')+(over?' <b>· 지적 범위 밖</b>':'');if(t===el._t)return;el._t=t;el.innerHTML=t;el.className='vw'+(over?' w':'')}
+ var _ru=0;function updT(){if(_ru)return;_ru=requestAnimationFrame(function(){_ru=0;upd()})}map.on('move zoom moveend',updT);upd();window.__updVW=upd})();
 
 
 /* ===== 오른쪽 메뉴 이름 보기 + 두 번 터치 후 위아래로 확대·축소 ===== */
@@ -16819,7 +16820,8 @@ function lines(){var base=$('bjBase').value.trim(),a=[];$('bjTx').value.split(/\
  window.__diag=diag})();
 /* v17: 업데이트 내용 · 저장 공간 */
 (function(){var $=function(i){return document.getElementById(i)};
- var LOGV='2026-11-12d',CH=[
+ var LOGV='2026-11-12e',CH=[
+ ['2026.11.11 (폰 색 선택 수정)',['폰에서 색 선택창이 닫힐 때만 값을 알려주는 경우에도 레이어 선 색·채우기 색이 지도에 적용되도록 고쳤습니다. 이전에는 칸에는 고른 색이 보이는데 지도는 그대로인 경우가 있었습니다. 지도를 끌 때 하단 "가로 약 …m" 표시 갱신 횟수도 줄였습니다.']],
  ['2026.11.11 (시설 범례 스타일 바꾸기)',['시설 범례의 항목마다 ✎를 눌러 채우기 색·채우기 없음·선 색을 바꿀 수 있습니다. 바꾸면 지도에 바로 반영되고 "내 스타일"로 표시됩니다. "이 항목 되돌리기"와 "바꾼 스타일 모두 되돌리기"로 원래대로 돌릴 수 있습니다.','바꾼 시설 스타일은 프로젝트 저장과 PC↔폰 전송에 함께 들어갑니다.']],
  ['2026.11.11 (PC→폰 전송 후 SHP가 안 보이던 문제)',['PC에서 폰으로 지도를 보낸 뒤 받는 기기에서 SHP·레이어가 바로 적용되지 않던 문제를 고쳤습니다. 받은 뒤 "지금 적용 / 나중에"를 물어보고, 지금 적용을 누르면 받은 SHP·레이어·위치가 바로 열립니다.','전에는 받은 프로젝트가 목록에만 저장되어 "불러오기"를 따로 눌러야 SHP가 보였습니다.']],
  ['2026.11.11 (건축물 레이어 없이 조회)',['"건축물" 레이어를 꺼 두어도 필지를 누르면 건축물 정보(용도·층수·용적률·건폐율·사용승인일)를 조회해 보여 줍니다. 레이어를 켜면 지도 위에 건물 외곽과 층수가 추가로 표시되는 것은 그대로입니다.']],
