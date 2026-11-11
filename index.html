@@ -1679,6 +1679,7 @@ html[data-fs="1.12"] #legend .lgs,html[data-fs="1.25"] #legend .lgs{columns:1}
 #legend .lgEd .lgW{flex:1 0 100%;display:flex;align-items:center;gap:10px}#legend .lgEd .lgW input{flex:1;min-width:0}#legend .lgEd .lgW b{min-width:3.2em;text-align:right;font-weight:600}
 #legend .lg{font-size:12px!important;padding:5px 10px!important;min-height:28px!important;gap:8px!important}#legend .lg i{flex:0 0 18px;height:12px}#legend .lg b{font-size:12px}#legend h3{font-size:13px!important}#legend h3 span{font-size:11px!important}#legend .lgTop{margin:0 0 6px}#legend .lgTop input[type=search]{height:32px;font-size:12px}#legend .lgTop .lgOv,#legend .lgTop .sub{font-size:11.5px}#legend .lgEd{font-size:12px;padding:6px 10px 8px;gap:8px 12px}#legend .lgEd .lgEn{font-size:12px}#legend .lgEd label{font-size:12px}#legend .lgEd input[type=color]{width:40px!important;height:34px!important}#legend .lgAll .btn{font-size:12px;padding:7px 10px}#legend .lgs>.sub{font-size:12px}#legend .lg .lgE{height:28px;width:36px;margin:-4px -6px -4px 0;font-size:14px}html[data-fs="1.12"] #legend{zoom:.9}html[data-fs="1.25"] #legend{zoom:.8}
 #legend .lg{font-size:11px!important;padding:3px 10px!important;min-height:24px!important;gap:7px!important}#legend .lg b{font-size:11px}#legend .lg i{flex:0 0 16px;height:10px;border-width:1.5px}#legend .lg .lgE{height:24px;width:32px;margin:-3px -6px -3px 0;font-size:13px}#legend h3{font-size:12px!important;margin:0 0 2px!important;padding-bottom:6px!important}#legend h3 span{font-size:10.5px!important}#legend .lgTop input[type=search]{height:30px;font-size:11.5px}#legend .lgTop .lgOv,#legend .lgTop .sub{font-size:11px}#legend .lgEd,#legend .lgEd label,#legend .lgEd .lgEn{font-size:11.5px}#legend .lgEd input[type=color]{width:36px!important;height:30px!important}#legend .lgAll .btn,#legend .lgEd .btn{font-size:11.5px;padding:6px 10px}#legend .lgs>.sub{font-size:11.5px;padding:10px}html[data-fs="1.12"] #legend{zoom:.88}html[data-fs="1.25"] #legend{zoom:.78}
+#legend.fl:not(.bs) .grip,#layers.fl:not(.bs) .grip{font-size:12.5px!important;flex:0 0 32px!important}#legend.fl.bs .grip,#layers.fl.bs .grip{font-size:13px!important}.sheet.fl .pz>.hint{font-size:10.5px!important;margin:0 0 3px!important}.lr{padding:2px 0!important}.lr .chip,.lr .chip.on{height:30px!important;font-size:12px!important;padding:0 9px!important;gap:7px!important;border-radius:9px!important}.lr .chip .sw{flex:0 0 13px!important;height:13px!important}.lr .chip .tg{flex:0 0 30px!important;height:17px!important}.lr .chip .tg:after{width:13px!important;height:13px!important}.lr .chip.on .tg:after{transform:translateX(13px)!important}.lr .ab{height:30px!important;min-width:30px!important}
 </style>
 </head><body>
 <div id="map"></div>
@@ -14388,7 +14389,7 @@ var LS=window.localStorage;function g(k,d){try{var v=LS.getItem(k);return v==nul
  if(o.m!=null){var mm={};o.m.split(',').forEach(function(i){if(i)mm[i]=true});s('muniOn',mm)}
  history.replaceState(null,'',location.pathname+location.search)}catch(e){}})();
 var KEY=g('key',''),DOM=g('dom',location.hostname||'localhost');
-var BUILD="2611120033";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
+var BUILD="2611120036";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
 applyTheme(THEME);
 var BASE=g('base','Base');if(['Base','Satellite','SatLabel','white','none'].indexOf(BASE)<0)BASE='Base';
 // 레이어: id, 이름, 표시 WMS 이름, 조회용 data 코드
@@ -16858,7 +16859,8 @@ function lines(){var base=$('bjBase').value.trim(),a=[];$('bjTx').value.split(/\
  window.__diag=diag})();
 /* v17: 업데이트 내용 · 저장 공간 */
 (function(){var $=function(i){return document.getElementById(i)};
- var LOGV='2026-11-12n',CH=[
+ var LOGV='2026-11-12o',CH=[
+ ['2026.11.11 (창 글자·줄 높이 줄임)',['레이어·범례 창의 제목과 안내 문구를 줄이고, 레이어 창의 줄 높이를 42px에서 약 34px로 줄여 한 화면에 더 많이 보이게 했습니다.']],
  ['2026.11.11 (범례 글자 줄임)',['시설 범례의 글자(11px)·줄 간격·색 칸을 레이어 창에 맞게 더 줄였고, 설정에서 글자 크기를 키워 둔 경우에도 범례만은 과하게 커지지 않게 했습니다.']],
  ['2026.11.11 (범례 선 두께·창 겹침)',['시설 범례의 ✎ 창에서 항목별 선 두께(0.5~6px)를 바꿀 수 있습니다.','PC에서 "레이어" 창과 "범례" 창이 겹쳐 뜨던 것을 고쳤습니다. 하나를 열면 다른 하나는 닫힙니다.']],
  ['2026.11.11 (범례 검색·프리셋 미리보기)',['시설 범례 글자가 갈색으로 보이던 것을 기본 글자색으로 고쳤습니다(어두운 화면에서도 읽기 쉽게).','시설 항목이 8개 이상이면 범례 위에 이름 검색과 "바꾼 항목만" 보기가 나타납니다.','스타일 프리셋을 목록으로 바꾸고 선 색 미리보기 점을 붙였습니다.']],
