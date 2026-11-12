@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="ko"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="app-build" content="2611130020">
+<meta name="app-build" content="2611130025">
 <meta name="theme-color" content="#16241f">
 <meta name="color-scheme" content="light dark"><meta name="supported-color-schemes" content="light dark"><meta name="darkreader-lock">
 <link rel="manifest" href="manifest.json">
@@ -2036,6 +2036,14 @@ html #quick>button,html #quick>button:not(#qTog):not(#qShot),html #quick>button#
 html #quick .qp{width:var(--qs)!important;height:auto!important;flex-direction:column;border-radius:calc(var(--qs)/2);align-self:flex-start}
 html #quick .qp button{width:100%!important;min-width:0;height:calc(var(--qs)*.86)!important;padding:0;font-size:12px}
 html #quick .qp button+button{border-left:0;border-top:1px solid var(--line)}
+
+/* 정보창 카드: 바탕보다 한 단계 밝은 면 + 또렷한 테두리로 통일 */
+#infoBody{--cbg:color-mix(in srgb,var(--fg) 5.5%,var(--card));--cbd:color-mix(in srgb,var(--fg) 20%,var(--card))}
+#infoBody .hero,#infoBody .stats,#infoBody .sec:not(.dcard){background:var(--cbg)!important;border:1px solid var(--cbd)!important;border-radius:12px}
+#infoBody .hero .hc{border-right-color:var(--cbd)}
+#infoBody .hero .hz{border-top-color:var(--cbd);background:color-mix(in srgb,var(--acc) 10%,var(--cbg))}
+#infoBody .stats .st+.st{border-left-color:var(--cbd)}
+#infoBody .sec.fdc:not(.closed)>small{border-bottom-color:var(--cbd)}
 </style>
 </head><body>
 <div id="map"></div>
@@ -14753,7 +14761,7 @@ var LS=window.localStorage;function g(k,d){try{var v=LS.getItem(k);return v==nul
  if(o.m!=null){var mm={};o.m.split(',').forEach(function(i){if(i)mm[i]=true});s('muniOn',mm)}
  history.replaceState(null,'',location.pathname+location.search)}catch(e){}})();
 var KEY=g('key',''),DOM=g('dom',location.hostname||'localhost');
-var BUILD="2611130020";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
+var BUILD="2611130025";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
 applyTheme(THEME);
 var BASE=g('base','Base');if(['Base','Satellite','SatLabel','white','none'].indexOf(BASE)<0)BASE='Base';
 // 레이어: id, 이름, 표시 WMS 이름, 조회용 data 코드
@@ -17308,7 +17316,7 @@ function lines(){var base=$('bjBase').value.trim(),a=[];$('bjTx').value.split(/\
  window.__diag=diag})();
 /* v17: 업데이트 내용 · 저장 공간 */
 (function(){var $=function(i){return document.getElementById(i)};
- window.__ver='2026-11-14o';var LOGV='2026-11-14o',CH=[
+ window.__ver='2026-11-14p';var LOGV='2026-11-14p',CH=[
  ['2026.11.14 (축척을 그 자리에서)',['화면 왼쪽 아래 "1:N"을 누르면 그 바로 위에 작은 창이 떠서 원하는 축척 숫자를 직접 넣고(예: 1200) 축척을 잠글 수 있습니다. 창은 지도 영역 안에만 뜹니다(오른쪽 도구 창으로 가지 않습니다). A4 도면 저장은 같은 창의 "A4 도면 저장…"에서 엽니다.']],
  ['2026.11.14 (기능 찾기·이럴 땐 이렇게)',['설정 창과 화면 창 맨 위의 "기능 찾기"를 누르면, "축척", "글자 크기", "검색 안 될 때"처럼 말로 검색해서 해당 메뉴의 위치를 알려 주고 "찾아가기"로 바로 열어 줍니다(열린 뒤 그 칸이 잠깐 깜빡입니다).']],
  ['2026.11.14 (정축척 찾기 쉽게)',['화면 왼쪽 아래의 "1:N"(현재 축척)을 누르면 도구 창의 "도면 · 축척"이 바로 열립니다. 이 메뉴는 도구 창 "화면 맞추기" 바로 위로 옮겼습니다.']],
