@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="ko"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="app-build" content="2611122231">
+<meta name="app-build" content="2611122236">
 <meta name="theme-color" content="#16241f">
 <meta name="color-scheme" content="light dark"><meta name="supported-color-schemes" content="light dark"><meta name="darkreader-lock">
 <link rel="manifest" href="manifest.json">
@@ -14650,7 +14650,7 @@ var LS=window.localStorage;function g(k,d){try{var v=LS.getItem(k);return v==nul
  if(o.m!=null){var mm={};o.m.split(',').forEach(function(i){if(i)mm[i]=true});s('muniOn',mm)}
  history.replaceState(null,'',location.pathname+location.search)}catch(e){}})();
 var KEY=g('key',''),DOM=g('dom',location.hostname||'localhost');
-var BUILD="2611122231";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
+var BUILD="2611122236";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
 applyTheme(THEME);
 var BASE=g('base','Base');if(['Base','Satellite','SatLabel','white','none'].indexOf(BASE)<0)BASE='Base';
 // 레이어: id, 이름, 표시 WMS 이름, 조회용 data 코드
@@ -17200,7 +17200,8 @@ function lines(){var base=$('bjBase').value.trim(),a=[];$('bjTx').value.split(/\
  window.__diag=diag})();
 /* v17: 업데이트 내용 · 저장 공간 */
 (function(){var $=function(i){return document.getElementById(i)};
- window.__ver='2026-11-14d';var LOGV='2026-11-14d',CH=[
+ window.__ver='2026-11-14e';var LOGV='2026-11-14e',CH=[
+ ['2026.11.14 (검색 결과 위치)',['검색 결과 목록이 화면 전체 폭으로 펼쳐지던 것을 검색창과 같은 위치·폭으로 맞췄습니다. 검색창이 화면 아래쪽에 있을 때(한 손 조작, 좁은 창)는 목록이 위로 펼쳐집니다.']],
  ['2026.11.14 (알림 위치·즐겨찾기 버튼·반경 카드 표기)',['오프라인 안내 막대를 화면 아래쪽(버튼 사이)으로 옮겨 위쪽 알림과 겹치지 않게 했습니다. 즐겨찾기 창의 "그룹"·"전체" 버튼에 같은 모양의 아이콘을 넣었습니다. 반경 분석 카드의 빈 값도 "정보 없음"으로 맞췄습니다.']],
  ['2026.11.14 (글자 크기 = 글자만)',['글자 크기를 바꾸면 화면 전체가 확대·축소되던 것을 고쳐, 메뉴·창의 글자 크기만 바뀝니다. 단추와 간격은 그대로이고, 지도 위 지번 글자는 기존 설정을 따릅니다. 90%~130%.']],
  ['2026.11.14 (설정 창 정리)',['설정 > 화면의 선택 단추(끔/켬, 자동/밝게/어둡게 등) 폭을 통일하고, 글자 크기 단추는 한 줄 전체 폭으로 넓혔습니다.']],
@@ -18175,6 +18176,20 @@ b.onclick=function(){try{localStorage.setItem('rdr',JSON.stringify(cur==='canvas
  sheets();inl(document.body);
  var pend=[],tm=0;new MutationObserver(function(ms){ms.forEach(function(m){[].forEach.call(m.addedNodes,function(n){if(n.nodeType===1)pend.push(n)})});if(!tm)tm=requestAnimationFrame(function(){tm=0;var a=pend;pend=[];sheets();a.forEach(inl)})}).observe(document.body,{childList:true,subtree:true});
  window.addEventListener('load',function(){sheets();inl(document.body)});
+})();
+
+/* 검색 결과 목록: 검색창 위치·폭에 맞춰 (한 손 모드에서는 위로 펼침) */
+(function(){
+ var e=document.getElementById('sRes'),busy=false;if(!e)return;
+ function place(){if(busy||e.hidden)return;busy=true;try{var sb=document.querySelector('.srch');if(!sb||sb.offsetParent===null&&getComputedStyle(sb).display==='none'){busy=false;return}
+  var r=sb.getBoundingClientRect(),op=e.offsetParent,pr=op?op.getBoundingClientRect():{left:0,top:0,width:innerWidth,height:innerHeight},vh=window.innerHeight,low=r.top+r.height/2>vh/2,gap=6;
+  e.style.left=(r.left-pr.left)+'px';e.style.right='auto';e.style.width=r.width+'px';
+  if(low){e.style.top='auto';e.style.bottom=(pr.top+pr.height-r.top+gap)+'px';e.style.maxHeight=Math.max(120,Math.min(vh*.6,r.top-16))+'px'}
+  else{e.style.bottom='auto';e.style.top=(r.bottom-pr.top+gap)+'px';e.style.maxHeight=Math.max(120,Math.min(vh*.6,vh-r.bottom-gap-12))+'px'}
+  }catch(x){}busy=false}
+ new MutationObserver(function(){place()}).observe(e,{attributes:true,attributeFilter:['hidden'],childList:true});
+ window.addEventListener('resize',function(){place()});
+ var sb0=document.querySelector('.srch');if(sb0)sb0.addEventListener('focusin',function(){setTimeout(place,50)});
 })();
 
 </script></body></html>
