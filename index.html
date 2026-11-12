@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="ko"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="app-build" content="2611122152">
+<meta name="app-build" content="2611122205">
 <meta name="theme-color" content="#16241f">
 <meta name="color-scheme" content="light dark"><meta name="supported-color-schemes" content="light dark"><meta name="darkreader-lock">
 <link rel="manifest" href="manifest.json">
@@ -1902,12 +1902,18 @@ html .fgP2 i{color:#fff}
 #infoBody .stats.none{grid-template-columns:1fr}
 #infoBody .stats.none .st{display:flex;align-items:baseline;gap:10px;padding-top:7px;padding-bottom:7px}
 #infoBody .stats.none .st small{margin:0}
-#infoBody .stats.none .st b{font-size:13px;font-weight:600}
+#infoBody .stats.none .st b{font-size:13px;font-weight:500;color:var(--mut)}
 @media (max-width:600px){#infoFold{display:none!important}#infoTb{gap:6px}}
 #infoBody .hero .hz .cp{color:var(--mut)}
 #infoBody .hero .hz .cp b{color:var(--fg)}
 :root[data-theme="dark"] #infoBody .hero .hz .cp{color:#b9c3d6}:root[data-theme="dark"] #infoBody .hero .hz .cp b{color:#fff}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) #infoBody .hero .hz .cp{color:#b9c3d6}:root:not([data-theme="light"]) #infoBody .hero .hz .cp b{color:#fff}}
+
+#infoBody .nd{font-size:13px;font-weight:500;color:var(--mut)}
+#infoBody .hero .hc b .nd{font-size:13px}
+#infoBody .stats .st b .nd{font-size:13px}
+#infoBody .ih h3 .ap{font-weight:500;color:var(--mut);font-size:.84em}
+#infoBody .ih h3 .at{font-weight:800}
 </style>
 </head><body>
 <div id="map"></div>
@@ -14624,7 +14630,7 @@ var LS=window.localStorage;function g(k,d){try{var v=LS.getItem(k);return v==nul
  if(o.m!=null){var mm={};o.m.split(',').forEach(function(i){if(i)mm[i]=true});s('muniOn',mm)}
  history.replaceState(null,'',location.pathname+location.search)}catch(e){}})();
 var KEY=g('key',''),DOM=g('dom',location.hostname||'localhost');
-var BUILD="2611122152";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
+var BUILD="2611122205";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
 applyTheme(THEME);
 var BASE=g('base','Base');if(['Base','Satellite','SatLabel','white','none'].indexOf(BASE)<0)BASE='Base';
 // 레이어: id, 이름, 표시 WMS 이름, 조회용 data 코드
@@ -14785,7 +14791,8 @@ function doCad(seq){var z=map.getZoom(),cs=S_('cad');
   if(CL)vis.forEach(function(x){L.geoJSON(x.geometry,{interactive:false,renderer:RN.cad,style:{color:cs.color,weight:cs.weight,opacity:cs.opacity,dashArray:cs.dash||null,fill:false}}).addTo(ng)});
   swapG('cad',ng);if(z<18||!JB){swapG('txt',L.layerGroup());return}
   vis.forEach(function(x){var rg=ringPx(x.geometry),xs=rg.map(function(p){return p[0]}),ys=rg.map(function(p){return p[1]});items.push({rg:rg,w:Math.max.apply(0,xs)-Math.min.apply(0,xs),h:Math.max.apply(0,ys)-Math.min.apply(0,ys),p:x.properties||{}})});
-  items.sort(function(a,b){return b.w*b.h-a.w*a.h});var tg=L.layerGroup(),placed=[],i=0,k=cs.fs/11;
+  (function(){var sz=map.getSize(),hw=sz.x/2,hh=sz.y/2;items=items.filter(function(it){var n=it.rg.length,cx=0,cy=0;for(var q=0;q<n;q++){cx+=it.rg[q][0];cy+=it.rg[q][1]}cx=cx/n-hw;cy=cy/n-hh;return Math.sqrt((cx/hw)*(cx/hw)+(cy/hh)*(cy/hh))<=.95})})();
+  items.sort(function(a,b){return b.w*b.h-a.w*a.h});if(items.length>350)items.length=350;var tg=L.layerGroup(),placed=[],i=0,k=cs.fs/11;
   var minMn=(z>=20.5?0:Math.max(0,16-(z-18)*6.5))*.75,minA=(z>=20.3?0:Math.max(0,1600-(z-18)*700))*.7;
   function place(it){var t=jb(it.p),txt=t.n+(z>=19&&t.j?t.j:'');if(!t.n)return;var ang0=axisAng(it.rg),mn=Math.min(it.w,it.h),tw=txtW(txt),SC=[1.6,1.3,1.1,1,.85,.72],hit=null;
    if(mn<minMn||it.w*it.h<minA)return;
@@ -15055,18 +15062,20 @@ function spk(ys,pr){var a=ys.slice().sort(function(x,y){return x-y}).map(functio
 function distCard(S,pnu){var a=distNames(S);if(!a.length)return '';
  return '<div class="sec dcard"><small>지구단위계획구역</small><div>'+a.map(function(x){return '<span class="tag">'+esc(x)+'</span>'}).join('')+'</div><p class="sub" style="margin:2px 0 0;font-size:12px">세부 기준은 구역별 계획이 우선합니다. 토지이음에서 계획도서를 열람하세요.</p>'+(pnu?'<a class="xl" target="_blank" rel="noopener" href="https://www.eum.go.kr/web/ar/lu/luLandDet.jsp?isNoScr=script&mode=search&pnu='+encodeURIComponent(pnu)+'" style="display:inline-block;margin-top:6px">토지이음 바로가기</a> <button type="button" class="xl" data-fitz="1" style="display:inline-block;margin-top:6px;margin-left:4px">구역 보기 · 과거와 나란히</button>':'')+'</div>'}
 function distNames(S){var a=[];(S.dist||[]).concat((S.spec||[]).filter(function(x){return /지구단위/.test(x)})).forEach(function(x){if(a.indexOf(x)<0)a.push(x)});return a}
+function addrH(a){a=String(a||'');var t=a.split(/\s+/).filter(Boolean),k=-1;for(var i=t.length-1;i>=0;i--){if(/[동리가읍면]$/.test(t[i])){k=i;break}}if(k<0)k=Math.max(0,t.length-2);if(k<=0)return esc(a);return '<span class="ap">'+esc(t.slice(0,k).join(' '))+'</span> <span class="at">'+esc(t.slice(k).join(' '))+'</span>'}
+var ND='<span class="nd">정보 없음</span>';
 function heroH(S,partial){var q=jb({jibun:S.jibun}),ar=S.area?Number(S.area).toLocaleString('ko-KR'):'',z=(S.zones||[]).filter(function(x,i,a){return a.indexOf(x)===i});
  var o=null,capsOn=false,fb=false;try{o=ordOf(S.addr)}catch(e){}
  var zr=z.map(function(nm){var k=String(nm).replace(/\(.*?\)/g,'').replace(/\s/g,''),ix=ZK.indexOf(k),cp='';if(ix>=0){var b=o&&o[3][ix]!=null?o[3][ix]:SB[ix],r=o&&o[4][ix]!=null?o[4][ix]:SR[ix],st=o&&(o[3][ix]==null||o[4][ix]==null)?'*':'';capsOn=true;cp='<span class="cp">건폐율 <b>'+b+'</b>% · 용적률 <b>'+r+'</b>%'+st+'</span>'}return '<div class="hzr"><span class="tag">'+esc(nm)+'</span>'+cp+'</div>'}).join('');
- return '<div class="hero"><div class="hc"><small>지번</small><b>'+esc(q.n||S.jibun||'—')+'</b></div><div class="hc"><small>지목</small><b>'+esc(S.jimok||q.j||'—')+'</b></div><div class="hc"><small>면적</small><b>'+(ar?ar+'<i>㎡</i>':'—')+'</b></div>'+
-  '<div class="hz"><small>용도지역'+(z.length>1?' · '+z.length+'곳에 걸침':'')+(capsOn?' · 상한값':'')+'</small><div class="hzl">'+(z.length?zr:'<span class="hn">'+(partial?'조회 중…':'해당 없음 · 켜 둔 레이어만 조회')+'</span>')+'</div></div></div>'}
+ return '<div class="hero"><div class="hc"><small>지번</small><b>'+(q.n||S.jibun?esc(q.n||S.jibun):ND)+'</b></div><div class="hc"><small>지목</small><b>'+(S.jimok||q.j?esc(S.jimok||q.j):ND)+'</b></div><div class="hc"><small>면적</small><b>'+(ar?ar+'<i>㎡</i>':ND)+'</b></div>'+
+  '<div class="hz"><small>용도지역'+(z.length>1?' · '+z.length+'곳에 걸침':'')+(capsOn?' · 상한값':'')+'</small><div class="hzl">'+(z.length?zr:'<span class="hn">'+(partial?'조회 중…':'정보 없음 · 켜 둔 레이어만 조회')+'</span>')+'</div></div></div>'}
 function render(S,pnu,partial){
  var won=function(n){return n?Number(n).toLocaleString('ko-KR')+'원/㎡':''},ow=owner(S.own);
  function sec(l,v){return v?'<div class="sec"><small>'+l+'</small><div>'+v+'</div></div>':''}
- var h='<div class="ih"><h3>'+esc(S.addr||S.jibun)+'</h3><div class="ihs">'+esc(S.jibun)+'</div>'+(window.__alBtn?window.__alBtn(S,pnu):'')+'</div>'+
+ var h='<div class="ih"><h3>'+addrH(S.addr||S.jibun)+'</h3><div class="ihs">'+esc(S.jibun)+'</div>'+(window.__alBtn?window.__alBtn(S,pnu):'')+'</div>'+
   heroH(S,partial)+(!partial&&!S.own&&!S.jiga?'<div class="stats none"><div class="st"><small>소유 · 공시지가</small><b class="em">정보 없음</b></div></div>':'<div class="stats">'+
-  '<div class="st"><small>소유</small><b>'+(S.own?'<span class="tag own-'+ow+'">'+ow+'</span>':'—')+(S.own&&S.own!==ow?'<em>'+esc(S.own)+'</em>':'')+'</b></div>'+
-  '<div class="st"><small>공시지가'+(S.gy?' · '+esc(S.gy)+'년':'')+'</small><b>'+(S.jiga?won(S.jiga):'—')+'</b>'+(S.jiga?'<div class="sub" style="margin:2px 0 0">평당 '+man(S.jiga*3.3058)+(S.area?' · 총액 '+man(S.jiga*S.area)+'(추정)':'')+'</div>':'')+'</div></div>')+sumL(S)+
+  '<div class="st"><small>소유</small><b>'+(S.own?'<span class="tag own-'+ow+'">'+ow+'</span>':ND)+(S.own&&S.own!==ow?'<em>'+esc(S.own)+'</em>':'')+'</b></div>'+
+  '<div class="st"><small>공시지가'+(S.gy?' · '+esc(S.gy)+'년':'')+'</small><b>'+(S.jiga?won(S.jiga):ND)+'</b>'+(S.jiga?'<div class="sub" style="margin:2px 0 0">평당 '+man(S.jiga*3.3058)+(S.area?' · 총액 '+man(S.jiga*S.area)+'(추정)':'')+'</div>':'')+'</div></div>')+sumL(S)+
   sec('용도지역',tags(S.zones)+zoneSplit(S))+capSec(S)+useSec(S)+distCard(S,pnu)+sec('개발제한',tags(S.gbs,1))+sec('기타',tags(S.spec.filter(function(x){return !/지구단위/.test(x)})))+sec('시설',tags(dedupFac(S.fac)))+sec('토지이용',tags(S.use))+(S.bld&&S.bld.length?sec('건축물',bldHtml(S.bld,S.area)):'')+ratioSec(S)+shpRows(S.shp)+
   (S.ll?sec('바로가기',extLinks(S.ll[0],S.ll[1],S.addr,pnu)):'')+(partial?'<p class="sub sk-t">세부 정보를 불러오는 중…</p>':'<p class="sub">PNU '+esc(pnu)+' · 켜 둔 레이어만 조회됩니다.</p>');
  document.getElementById('infoBody').innerHTML=h;try{foldSecs()}catch(e){}}
@@ -17169,7 +17178,9 @@ function lines(){var base=$('bjBase').value.trim(),a=[];$('bjTx').value.split(/\
  window.__diag=diag})();
 /* v17: 업데이트 내용 · 저장 공간 */
 (function(){var $=function(i){return document.getElementById(i)};
- window.__ver='2026-11-13x';var LOGV='2026-11-13x',CH=[
+ window.__ver='2026-11-13z';var LOGV='2026-11-13z',CH=[
+ ['2026.11.13 (주소줄·빈 값 표시 통일)',['필지 카드 맨 위 주소에서 시·도·시·구는 흐리고 작게, 동·번지는 굵게 보여 줍니다. 값이 없을 때 "—"·"해당 없음"·"정보 없음"이 섞여 나오던 것을 "정보 없음"(작은 회색 글씨) 하나로 통일했습니다.']],
+ ['2026.11.13 (먼 필지 지번 생략)',['지번 글자는 화면 중앙에 가까운 필지만 그리고, 화면 모서리 쪽 필지와 350개를 넘는 작은 필지는 생략합니다(지적선은 그대로). 넓은 화면에서 그리는 양을 줄여 속도를 높이기 위한 변경입니다.']],
  ['2026.11.13 (카드 위쪽 정리)',['소유·공시지가 정보가 둘 다 없으면 두 칸 대신 한 줄("소유 · 공시지가 정보 없음")로 보여 줍니다. 좁은 화면(폰)에서는 카드 위쪽 "모두 접기" 단추를 숨겨 단추 줄을 줄였습니다. 어두운 테마에서 건폐율·용적률 글자색을 더 밝게 했습니다.']],
  ['2026.11.13 (지도 이동 중 조회 미루기)',['지도를 움직이거나 확대·축소하는 동안에는 지적·소유구분 조회를 멈추고, 움직임이 멈춘 뒤 0.7초 뒤에 한 번만 조회합니다. 범위가 1.5km로 넓어져 느려진 것을 줄이기 위한 변경입니다.']],
  ['2026.11.13 (필지 카드 전체 정리)',['건폐율·용적률이 위 요약에 나오므로 용도지역·건폐율·용적률 섹션은 "더 보기" 안으로 옮겼습니다(이미 직접 고르신 분은 설정 그대로). "그 밖에 해당" 칩은 두 줄까지만 보이고 나머지는 "+N 더 보기"로 접습니다. 하단 "더 보기" 줄의 글씨가 겹치거나 잘리지 않게 고쳤고, 용도지역 안내 문구를 "상한값" 한 단어로 줄였습니다.']],
