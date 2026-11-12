@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="ko"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="app-build" content="2611122130">
+<meta name="app-build" content="2611122136">
 <meta name="theme-color" content="#16241f">
 <meta name="color-scheme" content="light dark"><meta name="supported-color-schemes" content="light dark"><meta name="darkreader-lock">
 <link rel="manifest" href="manifest.json">
@@ -1470,7 +1470,7 @@ body:has(#ldPill:not([hidden])) .toast.ld{display:none!important}
 .sumL .sc.g{background:#fde8e5;color:var(--warn)}.sumL .sc.d{background:#efe4fb;color:#6a2fb5}.sumL .sc.f{background:#e3f0fb;color:#1c5d99}
 .sumL .none{font-size:12.5px;color:var(--mut)}
 /* 지번 글자 선명도 */
-html[data-jbc="1"] .jbi span{font-weight:900!important;-webkit-text-stroke:3.2px color-mix(in srgb,var(--jbsc,#000) 80%,transparent)!important}
+html[data-jbc="1"] .jbi span{font-weight:900!important;paint-order:stroke fill;-webkit-text-stroke:var(--jbw,3.2px) color-mix(in srgb,var(--jbsc,#000) 80%,transparent)!important}
 #skBox{display:grid;grid-template-columns:1fr 1fr;gap:4px 8px;font-size:13px}.skl{display:flex;align-items:center;gap:4px}
 #hifSeg{display:flex;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--bg)}#hifSeg button{flex:1;height:34px;border:0;background:none;color:var(--fg);font:inherit;font-size:13px;font-weight:600}#hifSeg button.on{background:var(--acc2);color:var(--acc)}
 #jbcSeg{display:flex;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--bg)}#jbcSeg button{flex:1;height:34px;border:0;background:none;color:var(--fg);font:inherit;font-size:13px;font-weight:600}#jbcSeg button.on{background:var(--acc2);color:var(--acc)}
@@ -1881,6 +1881,14 @@ html .fgP2 i{color:#fff}
 #infoBody .stats .st .sub{font-size:11.5px}
 #infoBody .sumL{font-size:12px}
 #infoBody .sumL .sc{font-size:12px;padding:3px 9px}
+
+#infoBody .hero .hz .hzl{flex-direction:column;align-items:flex-start;gap:7px}
+#infoBody .hero .hz .hzr{display:flex;align-items:center;flex-wrap:wrap;gap:4px 10px}
+#infoBody .hero .hz .cp{font-size:12.5px;color:var(--mut);white-space:nowrap}
+#infoBody .hero .hz .cp b{font-size:15px;font-weight:800;color:var(--fg)}
+#infoBody .stats{grid-template-columns:minmax(92px,auto) 1fr}
+#infoBody .stats .st .sub{white-space:nowrap}
+#jbwBox .rg{display:flex;align-items:center;gap:8px}#jbwBox input{flex:1;min-width:0}#jbwBox b{flex:0 0 40px;text-align:right;font-weight:500;font-size:13px}
 </style>
 </head><body>
 <div id="map"></div>
@@ -1923,6 +1931,7 @@ html .fgP2 i{color:#fff}
  <div class="ph">오른쪽 메뉴 글자</div><div id="rlSeg"><button data-r="s" type="button">작게</button><button data-r="m" type="button">크게</button><button data-r="x" type="button">숨김</button></div>
 <details id="advDet" style="margin-top:12px"><summary class="ph" style="cursor:pointer">고급 설정 (선명도·밝기·투명도 등)</summary>
  <div class="ph">지번 글자 선명도 (위성 위에서 더 또렷하게)</div><div id="jbcSeg"><button data-j="auto" type="button">자동</button><button data-j="off" type="button">보통</button><button data-j="on" type="button">진하게</button></div>
+ <div class="ph" style="margin-top:8px">지번 글자 테두리 굵기</div><div id="jbwBox"><div class="rg"><input type="range" id="jbwR" min="0" max="8" step="0.5"><b id="jbwV"></b></div></div>
  <details id="skDet" style="margin-top:12px"><summary class="ph" style="cursor:pointer">정보창 항목 기본 펼침·접힘</summary><div class="sub" style="margin:4px 0">체크한 항목만 펼쳐서 보입니다. 해제하면 접혀서 제목만 보입니다.</div><div style="display:flex;gap:6px;margin-bottom:6px"><button class="btn" id="skAll" type="button">모두 펼치기</button><button class="btn" id="skNone" type="button">모두 접기</button></div><div id="skBox"></div></details>
  <details id="moreDet" style="margin-top:12px"><summary class="ph" style="cursor:pointer">정보창 "더 보기"로 묶을 칸</summary><div class="sub" style="margin:4px 0">체크한 칸은 정보창에서 "더 보기" 한 줄 안에 숨겨 둡니다. 해제하면 항상 보입니다.</div><div id="moreBox"></div></details>
  <div class="ph" style="margin-top:12px">키보드 단축키 (PC)</div><button class="btn" id="scBtn" type="button" style="width:100%;height:40px">단축키 안내 보기 (?)</button>
@@ -14596,7 +14605,7 @@ var LS=window.localStorage;function g(k,d){try{var v=LS.getItem(k);return v==nul
  if(o.m!=null){var mm={};o.m.split(',').forEach(function(i){if(i)mm[i]=true});s('muniOn',mm)}
  history.replaceState(null,'',location.pathname+location.search)}catch(e){}})();
 var KEY=g('key',''),DOM=g('dom',location.hostname||'localhost');
-var BUILD="2611122130";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
+var BUILD="2611122136";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
 applyTheme(THEME);
 var BASE=g('base','Base');if(['Base','Satellite','SatLabel','white','none'].indexOf(BASE)<0)BASE='Base';
 // 레이어: id, 이름, 표시 WMS 이름, 조회용 data 코드
@@ -15028,15 +15037,17 @@ function distCard(S,pnu){var a=distNames(S);if(!a.length)return '';
  return '<div class="sec dcard"><small>지구단위계획구역</small><div>'+a.map(function(x){return '<span class="tag">'+esc(x)+'</span>'}).join('')+'</div><p class="sub" style="margin:2px 0 0;font-size:12px">세부 기준은 구역별 계획이 우선합니다. 토지이음에서 계획도서를 열람하세요.</p>'+(pnu?'<a class="xl" target="_blank" rel="noopener" href="https://www.eum.go.kr/web/ar/lu/luLandDet.jsp?isNoScr=script&mode=search&pnu='+encodeURIComponent(pnu)+'" style="display:inline-block;margin-top:6px">토지이음 바로가기</a> <button type="button" class="xl" data-fitz="1" style="display:inline-block;margin-top:6px;margin-left:4px">구역 보기 · 과거와 나란히</button>':'')+'</div>'}
 function distNames(S){var a=[];(S.dist||[]).concat((S.spec||[]).filter(function(x){return /지구단위/.test(x)})).forEach(function(x){if(a.indexOf(x)<0)a.push(x)});return a}
 function heroH(S,partial){var q=jb({jibun:S.jibun}),ar=S.area?Number(S.area).toLocaleString('ko-KR'):'',z=(S.zones||[]).filter(function(x,i,a){return a.indexOf(x)===i});
+ var o=null,capsOn=false,fb=false;try{o=ordOf(S.addr)}catch(e){}
+ var zr=z.map(function(nm){var k=String(nm).replace(/\(.*?\)/g,'').replace(/\s/g,''),ix=ZK.indexOf(k),cp='';if(ix>=0){var b=o&&o[3][ix]!=null?o[3][ix]:SB[ix],r=o&&o[4][ix]!=null?o[4][ix]:SR[ix],st=o&&(o[3][ix]==null||o[4][ix]==null)?'*':'';capsOn=true;cp='<span class="cp">건폐율 <b>'+b+'</b>% · 용적률 <b>'+r+'</b>%'+st+'</span>'}return '<div class="hzr"><span class="tag">'+esc(nm)+'</span>'+cp+'</div>'}).join('');
  return '<div class="hero"><div class="hc"><small>지번</small><b>'+esc(q.n||S.jibun||'—')+'</b></div><div class="hc"><small>지목</small><b>'+esc(S.jimok||q.j||'—')+'</b></div><div class="hc"><small>면적</small><b>'+(ar?ar+'<i>㎡</i>':'—')+'</b></div>'+
-  '<div class="hz"><small>용도지역'+(z.length>1?' · '+z.length+'곳에 걸침':'')+'</small><div>'+(z.length?tags(z):'<span class="hn">'+(partial?'조회 중…':'해당 없음 · 켜 둔 레이어만 조회')+'</span>')+'</div></div></div>'}
+  '<div class="hz"><small>용도지역'+(z.length>1?' · '+z.length+'곳에 걸침':'')+(capsOn?' · 건폐율·용적률은 상한(조례 기준)':'')+'</small><div class="hzl">'+(z.length?zr:'<span class="hn">'+(partial?'조회 중…':'해당 없음 · 켜 둔 레이어만 조회')+'</span>')+'</div></div></div>'}
 function render(S,pnu,partial){
  var won=function(n){return n?Number(n).toLocaleString('ko-KR')+'원/㎡':''},ow=owner(S.own);
  function sec(l,v){return v?'<div class="sec"><small>'+l+'</small><div>'+v+'</div></div>':''}
  var h='<div class="ih"><h3>'+esc(S.addr||S.jibun)+'</h3><div class="ihs">'+esc(S.jibun)+'</div>'+(window.__alBtn?window.__alBtn(S,pnu):'')+'</div>'+
   heroH(S,partial)+'<div class="stats">'+
   '<div class="st"><small>소유</small><b>'+(S.own?'<span class="tag own-'+ow+'">'+ow+'</span>':'—')+(S.own&&S.own!==ow?'<em>'+esc(S.own)+'</em>':'')+'</b></div>'+
-  '<div class="st"><small>공시지가'+(S.gy?' · '+esc(S.gy)+'년':'')+'</small><b>'+(S.jiga?won(S.jiga):'—')+'</b>'+(S.jiga?'<div class="sub" style="margin:2px 0 0">평당 약 '+man(S.jiga*3.3058)+(S.area?' · 총액(추정) 약 '+man(S.jiga*S.area):'')+'</div>':'')+'</div></div>'+sumL(S)+
+  '<div class="st"><small>공시지가'+(S.gy?' · '+esc(S.gy)+'년':'')+'</small><b>'+(S.jiga?won(S.jiga):'—')+'</b>'+(S.jiga?'<div class="sub" style="margin:2px 0 0">평당 '+man(S.jiga*3.3058)+(S.area?' · 총액 '+man(S.jiga*S.area)+'(추정)':'')+'</div>':'')+'</div></div>'+sumL(S)+
   sec('용도지역',tags(S.zones)+zoneSplit(S))+capSec(S)+useSec(S)+distCard(S,pnu)+sec('개발제한',tags(S.gbs,1))+sec('기타',tags(S.spec.filter(function(x){return !/지구단위/.test(x)})))+sec('시설',tags(dedupFac(S.fac)))+sec('토지이용',tags(S.use))+(S.bld&&S.bld.length?sec('건축물',bldHtml(S.bld,S.area)):'')+ratioSec(S)+shpRows(S.shp)+
   (S.ll?sec('바로가기',extLinks(S.ll[0],S.ll[1],S.addr,pnu)):'')+(partial?'<p class="sub sk-t">세부 정보를 불러오는 중…</p>':'<p class="sub">PNU '+esc(pnu)+' · 켜 둔 레이어만 조회됩니다.</p>');
  document.getElementById('infoBody').innerHTML=h;try{foldSecs()}catch(e){}}
@@ -17139,7 +17150,8 @@ function lines(){var base=$('bjBase').value.trim(),a=[];$('bjTx').value.split(/\
  window.__diag=diag})();
 /* v17: 업데이트 내용 · 저장 공간 */
 (function(){var $=function(i){return document.getElementById(i)};
- window.__ver='2026-11-13s';var LOGV='2026-11-13s',CH=[
+ window.__ver='2026-11-13t';var LOGV='2026-11-13t',CH=[
+ ['2026.11.13 (카드 요약 보강 · 지번 테두리)',['용도지역 줄에 건폐율·용적률 상한(조례 기준)을 함께 보여 주고, 여러 용도지역에 걸치면 각각 보여 줍니다. 공시지가 아래 "평당·총액" 줄을 짧게 줄여 소유·공시지가 칸을 낮췄습니다. 화면 설정 > 자세한 설정에 "지번 글자 테두리 굵기"(0~8px)를 넣었습니다.']],
  ['2026.11.13 (필지 카드 글자 크기)',['필지 카드의 주소·지번·지목·면적·용도지역·소유·공시지가 글자를 한 단계 줄였습니다. 더 줄이거나 키우려면 화면 설정의 "글자 크기"를 쓰세요.']],
  ['2026.11.13 (필지 카드 상단 버튼 줄임)',['필지 카드 맨 위의 표시·위치 공유·내리기·모두 접기/펼치기 버튼을 아이콘만 있는 작은 버튼으로 바꿔 별명 저장 줄에 합쳤습니다. 버튼을 길게 누르면(마우스는 올리면) 이름이 보입니다. 지번·지목·면적 요약이 위로 올라옵니다.']],
  ['2026.11.13 (선 두께 줌 연동)',['화면 설정 "선 두께 줌 연동"을 끔·약하게·보통 중에서 고릅니다. 켜면 확대할수록 선이 굵어지고 축소하면 얇아져, 확대·축소했을 때 선 두께와 겹침이 비슷하게 보입니다(기준은 확대 18단계). 기본은 끔입니다.']],
@@ -17578,6 +17590,8 @@ function lines(){var base=$('bjBase').value.trim(),a=[];$('bjTx').value.split(/\
  var JBC=g('jbc','auto');
  function apJbc(){var on=JBC==='on'||(JBC==='auto'&&/^Sat/.test(BASE));document.documentElement.setAttribute('data-jbc',on?'1':'0');[].forEach.call($('jbcSeg').children,function(b){b.classList.toggle('on',b.dataset.j===JBC)})}
  [].forEach.call($('jbcSeg').children,function(b){b.onclick=function(){JBC=b.dataset.j;s('jbc',JBC);apJbc()}});
+ var JW=+g('jbw',3.2);if(!isFinite(JW))JW=3.2;function apJw(){document.documentElement.style.setProperty('--jbw',JW+'px');$('jbwV').textContent=JW+'px';$('jbwR').value=JW}
+ $('jbwR').oninput=function(){JW=+this.value;s('jbw',JW);if(JBC==='off'){JBC='on';s('jbc',JBC);apJbc()}apJw()};apJw();
  var _sb3=setBase;setBase=function(b){_sb3(b);apJbc()};apJbc();
  var OPK={cad:'opacity',own:'fillOpacity',dist:'fillOpacity',bld:'fillOpacity',fac:'fillOpacity'};
  function opFill(){var bx=$('opBox');bx.innerHTML='';var n=0;LAYERS.forEach(function(l){if(!l.on)return;var k=OPK[l.id]||'opacity',v=S_(l.id)[k];if(v==null)return;n++;
