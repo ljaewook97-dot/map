@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="ko"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="app-build" content="2611121941">
 <meta name="theme-color" content="#16241f">
 <meta name="color-scheme" content="light dark"><meta name="supported-color-schemes" content="light dark"><meta name="darkreader-lock">
 <link rel="manifest" href="manifest.json">
@@ -1806,6 +1807,11 @@ html[data-fs="1.12"] #legend .lgs,html[data-fs="1.25"] #legend .lgs{columns:1}
 #fmToast span{flex:1;min-width:0}
 #fmToast button{height:30px;padding:0 12px;border-radius:9px;border:0;background:var(--acc);color:#fff;font:inherit;font-weight:700}
 #fmToast .x{background:transparent;color:inherit;opacity:.6;padding:0 8px}
+
+.accRow .who b{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.accRow .accMe{font-style:normal;font-size:10.5px;font-weight:700;padding:1px 7px;border-radius:9px;background:var(--acc);color:#fff;line-height:1.5}
+.accRow .who small{display:block;overflow-wrap:anywhere}
+.accRow .accSt{margin-top:1px}
 </style>
 </head><body>
 <div id="map"></div>
@@ -14520,7 +14526,7 @@ var LS=window.localStorage;function g(k,d){try{var v=LS.getItem(k);return v==nul
  if(o.m!=null){var mm={};o.m.split(',').forEach(function(i){if(i)mm[i]=true});s('muniOn',mm)}
  history.replaceState(null,'',location.pathname+location.search)}catch(e){}})();
 var KEY=g('key',''),DOM=g('dom',location.hostname||'localhost');
-var BUILD="2611121935";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
+var BUILD="2611121941";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
 applyTheme(THEME);
 var BASE=g('base','Base');if(['Base','Satellite','SatLabel','white','none'].indexOf(BASE)<0)BASE='Base';
 // 레이어: id, 이름, 표시 WMS 이름, 조회용 data 코드
@@ -15586,7 +15592,7 @@ function render(list,err){var bx=$('accList');if(!bx)return;
  var cnt={all:list.length,p:pend,ok:list.filter(function(x){return x.s==='ok'}).length,no:list.filter(function(x){return x.s==='no'}).length};
  h+='<div class="accF" style="display:flex;gap:5px;flex-wrap:wrap;margin:6px 0">'+[['all','전체'],['p','대기'],['ok','승인'],['no','차단']].map(function(f){return '<button type="button" class="btn'+(flt===f[0]?' on':'')+'" data-f="'+f[0]+'" style="height:30px;padding:0 10px;font-size:12px">'+f[1]+' '+cnt[f[0]]+'</button>'}).join('')+'</div>';
  var vis=list.filter(function(x){return flt==='all'||x.s===flt}).sort(function(a1,b1){return flt==='ok'||flt==='no'?lastOf(a1)-lastOf(b1):0});
- vis.forEach(function(x){var st=x.s==='p'?'대기':x.s==='ok'?'승인':'차단',lt=x.s==='p'?'요청 '+when(x.t):(x.ls?'마지막 접속 '+ago(x.ls):'접속 기록 없음 · 승인 '+ago(x.t2||x.t));h+='<div class="accRow s'+x.s+'"><div class="who"><b>'+esc(x.n)+'</b><small>'+esc(x.o)+' · '+st+' · '+lt+(x.id===ID?' · 이 기기':'')+'</small></div><div class="bt">'+(cf&&cf.i===x.id?'':
+ vis.forEach(function(x){var st=x.s==='p'?'대기':x.s==='ok'?'승인':'차단',lt=x.s==='p'?'요청 '+when(x.t):(x.ls?'마지막 접속 '+ago(x.ls):'접속 기록 없음 · 승인 '+ago(x.t2||x.t));h+='<div class="accRow s'+x.s+'"><div class="who"><b>'+esc(x.n)+(x.id===ID?' <em class="accMe">이 기기</em>':'')+'</b><small>'+esc(x.o)+'</small><small class="accSt">'+st+' · '+lt+'</small></div><div class="bt">'+(cf&&cf.i===x.id?'':
   (x.s!=='ok'?'<button type="button" data-a="ok" data-i="'+x.id+'">승인</button>':'')+(x.s==='p'?'<button type="button" data-a="no" data-i="'+x.id+'">거절</button>':'')+(x.s==='ok'?'<button type="button" data-a="no" data-i="'+x.id+'">차단</button>':'')+'<button type="button" data-a="del" data-i="'+x.id+'">삭제</button>')+'</div>'+(cf&&cf.i===x.id?cfBox(x):'')+'</div>'});
  if(!vis.length&&list.length)h+='<div class="sub">해당하는 기기가 없습니다</div>';
  var old=list.filter(function(x){return x.s!=='p'&&x.id!==ID&&Date.now()-lastOf(x)>pgDays*864e5});
@@ -17061,7 +17067,8 @@ function lines(){var base=$('bjBase').value.trim(),a=[];$('bjTx').value.split(/\
  window.__diag=diag})();
 /* v17: 업데이트 내용 · 저장 공간 */
 (function(){var $=function(i){return document.getElementById(i)};
- window.__ver='2026-11-13j';var LOGV='2026-11-13j',CH=[
+ window.__ver='2026-11-13k';var LOGV='2026-11-13k',CH=[
+ ['2026.11.13 (새 버전 알림 · 접속 승인 화면 정리)',['앱을 열어 둔 사이 새 버전이 올라오면 "새 버전이 있습니다" 안내가 뜨고, 누르면 새로고침됩니다. 접속 승인 목록은 이름·소속·상태를 줄을 나눠 보여 주고 "이 기기"를 작은 표시로 바꿨습니다.']],
  ['2026.11.13 (접속 승인 화면 보완)',['접속 승인 화면의 "새로고침"을 누르면 이 기기의 접속 시각도 함께 서버에 기록한 뒤 목록을 불러옵니다. 화면 아래에 지금 열려 있는 앱 버전이 표시됩니다.']],
  ['2026.11.13 (지운 것 되돌리기 · 동기화 합침 알림)',['즐겨찾기·그룹을 지우거나 순서를 바꾸면 화면 아래에 "되돌리기" 안내가 잠시 뜹니다. 다른 기기의 변경을 합쳤을 때도 추가·삭제·수정 개수를 알려 줍니다.']],
  ['2026.11.13 (마지막 접속 기록 보완)',['관리자 기기처럼 승인 확인 화면을 거치지 않는 기기도 앱을 열어 두는 동안 5분마다 접속 시각이 서버에 기록됩니다.']],
@@ -17919,6 +17926,18 @@ b.onclick=function(){try{localStorage.setItem('rdr',JSON.stringify(cur==='canvas
   el.innerHTML='<span></span>'+(bl?'<button type="button" class="b">'+esc(bl)+'</button>':'')+'<button type="button" class="x" aria-label="닫기">✕</button>';el.firstChild.textContent=txt;el.hidden=false;
   var bb=el.querySelector('.b');if(bb)bb.onclick=function(){el.hidden=true;try{fn&&fn()}catch(e){}};el.querySelector('.x').onclick=function(){el.hidden=true};
   tm=setTimeout(function(){el.hidden=true},ms||9000)}})();
+
+/* ---- 새 버전 알림 ---- */
+(function(){if(!/^https?:/.test(location.protocol))return;var last=0,shown=0;
+ function cur(){try{return String(BUILD)}catch(e){return ''}}
+ function check(){if(shown||document.hidden||Date.now()-last<6e5)return;last=Date.now();
+  var ctl=window.AbortController?new AbortController():null;
+  fetch(location.pathname+'?v='+Date.now(),{cache:'no-store',signal:ctl&&ctl.signal}).then(function(r){if(!r.ok||!r.body||!r.body.getReader)return r.text().then(function(t){return t.slice(0,6000)});
+   var rd=r.body.getReader(),dec=new TextDecoder(),acc='';
+   return (function pump(){return rd.read().then(function(o){if(o.done)return acc;acc+=dec.decode(o.value,{stream:true});if(acc.length>6000||/app-build[^>]*>/.test(acc)){try{rd.cancel()}catch(e){}if(ctl)try{ctl.abort()}catch(e){}return acc}return pump()})})()}).then(function(t){
+   var m=/name="app-build" content="(\d{6,})"/.exec(t||'');if(!m)return;var nv=m[1],cv=cur();
+   if(cv&&/^\d+$/.test(cv)&&+nv>+cv&&window.__fmToast){shown=1;window.__fmToast('새 버전이 있습니다. 새로고침하면 바로 적용됩니다.','새로고침',function(){location.reload()},180000)}}).catch(function(){})}
+ setTimeout(check,8000);document.addEventListener('visibilitychange',function(){if(!document.hidden)check()});setInterval(check,12e5)})();
 })();
 
 </script></body></html>
