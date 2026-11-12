@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="ko"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="app-build" content="2611122221">
+<meta name="app-build" content="2611122226">
 <meta name="theme-color" content="#16241f">
 <meta name="color-scheme" content="light dark"><meta name="supported-color-schemes" content="light dark"><meta name="darkreader-lock">
 <link rel="manifest" href="manifest.json">
@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-title" content="딸깍 지도">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>딸깍 지도</title>
-<script>try{if(JSON.parse(localStorage.getItem("oh")))document.documentElement.setAttribute("data-oh","1")}catch(e){}try{var __f=JSON.parse(localStorage.getItem("fs"));if(__f){var __n=parseFloat(__f);if(__n>=.8&&__n<=1.6){document.documentElement.setAttribute("data-fs",__f);document.documentElement.style.setProperty("--fsz",__n);document.documentElement.style.setProperty("--fszi",1/__n)}}}catch(e){}try{var __p=JSON.parse(localStorage.getItem("pal"));document.documentElement.setAttribute("data-pal",__p||"navy")}catch(e){document.documentElement.setAttribute("data-pal","navy")}</script>
+<script>try{if(JSON.parse(localStorage.getItem("oh")))document.documentElement.setAttribute("data-oh","1")}catch(e){}try{var __f=JSON.parse(localStorage.getItem("fs"));if(__f){var __n=parseFloat(__f);if(__n>=.8&&__n<=1.6){document.documentElement.setAttribute("data-fz",__f);document.documentElement.style.setProperty("--fsz",__n);document.documentElement.style.setProperty("--fszi",1/__n)}}}catch(e){}try{var __p=JSON.parse(localStorage.getItem("pal"));document.documentElement.setAttribute("data-pal",__p||"navy")}catch(e){document.documentElement.setAttribute("data-pal","navy")}</script>
 <style>
 /* required styles */
 
@@ -1915,11 +1915,8 @@ html .fgP2 i{color:#fff}
 #infoBody .ih h3 .ap{font-weight:500;color:var(--mut);font-size:.84em}
 #infoBody .ih h3 .at{font-weight:800}
 
-html[data-fs] body>*:not(#map):not(script):not(style){zoom:var(--fsz,1)}
-html[data-fs] #legend{zoom:var(--fszi,1)}
 #fsRg{display:flex;align-items:center;gap:8px;margin:6px 0 0;font-size:11.5px;color:var(--mut)}#fsRg input{flex:1;min-width:0}#fsRg b{flex:0 0 42px;text-align:right;font-weight:600;font-size:12.5px;color:var(--fg)}
 
-html[data-fs] #netBar,html[data-fs] #fmToast,html[data-fs] .toast{max-width:calc((100vw - 24px)/var(--fsz,1))!important}
 
 /* 설정 창 정리: 선택 단추 폭 통일, 글자 크기는 한 줄 전체 */
 #viewPop .vr{align-items:center}
@@ -1959,7 +1956,7 @@ html[data-fs] #netBar,html[data-fs] #fmToast,html[data-fs] .toast{max-width:calc
  <details class="vg" data-g="fav" open><summary>자주 쓰는 설정</summary>
  <div class="ph">밝기 자동 조절 (햇빛·밤)</div><div id="briSeg"><button data-b="0" type="button">끔</button><button data-b="1" type="button">자동</button></div><div class="sub" id="briTx" style="margin:4px 0 0;font-size:11.5px"></div>
  <div class="ph">글자 크기 (메뉴·창)</div><div id="fsSeg"><button data-f="1">보통</button><button data-f="1.12">크게</button><button data-f="1.25">아주 크게</button></div>
- <div class="rg" id="fsRg"><span>작게</span><input type="range" id="fsR" min="0.9" max="1.4" step="0.05" aria-label="글자 크기"><span>크게</span><b id="fsV"></b></div>
+ <div class="rg" id="fsRg"><span>작게</span><input type="range" id="fsR" min="0.9" max="1.3" step="0.05" aria-label="글자 크기"><span>크게</span><b id="fsV"></b></div>
  <div class="ph">한 손 조작</div><div id="ohSeg"><button data-o="0" type="button">끔</button><button data-o="1" type="button">켬 · 버튼을 아래로</button></div>
  <div class="ph"></div><button class="btn" id="cmpOpen" type="button" style="width:100%">지도 비교 · 과거 항공사진</button>
  </details>
@@ -14647,7 +14644,7 @@ var LS=window.localStorage;function g(k,d){try{var v=LS.getItem(k);return v==nul
  if(o.m!=null){var mm={};o.m.split(',').forEach(function(i){if(i)mm[i]=true});s('muniOn',mm)}
  history.replaceState(null,'',location.pathname+location.search)}catch(e){}})();
 var KEY=g('key',''),DOM=g('dom',location.hostname||'localhost');
-var BUILD="2611122221";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
+var BUILD="2611122226";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
 applyTheme(THEME);
 var BASE=g('base','Base');if(['Base','Satellite','SatLabel','white','none'].indexOf(BASE)<0)BASE='Base';
 // 레이어: id, 이름, 표시 WMS 이름, 조회용 data 코드
@@ -16309,8 +16306,8 @@ window.__fld={parseLL:parseLL};
   new MutationObserver(function(){b.classList.toggle('on',t.classList.contains('on'));qmUpd()}).observe(t,{attributes:true,attributeFilter:['class']})});
  var qm=$('qMore');qm.onclick=function(){$('quick').classList.toggle('ex');qmUpd()};
  var fsb=$('fsSeg');
- function fsSet(v){v=Math.round(parseFloat(v)*100)/100;if(!(v>=.8&&v<=1.6))v=1;var d=document.documentElement;if(v===1){d.removeAttribute('data-fs');d.style.removeProperty('--fsz');d.style.removeProperty('--fszi')}else{d.setAttribute('data-fs',String(v));d.style.setProperty('--fsz',v);d.style.setProperty('--fszi',1/v)}s('fs',v===1?null:String(v));fsMark()}
- function fsMark(){var c=parseFloat(document.documentElement.getAttribute('data-fs')||'1');[].forEach.call(fsb.children,function(b){b.classList.toggle('on',Math.abs(parseFloat(b.dataset.f)-c)<.005)});var R=$('fsR');if(R){R.value=c;$('fsV').textContent=Math.round(c*100)+'%'}}
+ function fsSet(v){v=Math.round(parseFloat(v)*100)/100;if(!(v>=.8&&v<=1.6))v=1;var d=document.documentElement;if(v===1){d.removeAttribute('data-fz');d.style.removeProperty('--fsz');d.style.removeProperty('--fszi')}else{d.setAttribute('data-fz',String(v));d.style.setProperty('--fsz',v);d.style.setProperty('--fszi',1/v)}s('fs',v===1?null:String(v));fsMark()}
+ function fsMark(){var c=parseFloat(document.documentElement.getAttribute('data-fz')||'1');[].forEach.call(fsb.children,function(b){b.classList.toggle('on',Math.abs(parseFloat(b.dataset.f)-c)<.005)});var R=$('fsR');if(R){R.value=c;$('fsV').textContent=Math.round(c*100)+'%'}}
  [].forEach.call(fsb.children,function(b){b.onclick=function(){fsSet(b.dataset.f)}});$('fsR').oninput=function(){fsSet(this.value)};fsMark();
  var IC={a:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>',
   b:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l9 5-9 5-9-5 9-5z"/><path d="M3 13l9 5 9-5"/></svg>',
@@ -17197,7 +17194,8 @@ function lines(){var base=$('bjBase').value.trim(),a=[];$('bjTx').value.split(/\
  window.__diag=diag})();
 /* v17: 업데이트 내용 · 저장 공간 */
 (function(){var $=function(i){return document.getElementById(i)};
- window.__ver='2026-11-14b';var LOGV='2026-11-14b',CH=[
+ window.__ver='2026-11-14c';var LOGV='2026-11-14c',CH=[
+ ['2026.11.14 (글자 크기 = 글자만)',['글자 크기를 바꾸면 화면 전체가 확대·축소되던 것을 고쳐, 메뉴·창의 글자 크기만 바뀝니다. 단추와 간격은 그대로이고, 지도 위 지번 글자는 기존 설정을 따릅니다. 90%~130%.']],
  ['2026.11.14 (설정 창 정리)',['설정 > 화면의 선택 단추(끔/켬, 자동/밝게/어둡게 등) 폭을 통일하고, 글자 크기 단추는 한 줄 전체 폭으로 넓혔습니다.']],
  ['2026.11.14 (글자 크기 슬라이더)',['설정 > 화면 > 글자 크기에 슬라이더(90%~140%, 5% 단위)를 넣었습니다. 보통·크게·아주 크게 단추는 그대로 쓸 수 있습니다. 범례 창은 글자 크기를 키워도 크기를 유지합니다.']],
  ['2026.11.13 (주소줄·빈 값 표시 통일)',['필지 카드 맨 위 주소에서 시·도·시·구는 흐리고 작게, 동·번지는 굵게 보여 줍니다. 값이 없을 때 "—"·"해당 없음"·"정보 없음"이 섞여 나오던 것을 "정보 없음"(작은 회색 글씨) 하나로 통일했습니다.']],
@@ -18158,6 +18156,18 @@ b.onclick=function(){try{localStorage.setItem('rdr',JSON.stringify(cur==='canvas
  function paint(){if(!sg)return;[].forEach.call(sg.children,function(b){b.classList.toggle('on',+b.dataset.w===WZ)})}
  if(sg){sg.addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;WZ=+b.dataset.w;s('wz',WZ);paint();redraw();status(WZ?'확대하면 선이 굵어지고 축소하면 얇아집니다 (기준: 확대 18단계)':'선 두께를 화면 크기 그대로 유지합니다')});paint()}
  map.on('zoomend',function(){if(WZ)redraw()})})();
+})();
+
+/* 글자 크기: 화면 배율이 아니라 글자 크기만 조절 (--fsz 로 모든 글자 크기를 한 번에 곱함) */
+(function(){
+ var SKIP=/leaflet|\.jb\b|\.jbi|#map\b|\.fg[PNT]\b|\.mk\b|rose|\.vw\b/;
+ function conv(v){var m=/^(\d*\.?\d+)px$/.exec(v);return m?'calc('+m[1]+'px * var(--fsz,1))':null}
+ function walk(rules){[].forEach.call(rules,function(r){try{if(r.cssRules&&!r.style){walk(r.cssRules);return}if(!r.style||!r.selectorText||SKIP.test(r.selectorText))return;var fs=r.style.getPropertyValue('font-size');if(!fs)return;var c=conv(fs.trim());if(c)r.style.setProperty('font-size',c,r.style.getPropertyPriority('font-size'))}catch(e){}})}
+ function sheets(){[].forEach.call(document.styleSheets,function(sh){if(sh.__fz)return;try{walk(sh.cssRules);sh.__fz=1}catch(e){}})}
+ function inl(root){try{[].forEach.call((root.querySelectorAll?root.querySelectorAll('[style*="font-size"]'):[]),function(e){if(e.closest&&e.closest('#map'))return;var v=e.style.fontSize;if(v&&!e.dataset.fz0){var c=conv(v);if(c){e.dataset.fz0=v;e.style.fontSize=c}}});if(root.style&&root.getAttribute&&/font-size/.test(root.getAttribute('style')||'')&&!(root.closest&&root.closest('#map'))&&!root.dataset.fz0){var c2=conv(root.style.fontSize);if(c2){root.dataset.fz0=root.style.fontSize;root.style.fontSize=c2}}}catch(e){}}
+ sheets();inl(document.body);
+ var pend=[],tm=0;new MutationObserver(function(ms){ms.forEach(function(m){[].forEach.call(m.addedNodes,function(n){if(n.nodeType===1)pend.push(n)})});if(!tm)tm=requestAnimationFrame(function(){tm=0;var a=pend;pend=[];sheets();a.forEach(inl)})}).observe(document.body,{childList:true,subtree:true});
+ window.addEventListener('load',function(){sheets();inl(document.body)});
 })();
 
 </script></body></html>
