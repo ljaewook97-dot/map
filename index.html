@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="ko"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="app-build" content="2611122348">
+<meta name="app-build" content="2611122356">
 <meta name="theme-color" content="#16241f">
 <meta name="color-scheme" content="light dark"><meta name="supported-color-schemes" content="light dark"><meta name="darkreader-lock">
 <link rel="manifest" href="manifest.json">
@@ -1976,6 +1976,13 @@ html.scLocked #scRatio::after{content:'';display:inline-block;width:7px;height:7
 #scPop .spG button{height:38px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--fg);font:inherit;font-size:13px;font-weight:600}
 #scPop .spG button.on{background:var(--acc2);color:var(--acc);border-color:var(--acc);font-weight:800}
 #scPop .spF{margin:8px 0 0;font-size:11.5px;color:var(--mut)}#scPop .spF a{color:var(--acc);font-weight:700;text-decoration:none}
+#scPop .spR{display:flex;align-items:center;gap:6px}#scPop .spR span{font-weight:800;font-size:15px}
+#scPop .spR input{flex:1;min-width:0;height:40px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--fg);font:inherit;font-size:16px;font-weight:700;padding:0 10px}
+#scPop .spR input:focus{outline:2px solid var(--acc);border-color:var(--acc)}
+#scPop .spR button{height:40px;padding:0 14px;border:0;border-radius:10px;background:var(--acc);color:#fff;font:inherit;font-size:13px;font-weight:800;white-space:nowrap}
+#scPop .spM{min-height:0;font-size:11.5px;color:var(--mut);margin:6px 0 0}#scPop .spM:empty{display:none}#scPop .spM.bad{color:#d33}
+#scPop .spF{display:flex;align-items:center;justify-content:space-between;gap:8px}
+#scPop .spF #spLk{height:30px;padding:0 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--fg);font:inherit;font-size:12px;font-weight:700}#scPop .spF #spLk.on{background:var(--acc2);color:var(--acc);border-color:var(--acc)}
 </style>
 </head><body>
 <div id="map"></div>
@@ -14693,7 +14700,7 @@ var LS=window.localStorage;function g(k,d){try{var v=LS.getItem(k);return v==nul
  if(o.m!=null){var mm={};o.m.split(',').forEach(function(i){if(i)mm[i]=true});s('muniOn',mm)}
  history.replaceState(null,'',location.pathname+location.search)}catch(e){}})();
 var KEY=g('key',''),DOM=g('dom',location.hostname||'localhost');
-var BUILD="2611122348";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
+var BUILD="2611122356";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
 applyTheme(THEME);
 var BASE=g('base','Base');if(['Base','Satellite','SatLabel','white','none'].indexOf(BASE)<0)BASE='Base';
 // 레이어: id, 이름, 표시 WMS 이름, 조회용 data 코드
@@ -17248,8 +17255,8 @@ function lines(){var base=$('bjBase').value.trim(),a=[];$('bjTx').value.split(/\
  window.__diag=diag})();
 /* v17: 업데이트 내용 · 저장 공간 */
 (function(){var $=function(i){return document.getElementById(i)};
- window.__ver='2026-11-14j';var LOGV='2026-11-14j',CH=[
- ['2026.11.14 (축척을 그 자리에서)',['화면 왼쪽 아래 "1:N"을 누르면 그 바로 위에 작은 창이 떠서 1:500~1:10,000을 고르고 축척을 잠글 수 있습니다(오른쪽 도구 창으로 가지 않습니다). A4 도면 저장은 같은 창의 "A4 도면 저장…"에서 엽니다.']],
+ window.__ver='2026-11-14k';var LOGV='2026-11-14k',CH=[
+ ['2026.11.14 (축척을 그 자리에서)',['화면 왼쪽 아래 "1:N"을 누르면 그 바로 위에 작은 창이 떠서 원하는 축척 숫자를 직접 넣고(예: 1200) 축척을 잠글 수 있습니다. 창은 지도 영역 안에만 뜹니다(오른쪽 도구 창으로 가지 않습니다). A4 도면 저장은 같은 창의 "A4 도면 저장…"에서 엽니다.']],
  ['2026.11.14 (기능 찾기·이럴 땐 이렇게)',['설정 창과 화면 창 맨 위의 "기능 찾기"를 누르면, "축척", "글자 크기", "검색 안 될 때"처럼 말로 검색해서 해당 메뉴의 위치를 알려 주고 "찾아가기"로 바로 열어 줍니다(열린 뒤 그 칸이 잠깐 깜빡입니다).']],
  ['2026.11.14 (정축척 찾기 쉽게)',['화면 왼쪽 아래의 "1:N"(현재 축척)을 누르면 도구 창의 "도면 · 축척"이 바로 열립니다. 이 메뉴는 도구 창 "화면 맞추기" 바로 위로 옮겼습니다.']],
  ['2026.11.14 (정축척·A4 도면·토지이용계획 요약·검색)',['도구 > 정축척 보기: 1:500·1:1,000·1:2,500·1:5,000·1:10,000으로 맞추고, 화면 왼쪽 아래에 현재 축척(1:N)을 표시합니다. "축척 잠금"을 켜면 확대·축소가 막힙니다(화면 크기를 96dpi로 환산한 값이라 실제 자와는 다를 수 있습니다).','도구 > A4 도면 이미지 저장: 현재 화면을 A4 가로/세로 틀에 제목·축척 1:N·방위·축척 막대·범례를 넣어 PNG로 저장합니다(A4 100% 출력 기준 축척).','필지 카드 맨 아래 "토지이용계획 요약 복사 / 이미지 저장": 소재지·지목·면적·공시지가와 국토계획법상 지역·지구등, 다른 법령 지정 사항을 확인서 순서의 표로 복사(한글·워드에 표로 붙음)하거나 이미지로 저장합니다. 공식 확인서가 아닌 참고 자료입니다.','검색창: 입력하는 즉시 최근 검색·최근 본 필지에서 일치하는 항목을 먼저 보여 주고, 일치한 글자를 강조합니다.']],
@@ -18291,8 +18298,9 @@ b.onclick=function(){try{localStorage.setItem('rdr',JSON.stringify(cur==='canvas
  var PP=null;
  function closePop(){if(PP){PP.remove();PP=null;document.removeEventListener('pointerdown',outP,true)}}
  function outP(e){if(PP&&!PP.contains(e.target)&&!(e.target.closest&&e.target.closest('#scRatio')))closePop()}
- function placePop(){var rc0=document.getElementById('scRatio');if(!PP||!rc0)return;var r0=rc0.getBoundingClientRect(),w=Math.min(300,window.innerWidth-24),left=Math.max(12,Math.min(r0.left+r0.width/2-w/2,window.innerWidth-w-12));PP.style.width=w+'px';PP.style.left=left+'px';var low=r0.top>window.innerHeight/2;if(low){PP.style.bottom=(window.innerHeight-r0.top+8)+'px';PP.style.top='auto'}else{PP.style.top=(r0.bottom+8)+'px';PP.style.bottom='auto'}}
- function togglePop(){if(PP){closePop();return}PP=document.createElement('div');PP.id='scPop';PP.innerHTML='<div class="spH"><b id="spN"></b><button type="button" id="spX" aria-label="닫기">×</button></div><div class="spG"><button type="button" data-n="500">1:500</button><button type="button" data-n="1000">1:1,000</button><button type="button" data-n="2500">1:2,500</button><button type="button" data-n="5000">1:5,000</button><button type="button" data-n="10000">1:10,000</button><button type="button" id="spLk"></button></div><div class="spF">화면 크기(96dpi) 기준 · <a href="#" id="spA4">A4 도면 저장…</a></div>';document.body.appendChild(PP);[].forEach.call(PP.querySelectorAll('.spG button[data-n]'),function(b){b.onclick=function(){setScale(+b.dataset.n)}});document.getElementById('spLk').onclick=function(){setLock(!LOCK)};document.getElementById('spX').onclick=closePop;document.getElementById('spA4').onclick=function(e){e.preventDefault();closePop();openSc()};placePop();upd();setTimeout(function(){document.addEventListener('pointerdown',outP,true)},0)}
+ function placePop(){var rc0=document.getElementById('scRatio'),bc=document.getElementById('blCard');if(!PP||!rc0)return;var r0=(bc||rc0).getBoundingClientRect(),mr=document.getElementById('map').getBoundingClientRect(),lo=Math.max(8,mr.left+8),w=Math.min(290,mr.right-lo-8,window.innerWidth-16),left=Math.max(lo,Math.min(r0.left,mr.right-w-8));PP.style.width=w+'px';PP.style.left=left+'px';var low=r0.top>window.innerHeight/2;if(low){PP.style.bottom=(window.innerHeight-r0.top+10)+'px';PP.style.top='auto'}else{PP.style.top=(r0.bottom+10)+'px';PP.style.bottom='auto'}}
+ function applyN(){var i=document.getElementById('spIn'),v=String(i.value||'').replace(/^\s*1\s*:/,'').replace(/[^0-9.]/g,''),n=Math.round(parseFloat(v)),m=document.getElementById('spMsg');if(!(n>=50&&n<=1000000)){m.textContent='50 ~ 1,000,000 사이 숫자를 넣어 주세요.';m.className='spM bad';return}setScale(n);m.className='spM';m.textContent='';setTimeout(function(){var c=curN();if(Math.abs(c/n-1)>.04){m.className='spM bad';m.textContent='지도 확대 한계로 '+fmtN(c)+'까지만 맞춰져요.'}},700);i.blur()}
+ function togglePop(){if(PP){closePop();return}PP=document.createElement('div');PP.id='scPop';PP.innerHTML='<div class="spH"><b id="spN"></b><button type="button" id="spX" aria-label="닫기">×</button></div><div class="spR"><span>1 :</span><input id="spIn" type="text" inputmode="numeric" enterkeyhint="go" autocomplete="off" placeholder="예: 1200" aria-label="축척 분모"><button type="button" id="spOk">맞추기</button></div><div class="spM" id="spMsg"></div><div class="spF"><button type="button" id="spLk"></button> <a href="#" id="spA4">A4 도면 저장…</a></div>';document.body.appendChild(PP);var inp=document.getElementById('spIn');inp.value=String(Math.round(curN()));document.getElementById('spOk').onclick=applyN;inp.onkeydown=function(e){if(e.key==='Enter'){e.preventDefault();applyN()}};inp.onfocus=function(){try{inp.select()}catch(x){}};document.getElementById('spLk').onclick=function(){setLock(!LOCK)};document.getElementById('spX').onclick=closePop;document.getElementById('spA4').onclick=function(e){e.preventDefault();closePop();openSc()};placePop();upd();setTimeout(function(){document.addEventListener('pointerdown',outP,true)},0)}
  function openSc(){var P=document.getElementById('toolPop');if(!P)return;if(P.hidden){var bt=document.getElementById('bTool');if(bt)bt.click()}setTimeout(function(){var d=[].filter.call(P.querySelectorAll('details.tg'),function(x){var sm=x.querySelector('summary');return sm&&/도면/.test(sm.textContent)})[0];if(d){d.open=true;try{d.scrollIntoView({block:'start',behavior:'smooth'})}catch(e){}}},120)}
  setTimeout(function(){var P=document.getElementById('toolPop');if(!P)return;var d=[].filter.call(P.querySelectorAll('details.tg'),function(x){var sm=x.querySelector('summary');return sm&&/도면/.test(sm.textContent)})[0],f=[].filter.call(P.querySelectorAll('details.tg'),function(x){var sm=x.querySelector('summary');return sm&&/화면 맞추기/.test(sm.textContent)})[0];if(d&&f&&d!==f&&f.previousElementSibling!==d)P.insertBefore(d,f)},500);
  var rc=document.getElementById('scRatio');if(rc){rc.style.cursor='pointer';rc.style.pointerEvents='auto';rc.title='눌러서 정축척 보기';rc.addEventListener('click',function(e){e.stopPropagation();togglePop()})}
