@@ -14515,7 +14515,7 @@ var LS=window.localStorage;function g(k,d){try{var v=LS.getItem(k);return v==nul
  if(o.m!=null){var mm={};o.m.split(',').forEach(function(i){if(i)mm[i]=true});s('muniOn',mm)}
  history.replaceState(null,'',location.pathname+location.search)}catch(e){}})();
 var KEY=g('key',''),DOM=g('dom',location.hostname||'localhost');
-var BUILD="2611121915";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
+var BUILD="2611121929";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
 applyTheme(THEME);
 var BASE=g('base','Base');if(['Base','Satellite','SatLabel','white','none'].indexOf(BASE)<0)BASE='Base';
 // 레이어: id, 이름, 표시 WMS 이름, 조회용 data 코드
@@ -15599,6 +15599,7 @@ function refresh(){load(function(l){var p=l.filter(function(x){return x.s==='p'}
 function adminInit(){var sec=$('accSec');if(sec)sec.hidden=false;refresh();clearInterval(tmr);tmr=setInterval(function(){if(!document.hidden)refresh()},30000);try{if(window.Notification&&Notification.permission==='default')Notification.requestPermission()}catch(e){}}
 function boot(){var sec=$('accSec');if(sec){sec.hidden=!adm();render(null)}
  if(adm()){jp({a:'chk',k:adm()},function(d){if(d.ok)adminInit();else{ls('accAdm',null);admin=false;render(null);if(!lg('accOk'))showGate()}},function(){/* 오프라인: 관리자는 그대로 사용 */});return}
+ (function(){var lp=0;function ping(){if(document.hidden||!ID||Date.now()-lp<3e5)return;lp=Date.now();try{jp({a:'st',id:ID},function(){})}catch(e){}}ping();document.addEventListener('visibilitychange',ping);setInterval(ping,3e5+1e3)})();
  if(lg('accOk')){recheck();document.addEventListener('visibilitychange',function(){if(!document.hidden&&lg('accOk')&&Date.now()-lastRc>6e5)recheck()});setInterval(function(){if(!document.hidden&&lg('accOk')&&Date.now()-lastRc>9e5)recheck()},6e4);return}
  showGate()}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else boot();
@@ -17053,7 +17054,8 @@ function lines(){var base=$('bjBase').value.trim(),a=[];$('bjTx').value.split(/\
  window.__diag=diag})();
 /* v17: 업데이트 내용 · 저장 공간 */
 (function(){var $=function(i){return document.getElementById(i)};
- var LOGV='2026-11-13g',CH=[
+ var LOGV='2026-11-13h',CH=[
+ ['2026.11.13 (마지막 접속 기록 보완)',['관리자 기기처럼 승인 확인 화면을 거치지 않는 기기도 앱을 열어 두는 동안 5분마다 접속 시각이 서버에 기록됩니다.']],
  ['2026.11.13 (핀 번호 자동 갱신 · 보낼 자료 선택)',['즐겨찾기 그룹을 지도에 표시한 상태에서 목록 순서를 바꾸면 지도 핀 번호도 바로 바뀝니다. 바로 보내기에 "함께 보낼 자료"가 생겨 사진·메모, 이동 궤적, 겹친 도면을 빼고 보낼 수 있습니다.']],
  ['2026.11.13 (즐겨찾기 목록 디자인 정리)',['번호를 테두리 동그라미(자리 폭 고정)로 바꾸고 ★ 표시와 구분선을 줄였습니다. 그룹 제목은 옅은 색 띠로, 끌기 손잡이는 흐리게 바꿔 이름과 주소가 먼저 보이게 했습니다.']],
  ['2026.11.13 (즐겨찾기 목록에 번호)',['즐겨찾기 목록의 각 줄에 그룹 안 번호가 표시됩니다. 그룹을 ◎로 지도에 표시했을 때의 번호와 같습니다.']],
