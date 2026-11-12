@@ -1776,6 +1776,11 @@ html[data-fs="1.12"] #legend .lgs,html[data-fs="1.25"] #legend .lgs{columns:1}
 #fmBox .fGd{flex:none;width:28px;height:32px;display:flex;align-items:center;justify-content:center;color:var(--mut);font-size:18px;touch-action:none;cursor:grab;user-select:none}
 #fmBox .fGh{position:relative}#fmBox .fGh.gdrag{opacity:.55}
 #fmBox .fGh.gB::before,#fmBox .fGh.gA::after{content:"";position:absolute;left:0;right:0;height:3px;background:var(--acc);border-radius:2px}#fmBox .fGh.gB::before{top:-3px}#fmBox .fGh.gA::after{bottom:-3px}
+
+#fmBox .alG,.alG{display:flex;gap:6px;flex:1 1 100%}.alG select{flex:1;min-width:0;height:32px;font:inherit;font-size:13px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--fg);padding:0 8px}.alG input{flex:1;min-width:0;box-sizing:border-box;height:32px;font:inherit;font-size:13px;padding:0 9px;border:1px solid var(--acc);border-radius:8px;background:var(--bg);color:var(--fg)}
+.fgPin{position:relative}.fgPin .fgN{position:absolute;left:-11px;top:-11px;width:22px;height:22px;border-radius:50%;background:var(--acc);color:#fff;font-size:11.5px;font-weight:800;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 5px #0006;border:2px solid #fff}
+.fgPin .fgT{position:absolute;left:14px;top:-10px;white-space:nowrap;background:#fffffff0;color:#222;font-size:12px;font-weight:700;padding:2px 7px;border-radius:9px;box-shadow:0 1px 5px #0004}
+#fgChip{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(max(18px,env(safe-area-inset-bottom)) + 56px);z-index:1002;display:flex;align-items:center;gap:8px;padding:8px 8px 8px 14px;border-radius:22px;background:var(--card);color:var(--fg);box-shadow:0 4px 16px #0005;border:1px solid var(--line);font-size:13px;max-width:calc(100vw - 24px)}#fgChip span{color:var(--mut)}#fgChip button{height:30px;padding:0 12px;border:0;border-radius:15px;background:var(--acc);color:#fff;font:inherit;font-size:12.5px;font-weight:700;cursor:pointer}
 </style>
 </head><body>
 <div id="map"></div>
@@ -14488,7 +14493,7 @@ var LS=window.localStorage;function g(k,d){try{var v=LS.getItem(k);return v==nul
  if(o.m!=null){var mm={};o.m.split(',').forEach(function(i){if(i)mm[i]=true});s('muniOn',mm)}
  history.replaceState(null,'',location.pathname+location.search)}catch(e){}})();
 var KEY=g('key',''),DOM=g('dom',location.hostname||'localhost');
-var BUILD="2611121819";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
+var BUILD="2611121842";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
 applyTheme(THEME);
 var BASE=g('base','Base');if(['Base','Satellite','SatLabel','white','none'].indexOf(BASE)<0)BASE='Base';
 // 레이어: id, 이름, 표시 WMS 이름, 조회용 data 코드
@@ -15602,7 +15607,10 @@ if(!adm()&&!lg('accOk')){var pre=function(){if(!gate&&document.body)showGate()};
  function unpack(r){return {u:r[0],n:r[1],lat:r[2],lng:r[3],z:r[4]||19,addr:r[5]||undefined,pnu:r[6]||undefined,al:r[7]?1:undefined,g:r[8]||undefined}}
  function ensure(){var a=F(),ch=0;a.forEach(function(f){if(!f.u){f.u=uid();ch=1}});return ch}
  function saveLocal(){ls('fav',JSON.stringify(F()))}
- function encL(){return JSON.stringify(pack(F()))}
+ function lgs(){var l=[];try{l=JSON.parse(lg('favGroups')||'[]')||[]}catch(e){}return Array.isArray(l)?l:[]}
+ function payload(items,gr){return JSON.stringify({i:pack(items),g:gr})}
+ function encL(){return payload(F(),lgs())}
+ function mergeG(L,R,B){if(R==null)return L;var lc=JSON.stringify(L)!==JSON.stringify(B),rc=JSON.stringify(R)!==JSON.stringify(B);if(!lc)return R;if(!rc)return L;var o=L.slice();R.forEach(function(n){if(o.indexOf(n)<0&&B.indexOf(n)<0)o.push(n)});return o}
  function merge(L,R,B){var mL={},mR={},mB={},out=[],used={};L.forEach(function(f){mL[f.u]=f});R.forEach(function(f){mR[f.u]=f});B.forEach(function(f){mB[f.u]=f});
   L.forEach(function(f){var r=mR[f.u],b=mB[f.u];
    if(!r){if(b&&sn(f)===sn(b))return;out.push(f);return}
@@ -15625,13 +15633,13 @@ if(!adm()&&!lg('accOk')){var pre=function(){if(!gate&&document.body)showGate()};
   busy=1;last=Date.now();H=sha('ddalkkak-fav:'+k);if(ensure())saveLocal();
   var fail=function(c){busy=0;setMsg(why(c))};
   jp({a:'fm',id:ID,k:adm(),h:H},function(m){if(m.e)return fail(m.e);
-   var fin=function(R){var B=[];try{B=(JSON.parse(lg('favBase')||'[]')||[]).map(unpack)}catch(e){}
-    var L=F(),M=merge(L,R,B),mS=JSON.stringify(pack(M)),rS=JSON.stringify(pack(R)),lS=JSON.stringify(pack(L));
-    var fin2=function(){ls('favBase',mS);busy=0;lastEnc=encL();var d=new Date(),p=function(x){return x<10?'0'+x:x};setMsg('마지막 동기화 '+(d.getMonth()+1)+'/'+d.getDate()+' '+p(d.getHours())+':'+p(d.getMinutes())+' · '+M.length+'개');try{window.__fmRender&&window.__fmRender()}catch(e){}};
-    if(mS!==lS){var arr=F();arr.length=0;M.forEach(function(f){arr.push(f)});saveLocal()}
-    if(mS!==rS)put(mS,fin2,fail);else fin2()};
-   if(!m.n)return fin([]);
-   get(m.w,0,m.n,[],function(t){var R=[];try{R=JSON.parse(t).map(unpack)}catch(e){return fail('parse')}fin(R)},function(c){if(c==='stale'){busy=0;sync(true)}else fail(c)})},function(){fail('net')})}
+   var fin=function(R,Rg,rawT){var B=[],Bg=[];try{B=(JSON.parse(lg('favBase')||'[]')||[]).map(unpack)}catch(e){}try{Bg=JSON.parse(lg('favBaseG')||'[]')||[]}catch(e){}
+    var L=F(),Lg=lgs(),M=merge(L,R,B),Mg=mergeG(Lg,Rg,Bg),mP=payload(M,Mg),lP=payload(L,Lg);
+    var fin2=function(){ls('favBase',JSON.stringify(pack(M)));ls('favBaseG',JSON.stringify(Mg));busy=0;lastEnc=encL();var d=new Date(),p=function(x){return x<10?'0'+x:x};setMsg('마지막 동기화 '+(d.getMonth()+1)+'/'+d.getDate()+' '+p(d.getHours())+':'+p(d.getMinutes())+' · '+M.length+'개');try{window.__fmRender&&window.__fmRender()}catch(e){}};
+    if(mP!==lP){var arr=F();arr.length=0;M.forEach(function(f){arr.push(f)});saveLocal();ls('favGroups',JSON.stringify(Mg))}
+    if(mP!==rawT)put(mP,fin2,fail);else fin2()};
+   if(!m.n)return fin([],null,'');
+   get(m.w,0,m.n,[],function(t){var R=[],Rg=null;try{var o=JSON.parse(t);if(Array.isArray(o))R=o.map(unpack);else{R=(o.i||[]).map(unpack);Rg=Array.isArray(o.g)?o.g:null}}catch(e){return fail('parse')}fin(R,Rg,t)},function(c){if(c==='stale'){busy=0;sync(true)}else fail(c)})},function(){fail('net')})}
  draw();
  setInterval(function(){if(!on||document.hidden||busy)return;ensure()&&saveLocal();if(encL()!==lastEnc)sync(true);else if(Date.now()-last>3e5)sync(true)},15000);
  document.addEventListener('visibilitychange',function(){if(!document.hidden)sync(false)});
@@ -17023,7 +17031,8 @@ function lines(){var base=$('bjBase').value.trim(),a=[];$('bjTx').value.split(/\
  window.__diag=diag})();
 /* v17: 업데이트 내용 · 저장 공간 */
 (function(){var $=function(i){return document.getElementById(i)};
- var LOGV='2026-11-13b',CH=[
+ var LOGV='2026-11-13c',CH=[
+ ['2026.11.13 (즐겨찾기 그룹 활용)',['즐겨찾기 그룹 제목의 ◎를 누르면 그 그룹의 모든 곳이 번호·이름표로 지도에 표시되고 화면이 범위에 맞춰집니다(하단 "지우기"로 끔, 번호를 누르면 그 필지 정보). 필지 카드의 별명 저장 칸에서 바로 그룹을 고르거나 새 그룹을 만들 수 있습니다. 기기 간 공유에 그룹 순서와 빈 그룹도 포함됩니다(서버 재배포 불필요, 앱 새 버전만 있으면 됩니다).']],
  ['2026.11.12 (그룹 순서 직접 바꾸기)',['즐겨찾기 그룹 제목 왼쪽의 ≡를 끌어서 그룹 순서를 바꿉니다. (✎ 설정의 ↑↓ 버튼도 그대로 있습니다. 되돌리기 가능)']],
  ['2026.11.12 (즐겨찾기 그룹·순서·정렬)',['즐겨찾기 창을 다시 짰습니다. "＋ 그룹"으로 과업별 그룹(예: 마곡, 내곡)을 만들고, 각 항목은 ⋯에서 그룹을 고르거나 맨 왼쪽 ≡를 끌어 다른 그룹·원하는 위치로 옮깁니다(↑↓ 버튼도 있음). "정렬"로 각 그룹 안을 가나다순·역순으로 정렬하고, 도구의 되돌리기로 취소할 수 있습니다. 항목을 누르면 지도로 이동하고, "선택"으로 여러 개를 한꺼번에 그룹 이동·삭제합니다. 그룹을 만들기 전에는 지금처럼 한 줄 목록만 보입니다.']],
  ['2026.11.12 (즐겨찾기 따로·설정 정리)',['오른쪽 메뉴에 "즐겨찾기" 버튼이 생겼습니다. 별명·즐겨찾기 목록, 선택 삭제·이름 바꾸기, 기기 간 공유가 이 창에 모여 있습니다. 설정(톱니) 창에는 인증키·도메인만 위에 두고, 접속 승인·백업·진단·앱 정보는 "관리·고급" 한 곳으로 묶었습니다(승인 요청이나 새 소식이 있으면 표시). 도구 메뉴의 "화면 맞추기"는 처음에 접혀 있습니다.']],
@@ -17699,11 +17708,14 @@ b.onclick=function(){try{localStorage.setItem('rdr',JSON.stringify(cur==='canvas
  function btn(){var f=saved();return f?'<button type="button" class="alB on" data-al="edit">★ 별명: '+esc(f.n)+'</button>':'<button type="button" class="alB" data-al="new">☆ 별명 저장</button>'}
  window.__alBtn=function(S,pnu){if(!S||!S.ll)return '';CUR={addr:S.addr||S.jibun||'',lat:S.ll[0],lng:S.ll[1],pnu:pnu||''};return '<div class="alR">'+btn()+'</div>'};
  function form(){var f=saved(),r=document.querySelector('#infoBody .alR');if(!r)return;
-  r.innerHTML='<div class="alF"><input id="alN" maxlength="20" placeholder="별명 (예: 우리집, 마곡 현장)" value="'+esc(f?f.n:'')+'"><button type="button" class="alB on" data-al="ok">저장</button>'+(f?'<button type="button" class="alB" data-al="del">삭제</button>':'')+'<button type="button" class="alB" data-al="x">취소</button></div><div class="alH">검색창에 이 별명을 입력하면 이 필지로 이동합니다.</div>';
-  var i=document.getElementById('alN');i.focus();i.onkeydown=function(ev){if(ev.key==='Enter'){ev.preventDefault();save()}}}
+  r.innerHTML='<div class="alF"><input id="alN" maxlength="20" placeholder="별명 (예: 우리집, 마곡 현장)" value="'+esc(f?f.n:'')+'"><div class="alG"><select id="alG" aria-label="그룹"><option value="">그룹 없음 (미분류)</option>'+grpOpts(f)+'<option value="__new">＋ 새 그룹…</option></select><input id="alGN" maxlength="16" placeholder="새 그룹 이름" hidden></div><button type="button" class="alB on" data-al="ok">저장</button>'+(f?'<button type="button" class="alB" data-al="del">삭제</button>':'')+'<button type="button" class="alB" data-al="x">취소</button></div><div class="alH">검색창에 이 별명을 입력하면 이 필지로 이동합니다.</div>';
+  var i=document.getElementById('alN');i.focus();i.onkeydown=function(ev){if(ev.key==='Enter'){ev.preventDefault();save()}};var se=document.getElementById('alG'),gn=document.getElementById('alGN');se.onchange=function(){gn.hidden=se.value!=='__new';if(!gn.hidden)gn.focus()}}
+ function grpOpts(f){var l=g('favGroups',[]);if(!Array.isArray(l))l=[];F().forEach(function(x){if(x.g&&l.indexOf(x.g)<0)l.push(x.g)});var cur=f&&f.g||(window.__lastGrp||'');return l.map(function(n){return '<option value="'+esc(n)+'"'+(n===cur?' selected':'')+'>'+esc(n)+'</option>'}).join('')}
  function save(){var i=document.getElementById('alN'),n=(i.value||'').trim();if(!n){status('별명을 입력하세요');return}
   var f=saved();if(F().some(function(x){return x!==f&&nk(x.n)===nk(n)})){status('이미 같은 이름의 즐겨찾기가 있습니다');return}
-  if(f){f.n=n}else F().unshift({n:n,lat:+CUR.lat.toFixed(6),lng:+CUR.lng.toFixed(6),z:19,addr:CUR.addr,pnu:CUR.pnu,al:1});
+  var gv=(document.getElementById('alG')||{}).value||'';if(gv==='__new'){gv=((document.getElementById('alGN')||{}).value||'').trim().slice(0,16);if(!gv){status('새 그룹 이름을 입력하세요');return}}
+  if(gv){var gl=g('favGroups',[]);if(!Array.isArray(gl))gl=[];if(gl.indexOf(gv)<0){gl.push(gv);s('favGroups',gl)}}window.__lastGrp=gv;
+  if(f){f.n=n;if(gv)f.g=gv;else delete f.g}else{var nf={n:n,lat:+CUR.lat.toFixed(6),lng:+CUR.lng.toFixed(6),z:19,addr:CUR.addr,pnu:CUR.pnu,al:1};if(gv)nf.g=gv;F().unshift(nf)}
   s('fav',F());status('별명 ‘'+n+'’ 저장');back()}
  function back(){var r=document.querySelector('#infoBody .alR');if(r)r.innerHTML=btn()}
  document.addEventListener('click',function(ev){var t=ev.target.closest&&ev.target.closest('.alB');if(!t||!CUR)return;var a=t.dataset.al;
@@ -17739,7 +17751,7 @@ b.onclick=function(){try{localStorage.setItem('rdr',JSON.stringify(cur==='canvas
   secs.forEach(function(gn){var it=items(gn).filter(function(o){return match(o.f)}),tot=items(gn).length;if(grouped&&gn===''&&!tot)return;if(qq&&!it.length)return;
    var open=grouped?go[gn||'~']!==0:true;shown+=it.length;
    if(grouped){if(editG===gn&&gn!==''){h+='<div class="fGh edit" data-g="'+esc(gn)+'"><input class="fGi" value="'+esc(gn)+'" maxlength="16"><button type="button" class="btn on" data-gr="1">저장</button><button type="button" class="btn" data-gm="-1">↑</button><button type="button" class="btn" data-gm="1">↓</button><button type="button" class="btn" data-gd="1">'+(del2==='g:'+gn?'삭제 확인':'삭제')+'</button><button type="button" class="btn" data-gx="1">취소</button></div>'}
-    else h+='<div class="fGh" data-g="'+esc(gn)+'">'+(gn&&!qq?'<span class="fGd" data-gh="'+esc(gn)+'" title="끌어서 그룹 순서 바꾸기">≡</span>':'')+'<button type="button" class="fGt" data-gt="'+esc(gn)+'"><span>'+(open?'▾':'▸')+'</span><b>'+esc(gn||'미분류')+'</b><small>'+tot+'</small></button>'+(gn?'<button type="button" class="fGe" data-ge="'+esc(gn)+'" aria-label="그룹 설정">✎</button>':'')+'</div>'}
+    else h+='<div class="fGh" data-g="'+esc(gn)+'">'+(gn&&!qq?'<span class="fGd" data-gh="'+esc(gn)+'" title="끌어서 그룹 순서 바꾸기">≡</span>':'')+'<button type="button" class="fGt" data-gt="'+esc(gn)+'"><span>'+(open?'▾':'▸')+'</span><b>'+esc(gn||'미분류')+'</b><small>'+tot+'</small></button>'+(tot?'<button type="button" class="fGe" data-gv="'+esc(gn)+'" aria-label="지도에 모두 표시" title="이 그룹을 지도에 모두 표시">◎</button>':'')+(gn?'<button type="button" class="fGe" data-ge="'+esc(gn)+'" aria-label="그룹 설정">✎</button>':'')+'</div>'}
    if(open){h+='<div class="fSec" data-g="'+esc(gn)+'">'+(it.length?it.map(function(o){return row(o,gn)}).join(''):(grouped&&!qq?'<div class="fEm" data-g="'+esc(gn)+'">비어 있음 · 항목을 끌어다 놓거나 ⋯에서 그룹을 고르세요</div>':''))+'</div>'}});
   if(!shown&&qq)h+='<div class="sub" style="margin:10px 0">조건에 맞는 항목이 없습니다</div>';
   if(selMode)h+='<div class="fSb"><span>'+sel.length+'개 선택</span><select id="fmMvS"><option value="">그룹으로 이동…</option><option value="__none">미분류</option>'+gl.map(function(n){return '<option value="'+esc(n)+'">'+esc(n)+'</option>'}).join('')+'</select><button type="button" class="btn'+(sel.length?'':' dis')+'" data-a="del">'+(delA&&sel.length?'삭제 확인':'삭제')+'</button></div>';
@@ -17758,6 +17770,7 @@ b.onclick=function(){try{localStorage.setItem('rdr',JSON.stringify(cur==='canvas
   if(d.a==='mkg'){var nm=((document.getElementById('fmGN')||{}).value||'').trim();if(!nm){status('그룹 이름을 입력하세요');return}var l=LG();if(l.indexOf(nm)>=0||nm==='미분류'){status('이미 있는 그룹입니다');return}l.push(nm);s('favGroups',l);addG=0;render();status('그룹 ‘'+nm+'’ 만들기 완료');return}
   if(d.so){var before=all.slice(),gl=LG(),ord=gl.concat(['']),out=[];ord.forEach(function(gn){var a=items(gn).map(function(o){return o.f});a.sort(function(x,y){var c=String(x.n).localeCompare(String(y.n),'ko');return d.so==='desc'?-c:c});out=out.concat(a)});all.length=0;out.forEach(function(f){all.push(f)});save();sortO=0;undoPush('즐겨찾기 정렬',function(){all.length=0;before.forEach(function(f){all.push(f)});save();render()});render();status(d.so==='desc'?'가나다 역순으로 정렬':'가나다순으로 정렬');return}
   if(d.gt!==undefined){var go=GO(),k=d.gt||'~';go[k]=go[k]===0?1:0;s('favGO',go);render();return}
+  if(d.gv!==undefined){var its=items(d.gv).map(function(o){return o.f});if(its.length){document.getElementById('favModal').hidden=true;window.__fgShow(d.gv||'미분류',its)}return}
   if(d.ge!==undefined){editG=d.ge;del2=null;render();return}
   if(d.gx){editG=null;del2=null;render();return}
   if(d.gr){var inp=bx.querySelector('.fGi'),nn=(inp.value||'').trim().slice(0,16),old=editG,l2=LG();if(!nn){status('이름을 입력하세요');return}if(nn!==old&&(l2.indexOf(nn)>=0||nn==='미분류')){status('이미 있는 그룹입니다');return}l2[l2.indexOf(old)]=nn;all.forEach(function(f){if(f.g===old)f.g=nn});s('favGroups',l2);var go2=GO();if(go2[old]!==undefined){go2[nn]=go2[old];delete go2[old];s('favGO',go2)}editG=null;save();render();return}
@@ -17817,6 +17830,16 @@ b.onclick=function(){try{localStorage.setItem('rdr',JSON.stringify(cur==='canvas
  g0.parentNode.insertBefore(d,g0);d.appendChild(g0);
  function upd(){var b=document.getElementById('accBadge'),n=document.getElementById('logDot'),ap=b&&!b.hidden,lg=n&&!n.hidden;var dot=document.getElementById('kAdvDot');dot.hidden=!(ap||lg);dot.textContent=ap?'승인 요청 '+((b&&b.textContent)||''):'새 소식';if(ap)d.open=true}
  var kb=document.getElementById('bKey');if(kb)kb.addEventListener('click',function(){setTimeout(upd,50)});upd()
+})();
+
+/* ---- 즐겨찾기 그룹을 지도에 한꺼번에 표시 ---- */
+(function(){var lay=null,chip=null;
+ function clear(){if(lay){try{map.removeLayer(lay)}catch(e){}lay=null}if(chip){chip.remove();chip=null}}
+ window.__fgShow=function(name,its){clear();lay=L.layerGroup();var pts=[];
+  its.forEach(function(f,i){var ll=[f.lat,f.lng];pts.push(ll);var m=L.marker(ll,{keyboard:false,zIndexOffset:700,icon:L.divIcon({className:'fgPin',html:'<span class="fgN">'+(i+1)+'</span><span class="fgT">'+esc(f.n)+'</span>',iconSize:[0,0]})});m.on('click',function(){map.setView(ll,Math.max(map.getZoom(),18));if(f.al)setTimeout(function(){pick(f.lat,f.lng)},500)});lay.addLayer(m)});
+  lay.addTo(map);
+  if(pts.length===1)map.setView(pts[0],18);else map.fitBounds(L.latLngBounds(pts),{paddingTopLeft:[50,90],paddingBottomRight:[150,100],maxZoom:18});
+  chip=document.createElement('div');chip.id='fgChip';chip.innerHTML='<b>'+esc(name)+'</b> <span>'+its.length+'곳 표시 중</span><button type="button">지우기</button>';chip.querySelector('button').onclick=clear;document.body.appendChild(chip);status('‘'+name+'’ '+its.length+'곳을 지도에 표시했습니다')};
 })();
 })();
 
