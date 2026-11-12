@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="ko"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="app-build" content="2611122226">
+<meta name="app-build" content="2611122231">
 <meta name="theme-color" content="#16241f">
 <meta name="color-scheme" content="light dark"><meta name="supported-color-schemes" content="light dark"><meta name="darkreader-lock">
 <link rel="manifest" href="manifest.json">
@@ -1922,11 +1922,17 @@ html .fgP2 i{color:#fff}
 #viewPop .vr{align-items:center}
 #viewPop .vr:has(#fsSeg){flex-wrap:wrap}
 #viewPop .vr:not(.vpre)>div:not(.vl){flex:0 0 132px;min-width:0}
-#viewPop .vr:has(#themeSeg)>#themeSeg{flex:0 0 156px}
+#viewPop .vr:has(#themeSeg){flex-wrap:wrap}
+#viewPop .vr:has(#themeSeg)>#themeSeg{flex:1 1 156px;max-width:100%}
+#viewPop .vr:has(#themeSeg)>#themeSeg button{white-space:nowrap;padding:0 8px}
 #viewPop .vr:has(#fsSeg)>#fsSeg{flex:1 1 100%;margin-top:6px}
 #viewPop #fsRg{margin:2px 0 6px;padding:0 2px}
 #viewPop .vr:has(#fsSeg)+#fsRg{margin-top:-2px}
 #viewPop .vr button{min-height:36px}
+
+.fBt .btn{display:inline-flex;align-items:center;justify-content:center;gap:5px}.fBt .fIc{flex:0 0 14px}
+#netBar{top:auto!important;bottom:calc(max(10px,env(safe-area-inset-bottom)) + 104px)!important;max-width:calc(100vw - 128px)!important}
+html[data-oh="1"] #netBar{bottom:calc(max(14px,env(safe-area-inset-bottom)) + 172px)!important}
 </style>
 </head><body>
 <div id="map"></div>
@@ -14644,7 +14650,7 @@ var LS=window.localStorage;function g(k,d){try{var v=LS.getItem(k);return v==nul
  if(o.m!=null){var mm={};o.m.split(',').forEach(function(i){if(i)mm[i]=true});s('muniOn',mm)}
  history.replaceState(null,'',location.pathname+location.search)}catch(e){}})();
 var KEY=g('key',''),DOM=g('dom',location.hostname||'localhost');
-var BUILD="2611122226";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
+var BUILD="2611122231";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
 applyTheme(THEME);
 var BASE=g('base','Base');if(['Base','Satellite','SatLabel','white','none'].indexOf(BASE)<0)BASE='Base';
 // 레이어: id, 이름, 표시 WMS 이름, 조회용 data 코드
@@ -17194,7 +17200,8 @@ function lines(){var base=$('bjBase').value.trim(),a=[];$('bjTx').value.split(/\
  window.__diag=diag})();
 /* v17: 업데이트 내용 · 저장 공간 */
 (function(){var $=function(i){return document.getElementById(i)};
- window.__ver='2026-11-14c';var LOGV='2026-11-14c',CH=[
+ window.__ver='2026-11-14d';var LOGV='2026-11-14d',CH=[
+ ['2026.11.14 (알림 위치·즐겨찾기 버튼·반경 카드 표기)',['오프라인 안내 막대를 화면 아래쪽(버튼 사이)으로 옮겨 위쪽 알림과 겹치지 않게 했습니다. 즐겨찾기 창의 "그룹"·"전체" 버튼에 같은 모양의 아이콘을 넣었습니다. 반경 분석 카드의 빈 값도 "정보 없음"으로 맞췄습니다.']],
  ['2026.11.14 (글자 크기 = 글자만)',['글자 크기를 바꾸면 화면 전체가 확대·축소되던 것을 고쳐, 메뉴·창의 글자 크기만 바뀝니다. 단추와 간격은 그대로이고, 지도 위 지번 글자는 기존 설정을 따릅니다. 90%~130%.']],
  ['2026.11.14 (설정 창 정리)',['설정 > 화면의 선택 단추(끔/켬, 자동/밝게/어둡게 등) 폭을 통일하고, 글자 크기 단추는 한 줄 전체 폭으로 넓혔습니다.']],
  ['2026.11.14 (글자 크기 슬라이더)',['설정 > 화면 > 글자 크기에 슬라이더(90%~140%, 5% 단위)를 넣었습니다. 보통·크게·아주 크게 단추는 그대로 쓸 수 있습니다. 범례 창은 글자 크기를 키워도 크기를 유지합니다.']],
@@ -17485,7 +17492,7 @@ function lines(){var base=$('bjBase').value.trim(),a=[];$('bjTx').value.split(/\
    lastTxt='반경 '+r+'m 분석 (중심 '+lat0.toFixed(6)+', '+lng0.toFixed(6)+')\n'+rows.join('\n');
    gH.clearLayers();ff.forEach(function(f){if(f.properties&&f.properties.pnu)return;try{L.geoJSON(f.geometry,{interactive:false,style:{color:'#ff2d87',weight:2,fill:false,opacity:.9}}).addTo(gH)}catch(e){}});
    var chipH=multi?'':'<div class="rchips" id="infoChips">'+RS.map(function(q){return '<button type="button" data-rr="'+q+'"'+(q===r?' class="on"':'')+'>'+(q>=1000?(q/1000)+'km':q+'m')+'</button>'}).join('')+'</div>';
-   var stH='<div class="stats"><div class="st"><small>반경 안 필지</small><b>'+cnt+'<em>필지</em></b></div><div class="st"><small>가장 가까운 시설</small><b>'+(nearF?(nearF.d<1?'중심 포함':Math.round(nearF.d)+'<em>m</em>'):'없음')+'</b>'+(nearF?'<div class="sub" style="margin:2px 0 0">'+esc(nearF.n)+'</div>':'')+'</div>'+(here.length?'<div class="st wide"><small>중심이 속한 용도지역</small><b>'+here.map(function(k){return '<span class="tag">'+esc(k)+'</span>'}).join('')+'</b></div>':'')+'</div>';
+   var stH='<div class="stats"><div class="st"><small>반경 안 필지</small><b>'+cnt+'<em>필지</em></b></div><div class="st"><small>가장 가까운 시설</small><b>'+(nearF?(nearF.d<1?'중심 포함':Math.round(nearF.d)+'<em>m</em>'):'<span class="nd">정보 없음</span>')+'</b>'+(nearF?'<div class="sub" style="margin:2px 0 0">'+esc(nearF.n)+'</div>':'')+'</div>'+(here.length?'<div class="st wide"><small>중심이 속한 용도지역</small><b>'+here.map(function(k){return '<span class="tag">'+esc(k)+'</span>'}).join('')+'</b></div>':'')+'</div>';
    openInfo('<div class="ih"><h3>반경 '+fmD(r)+' 분석</h3></div><div class="sub" style="margin:0 0 8px">중심 '+lat0.toFixed(5)+', '+lng0.toFixed(5)+' · 이격거리는 중심점에서 경계선까지입니다</div>'+stH+chipH+out.join('')+'<div style="margin-top:12px"><button class="btn" id="radCopy" style="width:100%">결과 복사</button></div>');
    $('radTx').textContent=multi?'동심원 '+RM.slice().sort(function(a,b){return a-b}).map(fmD).join(' · ')+' 중 가장 큰 반경 기준 조회':'기준점에서 '+fmD(r)}}
  $('infoBody').addEventListener('click',function(e){var t=e.target;if(t.id==='radCopy'){try{navigator.clipboard.writeText(lastTxt).then(function(){status('결과를 복사했습니다')},function(){status('복사하지 못했습니다')})}catch(x){status('복사하지 못했습니다')}return}
@@ -17959,7 +17966,7 @@ b.onclick=function(){try{localStorage.setItem('rdr',JSON.stringify(cur==='canvas
   return h}
  function render(){var all=F(),gl=LG(),go=GO(),cnt=document.getElementById('fmCnt');if(cnt)cnt.textContent=all.length?all.length+'개':'';
   sel=sel.filter(function(f){return all.indexOf(f)>=0});
-  var h='<div class="fTb"><input id="fmQ" type="search" placeholder="이름·주소로 찾기" value="'+esc(qq)+'"><div class="fBt"><button type="button" class="btn" data-a="addg">＋ 그룹</button><button type="button" class="btn" data-a="showall" title="모든 그룹을 색으로 나눠 지도에 표시">◎ 전체</button><button type="button" class="btn'+(sortO?' on':'')+'" data-a="sort">정렬</button><button type="button" class="btn'+(selMode?' on':'')+'" data-a="sel">'+(selMode?'선택 끝':'선택')+'</button></div></div>';
+  var h='<div class="fTb"><input id="fmQ" type="search" placeholder="이름·주소로 찾기" value="'+esc(qq)+'"><div class="fBt"><button type="button" class="btn" data-a="addg"><svg class="fIc" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg> 그룹</button><button type="button" class="btn" data-a="showall" title="모든 그룹을 색으로 나눠 지도에 표시"><svg class="fIc" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg> 전체</button><button type="button" class="btn'+(sortO?' on':'')+'" data-a="sort">정렬</button><button type="button" class="btn'+(selMode?' on':'')+'" data-a="sel">'+(selMode?'선택 끝':'선택')+'</button></div></div>';
   if(sortO)h+='<div class="fPn"><span class="sub">각 그룹 안에서</span><button type="button" class="btn" data-so="asc">가나다순</button><button type="button" class="btn" data-so="desc">가나다 역순</button></div>';
   if(addG)h+='<div class="fPn"><input id="fmGN" maxlength="16" placeholder="그룹(과업) 이름 예: 마곡, 내곡"><button type="button" class="btn on" data-a="mkg">만들기</button></div>';
   if(!all.length&&!gl.length){bx.innerHTML=h+'<div class="sub" style="margin:10px 0 4px">저장된 즐겨찾기가 없습니다. 필지를 눌러 정보 카드의 “☆ 별명 저장”을 누르면 여기에 모입니다. 검색창에 별명을 치면 바로 이동합니다.</div>';bind();return}
