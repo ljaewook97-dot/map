@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="ko"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="app-build" content="2611122003">
+<meta name="app-build" content="2611122005">
 <meta name="theme-color" content="#16241f">
 <meta name="color-scheme" content="light dark"><meta name="supported-color-schemes" content="light dark"><meta name="darkreader-lock">
 <link rel="manifest" href="manifest.json">
@@ -1842,6 +1842,14 @@ html .fgP2 i{color:#fff}
 #viewPop .vr.vpre{border-bottom:1px solid var(--line)}
 
 #netBar{position:fixed;width:max-content;left:50%;transform:translateX(-50%);top:calc(max(8px,env(safe-area-inset-top)) + 100px);z-index:1590;max-width:calc(100vw - 24px);padding:7px 14px;border-radius:18px;background:#b45309;color:#fff;font-size:12.5px;font-weight:700;box-shadow:0 3px 12px #0005;text-align:center;line-height:1.35}
+
+/* 필지 카드 정리: 면 하나로 통일, 중복 줄이기 */
+#infoBody .stats{border:1px solid var(--line);background:var(--card);border-radius:14px;overflow:hidden;gap:0;margin:0 0 8px}
+#infoBody .stats .st{background:none;border-radius:0}
+#infoBody .stats .st+.st{border-left:1px solid var(--line)}
+#infoBody .stats .tag.own-사유지{background:color-mix(in srgb,var(--fg) 10%,transparent);color:var(--fg)}
+#infoBody .sumL{background:none;border:0;padding:0 2px;margin:0 0 6px}
+#infoBody .sumL>b{font-size:11.5px;font-weight:600;color:var(--mut)}
 </style>
 </head><body>
 <div id="map"></div>
@@ -14556,7 +14564,7 @@ var LS=window.localStorage;function g(k,d){try{var v=LS.getItem(k);return v==nul
  if(o.m!=null){var mm={};o.m.split(',').forEach(function(i){if(i)mm[i]=true});s('muniOn',mm)}
  history.replaceState(null,'',location.pathname+location.search)}catch(e){}})();
 var KEY=g('key',''),DOM=g('dom',location.hostname||'localhost');
-var BUILD="2611122003";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
+var BUILD="2611122005";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
 applyTheme(THEME);
 var BASE=g('base','Base');if(['Base','Satellite','SatLabel','white','none'].indexOf(BASE)<0)BASE='Base';
 // 레이어: id, 이름, 표시 WMS 이름, 조회용 data 코드
@@ -14971,13 +14979,11 @@ function useSec(S){if(!S.zones||!S.zones.length)return '';var USE={"0": {"t": "o
  if(!n)return '';var ad=(S.addr||'').split(/\s+/),nm=/특별|광역|특별자치/.test(ad[0]||'')?ad[0]:(ad[1]||ad[0]||''),ln='https://www.law.go.kr/자치법규/'+encodeURIComponent(nm.replace(/\s/g,'')+'도시계획조례');
  return '<div class="sec"><small>허용 용도·높이 <em class="sub" style="font-style:normal;font-weight:400">· 국토계획법 시행령 기준</em></small>'+out+'<p class="sub" style="margin:2px 0 0;font-size:12px">'+(mu&&mu.x?esc(mu.x)+'. ':'')+'시행령 별표 요약입니다. '+(mu?mu.n+' 조례는 '+mu.c+'만 대조했고 ':'지자체 조례가 더 좁게 정할 수 있어 ')+'확정 판단은 조례 원문·토지이용계획확인서로 하세요. 지구단위계획·경관지구 등이 있으면 그쪽이 우선합니다.</p><div class="lawL"><span class="lawT">근거 조문</span><button type="button" class="lawB" data-law="l86" data-z="'+esc(S.zones.join('|'))+'"><b>§</b> 건축법 시행령 제86조<small>일조 높이</small></button><a class="lawB jo" target="_blank" rel="noopener" href="'+ln+'"><b>§</b> '+esc(nm)+' 도시계획 조례<small>원문</small></a></div></div>'}
 function sumL(S){var c=[],seen={};function add(l,k,sec){if(!l||seen[l])return;seen[l]=1;c.push('<button type="button" class="sc '+k+'" data-sec="'+sec+'">'+esc(l)+'</button>')}
- (S.zones||[]).slice(0,2).forEach(function(z){add(String(z).replace(/\(.*$/,''),'z','용도지역')});
- var zr=(S.ratio||[]).filter(function(g){return g.g==='용도지역'})[0];if(zr&&zr.items.length>1)add(zr.items.length+'곳 걸침','w','용도지역');
  (S.gbs||[]).forEach(function(x){add(String(x).replace(/\(.*$/,''),'g','개발제한')});
  if(distNames(S).length)add('지구단위계획구역','d','지구단위계획구역');
  (S.spec||[]).filter(function(x){return !/지구단위/.test(x)}).forEach(function(x){add(String(x).replace(/\(.*$/,''),'',' 기타'.trim())});
  var fa=dedupFac(S.fac||[]);fa.slice(0,3).forEach(function(x){add(String(x).replace(/\(.*$/,''),'f','시설')});if(fa.length>3)add('시설 외 '+(fa.length-3),'f','시설');
- return '<div class="sumL"><b>해당 사항</b>'+(c.length?c.join(''):'<span class="none">표시할 지역·지구·시설이 없습니다</span>')+'</div>'}
+ return '<div class="sumL"><b>그 밖에 해당</b>'+(c.length?c.join(''):'<span class="none">표시할 지역·지구·시설이 없습니다</span>')+'</div>'}
 function spk(ys,pr){var a=ys.slice().sort(function(x,y){return x-y}).map(function(y){return [+y,+pr[y]]}).filter(function(p){return p[1]>0});if(a.length<2)return '';
  var W=300,H=64,pl=8,pr2=8,pt=14,pb=14,mn=Math.min.apply(0,a.map(function(p){return p[1]})),mx=Math.max.apply(0,a.map(function(p){return p[1]})),sp=mx-mn||1;
  var xs=function(i){return pl+(W-pl-pr2)*i/(a.length-1)},yv=function(v){return pt+(H-pt-pb)*(1-(v-mn)/sp)};
@@ -17101,7 +17107,8 @@ function lines(){var base=$('bjBase').value.trim(),a=[];$('bjTx').value.split(/\
  window.__diag=diag})();
 /* v17: 업데이트 내용 · 저장 공간 */
 (function(){var $=function(i){return document.getElementById(i)};
- window.__ver='2026-11-13o';var LOGV='2026-11-13o',CH=[
+ window.__ver='2026-11-13p';var LOGV='2026-11-13p',CH=[
+ ['2026.11.13 (필지 카드 정리)',['필지 카드에서 용도지역이 세 번 나오던 것을 줄였습니다(맨 위 요약에만 크게, "그 밖에 해당"에는 용도지역 제외). 요약 카드와 소유·공시지가 칸을 같은 면 스타일로 맞췄고, 사유지 표시 색을 중립으로 바꿨습니다.']],
  ['2026.11.13 (겹친 선 미세 조절)',['레이어 스타일의 선 두께를 0.1px 단위(지적선·시설·구역·소유구분·건축물), 시설 범례 항목별 두께도 0.1px 단위로 바꿀 수 있습니다. 구역·건축물·소유구분에도 선 투명도를 넣었고, 각 레이어에 "외곽 테두리(흰색·검정)"와 폭을 추가했습니다. 지난번 "겹친 선 구분"(점선)은 뺐습니다.']],
  ['2026.11.13 (보기 프리셋 · 오프라인 안내)',['화면 설정 맨 위에 "보기 프리셋"(야외·사무실·야간)이 생겨 화면 테마·글자·밝기·선 굵기를 한 번에 바꾸고, 안내창의 되돌리기로 이전 설정으로 돌아갈 수 있습니다. 인터넷이 끊기거나 불안정하면 "저장된 지도만 보입니다" 안내가 뜨고, 연결이 돌아오면 지도를 자동으로 다시 불러옵니다.']],
  ['2026.11.13 (필지 카드 요약 · 즐겨찾기 지도 핀)',['필지 정보 카드 맨 위에 지번·지목·면적·용도지역을 큰 글씨로 보여 줍니다. 즐겨찾기 그룹 핀을 메모 핀과 같은 물방울 모양으로 바꾸고, 그룹마다 색을 정할 수 있습니다(그룹 ✎ 설정). 즐겨찾기 창의 "◎ 전체"로 모든 그룹을 색으로 나눠 한 번에 지도에 표시하며, 아래 범례에서 그룹별로 켜고 끌 수 있습니다.']],
