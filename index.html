@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="ko"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="app-build" content="2611122236">
+<meta name="app-build" content="2611122303">
 <meta name="theme-color" content="#16241f">
 <meta name="color-scheme" content="light dark"><meta name="supported-color-schemes" content="light dark"><meta name="darkreader-lock">
 <link rel="manifest" href="manifest.json">
@@ -1933,6 +1933,17 @@ html .fgP2 i{color:#fff}
 .fBt .btn{display:inline-flex;align-items:center;justify-content:center;gap:5px}.fBt .fIc{flex:0 0 14px}
 #netBar{top:auto!important;bottom:calc(max(10px,env(safe-area-inset-bottom)) + 104px)!important;max-width:calc(100vw - 128px)!important}
 html[data-oh="1"] #netBar{bottom:calc(max(14px,env(safe-area-inset-bottom)) + 172px)!important}
+
+/* 처음 안내 말풍선: 작고 가볍게 */
+.rtip{font-size:11px!important;padding:3px 8px!important;border-radius:10px!important;min-width:52px!important;box-shadow:0 1px 6px #0003,0 0 0 1px #00000012!important}
+#hint1{width:min(420px,calc(100vw - 24px))!important;box-sizing:border-box!important;padding:9px 12px!important;border-radius:14px!important;gap:10px!important}
+#hint1 b{font-size:12.5px!important}#hint1 ul{font-size:12px!important;line-height:1.45!important;margin:3px 0 0!important}
+#hint1 button{height:28px!important;padding:0 10px!important;font-size:12px!important}
+/* 빈 목록 안내: 한 모양으로 */
+.fempty,.ve.fempty{color:var(--mut);font-size:13px;line-height:1.5;text-align:center;padding:16px 14px!important;margin:10px 0 4px;border:1px dashed var(--line);border-radius:12px;background:transparent}
+/* 누른 느낌 통일 */
+#viewPop button:not(.btn):active,#toolPop button:not(.btn):active,#mapPop button:not(.btn):active,.sumL .sc:active,#fsSeg button:active,#themeSeg button:active,#briSeg button:active,#ohSeg button:active,#jbcSeg button:active,#wzSeg button:active{scale:.96}
+#sRes>div:active,#infoBody .sec>small:active,#infoBody .xl:active{background:var(--acc2)}
 </style>
 </head><body>
 <div id="map"></div>
@@ -14650,7 +14661,7 @@ var LS=window.localStorage;function g(k,d){try{var v=LS.getItem(k);return v==nul
  if(o.m!=null){var mm={};o.m.split(',').forEach(function(i){if(i)mm[i]=true});s('muniOn',mm)}
  history.replaceState(null,'',location.pathname+location.search)}catch(e){}})();
 var KEY=g('key',''),DOM=g('dom',location.hostname||'localhost');
-var BUILD="2611122236";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
+var BUILD="2611122303";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
 applyTheme(THEME);
 var BASE=g('base','Base');if(['Base','Satellite','SatLabel','white','none'].indexOf(BASE)<0)BASE='Base';
 // 레이어: id, 이름, 표시 WMS 이름, 조회용 data 코드
@@ -15334,7 +15345,7 @@ function importExtra(x,z,cb){if(!x)return cb(0);var men=0;
  O.forEach(function(o){if(String(o.img).indexOf('data:')===0)return;jobs++;img(o.img,function(d){o.img=d;fin()})});
  fin()}
 function fmt(t){var d=new Date(t);return (d.getMonth()+1)+'/'+d.getDate()+' '+('0'+d.getHours()).slice(-2)+':'+('0'+d.getMinutes()).slice(-2)}
-function render(){all(function(a){LST.innerHTML='';if(!a.length){LST.innerHTML='<p class="sub">저장된 프로젝트가 없습니다.</p>';return}
+function render(){all(function(a){LST.innerHTML='';if(!a.length){LST.innerHTML='<div class="fempty">저장된 프로젝트가 없습니다.</div>';return}
  a.forEach(function(p){var r=document.createElement('div');r.style.cssText='border:1px solid var(--line);border-radius:10px;padding:8px;margin:6px 0';
   r.innerHTML='<div style="font-weight:700"></div><div class="sub" style="margin:0 0 6px"></div><div style="display:flex;gap:6px;flex-wrap:wrap"></div>';
   r.firstChild.textContent=p.name;r.children[1].textContent=fmt(p.saved)+' · SHP '+((p.shp||[]).length)+'개';
@@ -15889,7 +15900,7 @@ if(!adm()&&!lg('accOk')){var pre=function(){if(!gate&&document.body)showGate()};
   b.addEventListener('touchstart',function(){fired=false;clearTimeout(lp);lp=setTimeout(function(){fired=true;t=show(b)},450)},{passive:true});
   ['touchend','touchcancel','touchmove'].forEach(function(ev){b.addEventListener(ev,function(e){clearTimeout(lp);if(t){var x=t;t=null;setTimeout(function(){hide(x)},900)}if(fired&&ev==='touchend'){e.preventDefault();e.stopPropagation()}},{passive:false,capture:true})});
   b.addEventListener('click',function(e){if(fired){fired=false;e.preventDefault();e.stopImmediatePropagation()}},true)});
- function allTips(){var a=tools.filter(function(b){return b.id!=='bGps'&&b.id!=='bRef'&&b.offsetParent}).map(function(b){return show(b)});setTimeout(function(){a.forEach(hide)},3800)}
+ function allTips(){var a=tools.filter(function(b){return b.id!=='bGps'&&b.id!=='bRef'&&b.offsetParent}).map(function(b){return show(b)});var done=false;function off(){if(done)return;done=true;a.forEach(hide);document.removeEventListener('pointerdown',off,true)}setTimeout(off,2800);setTimeout(function(){document.addEventListener('pointerdown',off,true)},400)}
  window.__railTips=allTips;var rb=document.getElementById('railTipBtn');if(rb)rb.onclick=function(){var m=document.querySelector('.modal:not([hidden])');if(m)m.hidden=true;setTimeout(allTips,300)};
  try{if(!localStorage.getItem('railHint')){localStorage.setItem('railHint','1');setTimeout(allTips,1800)}}catch(e){}
  /* 두 번 터치 → 두 번째에서 손가락을 누른 채 위로 = 확대, 아래로 = 축소 */
@@ -16781,7 +16792,7 @@ window.__fld={parseLL:parseLL};
   for(var pass=0,imp=true;imp&&pass<50;pass++){imp=false;for(i=1;i<n-1;i++)for(var j=i+1;j<n;j++){var dl=D(i-1,j)+(j<n-1?D(i,j+1):0)-D(i-1,i)-(j<n-1?D(j,j+1):0);if(dl<-1){var seg=p.slice(i,j+1).reverse();for(var q=0;q<seg.length;q++)p[i+q]=seg[q];imp=true}}}
   return p}
  function gps(){var G=window.__gps&&window.__gps();return G&&G.on&&G.last?[G.last[0],G.last[1]]:null}
- function drawPick(){var a=items(),h='';if(!a.length)h='<div class="ve">저장된 메모 핀이나 즐겨찾기가 없습니다. 도구 → 현장 기록으로 핀을 찍거나 즐겨찾기를 저장하세요.</div>';
+ function drawPick(){var a=items(),h='';if(!a.length)h='<div class="ve fempty">저장된 메모 핀이나 즐겨찾기가 없습니다. 도구 → 현장 기록으로 핀을 찍거나 즐겨찾기를 저장하세요.</div>';
   a.forEach(function(x){h+='<label class="vp"><input type="checkbox" data-k="'+esc(x.k)+'"'+(sel[x.k]?' checked':'')+'><span>'+esc(x.n)+'</span><small>'+x.t+'</small></label>'});$('vsPick').innerHTML=h}
  function setSt(v){stm=v;[].forEach.call($('vsSt').children,function(b){b.classList.toggle('on',b.dataset.s===v)})}
  function open(){res=null;$('vsRes').innerHTML='';sel={};drawPick();setSt(gps()?'gps':'ctr');$('toolPop').hidden=true;try{$('bTool').setAttribute('aria-expanded','false');$('bTool').classList.remove('on')}catch(e){}$('vsModal').hidden=false}
@@ -16873,7 +16884,8 @@ function lines(){var base=$('bjBase').value.trim(),a=[];$('bjTx').value.split(/\
  function cl(w){return Math.max(340,Math.min(w,Math.min(760,window.innerWidth-420)))}
  function land(){return window.matchMedia&&matchMedia('(orientation:landscape) and (max-height:520px) and (min-width:560px) and (max-width:999px)').matches}
  function set(w){R.style.setProperty('--dk',(land()?Math.round(Math.min(380,window.innerWidth*.46)):cl(w))+'px')}
- var sv=g('dkw',440);set(sv);window.addEventListener('resize',function(){set(g('dkw',440))});
+ function dk0(){var v=g('dkw',0);return v>0?v:Math.round(Math.max(360,Math.min(440,window.innerWidth*.34)))}
+ var sv=dk0();set(sv);window.addEventListener('resize',function(){set(dk0())});
  function inv(){try{map.invalidateSize({pan:false})}catch(e){}}
  h.addEventListener('pointerdown',function(e){e.preventDefault();h.setPointerCapture(e.pointerId);h.classList.add('on');var tm=0;
   function mv(ev){set(ev.clientX);clearTimeout(tm);tm=setTimeout(inv,40);if(window.__flAp)window.__flAp.forEach(function(f){f()})}
@@ -17200,7 +17212,8 @@ function lines(){var base=$('bjBase').value.trim(),a=[];$('bjTx').value.split(/\
  window.__diag=diag})();
 /* v17: 업데이트 내용 · 저장 공간 */
 (function(){var $=function(i){return document.getElementById(i)};
- window.__ver='2026-11-14e';var LOGV='2026-11-14e',CH=[
+ window.__ver='2026-11-14f';var LOGV='2026-11-14f',CH=[
+ ['2026.11.14 (안내·빈 목록·누름 반응 정리)',['처음 안내 말풍선(오른쪽 메뉴 이름, "이렇게 쓰세요")을 작게 줄이고, 화면을 한 번 누르면 바로 접히며 시간이 지나도 자동으로 접힙니다. 즐겨찾기·프로젝트·메모 핀의 빈 목록 안내를 같은 점선 상자 모양으로 맞췄습니다. 설정 단추, 칩, 검색 결과 줄을 누를 때의 반응(살짝 작아짐·배경색)을 다른 단추와 비슷하게 맞췄습니다. PC에서는 처음 카드 폭이 창 크기에 맞춰 360~440px로 정해집니다(끌어서 바꾼 폭이 있으면 그대로).']],
  ['2026.11.14 (검색 결과 위치)',['검색 결과 목록이 화면 전체 폭으로 펼쳐지던 것을 검색창과 같은 위치·폭으로 맞췄습니다. 검색창이 화면 아래쪽에 있을 때(한 손 조작, 좁은 창)는 목록이 위로 펼쳐집니다.']],
  ['2026.11.14 (알림 위치·즐겨찾기 버튼·반경 카드 표기)',['오프라인 안내 막대를 화면 아래쪽(버튼 사이)으로 옮겨 위쪽 알림과 겹치지 않게 했습니다. 즐겨찾기 창의 "그룹"·"전체" 버튼에 같은 모양의 아이콘을 넣었습니다. 반경 분석 카드의 빈 값도 "정보 없음"으로 맞췄습니다.']],
  ['2026.11.14 (글자 크기 = 글자만)',['글자 크기를 바꾸면 화면 전체가 확대·축소되던 것을 고쳐, 메뉴·창의 글자 크기만 바뀝니다. 단추와 간격은 그대로이고, 지도 위 지번 글자는 기존 설정을 따릅니다. 90%~130%.']],
@@ -17701,7 +17714,7 @@ function lines(){var base=$('bjBase').value.trim(),a=[];$('bjTx').value.split(/\
  /* 선택한 필지를 한 번 더 누르면 선택 해제 */
  var _cm=clickMap;clickMap=function(e){window.__fromClick=true;try{return _cm(e)}finally{window.__fromClick=false}};
  var _pk=pick;pick=function(lat,lng){if(window.__fromClick&&hi&&!$('info').hidden){try{var gm=hi.getLayers()[0].toGeoJSON().geometry;if(pipA(polysOf(gm),lng,lat)){var cb=document.querySelector('#info [data-close]');if(cb){cb.click();status('선택을 해제했습니다');return}}}catch(x){}}return _pk.apply(this,arguments)};
- var h1=$('hint1');if(h1&&!g('hint1',false)&&g('tour',0)){setTimeout(function(){if($('info')&&!$('info').hidden)return;h1.hidden=false},1800);$('hint1X').onclick=function(){h1.hidden=true;s('hint1',true)};ib.addEventListener('click',function(){h1.hidden=true;s('hint1',true)},true)}
+ var h1=$('hint1');if(h1&&!g('hint1',false)&&g('tour',0)){setTimeout(function(){if($('info')&&!$('info').hidden)return;h1.hidden=false;setTimeout(function(){if(!h1.hidden){h1.hidden=true;s('hint1',true)}},9000);document.addEventListener('pointerdown',function f(e){if(h1.hidden)return;if(e.target&&e.target.closest&&e.target.closest('#hint1'))return;h1.hidden=true;s('hint1',true);document.removeEventListener('pointerdown',f,true)},true)},1800);$('hint1X').onclick=function(){h1.hidden=true;s('hint1',true)};ib.addEventListener('click',function(){h1.hidden=true;s('hint1',true)},true)}
 })();
 
 /* ===== 모서리 범례 + 현재 화면 링크 공유 ===== */
@@ -17970,7 +17983,7 @@ b.onclick=function(){try{localStorage.setItem('rdr',JSON.stringify(cur==='canvas
   var h='<div class="fTb"><input id="fmQ" type="search" placeholder="이름·주소로 찾기" value="'+esc(qq)+'"><div class="fBt"><button type="button" class="btn" data-a="addg"><svg class="fIc" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg> 그룹</button><button type="button" class="btn" data-a="showall" title="모든 그룹을 색으로 나눠 지도에 표시"><svg class="fIc" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg> 전체</button><button type="button" class="btn'+(sortO?' on':'')+'" data-a="sort">정렬</button><button type="button" class="btn'+(selMode?' on':'')+'" data-a="sel">'+(selMode?'선택 끝':'선택')+'</button></div></div>';
   if(sortO)h+='<div class="fPn"><span class="sub">각 그룹 안에서</span><button type="button" class="btn" data-so="asc">가나다순</button><button type="button" class="btn" data-so="desc">가나다 역순</button></div>';
   if(addG)h+='<div class="fPn"><input id="fmGN" maxlength="16" placeholder="그룹(과업) 이름 예: 마곡, 내곡"><button type="button" class="btn on" data-a="mkg">만들기</button></div>';
-  if(!all.length&&!gl.length){bx.innerHTML=h+'<div class="sub" style="margin:10px 0 4px">저장된 즐겨찾기가 없습니다. 필지를 눌러 정보 카드의 “☆ 별명 저장”을 누르면 여기에 모입니다. 검색창에 별명을 치면 바로 이동합니다.</div>';bind();return}
+  if(!all.length&&!gl.length){bx.innerHTML=h+'<div class="fempty">저장된 즐겨찾기가 없습니다. 필지를 눌러 정보 카드의 “☆ 별명 저장”을 누르면 여기에 모입니다. 검색창에 별명을 치면 바로 이동합니다.</div>';bind();return}
   var grouped=gl.length>0,secs=grouped?gl.concat(['']):[''],shown=0;
   secs.forEach(function(gn){var it=items(gn).filter(function(o){return match(o.f)}),tot=items(gn).length;if(grouped&&gn===''&&!tot)return;if(qq&&!it.length)return;
    var open=grouped?go[gn||'~']!==0:true;shown+=it.length;
