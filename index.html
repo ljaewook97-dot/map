@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="ko"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="app-build" content="2611130025">
+<meta name="app-build" content="2611130033">
 <meta name="theme-color" content="#16241f">
 <meta name="color-scheme" content="light dark"><meta name="supported-color-schemes" content="light dark"><meta name="darkreader-lock">
 <link rel="manifest" href="manifest.json">
@@ -2044,6 +2044,19 @@ html #quick .qp button+button{border-left:0;border-top:1px solid var(--line)}
 #infoBody .hero .hz{border-top-color:var(--cbd);background:color-mix(in srgb,var(--acc) 10%,var(--cbg))}
 #infoBody .stats .st+.st{border-left-color:var(--cbd)}
 #infoBody .sec.fdc:not(.closed)>small{border-bottom-color:var(--cbd)}
+
+/* 필지 카드 맨 위: 즐겨찾기 저장 + 아이콘 버튼을 한 줄 · 같은 높이 */
+#infoBody .ih .alR{flex:1 1 0;min-width:0}
+#infoBody .ih .alR .alB{width:100%;height:36px;display:flex;align-items:center;justify-content:center;white-space:nowrap}
+#infoBody .ih #infoTb{gap:6px;align-items:center}
+#infoBody .ih #infoTb button{width:36px;height:36px;padding:0;display:flex;align-items:center;justify-content:center}
+/* 카드 줄: 손잡이·아이콘 칸 폭 통일 */
+#infoBody .sec>small .dh.sh{flex:0 0 22px;width:22px}
+#infoBody .sec>small>i.si{flex:0 0 20px;width:20px;display:inline-flex;align-items:center;justify-content:center;margin-right:8px}
+/* 용도지역 칸: 건폐율·용적률을 칩과 한 덩어리로 */
+#infoBody .hero .hz .hzr{display:flex;align-items:center;flex-wrap:wrap;gap:4px 10px;width:100%}
+#infoBody .hero .hz .hzr+.hzr{margin-top:2px}
+#infoBody .hero .hz>small{margin-bottom:6px;line-height:1.4}
 </style>
 </head><body>
 <div id="map"></div>
@@ -14761,7 +14774,7 @@ var LS=window.localStorage;function g(k,d){try{var v=LS.getItem(k);return v==nul
  if(o.m!=null){var mm={};o.m.split(',').forEach(function(i){if(i)mm[i]=true});s('muniOn',mm)}
  history.replaceState(null,'',location.pathname+location.search)}catch(e){}})();
 var KEY=g('key',''),DOM=g('dom',location.hostname||'localhost');
-var BUILD="2611130025";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
+var BUILD="2611130033";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
 applyTheme(THEME);
 var BASE=g('base','Base');if(['Base','Satellite','SatLabel','white','none'].indexOf(BASE)<0)BASE='Base';
 // 레이어: id, 이름, 표시 WMS 이름, 조회용 data 코드
@@ -15199,9 +15212,11 @@ function addrH(a){a=String(a||'');var t=a.split(/\s+/).filter(Boolean),k=-1;for(
 var ND='<span class="nd">정보 없음</span>';
 function heroH(S,partial){var q=jb({jibun:S.jibun}),ar=S.area?Number(S.area).toLocaleString('ko-KR'):'',z=(S.zones||[]).filter(function(x,i,a){return a.indexOf(x)===i});
  var o=null,capsOn=false,fb=false;try{o=ordOf(S.addr)}catch(e){}
- var zr=z.map(function(nm){var k=String(nm).replace(/\(.*?\)/g,'').replace(/\s/g,''),ix=ZK.indexOf(k),cp='';if(ix>=0){var b=o&&o[3][ix]!=null?o[3][ix]:SB[ix],r=o&&o[4][ix]!=null?o[4][ix]:SR[ix],st=o&&(o[3][ix]==null||o[4][ix]==null)?'*':'';capsOn=true;cp='<span class="cp">건폐율 <b>'+b+'</b>% · 용적률 <b>'+r+'</b>%'+st+'</span>'}return '<div class="hzr"><span class="tag">'+esc(nm)+'</span>'+cp+'</div>'}).join('');
+ var zi=z.map(function(nm){var k=String(nm).replace(/\(.*?\)/g,'').replace(/\s/g,''),ix=ZK.indexOf(k),cp='';if(ix>=0){var b=o&&o[3][ix]!=null?o[3][ix]:SB[ix],r=o&&o[4][ix]!=null?o[4][ix]:SR[ix],st=o&&(o[3][ix]==null||o[4][ix]==null)?'*':'';capsOn=true;cp='<span class="cp">건폐율 <b>'+b+'</b>% · 용적률 <b>'+r+'</b>%'+st+'</span>'}return {nm:nm,cp:cp}});
+ var zt=capsOn?zi.filter(function(x){return !x.cp}):[],zm=capsOn?zi.filter(function(x){return x.cp}):zi;
+ var zr=zm.map(function(x){return '<div class="hzr"><span class="tag">'+esc(x.nm)+'</span>'+x.cp+'</div>'}).join('');
  return '<div class="hero"><div class="hc"><small>지번</small><b>'+(q.n||S.jibun?esc(q.n||S.jibun):ND)+'</b></div><div class="hc"><small>지목</small><b>'+(S.jimok||q.j?esc(S.jimok||q.j):ND)+'</b></div><div class="hc"><small>면적</small><b>'+(ar?ar+'<i>㎡</i>':ND)+'</b></div>'+
-  '<div class="hz"><small>용도지역'+(z.length>1?' · '+z.length+'곳에 걸침':'')+(capsOn?' · 상한값':'')+'</small><div class="hzl">'+(z.length?zr:'<span class="hn">'+(partial?'조회 중…':'정보 없음 · 켜 둔 레이어만 조회')+'</span>')+'</div></div></div>'}
+  '<div class="hz"><small>용도지역'+(zt.length?' · '+zt.map(function(x){return esc(x.nm)}).join('·'):'')+(zm.length>1?' · '+zm.length+'곳에 걸침':'')+(capsOn?' · 상한값':'')+'</small><div class="hzl">'+(z.length?zr:'<span class="hn">'+(partial?'조회 중…':'정보 없음 · 켜 둔 레이어만 조회')+'</span>')+'</div></div></div>'}
 function render(S,pnu,partial){
  var won=function(n){return n?Number(n).toLocaleString('ko-KR')+'원/㎡':''},ow=owner(S.own);
  function sec(l,v){return v?'<div class="sec"><small>'+l+'</small><div>'+v+'</div></div>':''}
@@ -17316,7 +17331,8 @@ function lines(){var base=$('bjBase').value.trim(),a=[];$('bjTx').value.split(/\
  window.__diag=diag})();
 /* v17: 업데이트 내용 · 저장 공간 */
 (function(){var $=function(i){return document.getElementById(i)};
- window.__ver='2026-11-14p';var LOGV='2026-11-14p',CH=[
+ window.__ver='2026-11-14q';var LOGV='2026-11-14q',CH=[
+ ['2026.11.14 (즐겨찾기 이름 · 카드 정리)',['"별명"으로 부르던 것을 "즐겨찾기"로 모두 바꿨습니다(☆ 즐겨찾기 저장). 필지 카드 맨 위의 즐겨찾기 저장 단추와 아이콘 단추를 한 줄 같은 높이로 맞추고, 용도지역 칸은 "도시지역" 같은 상위 구분을 제목 줄로 올려 세부 용도지역과 건폐율·용적률을 한 덩어리로 묶었습니다. 카드 줄의 손잡이·아이콘 칸 폭을 같게 맞췄습니다.']],
  ['2026.11.14 (축척을 그 자리에서)',['화면 왼쪽 아래 "1:N"을 누르면 그 바로 위에 작은 창이 떠서 원하는 축척 숫자를 직접 넣고(예: 1200) 축척을 잠글 수 있습니다. 창은 지도 영역 안에만 뜹니다(오른쪽 도구 창으로 가지 않습니다). A4 도면 저장은 같은 창의 "A4 도면 저장…"에서 엽니다.']],
  ['2026.11.14 (기능 찾기·이럴 땐 이렇게)',['설정 창과 화면 창 맨 위의 "기능 찾기"를 누르면, "축척", "글자 크기", "검색 안 될 때"처럼 말로 검색해서 해당 메뉴의 위치를 알려 주고 "찾아가기"로 바로 열어 줍니다(열린 뒤 그 칸이 잠깐 깜빡입니다).']],
  ['2026.11.14 (정축척 찾기 쉽게)',['화면 왼쪽 아래의 "1:N"(현재 축척)을 누르면 도구 창의 "도면 · 축척"이 바로 열립니다. 이 메뉴는 도구 창 "화면 맞추기" 바로 위로 옮겼습니다.']],
@@ -17357,7 +17373,7 @@ function lines(){var base=$('bjBase').value.trim(),a=[];$('bjTx').value.split(/\
  ['2026.11.12 (화면 설정 단순화)',['화면 메뉴를 "설정 이름 · 오른쪽에 선택" 한 줄씩으로 다시 짰습니다. 상자 속 상자를 없애고 구분선만 남겼으며, 긴 설명은 이름 아래 작은 글씨로 옮겼습니다. 색상 견본은 작게 줄였습니다.']],
  ['2026.11.12 (즐겨찾기·별명 기기 간 공유)',['설정 > 즐겨찾기·별명 관리 > "기기 간 공유"를 켜면 같은 인증키를 쓰는 기기끼리 즐겨찾기와 별명이 자동으로 맞춰집니다(켤 때, 바꿀 때, 앱을 다시 볼 때, 5분마다). 한쪽에서 지우거나 이름을 바꾼 것도 반영됩니다. 이름·주소·좌표가 승인 서버(Google Apps Script)에 인증키 해시 이름으로 저장되며, 서버(access_server.gs)를 새 버전으로 다시 배포해야 작동합니다. 승인된 기기만 쓸 수 있습니다.']],
  ['2026.11.12 (화면 설정 정리 · 즐겨찾기 일괄 관리)',['화면 > 보기의 고급 설정 안쪽 항목들이 한 줄 제목처럼만 보여 눌러 열린다는 걸 알기 어려웠습니다. 이제 제목마다 테두리와 ▾ 표시가 붙고, 열면 안쪽 내용이 왼쪽 선으로 구분됩니다. 정보창 항목·"더 보기" 체크 목록은 글자가 잘리지 않게 한 줄씩 보입니다.','설정(톱니) > "즐겨찾기·별명 관리" 신설: 이름·주소 검색, 필지 별명/위치 구분, 모두 선택, 선택 삭제(한 번 더 확인), 맨 위로, 이름 바꾸기(✎), 지도에서 보기(↗), 이름순/저장순 정렬.']],
- ['2026.11.12 (지번 별명 저장·검색 이동)',['필지를 눌러 나오는 정보 카드의 "☆ 별명 저장"으로 그 필지에 별명(예: 우리집, 마곡 현장)을 붙입니다. 검색창에 별명을 입력하거나 앞글자만 쳐도 목록에 뜨고, 엔터를 누르면 그 필지로 이동해 정보창까지 열립니다. 검색창을 비워 두고 누르면 저장한 별명이 먼저 보입니다. 별명은 즐겨찾기 목록에도 같이 들어가고, 설정 백업에 포함됩니다. 별명 이름 바꾸기·삭제는 카드의 ★ 버튼에서 합니다.']],
+ ['2026.11.12 (지번 별명 저장·검색 이동)',['필지를 눌러 나오는 정보 카드의 "☆ 즐겨찾기 저장"으로 그 필지에 별명(예: 우리집, 마곡 현장)을 붙입니다. 검색창에 별명을 입력하거나 앞글자만 쳐도 목록에 뜨고, 엔터를 누르면 그 필지로 이동해 정보창까지 열립니다. 검색창을 비워 두고 누르면 저장한 별명이 먼저 보입니다. 별명은 즐겨찾기 목록에도 같이 들어가고, 설정 백업에 포함됩니다. 별명 이름 바꾸기·삭제는 카드의 ★ 버튼에서 합니다.']],
  ['2026.11.12 (조문 창 완화·강화 목록 정리)',['"완화·강화 등 그 밖의 조항"을 건폐율/용적률로 나누고, 조문 제목만 먼저 보이게 접어 두었습니다. 제목을 누르면 본문이 펼쳐집니다. 해당 조항이 없는 조례는 그 사유를 한 줄로 안내합니다.']],
  ['2026.11.11 (마지막 접속 시각 자동 갱신)',['승인 기기 목록의 "마지막 접속"이 앱을 새로 열 때만 기록돼 실제와 어긋났습니다. 이제 앱을 켜 둔 채로도 화면이 다시 보일 때(10분 간격), 그리고 켜 둔 동안 15분마다 자동으로 접속을 기록합니다. 표시도 "오늘" 대신 "방금·N분 전·N시간 전·N일 전"으로 바꿨습니다. 서버(access_server.gs)의 기록 간격은 1시간에서 5분으로 줄였으니 Apps Script에 새 버전으로 다시 배포해야 완전히 적용됩니다.']],
  ['2026.11.11 (조례 완화·강화 조항 전국 확대)',['조례 조문 본문의 "완화·강화 등 그 밖의 조항"을 고양·남양주·서울에서 전국 지자체 조례로 넓혔습니다(건폐율·용적률 강화/완화/특례 조문 발췌). 조례 개정으로 달라졌을 수 있으니 중요한 판단은 원문으로 확인하세요. 조문이 용도지역 조문 안에 합쳐진 곳, 삭제된 곳은 비어 있습니다.']],
@@ -18016,7 +18032,7 @@ b.onclick=function(){try{localStorage.setItem('rdr',JSON.stringify(cur==='canvas
   var ex=[],pf=[],ct=[];a.forEach(function(f){var n=nk(f.n);if(n===k)ex.push(f);else if(n.indexOf(k)===0)pf.push(f);else if(n.indexOf(k)>=0||(f.al&&f.addr&&nk(f.addr).indexOf(k)>=0))ct.push(f)});return ex.concat(pf,ct).slice(0,8)}
  function go(f){sres('');map.setView([f.lat,f.lng],f.z||19);if(f.al)setTimeout(function(){pick(f.lat,f.lng)},700);status('‘'+f.n+'’으로 이동')}
  window.__favHits=hits;
- window.__alPaint=function(e){var a=window.__alRows||[];if(!a.length)return;var h=document.createElement('div');h.className='rh';h.textContent='별명 · 즐겨찾기';e.appendChild(h);
+ window.__alPaint=function(e){var a=window.__alRows||[];if(!a.length)return;var h=document.createElement('div');h.className='rh';h.textContent='즐겨찾기';e.appendChild(h);
   a.forEach(function(f){var d=document.createElement('div');d.innerHTML='★ <b>'+esc(f.n)+'</b>'+(f.addr?'<small>'+esc(f.addr)+'</small>':'');d.onclick=function(){go(f)};e.appendChild(d)})};
  window.__favGo=function(v){var k=nk(v),a=F().filter(function(f){return f&&nk(f.n)===k});if(a.length===1){go(a[0]);return true}
   if(a.length>1){window.__alRows=a;sShow([]);return true}
@@ -18024,22 +18040,22 @@ b.onclick=function(){try{localStorage.setItem('rdr',JSON.stringify(cur==='canvas
   if(p.length>1&&k.length>=2){window.__alRows=p;sShow([]);return true}return false};
  var CUR=null;
  function saved(){return CUR&&CUR.pnu?F().filter(function(f){return f.al&&f.pnu===CUR.pnu})[0]:null}
- function btn(){var f=saved();return f?'<button type="button" class="alB on" data-al="edit">★ 별명: '+esc(f.n)+'</button>':'<button type="button" class="alB" data-al="new">☆ 별명 저장</button>'}
+ function btn(){var f=saved();return f?'<button type="button" class="alB on" data-al="edit">★ 즐겨찾기: '+esc(f.n)+'</button>':'<button type="button" class="alB" data-al="new">☆ 즐겨찾기 저장</button>'}
  window.__alBtn=function(S,pnu){if(!S||!S.ll)return '';CUR={addr:S.addr||S.jibun||'',lat:S.ll[0],lng:S.ll[1],pnu:pnu||''};return '<div class="alR">'+btn()+'</div>'};
  function form(){var f=saved(),r=document.querySelector('#infoBody .alR');if(!r)return;
-  r.innerHTML='<div class="alF"><input id="alN" maxlength="20" placeholder="별명 (예: 우리집, 마곡 현장)" value="'+esc(f?f.n:'')+'"><div class="alG"><select id="alG" aria-label="그룹"><option value="">그룹 없음 (미분류)</option>'+grpOpts(f)+'<option value="__new">＋ 새 그룹…</option></select><input id="alGN" maxlength="16" placeholder="새 그룹 이름" hidden></div><button type="button" class="alB on" data-al="ok">저장</button>'+(f?'<button type="button" class="alB" data-al="del">삭제</button>':'')+'<button type="button" class="alB" data-al="x">취소</button></div><div class="alH">검색창에 이 별명을 입력하면 이 필지로 이동합니다.</div>';
+  r.innerHTML='<div class="alF"><input id="alN" maxlength="20" placeholder="이름 (예: 우리집, 마곡 현장)" value="'+esc(f?f.n:'')+'"><div class="alG"><select id="alG" aria-label="그룹"><option value="">그룹 없음 (미분류)</option>'+grpOpts(f)+'<option value="__new">＋ 새 그룹…</option></select><input id="alGN" maxlength="16" placeholder="새 그룹 이름" hidden></div><button type="button" class="alB on" data-al="ok">저장</button>'+(f?'<button type="button" class="alB" data-al="del">삭제</button>':'')+'<button type="button" class="alB" data-al="x">취소</button></div><div class="alH">검색창에 이 이름을 입력하면 이 필지로 이동합니다.</div>';
   var i=document.getElementById('alN');i.focus();i.onkeydown=function(ev){if(ev.key==='Enter'){ev.preventDefault();save()}};var se=document.getElementById('alG'),gn=document.getElementById('alGN');se.onchange=function(){gn.hidden=se.value!=='__new';if(!gn.hidden)gn.focus()}}
  function grpOpts(f){var l=g('favGroups',[]);if(!Array.isArray(l))l=[];F().forEach(function(x){if(x.g&&l.indexOf(x.g)<0)l.push(x.g)});var cur=f&&f.g||(window.__lastGrp||'');return l.map(function(n){return '<option value="'+esc(n)+'"'+(n===cur?' selected':'')+'>'+esc(n)+'</option>'}).join('')}
- function save(){var i=document.getElementById('alN'),n=(i.value||'').trim();if(!n){status('별명을 입력하세요');return}
+ function save(){var i=document.getElementById('alN'),n=(i.value||'').trim();if(!n){status('즐겨찾기 이름을 입력하세요');return}
   var f=saved();if(F().some(function(x){return x!==f&&nk(x.n)===nk(n)})){status('이미 같은 이름의 즐겨찾기가 있습니다');return}
   var gv=(document.getElementById('alG')||{}).value||'';if(gv==='__new'){gv=((document.getElementById('alGN')||{}).value||'').trim().slice(0,16);if(!gv){status('새 그룹 이름을 입력하세요');return}}
   if(gv){var gl=g('favGroups',[]);if(!Array.isArray(gl))gl=[];if(gl.indexOf(gv)<0){gl.push(gv);s('favGroups',gl)}}window.__lastGrp=gv;
   if(f){f.n=n;if(gv)f.g=gv;else delete f.g}else{var nf={n:n,lat:+CUR.lat.toFixed(6),lng:+CUR.lng.toFixed(6),z:19,addr:CUR.addr,pnu:CUR.pnu,al:1};if(gv)nf.g=gv;F().unshift(nf)}
-  s('fav',F());status('별명 ‘'+n+'’ 저장');back()}
+  s('fav',F());status('즐겨찾기 ‘'+n+'’ 저장');back()}
  function back(){var r=document.querySelector('#infoBody .alR');if(r)r.innerHTML=btn()}
  document.addEventListener('click',function(ev){var t=ev.target.closest&&ev.target.closest('.alB');if(!t||!CUR)return;var a=t.dataset.al;
   if(a==='new'||a==='edit')form();else if(a==='ok')save();else if(a==='x')back();
-  else if(a==='del'){var f=saved();if(f){if(!t.dataset.sure){t.dataset.sure=1;t.textContent='삭제?';return}F().splice(F().indexOf(f),1);s('fav',F());status('별명을 지웠습니다');back()}}});
+  else if(a==='del'){var f=saved();if(f){if(!t.dataset.sure){t.dataset.sure=1;t.textContent='삭제?';return}F().splice(F().indexOf(f),1);s('fav',F());status('즐겨찾기를 지웠습니다');back()}}});
 })();
 
 /* ---- 즐겨찾기 그룹을 지도에 한꺼번에 표시 (그룹마다 색 · 메모 핀과 같은 물방울 모양) ---- */
@@ -18091,7 +18107,7 @@ b.onclick=function(){try{localStorage.setItem('rdr',JSON.stringify(cur==='canvas
   var h='<div class="fTb"><input id="fmQ" type="search" placeholder="이름·주소로 찾기" value="'+esc(qq)+'"><div class="fBt"><button type="button" class="btn" data-a="addg"><svg class="fIc" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg> 그룹</button><button type="button" class="btn" data-a="showall" title="모든 그룹을 색으로 나눠 지도에 표시"><svg class="fIc" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg> 전체</button><button type="button" class="btn'+(sortO?' on':'')+'" data-a="sort">정렬</button><button type="button" class="btn'+(selMode?' on':'')+'" data-a="sel">'+(selMode?'선택 끝':'선택')+'</button></div></div>';
   if(sortO)h+='<div class="fPn"><span class="sub">각 그룹 안에서</span><button type="button" class="btn" data-so="asc">가나다순</button><button type="button" class="btn" data-so="desc">가나다 역순</button></div>';
   if(addG)h+='<div class="fPn"><input id="fmGN" maxlength="16" placeholder="그룹(과업) 이름 예: 마곡, 내곡"><button type="button" class="btn on" data-a="mkg">만들기</button></div>';
-  if(!all.length&&!gl.length){bx.innerHTML=h+'<div class="fempty">저장된 즐겨찾기가 없습니다. 필지를 눌러 정보 카드의 “☆ 별명 저장”을 누르면 여기에 모입니다. 검색창에 별명을 치면 바로 이동합니다.</div>';bind();return}
+  if(!all.length&&!gl.length){bx.innerHTML=h+'<div class="fempty">저장된 즐겨찾기가 없습니다. 필지를 눌러 정보 카드의 “☆ 즐겨찾기 저장”을 누르면 여기에 모입니다. 검색창에 저장한 이름을 치면 바로 이동합니다.</div>';bind();return}
   var grouped=gl.length>0,secs=grouped?gl.concat(['']):[''],shown=0;
   secs.forEach(function(gn){var it=items(gn).filter(function(o){return match(o.f)}),tot=items(gn).length;if(grouped&&gn===''&&!tot)return;if(qq&&!it.length)return;
    var open=grouped?go[gn||'~']!==0:true;shown+=it.length;
@@ -18380,7 +18396,7 @@ b.onclick=function(){try{localStorage.setItem('rdr',JSON.stringify(cur==='canvas
  {t:'지적선이 안 나올 때',k:'지적 지번 안 보여 안나와 필지선 소유구분 확대',a:'화면 가로 약 1.5km 이내로 확대해야 지적·소유구분이 나와요. 오른쪽 "레이어"에서 지적선이 켜져 있는지도 확인하세요.',s:'#bLayers'},
  {t:'주소 검색이 안 될 때',k:'검색 안돼 주소 찾기 결과 없음 인증키 오류',a:'시·구 이름을 앞에 붙여 보세요 (예: 고양시 덕양구 화전동 402). 그래도 안 되면 "연결 상태 확인"으로 인증키·도메인을 점검하세요.',s:'#chkOpen'},
  {t:'필지 정보 보는 법',k:'필지 정보 카드 용도지역 건폐율 용적률 누르면 조회 토지이용계획 복사',a:'지도에서 필지를 한 번 누르면 정보 카드가 열려요(폰은 아래, PC는 왼쪽). 카드 맨 아래에서 토지이용계획 요약을 복사하거나 이미지로 저장할 수 있어요.'},
- {t:'즐겨찾기·별명 저장',k:'즐겨찾기 별명 저장 그룹 핀 번호',a:'정보 카드의 "☆ 별명 저장"을 누른 뒤, 오른쪽 "즐겨찾기"에서 목록과 그룹을 관리해요.',s:'#bFav'},
+ {t:'즐겨찾기 저장',k:'즐겨찾기 저장 이름 별명 그룹 핀 번호',a:'정보 카드의 "☆ 즐겨찾기 저장"을 누른 뒤, 오른쪽 "즐겨찾기"에서 목록과 그룹을 관리해요.',s:'#bFav'},
  {t:'메모 핀 남기기',k:'메모 핀 현장 기록 사진 메모',a:'현장에서 위치와 메모를 핀으로 남겨요.',s:'#tMem'},
  {t:'답사 경로 기록',k:'경로 기록 답사 동선 트랙 gps',a:'걸어간 길을 기록해 두고 나중에 다시 볼 수 있어요.',s:'#tTrk'},
  {t:'반경 분석',k:'반경 분석 필지 수 가까운 시설 거리 원',a:'점을 찍고 50m~1km 안의 필지와 시설을 분석해요.',s:'#tRad'},
