@@ -2011,6 +2011,7 @@ html[data-fs="1.12"] #legend .lgs,html[data-fs="1.25"] #legend .lgs{columns:1}
  <div style="display:flex;gap:6px;flex-wrap:wrap"><button class="btn" id="pImp">파일에서 가져오기</button><input type="file" id="pFile" accept=".json,.zip,application/json,application/zip" hidden></div>
  <div style="border-top:1px solid var(--line);margin:10px 0 6px;padding-top:8px"><b>다른 기기와 바로 주고받기</b>
   <p class="sub" style="margin:2px 0 6px">PC와 폰의 웹 지도를 직접 연결해 지금 지도 상태(올린 SHP)와 메모·사진·경로·도면·즐겨찾기까지 모두 보냅니다. 파일은 서버에 저장되지 않습니다. 두 기기 모두 이 화면을 열어 두세요.</p>
+  <details id="p2Inc" style="margin:0 0 8px;border:1px solid var(--line);border-radius:10px;padding:0 10px"><summary style="cursor:pointer;padding:9px 0;font-size:13px;font-weight:700">함께 보낼 자료 <small id="p2IncT" class="sub" style="font-weight:400;margin-left:4px">전체</small></summary><div style="padding:0 0 8px"><label class="p2fr"><input type="checkbox" id="p2Memo" checked><span>사진·메모</span></label><label class="p2fr"><input type="checkbox" id="p2Trk" checked><span>이동 궤적</span></label><label class="p2fr"><input type="checkbox" id="p2Ovl" checked><span>겹친 도면</span></label><div class="sub" style="font-size:12px">끄면 그 자료는 보내지 않아 전송이 빨라집니다. 즐겨찾기와 그리기·측정은 위 선택대로 갑니다.</div></div></details>
   <details id="p2Fav" style="margin:0 0 8px;border:1px solid var(--line);border-radius:10px;padding:0 10px"><summary style="cursor:pointer;padding:9px 0;font-size:13px;font-weight:700">보낼 즐겨찾기 <small id="p2FavT" class="sub" style="font-weight:400;margin-left:4px">전체</small></summary><div id="p2FavBx" style="padding:0 0 8px"></div></details>
   <div style="display:flex;gap:6px;flex-wrap:wrap"><button class="btn on" id="p2Send">이 기기 → 보내기</button><button class="btn" id="p2Recv">다른 기기에서 받기</button></div>
   <div id="p2Code" style="display:none;margin-top:8px"></div><div id="p2Qr"></div>
@@ -14514,7 +14515,7 @@ var LS=window.localStorage;function g(k,d){try{var v=LS.getItem(k);return v==nul
  if(o.m!=null){var mm={};o.m.split(',').forEach(function(i){if(i)mm[i]=true});s('muniOn',mm)}
  history.replaceState(null,'',location.pathname+location.search)}catch(e){}})();
 var KEY=g('key',''),DOM=g('dom',location.hostname||'localhost');
-var BUILD="2611121900";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
+var BUILD="2611121915";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
 applyTheme(THEME);
 var BASE=g('base','Base');if(['Base','Satellite','SatLabel','white','none'].indexOf(BASE)<0)BASE='Base';
 // 레이어: id, 이름, 표시 WMS 이름, 조회용 data 코드
@@ -15249,7 +15250,7 @@ function mk(id){var h=g('peerHost',null);var o=h?{host:h.host,port:h.port,path:h
 function snapNow(name){var c=g('c',null),z=g('z',null);return {name:name,saved:Date.now(),base:g('base','Base'),c:c,z:z,layers:g('layers',{}),plb:g('plb',{}),ru:g('ru',{}),ord:g('ord',[]),sty:g('sty',{}),muniOn:g('muniOn',{}),muni:g('muni',[]),draw:g('draw',[]),facSty:g('facSty',{}),
  shp:UP.map(function(u){return {id:u.id,name:u.name,color:u.color,on:u.on,gj:u.gj,bbox:u.bbox,st:u.st}})}}
 function sendAll(conn){var d=new Date(),nm='보낸 지도 '+(d.getMonth()+1)+'/'+d.getDate()+' '+('0'+d.getHours()).slice(-2)+':'+('0'+d.getMinutes()).slice(-2);
- pm('사진·메모 모으는 중…');window.__prjExtra(function(x){var P=snapNow(nm);P.extra=x;try{if(window.__favSendFilter)x.ls=window.__favSendFilter(x.ls)}catch(e){}var txt=JSON.stringify(P),n=Math.ceil(txt.length/CH),i=0;pm('보내는 중… 0% ('+(txt.length/1048576).toFixed(1)+'MB)');conn.send({t:'meta',n:n,len:txt.length});
+ pm('사진·메모 모으는 중…');window.__prjExtra(function(x){var P=snapNow(nm);P.extra=x;try{if(window.__favSendFilter)x.ls=window.__favSendFilter(x.ls)}catch(e){}try{if(window.__sendInc)window.__sendInc(x)}catch(e){}var txt=JSON.stringify(P),n=Math.ceil(txt.length/CH),i=0;pm('보내는 중… 0% ('+(txt.length/1048576).toFixed(1)+'MB)');conn.send({t:'meta',n:n,len:txt.length});
  (function step(){var k=0;while(i<n&&k<8){conn.send({t:'c',i:i,d:txt.substr(i*CH,CH)});i++;k++;
   var bo=conn.dataChannel&&conn.dataChannel.bufferedAmount;if(bo>4e6)break}
   pm('보내는 중… '+Math.round(100*i/n)+'%');
@@ -17052,7 +17053,8 @@ function lines(){var base=$('bjBase').value.trim(),a=[];$('bjTx').value.split(/\
  window.__diag=diag})();
 /* v17: 업데이트 내용 · 저장 공간 */
 (function(){var $=function(i){return document.getElementById(i)};
- var LOGV='2026-11-13f',CH=[
+ var LOGV='2026-11-13g',CH=[
+ ['2026.11.13 (핀 번호 자동 갱신 · 보낼 자료 선택)',['즐겨찾기 그룹을 지도에 표시한 상태에서 목록 순서를 바꾸면 지도 핀 번호도 바로 바뀝니다. 바로 보내기에 "함께 보낼 자료"가 생겨 사진·메모, 이동 궤적, 겹친 도면을 빼고 보낼 수 있습니다.']],
  ['2026.11.13 (즐겨찾기 목록 디자인 정리)',['번호를 테두리 동그라미(자리 폭 고정)로 바꾸고 ★ 표시와 구분선을 줄였습니다. 그룹 제목은 옅은 색 띠로, 끌기 손잡이는 흐리게 바꿔 이름과 주소가 먼저 보이게 했습니다.']],
  ['2026.11.13 (즐겨찾기 목록에 번호)',['즐겨찾기 목록의 각 줄에 그룹 안 번호가 표시됩니다. 그룹을 ◎로 지도에 표시했을 때의 번호와 같습니다.']],
  ['2026.11.13 (바로 보내기: 즐겨찾기 그룹 고르기)',['프로젝트 > 다른 기기와 바로 주고받기에 "보낼 즐겨찾기"가 생겼습니다. 보낼 그룹만 체크하면 그 그룹의 즐겨찾기만 전달되고(전체를 체크하면 기존처럼 전부), 받는 기기의 목록에 합쳐 넣습니다. 인증키가 달라도 됩니다. 일부만 보낼 때는 최근 본 필지 기록은 보내지 않습니다. 이미 있는 항목(이름·위치 같음)은 중복해서 넣지 않습니다.']],
@@ -17752,7 +17754,7 @@ b.onclick=function(){try{localStorage.setItem('rdr',JSON.stringify(cur==='canvas
  var F=function(){return window.__fav?window.__fav():[]},bx=document.getElementById('fmBox');if(!bx)return;
  var qq='',openI=null,selMode=0,sel=[],delA=0,addG=0,sortO=0,editG=null,del2=null,newG=0,drag=null,drop=null;
  function nk(x){return String(x||'').toLowerCase().replace(/\s+/g,'')}
- function save(){s('fav',F())}
+ function save(){s('fav',F());try{window.__fgRefresh&&window.__fgRefresh()}catch(e){}}
  function LG(){var l=g('favGroups',[]);if(!Array.isArray(l))l=[];var ch=0;F().forEach(function(f){if(f.g&&l.indexOf(f.g)<0){l.push(f.g);ch=1}});if(ch)s('favGroups',l);return l}
  function GO(){var o=g('favGO',{});return o&&typeof o==='object'?o:{}}
  function items(gn){return F().map(function(f,i){return {f:f,i:i}}).filter(function(o){return (o.f.g||'')===gn})}
@@ -17858,10 +17860,13 @@ b.onclick=function(){try{localStorage.setItem('rdr',JSON.stringify(cur==='canvas
 
 /* ---- 즐겨찾기 그룹을 지도에 한꺼번에 표시 ---- */
 (function(){var lay=null,chip=null;
- function clear(){if(lay){try{map.removeLayer(lay)}catch(e){}lay=null}if(chip){chip.remove();chip=null}}
- window.__fgShow=function(name,its){clear();lay=L.layerGroup();var pts=[];
+ function clear(){if(lay){try{map.removeLayer(lay)}catch(e){}lay=null}if(chip){chip.remove();chip=null}curG=null}
+ window.__fgRefresh=function(){if(!lay||curG===null||!window.__fav)return;var its=window.__fav().filter(function(f){return (f.g||'')===curG});if(!its.length){clear();return}drawPins(its);var sp=chip&&chip.querySelector('span');if(sp)sp.textContent=its.length+'곳 표시 중'};
+ var curG=null;
+ function drawPins(its){if(lay){try{map.removeLayer(lay)}catch(e){}}lay=L.layerGroup();var pts=[];
   its.forEach(function(f,i){var ll=[f.lat,f.lng];pts.push(ll);var m=L.marker(ll,{keyboard:false,zIndexOffset:700,icon:L.divIcon({className:'fgPin',html:'<span class="fgN">'+(i+1)+'</span><span class="fgT">'+esc(f.n)+'</span>',iconSize:[0,0]})});m.on('click',function(){map.setView(ll,Math.max(map.getZoom(),18));if(f.al)setTimeout(function(){pick(f.lat,f.lng)},500)});lay.addLayer(m)});
-  lay.addTo(map);
+  lay.addTo(map);return pts}
+ window.__fgShow=function(name,its){clear();curG=its.length&&its[0].g!==undefined?(its[0].g||''):(name==='미분류'?'':name);var pts=drawPins(its);
   if(pts.length===1)map.setView(pts[0],18);else map.fitBounds(L.latLngBounds(pts),{paddingTopLeft:[50,90],paddingBottomRight:[150,100],maxZoom:18});
   chip=document.createElement('div');chip.id='fgChip';chip.innerHTML='<b>'+esc(name)+'</b> <span>'+its.length+'곳 표시 중</span><button type="button">지우기</button>';chip.querySelector('button').onclick=clear;document.body.appendChild(chip);status('‘'+name+'’ '+its.length+'곳을 지도에 표시했습니다')};
 })();
@@ -17889,6 +17894,13 @@ b.onclick=function(){try{localStorage.setItem('rdr',JSON.stringify(cur==='canvas
   var gs=a.filter(function(x){return x[0]&&ST[x[0]]}).map(function(x){return x[0]});
   ls.fav=keep;ls.favGroups=gs;ls.rec=[];return ls};
  init();summary()})();
+
+/* ---- 바로 보내기: 함께 보낼 자료 고르기 ---- */
+(function(){var m=document.getElementById('p2Memo'),t=document.getElementById('p2Trk'),o=document.getElementById('p2Ovl'),tt=document.getElementById('p2IncT');if(!m)return;
+ function sum(){var a=[];if(m.checked)a.push('사진·메모');if(t.checked)a.push('궤적');if(o.checked)a.push('도면');tt.textContent=a.length===3?'전체':a.length?a.join('·'):'지도만'}
+ [m,t,o].forEach(function(c){c.onchange=sum});sum();
+ window.__sendInc=function(x){if(!m.checked)x.memo=[];if(!t.checked)x.trk=[];if(!o.checked)x.ovl=[]};
+ var pb=document.getElementById('prjModal');if(pb)new MutationObserver(function(){if(!pb.hidden){m.checked=t.checked=o.checked=true;sum()}}).observe(pb,{attributes:true,attributeFilter:['hidden']})})();
 })();
 
 </script></body></html>
