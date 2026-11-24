@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="ko"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="app-build" content="2611241909">
+<meta name="app-build" content="2611241920">
 <meta name="theme-color" content="#16241f">
 <meta name="color-scheme" content="light dark"><meta name="supported-color-schemes" content="light dark"><meta name="darkreader-lock">
 <link rel="manifest" href="manifest.json">
@@ -2087,6 +2087,17 @@ html #quick .qp button+button{border-left:0;border-top:1px solid var(--line)}
 #fmBox .dupP .dpL{margin:0 0 8px;font-size:12px}
 
 #fmBox .dupP .dpW{margin:6px 0 0;font-size:12px;color:#d33;font-weight:600}
+
+/* 부드러운 동작: 정보창 내용 교체·창 열림을 살짝 페이드 */
+#infoBody>.sec,#infoBody>.skc,#infoBody .sumL,#infoBody>p{animation:fadeUp .22s ease both}
+#infoBody.ldg>.sec,#infoBody.ldg .sumL,#infoBody.ldg>p{animation:none}
+#infoBody .hero,#infoBody .stats{transition:background-color .2s}
+#infoBody .hero b,#infoBody .stats b{animation:fadeIn .25s ease both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+@keyframes fadeIn{from{opacity:.25}to{opacity:1}}
+#toolPop,#viewPop,#mapPop,#layers,#legend,#scPop,.modal .box,#fmBox,#helpModal .box{transition:opacity .18s ease,transform .18s ease}
+@starting-style{#toolPop,#viewPop,#mapPop,#layers,#legend,#scPop,.modal .box,#fmBox,#helpModal .box{opacity:0;transform:translateY(6px)}}
+@media (prefers-reduced-motion:reduce){#infoBody>.sec,#infoBody>.skc,#infoBody .sumL,#infoBody>p,#infoBody .hero b,#infoBody .stats b{animation:none}}
 </style>
 </head><body>
 <div id="map"></div>
@@ -14804,7 +14815,7 @@ var LS=window.localStorage;function g(k,d){try{var v=LS.getItem(k);return v==nul
  if(o.m!=null){var mm={};o.m.split(',').forEach(function(i){if(i)mm[i]=true});s('muniOn',mm)}
  history.replaceState(null,'',location.pathname+location.search)}catch(e){}})();
 var KEY=g('key',''),DOM=g('dom',location.hostname||'localhost');
-var BUILD="2611241909";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
+var BUILD="2611241920";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
 applyTheme(THEME);
 var BASE=g('base','Base');if(['Base','Satellite','SatLabel','white','none'].indexOf(BASE)<0)BASE='Base';
 // 레이어: id, 이름, 표시 WMS 이름, 조회용 data 코드
@@ -15178,14 +15189,16 @@ function pick(lat,lng){
   var f=fs[0],p=f.properties||{},pnu=p.pnu||'';try{window.__tgt=gcen(f.geometry)}catch(e){}if(window.__rec)window.__rec(p.addr||p.jibun||'',lat,lng);
   if(hi)map.removeLayer(hi);hi=L.geoJSON(f.geometry,{style:{className:'hiSel',color:'#00e676',weight:3.5,fillColor:'#00e676',fillOpacity:+g('hif',0)||0,fill:true}}).addTo(map);
   var S={ll:[lat,lng],shp:SHPH,addr:p.addr||'',jibun:p.jibun||'',jiga:p.jiga,gy:p.gosi_year,jimok:'',area:'',own:'',zones:[],fac:[],spec:[],gbs:[],use:[],dist:[]};
-  var pend=1,prT=0,fin0=false;function done(){if(--pend>0){if(!prT)prT=setTimeout(function(){prT=0;if(!fin0&&pend>0)render(S,pnu,true)},250);return}fin0=true;clearTimeout(prT);render(S,pnu)}
+  var pend=1,prT=0,fin0=false,lateT=0,dlT=setTimeout(function(){if(fin0||pend<=0)return;fin0=true;LOG.unshift('정보창: '+pend+'개 응답을 기다리다 먼저 표시함');render(S,pnu)},4500);
+  function done(){if(--pend>0){if(fin0){clearTimeout(lateT);lateT=setTimeout(function(){var ib=document.getElementById('infoBody'),st=ib?ib.scrollTop:0;render(S,pnu);if(ib)ib.scrollTop=st},400);return}if(!prT)prT=setTimeout(function(){prT=0;if(!fin0&&pend>0)heroUpd(S)},200);return}
+   clearTimeout(prT);clearTimeout(dlT);clearTimeout(lateT);if(fin0){var ib=document.getElementById('infoBody'),st=ib?ib.scrollTop:0;render(S,pnu);if(ib)ib.scrollTop=st;return}fin0=true;render(S,pnu)}
   render(S,pnu,true);var ow0=0;
   pend++;ned('ladfrlList',pnu,function(d){try{var v=d.ladfrlVOList.ladfrlVOList[0];S.jimok=v.lndcgrCodeNm||'';S.area=v.lndpclAr||'';S.own=v.posesnSeCodeNm||'';var c={'국유지':'#2f7bff','공유지':'#3fb53f','사유지':'#ff9f1a'}[owner(S.own)];if(c&&hi)hi.setStyle({color:c,fillColor:c,fillOpacity:+g('hif',0)||0})}catch(e){}done()});
   pend++;ned('getLandUseAttr',pnu,function(d){try{var a=d.landUses.field;if(!Array.isArray(a))a=[a];a.forEach(function(it){var n=it.prposAreaDstrcCodeNm,c=String(it.prposAreaDstrcCode||'');if(!n)return;var cn=(it.cnflcAtNm||'').trim();
    if(/^UQ[ABCD]/.test(c)){if(S.zones.indexOf(n)<0)S.zones.push(n)}else if(/^UQ[STUVWXY]/.test(c)){var t=cn?n+'('+cn+')':n;if(S.fac.indexOf(t)<0)S.fac.push(t)}else{if(S.spec.indexOf(n)<0)S.spec.push(n)}})}catch(e){}done()});
   pend++;(function(){var Y=new Date().getFullYear(),R={},ok=false,gt=0;
    function pick(force){if(ok)return;for(var k=0;k<5;k++){var y=Y-k;if(!(y in R)){if(!force)return;continue}if(R[y]){ok=true;clearTimeout(gt);S.jiga=R[y].pblntfPclnd;S.gy=R[y].stdrYear||y;done();return}}if(Object.keys(R).length>=5){ok=true;clearTimeout(gt);done()}}
-   for(var k=0;k<5;k++)(function(y){ned('getIndvdLandPriceAttr',pnu,function(d){var a=null;try{a=d.indvdLandPrices.field;if(!Array.isArray(a))a=a?[a]:[];a=a.filter(function(r){return r&&r.pblntfPclnd&&String(r.stdrYear||y)===String(y)})[0]||null}catch(e){a=null}R[y]=a;if(a&&!gt)gt=setTimeout(function(){pick(true)},2500);pick(false)},'&stdrYear='+y)})(Y-k)})();
+   for(var k=0;k<5;k++)(function(y){ned('getIndvdLandPriceAttr',pnu,function(d){var a=null;try{a=d.indvdLandPrices.field;if(!Array.isArray(a))a=a?[a]:[];a=a.filter(function(r){return r&&r.pblntfPclnd&&String(r.stdrYear||y)===String(y)})[0]||null}catch(e){a=null}R[y]=a;if(a&&!gt)gt=setTimeout(function(){pick(true)},1500);pick(false)},'&stdrYear='+y)})(Y-k)})();
   pend++;ratios(f.geometry,S,function(){done()});
   LAYERS.forEach(function(l){if(!l.data||!l.on)return;l.data.forEach(function(code){pend++;dataQ(code,lng,lat,l.id==='fac',function(r){
    (r||[]).forEach(function(x){var n=l.id==='fac'?fnm(x.properties||{}):nm(x.properties||{});if(!n)return;
@@ -15253,13 +15266,16 @@ function heroH(S,partial){var q=jb({jibun:S.jibun}),ar=S.area?Number(S.area).toL
  var zr=zm.map(function(x){return '<div class="hzr"><span class="tag">'+esc(x.nm)+'</span>'+x.cp+'</div>'}).join('');
  return '<div class="hero"><div class="hc"><small>지번</small><b>'+(q.n||S.jibun?esc(q.n||S.jibun):ND)+'</b></div><div class="hc"><small>지목</small><b>'+(S.jimok||q.j?esc(S.jimok||q.j):ND)+'</b></div><div class="hc"><small>면적</small><b>'+(ar?ar+'<i>㎡</i>':ND)+'</b></div>'+
   '<div class="hz"><small>용도지역'+(zt.length?' · '+zt.map(function(x){return esc(x.nm)}).join('·'):'')+(zm.length>1?' · '+zm.length+'곳에 걸침':'')+(capsOn?' · 상한값':'')+'</small><div class="hzl">'+(z.length?zr:'<span class="hn">'+(partial?'조회 중…':'정보 없음 · 켜 둔 레이어만 조회')+'</span>')+'</div></div></div>'}
+function statsH(S,partial){var won=function(n){return n?Number(n).toLocaleString('ko-KR')+'원/㎡':''},ow=owner(S.own);return (!partial&&!S.own&&!S.jiga?'<div class="stats none"><div class="st"><small>소유 · 공시지가</small><b class="em">정보 없음</b></div></div>':'<div class="stats">'+
+  '<div class="st"><small>소유</small><b>'+(S.own?'<span class="tag own-'+ow+'">'+ow+'</span>':ND)+(S.own&&S.own!==ow?'<em>'+esc(S.own)+'</em>':'')+'</b></div>'+
+  '<div class="st"><small>공시지가'+(S.gy?' · '+esc(S.gy)+'년':'')+'</small><b>'+(S.jiga?won(S.jiga):ND)+'</b>'+(S.jiga?'<div class="sub" style="margin:2px 0 0">평당 '+man(S.jiga*3.3058)+(S.area?' · 총액 '+man(S.jiga*S.area)+'(추정)':'')+'</div>':'')+'</div></div>')}
+/* 조회 중에는 위쪽 요약(지번·면적·용도지역·소유·공시지가)만 그 자리에서 바꿔 끼워 화면이 덜컹거리지 않게 */
+function heroUpd(S){try{var ib=document.getElementById('infoBody'),a=ib.querySelector('.hero'),b=ib.querySelector('.stats');if(!a||!b)return false;var t=document.createElement('div');t.innerHTML=heroH(S,true)+statsH(S,true);var na=t.children[0],nb2=t.children[1];if(a.outerHTML!==na.outerHTML)a.replaceWith(na);if(b.outerHTML!==nb2.outerHTML)b.replaceWith(nb2);return true}catch(e){return false}}
 function render(S,pnu,partial){
  var won=function(n){return n?Number(n).toLocaleString('ko-KR')+'원/㎡':''},ow=owner(S.own);
  function sec(l,v){return v?'<div class="sec"><small>'+l+'</small><div>'+v+'</div></div>':''}
  var h='<div class="ih"><h3>'+addrH(S.addr||S.jibun)+'</h3><div class="ihs">'+esc(S.jibun)+'</div>'+(window.__alBtn?window.__alBtn(S,pnu):'')+'</div>'+
-  heroH(S,partial)+(!partial&&!S.own&&!S.jiga?'<div class="stats none"><div class="st"><small>소유 · 공시지가</small><b class="em">정보 없음</b></div></div>':'<div class="stats">'+
-  '<div class="st"><small>소유</small><b>'+(S.own?'<span class="tag own-'+ow+'">'+ow+'</span>':ND)+(S.own&&S.own!==ow?'<em>'+esc(S.own)+'</em>':'')+'</b></div>'+
-  '<div class="st"><small>공시지가'+(S.gy?' · '+esc(S.gy)+'년':'')+'</small><b>'+(S.jiga?won(S.jiga):ND)+'</b>'+(S.jiga?'<div class="sub" style="margin:2px 0 0">평당 '+man(S.jiga*3.3058)+(S.area?' · 총액 '+man(S.jiga*S.area)+'(추정)':'')+'</div>':'')+'</div></div>')+sumL(S)+
+  heroH(S,partial)+statsH(S,partial)+sumL(S)+
   sec('용도지역',tags(S.zones)+zoneSplit(S))+capSec(S)+useSec(S)+distCard(S,pnu)+sec('개발제한',tags(S.gbs,1))+sec('기타',tags(S.spec.filter(function(x){return !/지구단위/.test(x)})))+sec('시설',tags(dedupFac(S.fac)))+sec('토지이용',tags(S.use))+(S.bld&&S.bld.length?sec('건축물',bldHtml(S.bld,S.area)):'')+ratioSec(S)+shpRows(S.shp)+
   (S.ll?sec('바로가기',extLinks(S.ll[0],S.ll[1],S.addr,pnu)):'')+(partial?'<p class="sub sk-t">세부 정보를 불러오는 중…</p>':'<p class="sub">PNU '+esc(pnu)+' · 켜 둔 레이어만 조회됩니다.</p>');
  document.getElementById('infoBody').innerHTML=h;try{foldSecs()}catch(e){}}
@@ -17370,8 +17386,8 @@ function lines(){var base=$('bjBase').value.trim(),a=[];$('bjTx').value.split(/\
  window.__diag=diag})();
 /* v17: 업데이트 내용 · 저장 공간 */
 (function(){var $=function(i){return document.getElementById(i)};
- window.__ver='2026-11-24d';var LOGV='2026-11-24d',CH=[
- ['2026.11.24 (필지 조회 속도 · 토지대장 대체)',['V-World가 올해 공시지가 요청에 답을 주지 않으면 정보창 전체가 "조회 중…"에 멈추던 문제를 고쳤습니다. 공시지가는 최근 5년을 한꺼번에 물어 최신 값을 쓰고, 정보창은 답이 오는 대로 바로 채웁니다. 응답이 없는 요청은 8초 뒤 포기합니다.','토지대장(면적·지목·소유)이 비어 오면 토지소유정보, 토지특성 순으로 대신 조회합니다.','연결 상태 확인에 토지소유정보·토지특성 API 항목을 추가하고, "최근 V-World 응답"에 이상한 응답의 실제 내용을 보여 줍니다.']],
+ window.__ver='2026-11-24e';var LOGV='2026-11-24e',CH=[
+ ['2026.11.24 (필지 조회 속도 · 토지대장 대체)',['V-World가 올해 공시지가 요청에 답을 주지 않으면 정보창 전체가 "조회 중…"에 멈추던 문제를 고쳤습니다. 공시지가는 최근 5년을 한꺼번에 물어 최신 값을 쓰고, 정보창은 답이 오는 대로 바로 채웁니다. 응답이 없는 요청은 8초 뒤 포기합니다.','토지대장(면적·지목·소유)이 비어 오면 토지소유정보, 토지특성 순으로 대신 조회합니다.','필지를 누른 뒤 정보창이 여러 번 통째로 다시 그려지며 들썩이던 것을 줄였습니다. 조회 중에는 위쪽 요약만 그 자리에서 채우고, 아래 카드는 한 번에 부드럽게 나타납니다. 4.5초가 지나도 답이 없는 항목이 있으면 먼저 받은 내용으로 표시하고, 늦게 온 내용은 스크롤 위치를 유지한 채 채웁니다. 창이 열릴 때도 살짝 페이드됩니다.','연결 상태 확인에 토지소유정보·토지특성 API 항목을 추가하고, "최근 V-World 응답"에 이상한 응답의 실제 내용을 보여 줍니다.']],
  ['2026.11.18 (중복 정리와 동기화)',['동기화를 켜 둔 상태에서 "중복 정리"를 누르면 먼저 다른 기기와 맞춘 뒤 중복을 찾고, 지운 결과도 바로 다른 기기로 보냅니다. 폰과 PC에서 서로 다른 항목을 남겨 둘 다 사라지는 일을 막기 위한 것입니다. 동기화에 실패하면 경고를 보여 줍니다.']],
  ['2026.11.14 (즐겨찾기 이름 · 카드 정리)',['"별명"으로 부르던 것을 "즐겨찾기"로 모두 바꿨습니다(☆ 즐겨찾기 저장). 필지 카드 맨 위의 즐겨찾기 저장 단추와 아이콘 단추를 한 줄 같은 높이로 맞추고, 용도지역 칸은 "도시지역" 같은 상위 구분을 제목 줄로 올려 세부 용도지역과 건폐율·용적률을 한 덩어리로 묶었습니다. 카드 줄의 손잡이·아이콘 칸 폭을 같게 맞췄습니다.']],
  ['2026.11.14 (축척을 그 자리에서)',['화면 왼쪽 아래 "1:N"을 누르면 그 바로 위에 작은 창이 떠서 원하는 축척 숫자를 직접 넣고(예: 1200) 축척을 잠글 수 있습니다. 창은 지도 영역 안에만 뜹니다(오른쪽 도구 창으로 가지 않습니다). A4 도면 저장은 같은 창의 "A4 도면 저장…"에서 엽니다.']],
