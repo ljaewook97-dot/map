@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="ko"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="app-build" content="2611241801">
+<meta name="app-build" content="2611241823">
 <meta name="theme-color" content="#16241f">
 <meta name="color-scheme" content="light dark"><meta name="supported-color-schemes" content="light dark"><meta name="darkreader-lock">
 <link rel="manifest" href="manifest.json">
@@ -14804,7 +14804,7 @@ var LS=window.localStorage;function g(k,d){try{var v=LS.getItem(k);return v==nul
  if(o.m!=null){var mm={};o.m.split(',').forEach(function(i){if(i)mm[i]=true});s('muniOn',mm)}
  history.replaceState(null,'',location.pathname+location.search)}catch(e){}})();
 var KEY=g('key',''),DOM=g('dom',location.hostname||'localhost');
-var BUILD="2611241801";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
+var BUILD="2611241823";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
 applyTheme(THEME);
 var BASE=g('base','Base');if(['Base','Satellite','SatLabel','white','none'].indexOf(BASE)<0)BASE='Base';
 // 레이어: id, 이름, 표시 WMS 이름, 조회용 data 코드
@@ -14850,7 +14850,13 @@ function jsonp(url,cb){var n='_j'+Math.random().toString(36).slice(2),sc=documen
 function q(){return 'key='+encodeURIComponent(KEY)+'&domain='+encodeURIComponent(DOM)}
 function dataQ(code,lng,lat,geom,cb){jsonp('https://api.vworld.kr/req/data?service=data&request=GetFeature&data='+code+'&format=json&size=10&attribute=true&geometry='+(geom?'true':'false')+'&crs=EPSG:4326&geomFilter='+encodeURIComponent('POINT('+lng+' '+lat+')')+'&'+q(),function(d){
  var f=null;try{f=d.response.status==='OK'?d.response.result.featureCollection.features:[]}catch(e){f=null}cb(f)})}
-function ned(op,pnu,cb,ex){var u='https://api.vworld.kr/ned/data/'+op+'?pnu='+pnu+'&format=json&numOfRows='+(op==='getLandUseAttr'?1000:5)+(ex||'')+'&'+q();
+var LDF={bad:0,until:0};function fieldRows(d){var r=null;try{Object.keys(d||{}).some(function(k){var v=d[k];if(v&&v.field){r=Array.isArray(v.field)?v.field:[v.field];return true}})}catch(e){}return r||[]}
+function ladfRows(d){try{var a=d.ladfrlVOList.ladfrlVOList;return Array.isArray(a)?a:(a?[a]:[])}catch(e){return []}}
+/* 토지대장(ladfrlList)이 빈 응답이면 토지소유정보 → 토지특성 순으로 대신 조회해 같은 모양으로 돌려줌 */
+function ladfAlt(pnu,cb){nedRaw('getPossessionAttr',pnu,function(d){var r=fieldRows(d).filter(function(x){return x&&(x.lndpclAr||x.lndcgrCodeNm||x.posesnSeCodeNm)});if(r.length)return cb({ladfrlVOList:{ladfrlVOList:[{lndcgrCodeNm:r[0].lndcgrCodeNm||'',lndpclAr:r[0].lndpclAr||'',posesnSeCodeNm:r[0].posesnSeCodeNm||'',_src:'소유정보'}]}});
+ nedRaw('getLandCharacteristics',pnu,function(d2){var r2=fieldRows(d2).filter(function(x){return x&&(x.lndpclAr||x.lndcgrCodeNm)});r2.sort(function(a,b){return String(b.stdrYear||'').localeCompare(String(a.stdrYear||''))});if(r2.length)return cb({ladfrlVOList:{ladfrlVOList:[{lndcgrCodeNm:r2[0].lndcgrCodeNm||'',lndpclAr:r2[0].lndpclAr||'',posesnSeCodeNm:r2[0].posesnSeCodeNm||'',_src:'토지특성'}]}});cb(d)})})}
+function ned(op,pnu,cb,ex){if(op==='ladfrlList'){var now=Date.now();if(LDF.until>now)return ladfAlt(pnu,cb);return nedRaw(op,pnu,function(d){if(ladfRows(d).length){LDF.bad=0;return cb(d)}if(d){LDF.bad++;if(LDF.bad>=3)LDF.until=Date.now()+6e5}ladfAlt(pnu,function(x){cb(x||d)})},ex)}return nedRaw(op,pnu,cb,ex)}
+function nedRaw(op,pnu,cb,ex){var u='https://api.vworld.kr/ned/data/'+op+'?pnu='+pnu+'&format=json&numOfRows='+(op==='getLandUseAttr'?1000:5)+(ex||'')+'&'+q();
  jsonp(u,function(d){if(d)return cb(d);try{fetch(u).then(function(r){return r.json()}).then(cb,function(){cb(null)})}catch(e){cb(null)}})}
 function boxQ(code,cb,size,pb,page){var b=map.getBounds();var g=pb?'BOX('+pb[0]+','+pb[1]+','+pb[2]+','+pb[3]+')':'BOX('+b.getWest()+','+b.getSouth()+','+b.getEast()+','+b.getNorth()+')';
  jsonp('https://api.vworld.kr/req/data?service=data&request=GetFeature&version=2.0&data='+code+'&format=json&size='+(size||100)+'&page='+(page||1)+'&attribute=true&geometry=true&crs=EPSG:4326&geomFilter='+encodeURIComponent(g)+'&'+q(),function(d){var f=null,tot=0;try{f=d.response.status==='OK'?d.response.result.featureCollection.features:(d.response.status==='ERROR'?null:[]);if(f===null){cb(null,0);return}var rc=+(d.response.record&&d.response.record.total)||0,pg=+(d.response.page&&d.response.page.total)||0;tot=rc||pg*(size||100)}catch(e){f=null}cb(f,tot)})}
@@ -17325,10 +17331,10 @@ function lines(){var base=$('bjBase').value.trim(),a=[];$('bjTx').value.split(/\
    else if(res.vdata===false)t='지도 타일은 되지만 지적 데이터 조회가 안 됩니다. 잠시 뒤 다시 시도하거나 새로고침해 보세요.';
    else if(Object.keys(res).some(function(k){return res[k]===false}))t='V-World는 정상입니다. 일부 지자체·과거 영상 서버만 연결되지 않습니다 (해당 서버 문제이거나 망에서 차단).';
    else t='모두 정상입니다.';sum.textContent=t}
-  row('net','인터넷 연결');row('vkey','V-World 인증키·도메인');row('vtile','V-World 지도 타일');row('vdata','V-World 지적 데이터');row('ned','V-World 토지대장 API');
+  row('net','인터넷 연결');row('vkey','V-World 인증키·도메인');row('vtile','V-World 지도 타일');row('vdata','V-World 지적 데이터');row('ned','V-World 토지대장 API');row('ned2','V-World 토지소유정보 API (대체)');row('ned3','V-World 토지특성 API (대체)');
   var ml=window.__muniList?window.__muniList():[];ml.forEach(function(m){row('m_'+m.id,'지자체 영상 · '+m.name)});row('wb','과거 항공사진(Esri) 목록');row('wbt','과거 항공사진 타일');
   var on=navigator.onLine!==false;done('net',on,on?'기기 상태: 연결됨':'기기 상태: 오프라인');
-  if(!KEY){done('vkey',false,'인증키가 비어 있습니다');done('vtile',false,'인증키 없음');done('vdata',false,'인증키 없음');done('ned',false,'인증키 없음')}
+  if(!KEY){done('vkey',false,'인증키가 비어 있습니다');done('vtile',false,'인증키 없음');done('vdata',false,'인증키 없음');done('ned',false,'인증키 없음');done('ned2',false,'인증키 없음');done('ned3',false,'인증키 없음')}
   else{var t0=Date.now();jsonp('https://api.vworld.kr/req/search?service=search&request=search&version=2.0&crs=EPSG:4326&size=1&page=1&type=district&category=L4&format=json&errorformat=json&query='+encodeURIComponent('서울')+'&'+q(),function(d){var ms=Date.now()-t0;
     if(!d)return done('vkey',false,'응답 없음 (네트워크 차단·시간초과·로드 실패)',ms);var r=d.response||{},stt=r.status;
     if(stt==='OK'||stt==='NOT_FOUND')done('vkey',true,'인증 정상 · 응답 '+stt,ms);else done('vkey',false,(stt||'오류')+' · '+((r.error&&(r.error.text||r.error.code))||'인증키·도메인 확인'),ms)});
@@ -17336,7 +17342,8 @@ function lines(){var base=$('bjBase').value.trim(),a=[];$('bjTx').value.split(/\
    im.onload=function(){if(!fin){fin=true;done('vtile',true,'타일 수신',Date.now()-t1)}};im.onerror=function(){if(!fin){fin=true;done('vtile',false,'타일 못 받음 (키·도메인 또는 네트워크)',Date.now()-t1)}};
    setTimeout(function(){if(!fin){fin=true;done('vtile',false,'시간초과',Date.now()-t1)}},9000);im.src=tileUrl('Base','png').replace('{z}',15).replace('{y}',tt[1]).replace('{x}',tt[0]);
    var t2=Date.now();dataQ('LP_PA_CBND_BUBUN',c.lng,c.lat,false,function(f){var ms=Date.now()-t2;if(f===null)done('vdata',false,'응답 없음 또는 오류',ms);else done('vdata',true,'조회됨 · 필지 '+f.length+'건',ms)});
-   var t3=Date.now();ned('ladfrlList','1168010100100010001',function(d){var okv=false;try{okv=!!d.ladfrlVOList}catch(e){}done('ned',okv,okv?'응답 OK · 토지대장 수신':(d?'응답은 왔지만 내용이 없음: '+JSON.stringify(d).slice(0,140):'응답 없음 (차단·시간초과)'),Date.now()-t3)})}
+   var t3=Date.now();nedRaw('ladfrlList','1168010100100010001',function(d){var okv=ladfRows(d).length>0;done('ned',okv,okv?'응답 OK · 토지대장 수신':(d?'응답은 왔지만 내용이 없음: '+JSON.stringify(d).slice(0,140):'응답 없음 (차단·시간초과)'),Date.now()-t3)});
+   var cR=function(id,op){var t=Date.now();nedRaw(op,'1168010100100010001',function(d){var n=fieldRows(d).length;done(id,n>0,n>0?'응답 OK · '+n+'건':(d?'응답은 왔지만 내용이 없음: '+JSON.stringify(d).slice(0,140):'응답 없음 (차단·시간초과)'),Date.now()-t)})};cR('ned2','getPossessionAttr');cR('ned3','getLandCharacteristics')}
   function reach(id,url,okMsg){var t=Date.now();tmo(fetch(url,{mode:'no-cors',cache:'no-store',referrerPolicy:'no-referrer'}),9000).then(function(){done(id,true,okMsg||'서버 응답 있음',Date.now()-t)},function(e){done(id,false,e&&e.message==='시간초과'?'응답 없음 (시간초과)':'접속 실패 · 이 망에서 차단되었거나 서버 점검 중일 수 있습니다',Date.now()-t)})}
   ml.forEach(function(m){var u;try{u=m.t==='wms'?new URL(m.u).origin+'/':m.u+'?f=json'}catch(e){u=m.u}reach('m_'+m.id,u)});
   var t4=Date.now();tmo(fetch('https://s3-us-west-2.amazonaws.com/config.maptiles.arcgis.com/waybackconfig.json',{cache:'no-store'}).then(function(r){return r.json()}),9000).then(function(j){done('wb',true,'영상 '+Object.keys(j).length+'개 목록 수신',Date.now()-t4);try{var ks=Object.keys(j),e=j[ks[ks.length-1]],u=String(e.itemURL||'').replace('{level}','0').replace('{row}','0').replace('{col}','0');if(u)reach('wbt',u);else done('wbt',null,'타일 주소를 알 수 없어 확인하지 못했습니다')}catch(x){done('wbt',null,'타일 주소를 알 수 없어 확인하지 못했습니다')}},function(){done('wb',false,'목록 못 받음 · 이 망에서 차단되었을 수 있습니다',Date.now()-t4);done('wbt',null,'목록을 못 받아 확인하지 못했습니다')});
@@ -17363,7 +17370,7 @@ function lines(){var base=$('bjBase').value.trim(),a=[];$('bjTx').value.split(/\
  window.__diag=diag})();
 /* v17: 업데이트 내용 · 저장 공간 */
 (function(){var $=function(i){return document.getElementById(i)};
- window.__ver='2026-11-24a';var LOGV='2026-11-24a',CH=[
+ window.__ver='2026-11-24b';var LOGV='2026-11-24b',CH=[
  ['2026.11.18 (중복 정리와 동기화)',['동기화를 켜 둔 상태에서 "중복 정리"를 누르면 먼저 다른 기기와 맞춘 뒤 중복을 찾고, 지운 결과도 바로 다른 기기로 보냅니다. 폰과 PC에서 서로 다른 항목을 남겨 둘 다 사라지는 일을 막기 위한 것입니다. 동기화에 실패하면 경고를 보여 줍니다.']],
  ['2026.11.14 (즐겨찾기 이름 · 카드 정리)',['"별명"으로 부르던 것을 "즐겨찾기"로 모두 바꿨습니다(☆ 즐겨찾기 저장). 필지 카드 맨 위의 즐겨찾기 저장 단추와 아이콘 단추를 한 줄 같은 높이로 맞추고, 용도지역 칸은 "도시지역" 같은 상위 구분을 제목 줄로 올려 세부 용도지역과 건폐율·용적률을 한 덩어리로 묶었습니다. 카드 줄의 손잡이·아이콘 칸 폭을 같게 맞췄습니다.']],
  ['2026.11.14 (축척을 그 자리에서)',['화면 왼쪽 아래 "1:N"을 누르면 그 바로 위에 작은 창이 떠서 원하는 축척 숫자를 직접 넣고(예: 1200) 축척을 잠글 수 있습니다. 창은 지도 영역 안에만 뜹니다(오른쪽 도구 창으로 가지 않습니다). A4 도면 저장은 같은 창의 "A4 도면 저장…"에서 엽니다.']],
