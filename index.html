@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="ko"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="app-build" content="2611241905">
+<meta name="app-build" content="2611241909">
 <meta name="theme-color" content="#16241f">
 <meta name="color-scheme" content="light dark"><meta name="supported-color-schemes" content="light dark"><meta name="darkreader-lock">
 <link rel="manifest" href="manifest.json">
@@ -14804,7 +14804,7 @@ var LS=window.localStorage;function g(k,d){try{var v=LS.getItem(k);return v==nul
  if(o.m!=null){var mm={};o.m.split(',').forEach(function(i){if(i)mm[i]=true});s('muniOn',mm)}
  history.replaceState(null,'',location.pathname+location.search)}catch(e){}})();
 var KEY=g('key',''),DOM=g('dom',location.hostname||'localhost');
-var BUILD="2611241905";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
+var BUILD="2611241909";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
 applyTheme(THEME);
 var BASE=g('base','Base');if(['Base','Satellite','SatLabel','white','none'].indexOf(BASE)<0)BASE='Base';
 // 레이어: id, 이름, 표시 WMS 이름, 조회용 data 코드
@@ -17370,7 +17370,8 @@ function lines(){var base=$('bjBase').value.trim(),a=[];$('bjTx').value.split(/\
  window.__diag=diag})();
 /* v17: 업데이트 내용 · 저장 공간 */
 (function(){var $=function(i){return document.getElementById(i)};
- window.__ver='2026-11-24c';var LOGV='2026-11-24c',CH=[
+ window.__ver='2026-11-24d';var LOGV='2026-11-24d',CH=[
+ ['2026.11.24 (필지 조회 속도 · 토지대장 대체)',['V-World가 올해 공시지가 요청에 답을 주지 않으면 정보창 전체가 "조회 중…"에 멈추던 문제를 고쳤습니다. 공시지가는 최근 5년을 한꺼번에 물어 최신 값을 쓰고, 정보창은 답이 오는 대로 바로 채웁니다. 응답이 없는 요청은 8초 뒤 포기합니다.','토지대장(면적·지목·소유)이 비어 오면 토지소유정보, 토지특성 순으로 대신 조회합니다.','연결 상태 확인에 토지소유정보·토지특성 API 항목을 추가하고, "최근 V-World 응답"에 이상한 응답의 실제 내용을 보여 줍니다.']],
  ['2026.11.18 (중복 정리와 동기화)',['동기화를 켜 둔 상태에서 "중복 정리"를 누르면 먼저 다른 기기와 맞춘 뒤 중복을 찾고, 지운 결과도 바로 다른 기기로 보냅니다. 폰과 PC에서 서로 다른 항목을 남겨 둘 다 사라지는 일을 막기 위한 것입니다. 동기화에 실패하면 경고를 보여 줍니다.']],
  ['2026.11.14 (즐겨찾기 이름 · 카드 정리)',['"별명"으로 부르던 것을 "즐겨찾기"로 모두 바꿨습니다(☆ 즐겨찾기 저장). 필지 카드 맨 위의 즐겨찾기 저장 단추와 아이콘 단추를 한 줄 같은 높이로 맞추고, 용도지역 칸은 "도시지역" 같은 상위 구분을 제목 줄로 올려 세부 용도지역과 건폐율·용적률을 한 덩어리로 묶었습니다. 카드 줄의 손잡이·아이콘 칸 폭을 같게 맞췄습니다.']],
  ['2026.11.14 (축척을 그 자리에서)',['화면 왼쪽 아래 "1:N"을 누르면 그 바로 위에 작은 창이 떠서 원하는 축척 숫자를 직접 넣고(예: 1200) 축척을 잠글 수 있습니다. 창은 지도 영역 안에만 뜹니다(오른쪽 도구 창으로 가지 않습니다). A4 도면 저장은 같은 창의 "A4 도면 저장…"에서 엽니다.']],
