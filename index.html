@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="ko"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="app-build" content="2611241920">
+<meta name="app-build" content="2611241938">
 <meta name="theme-color" content="#16241f">
 <meta name="color-scheme" content="light dark"><meta name="supported-color-schemes" content="light dark"><meta name="darkreader-lock">
 <link rel="manifest" href="manifest.json">
@@ -2098,6 +2098,23 @@ html #quick .qp button+button{border-left:0;border-top:1px solid var(--line)}
 #toolPop,#viewPop,#mapPop,#layers,#legend,#scPop,.modal .box,#fmBox,#helpModal .box{transition:opacity .18s ease,transform .18s ease}
 @starting-style{#toolPop,#viewPop,#mapPop,#layers,#legend,#scPop,.modal .box,#fmBox,#helpModal .box{opacity:0;transform:translateY(6px)}}
 @media (prefers-reduced-motion:reduce){#infoBody>.sec,#infoBody>.skc,#infoBody .sumL,#infoBody>p,#infoBody .hero b,#infoBody .stats b{animation:none}}
+
+#infoBody .ldv{font-size:13px;font-weight:600;color:var(--mut)}
+
+/* 조회 중 자리표시를 실제 카드 모양(접힌 줄)에 맞춤 · 움직임 없는 페이드만 */
+#infoBody .skc.skr{min-height:0!important;box-sizing:border-box;margin:6px 0!important;padding:0 12px!important;border-radius:12px;background:var(--cbg,var(--bg));border:1px solid var(--cbd,var(--line));overflow:hidden}
+#infoBody .skc.skr small{min-height:40px;color:var(--mut);opacity:.75;font-weight:700}
+@keyframes fadeUp{from{opacity:.0}to{opacity:1}}
+#infoBody .sumL{min-height:28px}
+#infoBody .hero b,#infoBody .stats b{animation:none}
+
+#infoBody .skc.skr.blank{background:transparent;border-color:transparent}
+
+/* 조회 중에는 자리표시만 보이고, 실제 카드는 다 받은 뒤 한 번에 */
+#infoBody.ldg>.sec,#infoBody.ldg>p.sk-t,#infoBody.ldg>#luBar,#infoBody.ldg>.moreBtn{display:none!important}
+
+#infoBody .hero .hzl{min-height:30px;display:flex;flex-direction:column;justify-content:center}
+#infoBody>.stats:not(.none){min-height:76px;box-sizing:border-box}
 </style>
 </head><body>
 <div id="map"></div>
@@ -14815,7 +14832,7 @@ var LS=window.localStorage;function g(k,d){try{var v=LS.getItem(k);return v==nul
  if(o.m!=null){var mm={};o.m.split(',').forEach(function(i){if(i)mm[i]=true});s('muniOn',mm)}
  history.replaceState(null,'',location.pathname+location.search)}catch(e){}})();
 var KEY=g('key',''),DOM=g('dom',location.hostname||'localhost');
-var BUILD="2611241920";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
+var BUILD="2611241938";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
 applyTheme(THEME);
 var BASE=g('base','Base');if(['Base','Satellite','SatLabel','white','none'].indexOf(BASE)<0)BASE='Base';
 // 레이어: id, 이름, 표시 WMS 이름, 조회용 data 코드
@@ -15189,15 +15206,16 @@ function pick(lat,lng){
   var f=fs[0],p=f.properties||{},pnu=p.pnu||'';try{window.__tgt=gcen(f.geometry)}catch(e){}if(window.__rec)window.__rec(p.addr||p.jibun||'',lat,lng);
   if(hi)map.removeLayer(hi);hi=L.geoJSON(f.geometry,{style:{className:'hiSel',color:'#00e676',weight:3.5,fillColor:'#00e676',fillOpacity:+g('hif',0)||0,fill:true}}).addTo(map);
   var S={ll:[lat,lng],shp:SHPH,addr:p.addr||'',jibun:p.jibun||'',jiga:p.jiga,gy:p.gosi_year,jimok:'',area:'',own:'',zones:[],fac:[],spec:[],gbs:[],use:[],dist:[]};
+  S._w={ladf:1,use:1,price:1};var TT={},tq0=Date.now(),tm=function(k){TT[k]=((Date.now()-tq0)/1000).toFixed(1);delete S._w[k]};
   var pend=1,prT=0,fin0=false,lateT=0,dlT=setTimeout(function(){if(fin0||pend<=0)return;fin0=true;LOG.unshift('정보창: '+pend+'개 응답을 기다리다 먼저 표시함');render(S,pnu)},4500);
   function done(){if(--pend>0){if(fin0){clearTimeout(lateT);lateT=setTimeout(function(){var ib=document.getElementById('infoBody'),st=ib?ib.scrollTop:0;render(S,pnu);if(ib)ib.scrollTop=st},400);return}if(!prT)prT=setTimeout(function(){prT=0;if(!fin0&&pend>0)heroUpd(S)},200);return}
-   clearTimeout(prT);clearTimeout(dlT);clearTimeout(lateT);if(fin0){var ib=document.getElementById('infoBody'),st=ib?ib.scrollTop:0;render(S,pnu);if(ib)ib.scrollTop=st;return}fin0=true;render(S,pnu)}
+   clearTimeout(prT);clearTimeout(dlT);clearTimeout(lateT);try{LOG.unshift('필지 조회 시간 · 토지대장 '+(TT.ladf||'-')+'초 · 용도지역 '+(TT.use||'-')+'초 · 공시지가 '+(TT.price||'-')+'초 · 전체 '+((Date.now()-tq0)/1000).toFixed(1)+'초');LOG.length=Math.min(LOG.length,25);var dg=document.getElementById('dbg');if(dg)dg.textContent=LOG.join('\n')}catch(e){}if(fin0){var ib=document.getElementById('infoBody'),st=ib?ib.scrollTop:0;render(S,pnu);if(ib)ib.scrollTop=st;return}fin0=true;render(S,pnu)}
   render(S,pnu,true);var ow0=0;
-  pend++;ned('ladfrlList',pnu,function(d){try{var v=d.ladfrlVOList.ladfrlVOList[0];S.jimok=v.lndcgrCodeNm||'';S.area=v.lndpclAr||'';S.own=v.posesnSeCodeNm||'';var c={'국유지':'#2f7bff','공유지':'#3fb53f','사유지':'#ff9f1a'}[owner(S.own)];if(c&&hi)hi.setStyle({color:c,fillColor:c,fillOpacity:+g('hif',0)||0})}catch(e){}done()});
+  pend++;ned('ladfrlList',pnu,function(d){try{var v=d.ladfrlVOList.ladfrlVOList[0];S.jimok=v.lndcgrCodeNm||'';S.area=v.lndpclAr||'';S.own=v.posesnSeCodeNm||'';tm('ladf');var c={'국유지':'#2f7bff','공유지':'#3fb53f','사유지':'#ff9f1a'}[owner(S.own)];if(c&&hi)hi.setStyle({color:c,fillColor:c,fillOpacity:+g('hif',0)||0})}catch(e){}tm('ladf');done()});
   pend++;ned('getLandUseAttr',pnu,function(d){try{var a=d.landUses.field;if(!Array.isArray(a))a=[a];a.forEach(function(it){var n=it.prposAreaDstrcCodeNm,c=String(it.prposAreaDstrcCode||'');if(!n)return;var cn=(it.cnflcAtNm||'').trim();
-   if(/^UQ[ABCD]/.test(c)){if(S.zones.indexOf(n)<0)S.zones.push(n)}else if(/^UQ[STUVWXY]/.test(c)){var t=cn?n+'('+cn+')':n;if(S.fac.indexOf(t)<0)S.fac.push(t)}else{if(S.spec.indexOf(n)<0)S.spec.push(n)}})}catch(e){}done()});
+   if(/^UQ[ABCD]/.test(c)){if(S.zones.indexOf(n)<0)S.zones.push(n)}else if(/^UQ[STUVWXY]/.test(c)){var t=cn?n+'('+cn+')':n;if(S.fac.indexOf(t)<0)S.fac.push(t)}else{if(S.spec.indexOf(n)<0)S.spec.push(n)}})}catch(e){}tm('use');done()});
   pend++;(function(){var Y=new Date().getFullYear(),R={},ok=false,gt=0;
-   function pick(force){if(ok)return;for(var k=0;k<5;k++){var y=Y-k;if(!(y in R)){if(!force)return;continue}if(R[y]){ok=true;clearTimeout(gt);S.jiga=R[y].pblntfPclnd;S.gy=R[y].stdrYear||y;done();return}}if(Object.keys(R).length>=5){ok=true;clearTimeout(gt);done()}}
+   function pick(force){if(ok)return;for(var k=0;k<5;k++){var y=Y-k;if(!(y in R)){if(!force)return;continue}if(R[y]){ok=true;clearTimeout(gt);S.jiga=R[y].pblntfPclnd;S.gy=R[y].stdrYear||y;tm('price');done();return}}if(Object.keys(R).length>=5){ok=true;clearTimeout(gt);tm('price');done()}}
    for(var k=0;k<5;k++)(function(y){ned('getIndvdLandPriceAttr',pnu,function(d){var a=null;try{a=d.indvdLandPrices.field;if(!Array.isArray(a))a=a?[a]:[];a=a.filter(function(r){return r&&r.pblntfPclnd&&String(r.stdrYear||y)===String(y)})[0]||null}catch(e){a=null}R[y]=a;if(a&&!gt)gt=setTimeout(function(){pick(true)},1500);pick(false)},'&stdrYear='+y)})(Y-k)})();
   pend++;ratios(f.geometry,S,function(){done()});
   LAYERS.forEach(function(l){if(!l.data||!l.on)return;l.data.forEach(function(code){pend++;dataQ(code,lng,lat,l.id==='fac',function(r){
@@ -15264,11 +15282,12 @@ function heroH(S,partial){var q=jb({jibun:S.jibun}),ar=S.area?Number(S.area).toL
  var zi=z.map(function(nm){var k=String(nm).replace(/\(.*?\)/g,'').replace(/\s/g,''),ix=ZK.indexOf(k),cp='';if(ix>=0){var b=o&&o[3][ix]!=null?o[3][ix]:SB[ix],r=o&&o[4][ix]!=null?o[4][ix]:SR[ix],st=o&&(o[3][ix]==null||o[4][ix]==null)?'*':'';capsOn=true;cp='<span class="cp">건폐율 <b>'+b+'</b>% · 용적률 <b>'+r+'</b>%'+st+'</span>'}return {nm:nm,cp:cp}});
  var zt=capsOn?zi.filter(function(x){return !x.cp}):[],zm=capsOn?zi.filter(function(x){return x.cp}):zi;
  var zr=zm.map(function(x){return '<div class="hzr"><span class="tag">'+esc(x.nm)+'</span>'+x.cp+'</div>'}).join('');
- return '<div class="hero"><div class="hc"><small>지번</small><b>'+(q.n||S.jibun?esc(q.n||S.jibun):ND)+'</b></div><div class="hc"><small>지목</small><b>'+(S.jimok||q.j?esc(S.jimok||q.j):ND)+'</b></div><div class="hc"><small>면적</small><b>'+(ar?ar+'<i>㎡</i>':ND)+'</b></div>'+
-  '<div class="hz"><small>용도지역'+(zt.length?' · '+zt.map(function(x){return esc(x.nm)}).join('·'):'')+(zm.length>1?' · '+zm.length+'곳에 걸침':'')+(capsOn?' · 상한값':'')+'</small><div class="hzl">'+(z.length?zr:'<span class="hn">'+(partial?'조회 중…':'정보 없음 · 켜 둔 레이어만 조회')+'</span>')+'</div></div></div>'}
-function statsH(S,partial){var won=function(n){return n?Number(n).toLocaleString('ko-KR')+'원/㎡':''},ow=owner(S.own);return (!partial&&!S.own&&!S.jiga?'<div class="stats none"><div class="st"><small>소유 · 공시지가</small><b class="em">정보 없음</b></div></div>':'<div class="stats">'+
-  '<div class="st"><small>소유</small><b>'+(S.own?'<span class="tag own-'+ow+'">'+ow+'</span>':ND)+(S.own&&S.own!==ow?'<em>'+esc(S.own)+'</em>':'')+'</b></div>'+
-  '<div class="st"><small>공시지가'+(S.gy?' · '+esc(S.gy)+'년':'')+'</small><b>'+(S.jiga?won(S.jiga):ND)+'</b>'+(S.jiga?'<div class="sub" style="margin:2px 0 0">평당 '+man(S.jiga*3.3058)+(S.area?' · 총액 '+man(S.jiga*S.area)+'(추정)':'')+'</div>':'')+'</div></div>')}
+ return '<div class="hero"><div class="hc"><small>지번</small><b>'+(q.n||S.jibun?esc(q.n||S.jibun):ND)+'</b></div><div class="hc"><small>지목</small><b>'+(S.jimok||q.j?esc(S.jimok||q.j):(S._w&&S._w.ladf?LDV:ND))+'</b></div><div class="hc"><small>면적</small><b>'+(ar?ar+'<i>㎡</i>':(S._w&&S._w.ladf?LDV:ND))+'</b></div>'+
+  '<div class="hz"><small>용도지역'+(zt.length?' · '+zt.map(function(x){return esc(x.nm)}).join('·'):'')+(zm.length>1?' · '+zm.length+'곳에 걸침':'')+(capsOn?' · 상한값':'')+'</small><div class="hzl">'+(z.length?zr:'<span class="hn">'+(partial||(S._w&&S._w.use)?'조회 중…':'정보 없음 · 켜 둔 레이어만 조회')+'</span>')+'</div></div></div>'}
+var LDV='<span class="ldv">조회 중…</span>';
+function statsH(S,partial){var won=function(n){return n?Number(n).toLocaleString('ko-KR')+'원/㎡':''},ow=owner(S.own);return (!partial&&!S.own&&!S.jiga&&!(S._w&&(S._w.ladf||S._w.price))?'<div class="stats none"><div class="st"><small>소유 · 공시지가</small><b class="em">정보 없음</b></div></div>':'<div class="stats">'+
+  '<div class="st"><small>소유</small><b>'+(S.own?'<span class="tag own-'+ow+'">'+ow+'</span>':(S._w&&S._w.ladf?LDV:ND))+(S.own&&S.own!==ow?'<em>'+esc(S.own)+'</em>':'')+'</b></div>'+
+  '<div class="st"><small>공시지가'+(S.gy?' · '+esc(S.gy)+'년':'')+'</small><b>'+(S.jiga?won(S.jiga):(S._w&&S._w.price?LDV:ND))+'</b>'+(S.jiga?'<div class="sub" style="margin:2px 0 0">평당 '+man(S.jiga*3.3058)+(S.area?' · 총액 '+man(S.jiga*S.area)+'(추정)':'')+'</div>':'')+'</div></div>')}
 /* 조회 중에는 위쪽 요약(지번·면적·용도지역·소유·공시지가)만 그 자리에서 바꿔 끼워 화면이 덜컹거리지 않게 */
 function heroUpd(S){try{var ib=document.getElementById('infoBody'),a=ib.querySelector('.hero'),b=ib.querySelector('.stats');if(!a||!b)return false;var t=document.createElement('div');t.innerHTML=heroH(S,true)+statsH(S,true);var na=t.children[0],nb2=t.children[1];if(a.outerHTML!==na.outerHTML)a.replaceWith(na);if(b.outerHTML!==nb2.outerHTML)b.replaceWith(nb2);return true}catch(e){return false}}
 function render(S,pnu,partial){
@@ -17386,8 +17405,8 @@ function lines(){var base=$('bjBase').value.trim(),a=[];$('bjTx').value.split(/\
  window.__diag=diag})();
 /* v17: 업데이트 내용 · 저장 공간 */
 (function(){var $=function(i){return document.getElementById(i)};
- window.__ver='2026-11-24e';var LOGV='2026-11-24e',CH=[
- ['2026.11.24 (필지 조회 속도 · 토지대장 대체)',['V-World가 올해 공시지가 요청에 답을 주지 않으면 정보창 전체가 "조회 중…"에 멈추던 문제를 고쳤습니다. 공시지가는 최근 5년을 한꺼번에 물어 최신 값을 쓰고, 정보창은 답이 오는 대로 바로 채웁니다. 응답이 없는 요청은 8초 뒤 포기합니다.','토지대장(면적·지목·소유)이 비어 오면 토지소유정보, 토지특성 순으로 대신 조회합니다.','필지를 누른 뒤 정보창이 여러 번 통째로 다시 그려지며 들썩이던 것을 줄였습니다. 조회 중에는 위쪽 요약만 그 자리에서 채우고, 아래 카드는 한 번에 부드럽게 나타납니다. 4.5초가 지나도 답이 없는 항목이 있으면 먼저 받은 내용으로 표시하고, 늦게 온 내용은 스크롤 위치를 유지한 채 채웁니다. 창이 열릴 때도 살짝 페이드됩니다.','연결 상태 확인에 토지소유정보·토지특성 API 항목을 추가하고, "최근 V-World 응답"에 이상한 응답의 실제 내용을 보여 줍니다.']],
+ window.__ver='2026-11-24f';var LOGV='2026-11-24f',CH=[
+ ['2026.11.24 (필지 조회 속도 · 토지대장 대체)',['V-World가 올해 공시지가 요청에 답을 주지 않으면 정보창 전체가 "조회 중…"에 멈추던 문제를 고쳤습니다. 공시지가는 최근 5년을 한꺼번에 물어 최신 값을 쓰고, 정보창은 답이 오는 대로 바로 채웁니다. 응답이 없는 요청은 8초 뒤 포기합니다.','토지대장(면적·지목·소유)이 비어 오면 토지소유정보, 토지특성 순으로 대신 조회합니다.','정보창이 조회 중에 꿈틀대던 원인 세 가지를 고쳤습니다: 글자 크기 맞춤이 0.06초 늦게 적용돼 위쪽 요약이 3px씩 오르내리던 것, "모두 접기" 단추가 0.09초마다 스스로를 다시 그리던 것, "더 보기" 접기가 늦게 적용돼 카드가 나왔다 사라지던 것. 조회 중 자리표시는 지난번 정보창의 카드 모양·높이를 그대로 써서 결과가 들어와도 거의 움직이지 않고, 아직 안 온 값은 "정보 없음" 대신 "조회 중…"으로 보입니다. "최근 V-World 응답"에 필지 조회 시간(토지대장·용도지역·공시지가·전체)이 남습니다.','필지를 누른 뒤 정보창이 여러 번 통째로 다시 그려지며 들썩이던 것을 줄였습니다. 조회 중에는 위쪽 요약만 그 자리에서 채우고, 아래 카드는 한 번에 부드럽게 나타납니다. 4.5초가 지나도 답이 없는 항목이 있으면 먼저 받은 내용으로 표시하고, 늦게 온 내용은 스크롤 위치를 유지한 채 채웁니다. 창이 열릴 때도 살짝 페이드됩니다.','연결 상태 확인에 토지소유정보·토지특성 API 항목을 추가하고, "최근 V-World 응답"에 이상한 응답의 실제 내용을 보여 줍니다.']],
  ['2026.11.18 (중복 정리와 동기화)',['동기화를 켜 둔 상태에서 "중복 정리"를 누르면 먼저 다른 기기와 맞춘 뒤 중복을 찾고, 지운 결과도 바로 다른 기기로 보냅니다. 폰과 PC에서 서로 다른 항목을 남겨 둘 다 사라지는 일을 막기 위한 것입니다. 동기화에 실패하면 경고를 보여 줍니다.']],
  ['2026.11.14 (즐겨찾기 이름 · 카드 정리)',['"별명"으로 부르던 것을 "즐겨찾기"로 모두 바꿨습니다(☆ 즐겨찾기 저장). 필지 카드 맨 위의 즐겨찾기 저장 단추와 아이콘 단추를 한 줄 같은 높이로 맞추고, 용도지역 칸은 "도시지역" 같은 상위 구분을 제목 줄로 올려 세부 용도지역과 건폐율·용적률을 한 덩어리로 묶었습니다. 카드 줄의 손잡이·아이콘 칸 폭을 같게 맞췄습니다.']],
  ['2026.11.14 (축척을 그 자리에서)',['화면 왼쪽 아래 "1:N"을 누르면 그 바로 위에 작은 창이 떠서 원하는 축척 숫자를 직접 넣고(예: 1200) 축척을 잠글 수 있습니다. 창은 지도 영역 안에만 뜹니다(오른쪽 도구 창으로 가지 않습니다). A4 도면 저장은 같은 창의 "A4 도면 저장…"에서 엽니다.']],
@@ -17885,7 +17904,13 @@ function lines(){var base=$('bjBase').value.trim(),a=[];$('bjTx').value.split(/\
    if(cut>0){var hid=ch.slice(cut);hid.forEach(function(c){c.hidden=true});var mb=document.createElement('button');mb.type='button';mb.className='sc z more';mb.textContent='+'+hid.length+' 더 보기';var open=false;mb.onclick=function(){open=!open;hid.forEach(function(c){c.hidden=!open});mb.textContent=open?'접기':'+'+hid.length+' 더 보기'};sl.appendChild(mb)}});
   [].forEach.call(ib.querySelectorAll('.st b'),function(b){var tx=(b.textContent||'').trim();if(tx==='—'||tx==='정보 없음'){b.classList.add('em');if(tx==='—'&&!ib.classList.contains('ldg'))b.textContent='정보 없음'}else b.classList.remove('em')})}catch(e){}busy=false}
  new MutationObserver(post).observe(ib,{childList:true,subtree:true});
- var _rd=render;render=function(S,pnu,partial){var r=_rd.apply(this,arguments);ib.classList.toggle('ldg',!!partial);post();if(partial){try{var sl=ib.querySelector('.sumL'),nn=ib.querySelector('.sumL .none');if(nn)nn.textContent='불러오는 중…';if(sl){var ref=sl.nextSibling;['용도지역','건폐율·용적률 상한','허용 용도·높이','시설'].forEach(function(k,ix){var d=document.createElement('div');d.className='skc';d.dataset.k=ix;d.setAttribute('aria-hidden','true');d.innerHTML='<small>'+k+'</small><i class="m"></i><i class="s"></i>'+(ix===1?'<i class="m"></i><i class="s"></i><i class="m"></i>':'<i class="m"></i>');sl.parentNode.insertBefore(d,ref)})}}catch(e){}}return r};
+ var _rd=render,LSEC=null;try{LSEC=JSON.parse(localStorage.getItem('lastSecs')||'null')}catch(e){}
+ render=function(S,pnu,partial){var r=_rd.apply(this,arguments);ib.classList.toggle('ldg',!!partial);post();
+  if(!partial){setTimeout(function(){try{var sl0=ib.querySelector(':scope>.sumL'),aft=false,L2=[];[].forEach.call(ib.children,function(el){if(el===sl0){aft=true;return}if(!aft||el.classList.contains('skc'))return;var r0=el.getBoundingClientRect();if(r0.height<1)return;var cs=getComputedStyle(el);var h=el.children[0];L2.push({t:(el.classList.contains('sec')&&h?(h.textContent||''):'').replace(/\s+/g,' ').trim().slice(0,24),h:Math.round(r0.height+parseFloat(cs.marginTop)+parseFloat(cs.marginBottom))})});if(L2.length){LSEC=L2;localStorage.setItem('lastSecs',JSON.stringify(L2))}}catch(e){}},150)}
+  if(partial){try{var sl=ib.querySelector('.sumL'),nn=ib.querySelector('.sumL .none');if(nn)nn.textContent='불러오는 중…';if(sl){var ref=sl.nextSibling;
+   /* 자리표시: 지난번 정보창의 카드 제목·높이를 그대로 써서, 결과가 들어와도 화면이 거의 안 움직이게 */
+   var list=(LSEC&&LSEC.length)?LSEC:['건폐율·용적률 상한','용도지역','시설','건축물','바로가기','지구단위계획구역','허용 용도·높이','기타','이 필지 안 면적 비율'].map(function(t){return {t:t,h:46}});
+   list.forEach(function(x,ix){var d=document.createElement('div');d.className='skc skr';d.dataset.k=ix;d.setAttribute('aria-hidden','true');d.style.height=Math.max(20,Math.min(x.h,600)-12)+'px';if(!x.t)d.classList.add('blank');d.innerHTML=x.t?'<small>'+esc(x.t.split(' · ')[0].replace(/[+−]\s*$/,''))+'</small>'+(x.h>70?'<i class="m"></i><i class="s"></i>':''):'';sl.parentNode.insertBefore(d,ref)})}}catch(e){}}return r};
  /* 정보창 항목 기본 펼침·접힘 설정 */
  var SK=['용도지역','건폐율·용적률 상한','지구단위계획구역','개발제한','기타','시설','토지이용','건축물','이 필지 안 면적 비율','바로가기','필지 변경 이력'];
  function skFill(){var bx=$('skBox');bx.innerHTML='';var op=g('secOpen',DEFOP.slice());if(!Array.isArray(op))op=[];SK.forEach(function(k){var l=document.createElement('label');l.className='skl';var c=document.createElement('input');c.type='checkbox';c.checked=op.indexOf(k)>=0;c.onchange=function(){var a=g('secOpen',DEFOP.slice());if(!Array.isArray(a))a=[];var i=a.indexOf(k);if(c.checked&&i<0)a.push(k);if(!c.checked&&i>=0)a.splice(i,1);s('secOpen',a);skApply()};l.appendChild(c);l.appendChild(document.createTextNode(' '+k));bx.appendChild(l)})}
@@ -17936,7 +17961,8 @@ function lines(){var base=$('bjBase').value.trim(),a=[];$('bjTx').value.split(/\
    var warn=(WK[k]&&el.querySelector('.tag'))||el.querySelector('.zsp');
    el.classList.toggle('warn',!!warn);if(warn&&!el.dataset.wo){el.dataset.wo='1';el.classList.remove('closed')}el.classList.toggle('ref',!warn&&!!RF[k])})}
  var ft=0;function snap(){[].forEach.call(ib.querySelectorAll('*'),function(el){if(el.closest('svg')||el.closest('.emp .ei'))return;var f=parseFloat(getComputedStyle(el).fontSize);if(!f||f>14.75)return;var n=f<=12.75?12:13.5;if(Math.abs(n-f)>.01)el.style.fontSize=n+'px'})}
- new MutationObserver(function(){clearTimeout(ft);ft=setTimeout(function(){try{sev();snap()}catch(e){}},60)}).observe(ib,{childList:true,subtree:true});
+ /* 글자 크기 맞춤은 화면에 그려지기 전에(같은 순간) 해서 들썩임이 없게 */
+ new MutationObserver(function(){try{sev();snap()}catch(e){}}).observe(ib,{childList:true,subtree:true});
 })();
 
 /* ===== 정보창 상단 고정 · 모두 접기 · 패널 화살표 ===== */
@@ -17944,7 +17970,7 @@ function lines(){var base=$('bjBase').value.trim(),a=[];$('bjTx').value.split(/\
  /* 모두 접기·펼치기 */
  var fb=document.createElement('button');fb.id='infoFold';fb.type='button';fb.className='btn x';fb.textContent='모두 접기';
  function secs(){return [].slice.call(ib.querySelectorAll('.sec.fdc'))}
- function lab(){var o=secs().some(function(e){return !e.classList.contains('closed')});fb.textContent=o?'모두 접기':'모두 펼치기';fb.dataset.o=o?'1':'0';fb.title=fb.textContent;fb.setAttribute('aria-label',fb.textContent)}
+ function lab(){var o=secs().some(function(e){return !e.classList.contains('closed')}),t=o?'모두 접기':'모두 펼치기';if(fb.textContent===t&&fb.dataset.o===(o?'1':'0'))return;fb.textContent=t;fb.dataset.o=o?'1':'0';fb.title=t;fb.setAttribute('aria-label',t)}
  fb.onclick=function(){var o=secs().some(function(e){return !e.classList.contains('closed')});secs().forEach(function(e){e.classList.toggle('closed',o)});lab()};
  if(tb)tb.appendChild(fb);
  /* 상단 고정 바 */
@@ -17956,7 +17982,7 @@ function lines(){var base=$('bjBase').value.trim(),a=[];$('bjTx').value.split(/\
   var t=b.querySelector('.t');t.title=((h.textContent||'')+' '+(j&&j.textContent||'')).trim();t.innerHTML='';t.appendChild(document.createTextNode((h.textContent||'').trim()));var sm=document.createElement('small');sm.textContent=(j&&j.textContent||'').trim();t.appendChild(sm);
   var c=b.querySelector('.stkc');c.innerHTML='';src.forEach(function(x){var y=document.createElement('button');y.type='button';y.className=x.className;y.dataset.sec=x.dataset.sec;y.textContent=x.textContent;c.appendChild(y)});
   if(!c.children.length)c.style.display='none';else c.style.display=''}
- var bt=0;new MutationObserver(function(ms){if(ms.every(function(m){var n=m.target;return n.nodeType===1&&n.closest&&n.closest('#stkBar')}))return;clearTimeout(bt);bt=setTimeout(function(){try{bar();lab()}catch(e){}},90)}).observe(ib,{childList:true,subtree:true,attributes:true,attributeFilter:['class']});
+ var bt=0;new MutationObserver(function(ms){if(ms.every(function(m){var n=m.target;return n.nodeType===1&&n.closest&&n.closest('#stkBar,#infoFold')}))return;clearTimeout(bt);bt=setTimeout(function(){try{bar();lab()}catch(e){}},90)}).observe(ib,{childList:true,subtree:true,attributes:true,attributeFilter:['class']});
  function onS(){var b=$('stkBar');if(!b)return;var st=inf.scrollTop,hh=(ib.querySelector('.stats')||{}).offsetTop||120;b.classList.toggle('on',st>hh+20&&!inf.classList.contains('min'))}
  inf.addEventListener('scroll',onS,{passive:true});
 })();
@@ -17993,7 +18019,8 @@ function lines(){var base=$('bjBase').value.trim(),a=[];$('bjTx').value.split(/\
  }finally{busy=false}}
  var mb=document.getElementById('moreBox');function fill(){if(!mb)return;mb.innerHTML='';var cur=moreKeys();mb.style.cssText='display:grid;grid-template-columns:1fr 1fr;gap:4px 8px;font-size:13px';ALLK.forEach(function(k){var l=document.createElement('label');l.className='skl';var c=document.createElement('input');c.type='checkbox';c.checked=cur.indexOf(k)>=0;c.onchange=function(){var a=moreKeys().slice(),i=a.indexOf(k);if(c.checked&&i<0)a.push(k);if(!c.checked&&i>=0)a.splice(i,1);s('moreKeys',a);[].forEach.call(ib.querySelectorAll('.sec.lessH'),function(e){e.classList.remove('lessH')});apply()};l.appendChild(c);l.appendChild(document.createTextNode(' '+(LAB[k]||k)));mb.appendChild(l)})}
  var md=document.getElementById('moreDet');if(md)md.addEventListener('toggle',function(){if(this.open)fill()});
- new MutationObserver(function(){clearTimeout(tm);tm=setTimeout(function(){try{apply()}catch(e){console.log("MOREERR "+e.message)}},60)}).observe(ib,{childList:true});
+ /* 더 보기 접기도 그려지기 전에 바로 적용 (늦게 적용하면 카드가 한 번 나왔다가 사라져 들썩임) */
+ var moM=new MutationObserver(function(){try{apply()}catch(e){console.log("MOREERR "+e.message)}moM.takeRecords()});moM.observe(ib,{childList:true});
  ib.addEventListener('click',function(e){var c=e.target.closest&&e.target.closest('.sumL .sc');if(!c||isOpen())return;var k=c.dataset.sec;
   var hit=[].filter.call(ib.querySelectorAll('.sec.lessH'),function(el){var h=el.children[0];return h&&(h.textContent||'').replace(/\s+/g,' ').trim().indexOf(k)===0})[0];
   if(hit){s('moreOpen',true);apply()}},true);
