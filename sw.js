@@ -1,16 +1,50 @@
-/* 딸깍 지도 서비스 워커 - 페이지는 인터넷이 되면 항상 새 것, 안 되면 저장본. 지도 그림은 본 만큼 저장. */
-var V='ddm-page-v1',T='ddm-tiles-v1',MAXT=3000,puts=0;
-var PAGE=new URL('./__page',self.registration.scope).href;
-self.addEventListener('install',function(e){self.skipWaiting();e.waitUntil(caches.open(V).then(function(c){return c.addAll(['manifest.json','icon-192.png','icon-512.png','apple-touch-icon.png'])}).catch(function(){}))});
-self.addEventListener('activate',function(e){e.waitUntil(caches.keys().then(function(ks){return Promise.all(ks.filter(function(k){return k!==V&&k!==T}).map(function(k){return caches.delete(k)}))}).then(function(){return self.clients.claim()}))});
-function trim(c){c.keys().then(function(ks){var est=(self.navigator&&navigator.storage&&navigator.storage.estimate)?navigator.storage.estimate():Promise.resolve({});return est.then(function(e){var lim=MAXT;if(e&&e.quota&&e.usage/e.quota>.6)lim=Math.min(lim,500);else if(e&&e.usage>3e8)lim=Math.min(lim,700);if(ks.length>lim)ks.slice(0,ks.length-lim+Math.min(100,lim/5|0)).forEach(function(k){c.delete(k)})})}).catch(function(){})}
-self.addEventListener('fetch',function(e){var r=e.request;if(r.method!=='GET')return;var u=new URL(r.url);
- if(u.origin===self.location.origin){
-  if(r.mode==='navigate'||/(\/|index\.html)$/.test(u.pathname)){
-   e.respondWith(fetch(r,{cache:'no-store'}).then(function(res){if(res&&res.ok){var cp=res.clone();caches.open(V).then(function(c){c.put(PAGE,cp)})}return res}).catch(function(){return caches.match(PAGE).then(function(m){return m||Response.error()})}));return}
-  e.respondWith(caches.match(r).then(function(m){return m||fetch(r).then(function(res){if(res&&res.ok){var cp=res.clone();caches.open(V).then(function(c){c.put(r,cp)})}return res})}));return}
- if(r.destination==='image'){
-  e.respondWith(caches.open(T).then(function(c){return c.match(r).then(function(m){
-   var net=fetch(r).then(function(res){if(res&&(res.ok||res.type==='opaque')){c.put(r,res.clone());if(++puts%60===0)trim(c)}return res}).catch(function(){return m||Response.error()});
-   return m||net})}))}
+// 법령 뷰어 서비스 워커 v7.2
+// 앱 파일은 '설치할 때 통째로 저장해 두고 그것을 쓴다'. 새 버전은 뒤에서 받아 두고 기다리다가,
+// 화면에서 사용자가 '업데이트'를 눌렀을 때만 바꿔 끼운다(딸깍 지도처럼). 파이오다이드(큰 파일)는 한 번 받으면 저장본을 쓴다.
+const VER = "10.101";
+const V = "lv-" + VER;
+const SHELL = ["./", "index.html", "worker.js", "lawcore.py", "mobile_api.py", "manifest.webmanifest", "icon-192.png", "icon-512.png", "changes.txt"];
+self.addEventListener("install", (e) => {
+  e.waitUntil(caches.open(V).then((c) => Promise.all(SHELL.map((u) => c.add(new Request(u, { cache: "reload" })).catch(() => {})))));   // skipWaiting 하지 않음: 승인을 기다린다
+});
+self.addEventListener("activate", (e) => {
+  e.waitUntil(caches.keys().then((ks) => Promise.all(ks.filter((k) => k !== V && k !== "lv-pyo").map((k) => caches.delete(k)))).then(() => self.clients.claim()));
+});
+self.addEventListener("message", (e) => {
+  const d = e.data || {};
+  if (d.t === "skip") self.skipWaiting();
+  else if (d.t === "ver" && e.ports && e.ports[0]) e.ports[0].postMessage({ v: VER });
+});
+self.addEventListener("fetch", (e) => {
+  const r = e.request;
+  if (r.method !== "GET") return;
+  const u = new URL(r.url);
+  const pyo = /pyodide/i.test(u.pathname) || u.hostname === "cdn.jsdelivr.net";
+  if (pyo) {                                                    // 파이오다이드: 저장본 우선
+    e.respondWith(caches.open("lv-pyo").then(async (c) => {
+      const hit = await c.match(r);
+      if (hit) return hit;
+      const res = await fetch(r);
+      if (res && res.ok) c.put(r, res.clone());
+      return res;
+    }));
+    return;
+  }
+  if (u.origin !== location.origin) return;                     // 법제처·GitHub·구글 서버는 그대로 통과
+  if (u.searchParams.has("nc")) return;                         // ?nc= 가 붙은 요청(새 버전 소식 확인)은 항상 인터넷으로
+  e.respondWith(caches.open(V).then(async (c) => {              // 앱 파일: 저장본 우선, 없으면 인터넷
+    const hit = await c.match(r, { ignoreSearch: true });
+    if (hit) {
+      if (u.search && hit.url !== r.url) return new Response(await hit.clone().blob(), { status: hit.status, statusText: hit.statusText, headers: hit.headers });   // 주소 뒤 ?값(워커 설정)이 사라지지 않게 새 응답으로 감싼다
+      return hit;
+    }
+    try {
+      const res = await fetch(r);
+      if (res && res.ok) c.put(r, res.clone());
+      return res;
+    } catch (x) {
+      if (r.mode === "navigate") { const i = await c.match("index.html"); if (i) return i; }
+      return Response.error();
+    }
+  }));
 });
