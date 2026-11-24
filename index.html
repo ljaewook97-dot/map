@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="ko"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="app-build" content="2611241938">
+<meta name="app-build" content="2611241954">
 <meta name="theme-color" content="#16241f">
 <meta name="color-scheme" content="light dark"><meta name="supported-color-schemes" content="light dark"><meta name="darkreader-lock">
 <link rel="manifest" href="manifest.json">
@@ -14832,7 +14832,7 @@ var LS=window.localStorage;function g(k,d){try{var v=LS.getItem(k);return v==nul
  if(o.m!=null){var mm={};o.m.split(',').forEach(function(i){if(i)mm[i]=true});s('muniOn',mm)}
  history.replaceState(null,'',location.pathname+location.search)}catch(e){}})();
 var KEY=g('key',''),DOM=g('dom',location.hostname||'localhost');
-var BUILD="2611241938";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
+var BUILD="2611241954";var THEME=g('theme','auto');function applyTheme(m){THEME=m;s('theme',m);try{refreshVec()}catch(e){}if(m==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',m);var d=m==='dark'||(m==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=d?'#16241f':'#f4f6f3';document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.th===m)})}
 applyTheme(THEME);
 var BASE=g('base','Base');if(['Base','Satellite','SatLabel','white','none'].indexOf(BASE)<0)BASE='Base';
 // 레이어: id, 이름, 표시 WMS 이름, 조회용 data 코드
@@ -15196,11 +15196,13 @@ function ratios(geom,S,cb){var polys=polysOf(geom);if(!polys.length){cb();return
  G.forEach(function(g,gi){lay(g[0]).data.forEach(function(code){left++;boxQ(code,function(f){if(f)got[gi]=got[gi].concat(f.filter(function(x){return x.geometry}));if(--left===0)end()},300,pb,1)})});
  setTimeout(end,12000)}
 function gcen(g){var xs=[],ys=[];polysOf(g).forEach(function(pl){pl[0].forEach(function(c){xs.push(c[0]);ys.push(c[1])})});return [(Math.min.apply(0,ys)+Math.max.apply(0,ys))/2,(Math.min.apply(0,xs)+Math.max.apply(0,xs))/2]}
+/* 누른 필지: 화면에 이미 받아 둔 지적도 안에서 먼저 찾고(즉시), 없을 때만 V-World에 다시 물음 */
+function cadHit(lng,lat,cb){try{var c=FC['LP_PA_CBND_BUBUN'];if(c&&c.feats&&c.feats.length&&Date.now()-(c.t||0)<600000){for(var i=0;i<c.feats.length;i++){var f=c.feats[i],b=fbb(f);if(lng<b[0]||lng>b[2]||lat<b[1]||lat>b[3])continue;if(f.properties&&f.properties.pnu&&pipA(polysOf(f.geometry),lng,lat)){LOG.unshift('필지 찾기 → 화면 지적도에서 바로 찾음');return cb([f])}}}}catch(e){}dataQ('LP_PA_CBND_BUBUN',lng,lat,true,cb)}
 function pick(lat,lng){
  if(!KEY){showKey();return}
  if(hf){map.removeLayer(hf);hf=null}hf=L.layerGroup().addTo(map);if(hfF)map.removeLayer(hfF);hfF=L.layerGroup();window.__hfF=hfF;if(pin)map.removeLayer(pin);pin=L.circleMarker([lat,lng],{radius:5,color:'#fff',weight:2,fillColor:'#e74c3c',fillOpacity:1}).addTo(map);
  openInfo('<div class="ih"><h3>조회 중…</h3></div><div class="stats"><div class="st sk"></div><div class="st sk"></div><div class="st wide sk"></div></div>');var SHPH=upHits(L.latLng(lat,lng));
- dataQ('LP_PA_CBND_BUBUN',lng,lat,true,function(fs){
+ cadHit(lng,lat,function(fs){
   if(fs===null){openInfo(emptyCard('err','조회에 실패했습니다','V-World 응답이 없습니다. 인증키와 도메인 등록을 확인하세요.<br><span class="sub">도메인: '+esc(DOM)+'</span>',[['retry','다시 시도'],['key','인증키 확인']],lat,lng)+shpRows(SHPH));return}
   if(!fs.length){openInfo(emptyCard('none','필지가 없습니다','누른 곳에 지적 필지가 없습니다. 도로나 하천 위일 수 있어요.',[['retry','다시 시도']],lat,lng)+shpRows(SHPH)+row('바로가기',extLinks(lat,lng)));return}
   var f=fs[0],p=f.properties||{},pnu=p.pnu||'';try{window.__tgt=gcen(f.geometry)}catch(e){}if(window.__rec)window.__rec(p.addr||p.jibun||'',lat,lng);
@@ -17405,8 +17407,8 @@ function lines(){var base=$('bjBase').value.trim(),a=[];$('bjTx').value.split(/\
  window.__diag=diag})();
 /* v17: 업데이트 내용 · 저장 공간 */
 (function(){var $=function(i){return document.getElementById(i)};
- window.__ver='2026-11-24f';var LOGV='2026-11-24f',CH=[
- ['2026.11.24 (필지 조회 속도 · 토지대장 대체)',['V-World가 올해 공시지가 요청에 답을 주지 않으면 정보창 전체가 "조회 중…"에 멈추던 문제를 고쳤습니다. 공시지가는 최근 5년을 한꺼번에 물어 최신 값을 쓰고, 정보창은 답이 오는 대로 바로 채웁니다. 응답이 없는 요청은 8초 뒤 포기합니다.','토지대장(면적·지목·소유)이 비어 오면 토지소유정보, 토지특성 순으로 대신 조회합니다.','정보창이 조회 중에 꿈틀대던 원인 세 가지를 고쳤습니다: 글자 크기 맞춤이 0.06초 늦게 적용돼 위쪽 요약이 3px씩 오르내리던 것, "모두 접기" 단추가 0.09초마다 스스로를 다시 그리던 것, "더 보기" 접기가 늦게 적용돼 카드가 나왔다 사라지던 것. 조회 중 자리표시는 지난번 정보창의 카드 모양·높이를 그대로 써서 결과가 들어와도 거의 움직이지 않고, 아직 안 온 값은 "정보 없음" 대신 "조회 중…"으로 보입니다. "최근 V-World 응답"에 필지 조회 시간(토지대장·용도지역·공시지가·전체)이 남습니다.','필지를 누른 뒤 정보창이 여러 번 통째로 다시 그려지며 들썩이던 것을 줄였습니다. 조회 중에는 위쪽 요약만 그 자리에서 채우고, 아래 카드는 한 번에 부드럽게 나타납니다. 4.5초가 지나도 답이 없는 항목이 있으면 먼저 받은 내용으로 표시하고, 늦게 온 내용은 스크롤 위치를 유지한 채 채웁니다. 창이 열릴 때도 살짝 페이드됩니다.','연결 상태 확인에 토지소유정보·토지특성 API 항목을 추가하고, "최근 V-World 응답"에 이상한 응답의 실제 내용을 보여 줍니다.']],
+ window.__ver='2026-11-24g';var LOGV='2026-11-24g',CH=[
+ ['2026.11.24 (필지 조회 속도 · 토지대장 대체)',['V-World가 올해 공시지가 요청에 답을 주지 않으면 정보창 전체가 "조회 중…"에 멈추던 문제를 고쳤습니다. 공시지가는 최근 5년을 한꺼번에 물어 최신 값을 쓰고, 정보창은 답이 오는 대로 바로 채웁니다. 응답이 없는 요청은 8초 뒤 포기합니다.','토지대장(면적·지목·소유)이 비어 오면 토지소유정보, 토지특성 순으로 대신 조회합니다.','필지를 누르면 V-World에 다시 묻지 않고 화면에 이미 받아 둔 지적도에서 바로 찾습니다. 필지 찾기에 걸리던 1~2초가 사라지고, "조회 중" 화면이 한 번 덜 바뀝니다.','정보창이 조회 중에 꿈틀대던 원인 세 가지를 고쳤습니다: 글자 크기 맞춤이 0.06초 늦게 적용돼 위쪽 요약이 3px씩 오르내리던 것, "모두 접기" 단추가 0.09초마다 스스로를 다시 그리던 것, "더 보기" 접기가 늦게 적용돼 카드가 나왔다 사라지던 것. 조회 중 자리표시는 지난번 정보창의 카드 모양·높이를 그대로 써서 결과가 들어와도 거의 움직이지 않고, 아직 안 온 값은 "정보 없음" 대신 "조회 중…"으로 보입니다. "최근 V-World 응답"에 필지 조회 시간(토지대장·용도지역·공시지가·전체)이 남습니다.','필지를 누른 뒤 정보창이 여러 번 통째로 다시 그려지며 들썩이던 것을 줄였습니다. 조회 중에는 위쪽 요약만 그 자리에서 채우고, 아래 카드는 한 번에 부드럽게 나타납니다. 4.5초가 지나도 답이 없는 항목이 있으면 먼저 받은 내용으로 표시하고, 늦게 온 내용은 스크롤 위치를 유지한 채 채웁니다. 창이 열릴 때도 살짝 페이드됩니다.','연결 상태 확인에 토지소유정보·토지특성 API 항목을 추가하고, "최근 V-World 응답"에 이상한 응답의 실제 내용을 보여 줍니다.']],
  ['2026.11.18 (중복 정리와 동기화)',['동기화를 켜 둔 상태에서 "중복 정리"를 누르면 먼저 다른 기기와 맞춘 뒤 중복을 찾고, 지운 결과도 바로 다른 기기로 보냅니다. 폰과 PC에서 서로 다른 항목을 남겨 둘 다 사라지는 일을 막기 위한 것입니다. 동기화에 실패하면 경고를 보여 줍니다.']],
  ['2026.11.14 (즐겨찾기 이름 · 카드 정리)',['"별명"으로 부르던 것을 "즐겨찾기"로 모두 바꿨습니다(☆ 즐겨찾기 저장). 필지 카드 맨 위의 즐겨찾기 저장 단추와 아이콘 단추를 한 줄 같은 높이로 맞추고, 용도지역 칸은 "도시지역" 같은 상위 구분을 제목 줄로 올려 세부 용도지역과 건폐율·용적률을 한 덩어리로 묶었습니다. 카드 줄의 손잡이·아이콘 칸 폭을 같게 맞췄습니다.']],
  ['2026.11.14 (축척을 그 자리에서)',['화면 왼쪽 아래 "1:N"을 누르면 그 바로 위에 작은 창이 떠서 원하는 축척 숫자를 직접 넣고(예: 1200) 축척을 잠글 수 있습니다. 창은 지도 영역 안에만 뜹니다(오른쪽 도구 창으로 가지 않습니다). A4 도면 저장은 같은 창의 "A4 도면 저장…"에서 엽니다.']],
